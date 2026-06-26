@@ -1,0 +1,590 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  Usage:
+  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <product-variant-selects
+    id="product-variant-selects-{{ section.id }}"
+    data-section="{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+    <style>
+      .product-form__input {
+        margin-bottom: 10px;
+      }
+
+      .product-form__input legend.form__label,
+      .product-form__input label.form__label {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #222;
+        margin-bottom: 8px;
+      }
+
+      .sa-color-fieldset {
+        margin-top: 0;
+        margin-bottom: 6px;
+      }
+
+      .sa-color-fieldset .form__label {
+        display: none;
+      }
+
+      .sa-color-options {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-top: 0;
+        padding-bottom: 0;
+      }
+
+      .sa-color-option {
+        position: relative;
+      }
+
+      .sa-color-option-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .sa-color-option-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.18s ease, transform 0.18s ease;
+      }
+
+      .sa-color-option-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        border: 1px solid currentColor;
+        background: currentColor;
+        display: block;
+      }
+
+      .sa-color-option-input:checked + .sa-color-option-label {
+        border-color: currentColor;
+      }
+
+      .sa-color-chip {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        transform: translateY(-4px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 9px;
+        min-height: 24px;
+        border: 1px solid #d9d9d9;
+        background: #fff;
+        color: #222;
+        font-size: 10px;
+        line-height: 1;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .sa-color-chip.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .sa-bundle-fieldset {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      .sa-bundle-fieldset .form__label {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .sa-bundle-cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 0;
+      }
+
+      .sa-bundle-option {
+        position: relative;
+      }
+
+      .sa-bundle-option-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .sa-bundle-option-label {
+        display: block;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        background: #fff;
+        cursor: pointer;
+        overflow: hidden;
+      }
+
+      .sa-bundle-option-input:checked + .sa-bundle-option-label {
+        border-color: #111;
+      }
+
+      .sa-bundle-option-image-wrap {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        background: #f6f6f6;
+        overflow: hidden;
+      }
+
+      .sa-bundle-option-image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: none !important;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .sa-bundle-option-popular {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        background: #b94a4a;
+        color: #fff;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 7px 8px;
+        z-index: 2;
+      }
+
+      .sa-bundle-option-body {
+        padding: 12px 10px 14px;
+        text-align: center;
+      }
+
+      .sa-bundle-option-title {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #222;
+        margin-bottom: 8px;
+      }
+
+      .sa-bundle-option-price {
+        font-size: 13px;
+        color: #e04b43;
+        line-height: 1;
+      }
+
+.sa-dropdown-field {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.sa-dropdown-field .form__label {
+  display: none;
+}
+
+/* Outer wrapper should NOT look like a second dropdown */
+.sa-dropdown-field .select {
+  position: relative;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-height: auto !important;
+  padding: 0 !important;
+}
+
+/* Make the custom dropdown wrapper fill the row */
+.sa-dropdown-field dropdown-input,
+.sa-dropdown-field .dropdown {
+  display: block;
+  width: 100%;
+}
+
+/* Remove extra styling from details wrapper */
+.sa-dropdown-field .dropdown {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Remove summary's native spacing/marker */
+.sa-dropdown-field .dropdown__summary {
+  display: block;
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sa-dropdown-field .dropdown__summary::-webkit-details-marker {
+  display: none;
+}
+
+.sa-dropdown-field .dropdown__summary::marker {
+  display: none;
+}
+
+/* THIS is the actual visible closed field */
+.sa-dropdown-field .dropdown__button {
+  width: 100%;
+  min-height: 56px;
+  height: 56px;
+  border: 1px solid #d7d7d7 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 48px 0 18px !important;
+  font-size: 15px !important;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 400 !important;
+  color: #222 !important;
+  text-align: left !important;
+  position: relative;
+}
+
+/* Left-align the selected text */
+.sa-dropdown-field .dropdown__button [data-label] {
+  display: block;
+  width: 100%;
+  text-align: left !important;
+  line-height: 1.2;
+}
+
+/* Hide the theme's built-in arrow only */
+.sa-dropdown-field .dropdown__button .icon,
+.sa-dropdown-field .dropdown__button .icon-caret,
+.sa-dropdown-field .dropdown__button .select__icon {
+  display: none !important;
+}
+
+/* Add one clean custom arrow */
+.sa-dropdown-field .dropdown__button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid #222;
+  border-bottom: 1.5px solid #222;
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* Open dropdown list */
+.sa-dropdown-field .dropdown__list {
+  margin-top: 0 !important;
+  border: 1px solid #d7d7d7 !important;
+  border-top: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.sa-dropdown-field .dropdown__items {
+  margin: 0;
+  padding: 0;
+}
+
+.sa-dropdown-field .dropdown__item {
+  margin: 0;
+}
+
+.sa-dropdown-field .dropdown__item-button {
+  width: 100%;
+  border: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: 18px !important;
+  font-size: 15px !important;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 400 !important;
+  color: #222 !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+      @media screen and (max-width: 749px) {
+        .sa-bundle-cards {
+          gap: 10px;
+        }
+
+        .sa-bundle-option-title {
+          font-size: 12px;
+        }
+
+        .sa-bundle-option-price {
+          font-size: 12px;
+        }
+      }
+    </style>
+
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign option_handle = option.name | handleize
+        assign product_type_handle = product.type | handleize
+
+        if option_handle == 'color'
+          assign picker_type = 'sa_color'
+        elsif product_type_handle == 'flip-lighter' and option_handle == 'bundle'
+          assign picker_type = 'sa_bundle_cards'
+        else
+          assign picker_type = 'dropdown'
+        endif
+      -%}
+
+      {% capture size_guide %}
+        {%- if option.name == block.settings.sizes_option and block.settings.size_guide_page != blank -%}
+          <menu-drawer class="product__size-guide section__drawer">
+            <details id="Size-Guide-drawer" class="drawer__container">
+              <summary class="drawer__button section__drawer-button">
+                <button class="button button--text">
+                  {{- 'product.size_guide' | t -}}
+                </button>
+              </summary>
+              <div class="drawer__content js-drawer"
+                id="Size-Guide-menu-drawer"
+                tabindex="-1">
+                <button
+                  class="drawer__button-close button-reset no-js-hidden js-btn-close-drawer"
+                  aria-label="{{- 'theme.actions.close' | t -}}"
+                  aria-controls="Size-Guide-menu-drawer"
+                  aria-expanded="false"
+                >
+                  {%- render 'icon', icon_name: 'theme-close' -%}
+                </button>
+                <div class="drawer__row drawer__row--gutter-sm">
+                  <h2 class="drawer__title heading-static">
+                    {{- block.settings.size_guide_page.title -}}
+                  </h2>
+                  <div class="rte">
+                    {{- block.settings.size_guide_page.content -}}
+                  </div>
+                </div>
+              </div>
+            </details>
+          </menu-drawer>
+        {%- endif -%}
+      {% endcapture %}
+
+      {%- if picker_type == 'sa_color' -%}
+        <fieldset class="js product__variant-options product-form__input product-form__input--button sa-color-fieldset">
+          <legend class="form__label visually-hidden">{{ option.name }}</legend>
+          {%- render 'main-product__variant-options', product: product, option: option, block: block, picker_type: picker_type -%}
+        </fieldset>
+
+      {%- elsif picker_type == 'sa_bundle_cards' -%}
+        <fieldset class="js product__variant-options product-form__input product-form__input--button sa-bundle-fieldset">
+          <legend class="form__label">Select bundle</legend>
+          {%- render 'main-product__variant-options', product: product, option: option, block: block, picker_type: picker_type -%}
+        </fieldset>
+
+      {%- else -%}
+        {%- assign select_options_html = '' -%}
+        {%- capture select_option_html -%}
+          {%- render 'main-product__variant-options', product: product, option: option, block: block, picker_type: picker_type -%}
+        {%- endcapture -%}
+        {%- assign select_options_html = select_options_html | append: select_option_html -%}
+
+        <div class="product-form__input product-form__input--dropdown sa-dropdown-field">
+          <label class="form__label visually-hidden" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+          <div class="select">
+            {%- liquid
+              assign select_input_id = 'Option-' | append: section.id | append: '-' | append: forloop.index0
+              assign name = 'options' | append: '_' | append: section.id | append: '[' | append: option.name | append: ']'
+              render 'select-input', id: select_input_id, name: name, options: select_options_html, class: 'product-selector__dropdown'
+            -%}
+
+            {{- size_guide -}}
+          </div>
+        </div>
+      {%- endif %}
+    {%- endfor -%}
+
+    {% comment %}
+      {% liquid
+        comment
+
+        assign is_there_a_list = false
+        if hide_variants_media_list != blank
+          assign is_there_a_list = true
+          assign list_of_product_option_names = hide_variants_media_list | split: ','
+        endif
+
+        if is_there_a_list
+          assign available_variant_positions = ''
+          for product_option in product.options_with_values
+            for item_of_product_option_names in list_of_product_option_names
+              if product_option.name == item_of_product_option_names
+                assign available_variant_positions = available_variant_positions | append: product_option.position | append: ','
+              endif
+            endfor
+          endfor
+          assign available_variant_positions_array = available_variant_positions | split: ','
+
+          if product.selected_or_first_available_variant == null
+            echo product.variants | json
+          endif
+
+          for selected_variant_option in product.selected_or_first_available_variant.options
+            assign forloop_selected_variant_option = forloop
+            for available_variant_position in available_variant_positions_array
+              assign available_variant_position_int = available_variant_position | times: 1
+              if forloop_selected_variant_option.index == available_variant_position_int
+                assign variant_handle = selected_variant_option | handleize
+                for product_variant in product.variants
+                  for product_variant_option in product_variant.options
+                    assign product_variant_option_handle = product_variant_option | handleize
+                    echo product_variant_option_handle
+                    echo ' - '
+                    echo variant_handle
+                    echo '<br>'
+                    if product_variant_option_handle == variant_handle
+                      assign variant_handle = product_variant_option_handle
+                      break
+                    endif
+                  endfor
+                endfor
+                echo variant_handle
+              endif
+            endfor
+          endfor
+        else
+          echo product.selected_or_first_available_variant.options | json | handleize
+        endif
+        endcomment
+      %}
+    {% endcomment %}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const rootSelector = '#product-variant-selects-{{ section.id }}';
+
+        function showColorChip(root) {
+          if (!root) return;
+
+          root.querySelectorAll('.sa-color-chip').forEach(function (chip) {
+            chip.classList.remove('is-visible');
+          });
+
+          const checked = root.querySelector('.sa-color-option-input:checked');
+          if (!checked) return;
+
+          const optionWrap = checked.closest('.sa-color-option');
+          if (!optionWrap) return;
+
+          const chip = optionWrap.querySelector('.sa-color-chip');
+          if (!chip) return;
+
+          chip.textContent = checked.getAttribute('data-color-label') || checked.value;
+
+          clearTimeout(optionWrap._chipTimer);
+          chip.classList.remove('is-visible');
+          void chip.offsetWidth;
+          chip.classList.add('is-visible');
+
+          optionWrap._chipTimer = setTimeout(function () {
+            chip.classList.remove('is-visible');
+          }, 1000);
+        }
+
+        document.addEventListener('change', function (event) {
+          const input = event.target;
+          if (!input.classList || !input.classList.contains('sa-color-option-input')) return;
+
+          const root = input.closest(rootSelector);
+          if (!root) return;
+
+          setTimeout(function () {
+            showColorChip(root);
+          }, 80);
+        });
+
+        const root = document.querySelector(rootSelector);
+        if (root) {
+          const observer = new MutationObserver(function () {
+            const activeRoot = document.querySelector(rootSelector);
+            if (!activeRoot) return;
+          });
+          observer.observe(root, { childList: true, subtree: true });
+        }
+      });
+    </script>
+
+    <script type="application/json" data-all-variants>
+      {{ product.variants | json }}
+    </script>
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+
+    {% comment %}
+    <script type="application/json" data-selected-variant-options-handle>
+      {% liquid
+        assign is_there_a_list = false
+        if hide_variants_media_list != blank
+          assign is_there_a_list = true
+          assign list_of_product_option_names = hide_variants_media_list | split: ','
+        endif
+
+        if is_there_a_list
+          assign available_variant_positions = ''
+          for product_option in product.options_with_values
+            for item_of_product_option_names in list_of_product_option_names
+              if product_option.name == item_of_product_option_names
+                assign available_variant_positions = available_variant_positions | append: product_option.position | append: ','
+              endif
+            endfor
+          endfor
+          assign available_variant_positions_array = available_variant_positions | split: ','
+
+          assign selected_variant_options = ''
+          for selected_variant_option in product.selected_or_first_available_variant.options
+            assign forloop_selected_variant_option = forloop
+            for available_variant_position in available_variant_positions_array
+              assign available_variant_position_int = available_variant_position | times: 1
+              if forloop_selected_variant_option.index == available_variant_position_int
+                assign selected_variant_options = selected_variant_options | append: selected_variant_option
+                if forloop_selected_variant_option.last == false
+                  assign selected_variant_options = selected_variant_options | append: '-'
+                endif
+              endif
+            endfor
+          endfor
+          echo selected_variant_options | json | handleize
+        else
+          echo product.selected_or_first_available_variant.options | json | handleize
+        endif
+      %}
+    </script>
+    {% endcomment %}
+  </product-variant-selects>
+{%- endunless -%}

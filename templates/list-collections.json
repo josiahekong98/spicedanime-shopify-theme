@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "page_banner_gqzEVH": {
+      "type": "page-banner",
+      "settings": {
+        "text": "",
+        "section_width": "max-w-narrow",
+        "color_scheme": "scheme-1",
+        "spacing_top": "0",
+        "spacing_bottom": "6"
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "blocks": {
+        "collection_Whby34": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "face-care"
+          }
+        },
+        "collection_VmihBV": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "body"
+          }
+        },
+        "collection_zbhdyH": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "beard"
+          }
+        },
+        "collection_BRYGqf": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "hair"
+          }
+        },
+        "collection_7fyypt": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "perfumes"
+          }
+        },
+        "collection_Ycw7BH": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "collection": "accessories"
+          }
+        }
+      },
+      "block_order": [
+        "collection_Whby34",
+        "collection_VmihBV",
+        "collection_zbhdyH",
+        "collection_BRYGqf",
+        "collection_7fyypt",
+        "collection_Ycw7BH"
+      ],
+      "settings": {
+        "collections_to_show": "selected",
+        "card_title_style": "card-single-text",
+        "collections_per_page": 12,
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    }
+  },
+  "order": [
+    "page_banner_gqzEVH",
+    "main"
+  ]
+}

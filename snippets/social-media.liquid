@@ -1,0 +1,39 @@
+{%- liquid
+  assign item_tag = item_tag | default: 'li'
+  assign in_new_tab = in_new_tab | default: false
+  assign item_icon = item_icon
+
+  assign social_media_items = 'Instagram,Facebook,YouTube,TikTok,X,Linkedin,Twitter,Pinterest,Snapchat,Vimeo' | split: ','
+
+  assign shop_social_links = shop.brand.metafields.social_links
+
+  for item in social_media_items
+    assign item_handle = item | handleize
+    assign item_icon_name = 'brand-' | append: item_handle
+    assign item_settings_handle = 'social_' | append: item_handle | append: '_link'
+
+    if settings[item_settings_handle] != blank
+      assign item_url = settings[item_settings_handle]
+    elsif shop_social_links[item_handle] != blank
+      assign item_url = shop_social_links[item_handle].value
+    else
+      continue
+    endif
+
+    if in_new_tab
+      assign item_target = ' target="_blank" rel="noopener noreferrer"'
+    else
+      assign item_target = ''
+    endif
+
+    echo '<' | append: item_tag | append: '>'
+    echo '<a href="' | append: item_url | append: '" title="' | append: item | append: '" ' | append: item_target | append: '>'
+    if item_icon
+      render 'icon', icon_name: item_icon_name
+    else
+      echo item
+    endif
+    echo '</a>'
+    echo '</' | append: item_tag | append: '>'
+  endfor
+-%}

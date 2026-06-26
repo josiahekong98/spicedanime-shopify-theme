@@ -1,0 +1,509 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "1e0c79e9-7de0-4eee-b9c5-f27132635fb8": {
+          "type": "title",
+          "settings": {
+            "spacing_bottom": "1"
+          }
+        },
+        "badge_hK7aJa": {
+          "type": "badge",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_badges": true,
+            "show_badges_discount": true,
+            "show_badges_sold": true
+          }
+        },
+        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b": {
+          "type": "price",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_price_tax_info": true,
+            "show_price_shipping_info": true,
+            "show_price_custom_info": ""
+          }
+        },
+        "divider_kJmP4b": {
+          "type": "divider",
+          "settings": {
+            "spacing_bottom": "1"
+          }
+        },
+        "1e939cd6-0958-4135-a9e5-c50faef01437": {
+          "type": "variant_picker",
+          "settings": {
+            "spacing_bottom": "1",
+            "title": "Variant picker",
+            "picker_type": "swatch",
+            "variant_options_with_thumbnails": "Color",
+            "size_guide_page": "size-guide",
+            "sizes_option": "Size"
+          }
+        },
+        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8": {
+          "type": "buy_buttons",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_quantity": false,
+            "layout": "inline",
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": false
+          }
+        },
+        "e6d841d6-2f71-40b3-956a-912df13f9f6e": {
+          "type": "inventory_notice",
+          "settings": {
+            "spacing_bottom": "1",
+            "inventory_threshold": 10,
+            "notice_just_text": false
+          }
+        },
+        "b2dabe12-2158-4ba6-bc54-9baae453acf5": {
+          "type": "text",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Free and easy returns",
+            "icon": "theme-check",
+            "link_to_resource": "none",
+            "text_before_link": false,
+            "heading_secondary": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "1ad0121e-439d-45c0-b45d-4f080836ade5": {
+          "type": "text",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Secure payments",
+            "icon": "theme-check",
+            "link_to_resource": "none",
+            "text_before_link": false,
+            "heading_secondary": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "text_A7bV6x": {
+          "type": "text",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Free delivery on orders over $150",
+            "icon": "theme-check",
+            "link_to_resource": "none",
+            "text_before_link": false,
+            "heading_secondary": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "1e939cd6-0955-4135-a9e5-c50faef01437": {
+          "type": "purchase_options",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_subscription_title": true,
+            "show_subscription_custom_info": "",
+            "show_subscription_policy": true
+          }
+        },
+        "7be6b89c-da83-4ff2-9b85-44fb28cbfa27": {
+          "type": "pickup-availability",
+          "settings": {
+            "spacing_bottom": "1"
+          }
+        },
+        "description_z7AANy": {
+          "type": "description",
+          "settings": {
+            "spacing_bottom": "1",
+            "behaviour": "row",
+            "heading": "",
+            "text_truncate": 3,
+            "icon": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "content_block_aXjKBq": {
+          "type": "content_block",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Delivery & Returns",
+            "row_content": "<ul><li>Free shipping on US orders over $150</li><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All of our packaging is plastic-free and recyclable. <br/></li></ul>",
+            "icon": "",
+            "page": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "content_block_NYGCJc": {
+          "type": "content_block",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Ingredients",
+            "icon": "",
+            "page": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "breadcrumbs_UGFmBV": {
+          "type": "breadcrumbs",
+          "settings": {}
+        },
+        "goback_Hz9gef": {
+          "type": "goback",
+          "settings": {
+            "goback_style": "text",
+            "goback_label": "",
+            "display_goback_mobile": "on-media",
+            "show_on": "desktop"
+          }
+        },
+        "complementary_products_y7Nt4D": {
+          "type": "complementary_products",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "You may also like",
+            "icon": "theme-box",
+            "limit": 4
+          }
+        }
+      },
+      "block_order": [
+        "1e0c79e9-7de0-4eee-b9c5-f27132635fb8",
+        "badge_hK7aJa",
+        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b",
+        "divider_kJmP4b",
+        "1e939cd6-0958-4135-a9e5-c50faef01437",
+        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8",
+        "e6d841d6-2f71-40b3-956a-912df13f9f6e",
+        "b2dabe12-2158-4ba6-bc54-9baae453acf5",
+        "1ad0121e-439d-45c0-b45d-4f080836ade5",
+        "text_A7bV6x",
+        "1e939cd6-0955-4135-a9e5-c50faef01437",
+        "7be6b89c-da83-4ff2-9b85-44fb28cbfa27",
+        "description_z7AANy",
+        "content_block_aXjKBq",
+        "content_block_NYGCJc",
+        "breadcrumbs_UGFmBV",
+        "goback_Hz9gef",
+        "complementary_products_y7Nt4D"
+      ],
+      "settings": {
+        "product_media_layout": "product__media-layout--full",
+        "product_media_layout_mobile": "product__media-layout--partial--sm",
+        "product_media_aspect_ratio": "fit",
+        "product_media_object_fit": "contain",
+        "product_slider_auto_height": false,
+        "media_transparent_background": true,
+        "display_media_zoom": "none",
+        "product_media_with_thumbs": "desktop_and_mobile",
+        "product_media_thumbs_ratio": "auto",
+        "product_media_thumbs_object_fit": "cover",
+        "gallery_arrows_show_on": "desktop",
+        "display_media_gallery_pagination": "none",
+        "media_gallery_info": "ENCHANTED EUCALYPTUS SCENTED CANDLE",
+        "metafield_as_seen_on": "",
+        "color_scheme_gallery": "",
+        "enable_sticky_info": true,
+        "enable_actions_bar": true,
+        "media_grid_size": "large",
+        "media_grid_position": "start",
+        "grid_gap": "2",
+        "spacing_grid": 1.6,
+        "grid_content_alignment": "start",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "0",
+        "spacing_bottom": "0"
+      }
+    },
+    "multitile_xDcKBi": {
+      "type": "multitile",
+      "blocks": {
+        "tile_MxzGpa": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "column_factor": 3,
+            "row_factor": 6,
+            "tile_aspect_ratio": "1/1",
+            "color_scheme": "",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        },
+        "tile_jiTw97": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "column_factor": 3,
+            "row_factor": 3,
+            "tile_aspect_ratio": "auto",
+            "color_scheme": "scheme-3",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "Ultimate place for men's beauty",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        },
+        "tile_VegJHj": {
+          "type": "tile",
+          "settings": {
+            "show_on": "desktop",
+            "column_factor": 3,
+            "row_factor": 3,
+            "tile_aspect_ratio": "auto",
+            "color_scheme": "scheme-5",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        }
+      },
+      "block_order": [
+        "tile_MxzGpa",
+        "tile_jiTw97",
+        "tile_VegJHj"
+      ],
+      "settings": {
+        "block_order_mobile": false,
+        "heading": "",
+        "heading_size": "h3",
+        "heading_alignment": "start",
+        "color_scheme": "",
+        "section_width": "max-w-page",
+        "spacing_top": "4",
+        "spacing_bottom": "0"
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "layout": "layout-2",
+        "enable_slideshow_overflow": false,
+        "heading": "You may also like",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "View all",
+        "button_style": "button--text",
+        "show_navigation_arrows": true,
+        "slider_autoplay": 10,
+        "tabs_button_style": "tab-btn-filled",
+        "max_products": 8,
+        "show_unavailable_products": false,
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "spacing_top": "4",
+        "spacing_bottom": "4"
+      }
+    },
+    "accordions_VHkjgW": {
+      "type": "accordions",
+      "blocks": {
+        "topic_ncEeC8": {
+          "type": "topic",
+          "settings": {
+            "is_open": true,
+            "title": "How do I return my order?",
+            "text": "<p>If you would like to return your order, please fill out the return form that came with the package. Make sure to include all the information requested on the form, such as the order number and the reason for the return. Once the form is complete, carefully seal the package and attach the shipping label that was also included with the package. Place the package in an appropriate shipping box and be sure to take the package to the post office or a courier service as soon as possible. If you have any questions about the return process, please contact our customer service team for assistance. We hope that you are completely satisfied with your purchase, but if you are not, we are here to help.</p>",
+            "page": ""
+          }
+        },
+        "topic_hWVahn": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "Are there any shipping costs?",
+            "text": "<p>For orders under $100 a shipping cost of $9,95 is charged.<br/>All orders over $100 will be delivered for free.</p>",
+            "page": ""
+          }
+        },
+        "topic_FULqqN": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "How can I track my order?",
+            "text": "<p>As soon as your order is shipped we will send you a track & trace code by mail. This way you can track your order.<br/><br/>Keep in mind that it can take up to 48 hours before the track & trace is available. Can't track your package after 48h? Please send us an email to hello@release.com and we will contact the shipping company.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "topic_ncEeC8",
+        "topic_hWVahn",
+        "topic_FULqqN"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "Frequently asked questions",
+        "heading_size": "h3",
+        "section_width": "max-w-narrower",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "social_media_highlights_Dy6xKY": {
+      "type": "social-media-highlights",
+      "blocks": {
+        "image_Kphnr9": {
+          "type": "image",
+          "settings": {
+            "image_url": "",
+            "card_aspect_ratio": "same_as_section"
+          }
+        },
+        "image_xdnTL8": {
+          "type": "image",
+          "settings": {
+            "image_url": "",
+            "card_aspect_ratio": "same_as_section"
+          }
+        },
+        "image_4hFT99": {
+          "type": "image",
+          "settings": {
+            "image_url": "",
+            "card_aspect_ratio": "same_as_section"
+          }
+        },
+        "image_MAYNQT": {
+          "type": "image",
+          "settings": {
+            "image_url": "",
+            "card_aspect_ratio": "same_as_section"
+          }
+        }
+      },
+      "block_order": [
+        "image_Kphnr9",
+        "image_xdnTL8",
+        "image_4hFT99",
+        "image_MAYNQT"
+      ],
+      "settings": {
+        "layout": "default",
+        "heading": "Join the <em>family</em>",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "Follow us",
+        "button_link": "https://www.instagram.com/digifist/",
+        "button_style": "button--filled",
+        "button_icon": "brand-instagram",
+        "content_card_color_scheme": "",
+        "media_aspect_ratio": "auto",
+        "autoplay_speed": 7,
+        "section_width": "max-w-full",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "trust_indicators_63qtH6": {
+      "type": "trust-indicators",
+      "blocks": {
+        "indicator_pUcJEc": {
+          "type": "indicator",
+          "settings": {
+            "title": "Fast global shipping",
+            "subheading": "",
+            "link_label": "",
+            "link": "/",
+            "icon": "theme-box"
+          }
+        },
+        "indicator_6fRbjr": {
+          "type": "indicator",
+          "settings": {
+            "title": "Free returns",
+            "subheading": "",
+            "link_label": "",
+            "link": "/",
+            "icon": "option-return"
+          }
+        },
+        "indicator_zHppPC": {
+          "type": "indicator",
+          "settings": {
+            "title": "100% secure payments",
+            "subheading": "",
+            "link_label": "",
+            "link": "/",
+            "icon": "theme-box"
+          }
+        }
+      },
+      "block_order": [
+        "indicator_pUcJEc",
+        "indicator_6fRbjr",
+        "indicator_zHppPC"
+      ],
+      "disabled": true,
+      "settings": {
+        "swipe_on_mobile": true,
+        "slideshow_autoplay_interval": 3,
+        "content_direction": "horizontal",
+        "content_alignment": "text-center",
+        "content_size": "h5",
+        "color_scheme_for_blocks": "",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "multitile_xDcKBi",
+    "recommendations",
+    "accordions_VHkjgW",
+    "social_media_highlights_Dy6xKY",
+    "trust_indicators_63qtH6"
+  ]
+}

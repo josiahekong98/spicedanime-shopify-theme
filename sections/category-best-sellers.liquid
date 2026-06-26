@@ -1,0 +1,325 @@
+{% if collection and collection.title contains '(category)' and collection.metafields.custom.best_sellers_collection != blank %}
+  {% assign best_sellers = collection.metafields.custom.best_sellers_collection.value %}
+
+  <section
+  class="category-best-sellers{% if collection.title == 'Grinder Sets (category)' %} category-best-sellers--grinders{% endif %}"
+  id="shopify-section-{{ section.id }}"
+>
+    <div class="category-best-sellers__inner">
+      <div class="category-best-sellers__header">
+        <h2 class="category-best-sellers__title">{{ section.settings.heading | escape }}</h2>
+        {% if section.settings.show_view_all and best_sellers.url != blank and false %}
+          <a href="{{ best_sellers.url }}" class="category-best-sellers__view-all">
+            {{ section.settings.view_all_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="category-best-sellers__grid">
+        {% assign best_sellers_limit = 4 %}
+{% if collection.title contains 'Grinder Sets' %}
+  {% assign best_sellers_limit = 3 %}
+{% endif %}
+
+{% for product in best_sellers.products limit: best_sellers_limit %}
+          <div class="category-best-sellers__card">
+            <a href="{{ product.url }}" class="category-best-sellers__image-link">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.title | escape }}"
+                  class="category-best-sellers__image"
+                  loading="lazy"
+                  width="{{ product.featured_image.width }}"
+                  height="{{ product.featured_image.height }}"
+                >
+              {% endif %}
+            </a>
+
+            <div class="category-best-sellers__content">
+              <a href="{{ product.url }}" class="category-best-sellers__product-title">
+                {{ product.title }}
+              </a>
+
+              <div class="category-best-sellers__price">
+                <span>From</span> {{ product.price_min | money_without_trailing_zeros }}
+              </div>
+
+              <div class="category-best-sellers__cta">
+                <a
+                  href="{{ product.url }}"
+                  class="category-best-sellers__quickadd"
+                  aria-label="Choose options for {{ product.title | escape }}"
+                >
+                  Choose options
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="category-best-sellers__divider"></div>
+    </div>
+  </section>
+
+  <style>
+    #shopify-section-{{ section.id }},
+    #shopify-section-{{ section.id }} .shopify-section,
+    #shopify-section-{{ section.id }} .category-best-sellers,
+    #shopify-section-{{ section.id }} .category-best-sellers__inner{
+      background:#1F1F1F !important;
+      color:inherit;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers{
+  padding:8px 0 0;
+  margin-bottom:0;
+}
+
+    #shopify-section-{{ section.id }} .category-best-sellers__inner{
+      padding:0 16px;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__header{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:16px;
+      position:relative;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__header::before,
+#shopify-section-{{ section.id }} .category-best-sellers__header::after{
+  content:"";
+  flex:1 1 0;
+  height:1px;
+  background:linear-gradient(
+    to right,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.12),
+    rgba(255,255,255,0)
+  );
+  transform:translateY(2px);
+}
+#shopify-section-{{ section.id }} .category-best-sellers__header::after{
+  background:linear-gradient(
+    to right,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.12),
+    rgba(255,255,255,0)
+  );
+}
+
+    #shopify-section-{{ section.id }} .category-best-sellers__title{
+      margin:0;
+      color:#fff !important;
+      font-size:22px;
+      line-height:1.1;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+   #shopify-section-{{ section.id }} .category-best-sellers__view-all{
+  position:absolute;
+  right:0;
+  top:108%;
+  transform:translateY(-50%);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.28);
+  padding-bottom:1px;
+  color:#ffffff !important;
+  opacity:.72;
+  line-height:1;
+}
+
+   #shopify-section-{{ section.id }} .category-best-sellers__grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  align-items:start;
+}
+
+#shopify-section-{{ section.id }} .category-best-sellers--grinders .category-best-sellers__grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+    #shopify-section-{{ section.id }} .category-best-sellers__card{
+      position:relative;
+      width:100%;
+      min-width:0;
+      max-width:none;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__image-link{
+      display:block;
+      width:100%;
+      text-decoration:none;
+      position:relative;
+      cursor:pointer;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__image{
+  display:block;
+  width:100%;
+  max-width:none;
+  height:auto;
+  aspect-ratio:3 / 4;
+  object-fit:cover;
+  object-position:center;
+  border-radius:8px;
+  transition:transform .2s ease;
+}
+
+#shopify-section-{{ section.id }} .category-best-sellers--grinders .category-best-sellers__image{
+  aspect-ratio:1 / 1;
+}
+
+    #shopify-section-{{ section.id }} .category-best-sellers__image-link:hover .category-best-sellers__image{
+      transform:scale(1.04);
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__content{
+      margin-top:8px;
+      min-width:0;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__product-title{
+      display:block;
+      width:100%;
+      text-decoration:none;
+      text-transform:none;
+      font-size:11px;
+      line-height:1.15;
+      font-weight:600;
+      color:#ffffff !important;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__price{
+      margin-top:4px;
+      margin-bottom:0;
+      font-size:11px;
+      line-height:1.15;
+      color:#b3b3b3 !important;
+      font-weight:500;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__cta{
+      margin-top:6px;
+      display:flex;
+      justify-content:center;
+      width:100%;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__quickadd{
+      min-width:0 !important;
+      width:100% !important;
+      max-width:100% !important;
+      min-height:30px !important;
+      padding:5px 6px !important;
+      border-radius:8px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      background:transparent !important;
+      color:#fff !important;
+      border:1px solid rgba(255,255,255,.28) !important;
+      text-decoration:none !important;
+      font-size:10px !important;
+      line-height:1.1 !important;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      text-align:center;
+      white-space:normal;
+      overflow-wrap:anywhere;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__quickadd:hover{
+      background:rgba(255,255,255,.06) !important;
+    }
+
+    #shopify-section-{{ section.id }} .category-best-sellers__divider{
+  margin:12px 0 0px;
+  height:1px;
+  width:100%;
+  display:block;
+  background:linear-gradient(
+    to right,
+    rgba(255,255,255,0),
+    rgba(255,255,255,.15),
+    rgba(255,255,255,0)
+  );
+}
+
+    @media screen and (min-width: 750px){
+      #shopify-section-{{ section.id }} .category-best-sellers__inner{
+        padding:0 24px;
+      }
+
+      #shopify-section-{{ section.id }} .category-best-sellers__title{
+        font-size:28px;
+      }
+
+      #shopify-section-{{ section.id }} .category-best-sellers__view-all{
+        font-size:12px;
+      }
+
+      #shopify-section-{{ section.id }} .category-best-sellers__product-title,
+      #shopify-section-{{ section.id }} .category-best-sellers__price{
+        font-size:14px;
+      }
+
+      #shopify-section-{{ section.id }} .category-best-sellers__quickadd{
+        min-height:32px !important;
+        font-size:11px !important;
+        padding:6px 10px !important;
+      }
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Category Best Sellers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "BEST SELLERS"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "SEE ALL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Best Sellers"
+    }
+  ]
+}
+{% endschema %}

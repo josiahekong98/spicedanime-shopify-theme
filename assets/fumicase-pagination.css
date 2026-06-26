@@ -1,0 +1,79 @@
+/* ===== CONTAINER ===== */
+.sa-pagination {
+  margin: 40px auto 60px auto;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.sa-paging-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  font-size: 15px;
+  letter-spacing: .2rem;
+  max-width: 240px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* ===== PAGE NUMBERS ===== */
+.sa-page-number {
+  opacity: .35;
+  padding: 2px 4px;
+  border-bottom: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  position: relative;
+}
+
+/* Active pages (except ellipses) */
+.sa-page-number.active:not(.is-ellipsis) {
+  opacity: 1;
+  border-bottom: 2px solid #fff !important;
+  padding-bottom: 4px;
+}
+
+/* ===== Ellipses — NO BORDER EVER ===== */
+.sa-page-number.is-ellipsis,
+.sa-page-number.is-ellipsis.active {
+  border-bottom: none !important;
+  text-decoration: none !important;
+  opacity: .35 !important;
+  pointer-events: none;
+}
+
+/* **Hard force removal using attribute detection** */
+.sa-page-number[aria-hidden="true"],
+.sa-page-number:where([aria-label*="…"]),
+.sa-page-number:where([aria-label*="..."]) {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+/* ===== ARROWS ===== */
+.sa-page-arrow {
+  opacity: .6;
+  font-size: 20px;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* ===== PROGRESS BAR ===== */
+.sa-page-progress {
+  width: 120px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin: 18px auto 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sa-page-progress-fill {
+  height: 100%;
+  background: white;
+  transition: width 0.3s ease;
+}

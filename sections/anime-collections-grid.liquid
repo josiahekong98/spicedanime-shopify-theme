@@ -1,0 +1,228 @@
+<style>
+/* FULL WIDTH DARK BACKGROUND */
+.all-anime-grid-wrap {
+  background:#1F1F1F;
+  width:100vw;
+  position:relative;
+  left:50%;
+  right:50%;
+  margin-left:-50vw;
+  margin-right:-50vw;
+  padding:40px 0 60px;
+}
+
+/* HEADER (CLICK = RESET FILTERS) */
+.all-anime-header {
+  text-align:center;
+  font-weight:300;
+  letter-spacing:.18em;
+  font-size:18px;
+  text-transform:uppercase;
+  color:#ededed;
+  margin-bottom:20px;
+  cursor:pointer;
+}
+
+/* SEARCH ON ITS OWN ROW */
+.all-anime-search-wrap {
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.all-anime-search {
+  padding:12px 14px;
+  border:none;
+  background:#2b2b2b;
+  color:white;
+  border-radius:6px;
+  font-size:14px;
+  width:85%;
+}
+
+/* LETTER FILTER BELOW */
+.all-anime-controls {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:24px;
+}
+
+.all-anime-filter-btn {
+  padding:8px 14px;
+  background:#2b2b2b;
+  border-radius:20px;
+  text-transform:uppercase;
+  color:#ededed;
+  font-size:10px;
+  letter-spacing:.14em;
+  border:1px solid #3a3a3a;
+  cursor:pointer;
+}
+
+.all-anime-filter-btn.active {
+  background:#ededed;
+  color:#1F1F1F;
+}
+
+/* CARD GRID — PADDED */
+.all-anime-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  padding:0 14px;
+}
+
+/* MOBILE: 2 ACROSS */
+.all-anime-card {
+  width:calc(50% - 12px);
+  max-width:none;
+  margin:0;
+  text-align:center;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+}
+
+/* IMAGES */
+.all-anime-card img {
+  width:100%;
+  display:block;
+  border-radius:0;
+  object-fit:cover;
+  transition:transform .25s ease;
+}
+
+/* LIGHT HOVER ZOOM */
+.all-anime-card:hover img {
+  transform:scale(1.03);
+}
+
+/* DARK HOVER OVERLAY — NO TEXT */
+.all-anime-overlay {
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.25);
+  opacity:0;
+  transition:.25s ease;
+}
+
+.all-anime-card:hover .all-anime-overlay {
+  opacity:1;
+}
+
+/* TITLE UNDER IMAGE */
+.all-anime-card-title {
+  font-size:10px;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  margin-top:6px;
+  margin-bottom:14px;
+  color:#ededed;
+  opacity:0.9;
+}
+
+/* BREAKPOINTS */
+@media(min-width: 600px) { .all-anime-card { width:calc(33.33% - 14px); } }
+@media(min-width: 900px) { .all-anime-card { width:calc(25% - 14px); } }
+@media(min-width: 1200px) { .all-anime-card { width:calc(20% - 14px); } }
+</style>
+
+
+<div class="all-anime-grid-wrap">
+
+  <!-- HEADER (Click to Reset Filters) -->
+  <div class="all-anime-header" id="resetAnimeGrid">ALL ANIME COLLECTIONS</div>
+
+  <!-- SEARCH BAR -->
+  <div class="all-anime-search-wrap">
+    <input type="text" placeholder="Search anime..." class="all-anime-search" id="animeSearch">
+  </div>
+
+  <!-- LETTER FILTERS -->
+  <div class="all-anime-controls">
+    {% assign letters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
+    {% for l in letters %}
+      <button class="all-anime-filter-btn" data-letter="{{ l }}">{{ l }}</button>
+    {% endfor %}
+  </div>
+
+  <!-- COLLECTION GRID -->
+  <div class="all-anime-grid" id="animeGrid">
+
+    {% for collection in collections %}
+      {% if collection.title contains "(Series)" %}
+        {% assign clean_title = collection.title | replace: "(Series)", "" | strip %}
+        {% assign first_letter = clean_title | slice: 0, 1 | upcase %}
+
+        <a href="{{ collection.url }}"
+           class="all-anime-card"
+           data-name="{{ clean_title | downcase }}"
+           data-letter="{{ first_letter }}">
+
+          {% if collection.image %}
+            <img src="{{ collection.image | image_url: width:540 }}" alt="{{ clean_title }}">
+          {% elsif collection.products.first.featured_image %}
+            <img src="{{ collection.products.first.featured_image | image_url: width:540 }}" alt="{{ clean_title }}">
+          {% endif %}
+
+          <!-- DARK OVERLAY NO TEXT -->
+          <div class="all-anime-overlay"></div>
+
+          <div class="all-anime-card-title">{{ clean_title }}</div>
+        </a>
+
+      {% endif %}
+    {% endfor %}
+
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".all-anime-card");
+  const search = document.getElementById("animeSearch");
+  const filterBtns = document.querySelectorAll(".all-anime-filter-btn");
+
+  /* SEARCH FILTER */
+  search.addEventListener("input", () => {
+    const val = search.value.toLowerCase();
+    cards.forEach(card => {
+      card.style.display = card.dataset.name.includes(val) ? "block" : "none";
+    });
+  });
+
+  /* LETTER FILTER */
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      let target = btn.dataset.letter;
+
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      cards.forEach(card => {
+        card.style.display = card.dataset.letter === target ? "block" : "none";
+      });
+    });
+  });
+
+  /* RESET FILTERS WHEN CLICKING TITLE */
+  document.getElementById("resetAnimeGrid").addEventListener("click", () => {
+    search.value = "";
+    filterBtns.forEach(b => b.classList.remove("active"));
+    cards.forEach(card => card.style.display = "block");
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Anime Grid",
+  "settings": []
+}
+{% endschema %}

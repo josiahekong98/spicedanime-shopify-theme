@@ -1,0 +1,288 @@
+{% comment %}
+    Renders line item
+    Accepts:
+    - line_item {Object} Liquid line_item object
+    Usage:
+    {%- render 'line-item', line_item: cart.items[0] -%}
+{% endcomment %}
+
+{%- liquid
+  assign line_item_index = line_item.index | plus: 1
+  assign cart_item = cart_item | default: false
+-%}
+
+{% comment %} Get inventory policy {% endcomment %}
+{% for variant in line_item.product.variants %}
+  {% if variant.id == line_item.variant_id %}
+    {% assign inventory_policy = variant.inventory_policy %}
+  {% endif %}
+{% endfor %}
+
+{%- assign adjusted_max_quantity = max_quantity -%}
+{%- if inventory_policy == 'continue' -%}
+  {%- assign adjusted_max_quantity = 99 -%}
+{%- endif -%}
+
+{% comment %} Max quantity calculation {% endcomment %}
+{% assign max_quantity = line_item.product.variants | where: 'id', line_item.variant_id %}
+{% assign max_quantity = max_quantity[0].inventory_quantity %}
+
+{% comment %} CAPTURE: Prices {% endcomment %}
+{%- liquid
+  assign line_item_original_price = line_item.original_price
+  assign line_item_final_price = line_item.final_price
+
+  if line_item.variant.compare_at_price > line_item.variant.price
+    assign line_item_original_price = line_item.variant.compare_at_price
+    assign line_item_final_price = line_item.final_price
+  elsif line_item.original_price != line_item.final_price and line_item.original_line_price != line_item.final_line_price
+    assign line_item_original_price = line_item.original_price
+    assign line_item_final_price = line_item.final_price
+  endif
+-%}
+
+{% comment %} CAPTURE: Price Display {% endcomment %}
+{% capture price_display %}
+  {%- if line_item_original_price > line_item_final_price -%}
+    <div class="cart-item__discounted-prices">
+      <span class="visually-hidden">{{- 'product.price_sale' | t -}}</span>
+      <ins class="color-red" {{ rtl_attr }}>
+        {{- line_item_final_price | money -}}
+      </ins>
+      <span class="visually-hidden">{{- 'product.price_regular' | t -}}</span>
+      <del {{ rtl_attr }}>
+        {{- line_item_original_price | money -}}
+      </del>
+    </div>
+  {%- else -%}
+    {{- line_item_final_price | money -}}
+  {%- endif -%}
+
+  {%- if line_item.variant.available and line_item.unit_price_measurement -%}
+    <div>
+      <span class="visually-hidden">{{- 'product.price_unit' | t -}}</span>
+      {{- line_item.variant.unit_price | money -}}
+      <span aria-hidden="true">/</span>
+      {%- if line_item.variant.unit_price_measurement.reference_value != 1 -%}
+        {{- line_item.variant.unit_price_measurement.reference_value -}}
+      {%- endif -%}
+      {{ line_item.variant.unit_price_measurement.reference_unit }}
+    </div>
+  {%- endif -%}
+{% endcapture %}
+
+{% comment %} CAPTURE: Discounts List {% endcomment %}
+{% capture discounts_list %}
+  {%- if line_item.discounts and line_item.final_line_price == 0 -%}
+    {% for discount in line_item.discounts %}
+      <div class="cart-item-promo">
+        <span class="promo-label">
+          {{ discount.title }}
+        </span>
+      </div>
+    {% endfor %}
+  {%- endif -%}
+{% endcapture %}
+
+
+
+{% comment %} CAPTURE: Product Options {% endcomment %}
+{% capture product_options %}
+  {%- unless line_item.product.has_only_default_variant -%}
+    <dl>
+      {%- for option in line_item.options_with_values -%}
+        <dd>{{- option.value -}}</dd>
+        {%- unless forloop.last -%}
+          {{- '<span class="option_divider"></span>' -}}
+        {%- endunless -%}
+      {%- endfor -%}
+    </dl>
+  {%- endunless -%}
+{% endcapture %}
+
+{% comment %} CAPTURE: Product Properties {% endcomment %}
+{% capture product_properties %}
+  {%- if line_item.properties.size != 0 -%}
+    <dl class="cart-item__properties">
+      {%- for property in line_item.properties -%}
+        {%- assign property_first_char = property.first | slice: 0 -%}
+        {%- if property.last != blank and property_first_char != '_' -%}
+          <div>
+            <dd class="cart-item__property">
+              {%- if property.last contains '/uploads/' -%}
+                <a href="{{- property.last -}}" class="link" target="_blank">
+                  {{- property.last | split: '<span class="option_divider"></span>' | last -}}
+                </a>
+              {%- else -%}
+                <span class="cart-item__property--title">{{ property.first }}:</span>
+                <div class="cart-item__property--desc">{{- property.last -}}</div>
+              {%- endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </dl>
+  {%- endif -%}
+{% endcapture %}
+
+{% comment %} CAPTURE: Line Price Calculation {% endcomment %}
+{% capture line_price_display %}
+  {%- if line_item_original_price > line_item_final_price -%}
+    <div class="cart-item__discounted-prices cart-item__price">
+      <span class="visually-hidden">{{- 'product.price_sale' | t -}}</span>
+      <ins class="color-red" {{ rtl_attr }}>
+        {{- line_item_final_price | times: line_item.quantity | money -}}
+      </ins>
+      <span class="visually-hidden">{{- 'product.price_regular' | t -}}</span>
+      <del {{ rtl_attr }}>
+        {{- line_item_original_price | times: line_item.quantity | money -}}
+      </del>
+    </div>
+  {%- else -%}
+    <span class="cart-item__price" {{ rtl_attr }}>
+      {{- line_item_final_price | times: line_item.quantity | money -}}
+    </span>
+  {%- endif -%}
+{% endcapture %}
+
+{% comment %} CAPTURE: Product Title and Link {% endcomment %}
+{% capture product_title %}
+  <h3 class="cart-item__title h6 heading-static">
+    <a href="{{- line_item.url -}}" class="full-unstyled-link">
+      {{- line_item.product.title | escape -}}
+    </a>
+  </h3>
+{% endcapture %}
+
+{% comment %} CAPTURE: Product Image {% endcomment %}
+{% capture product_image %}
+  {%- if line_item.image -%}
+    <a href="{{- line_item.url -}}" class="cart-item__link">
+      <span class="visually-hidden">{{- line_item.title | escape -}}</span>
+      <div class="media">
+        {%- if cart_item != true -%}
+          {%- render 'image', image: line_item.image, width: 360, section_index: 2 -%}
+        {%- else -%}
+          {%- render 'image', image: line_item.image, image_url_width: 550, alt: line_item.image.alt | escape -%}
+        {%- endif -%}
+      </div>
+    </a>
+  {%- endif -%}
+{% endcapture %}
+
+{% comment %} CAPTURE: Quantity and Remove Controls {% endcomment %}
+{% capture quantity_controls %}
+  <div class="cart-item__quantity">
+    {%- render 'quantity-input',
+      product_ref: line_item.product,
+      value: line_item.quantity,
+      name: 'updates[]',
+      min: 0,
+      max: adjusted_max_quantity,
+      index: line_item_index,
+      hide_label: true,
+      cart_item: cart_item
+    -%}
+  </div>
+
+  <cart-remove-button id="Remove-{{- line_item_index -}}" data-index="{{- line_item_index -}}">
+    <a href="{{- line_item.url_to_remove -}}" title="{{- 'cart.remove' | t -}}">
+      {%- if cart_item == true -%}
+        {%- render 'icon', icon_name: 'theme-delete' -%}
+      {%- endif -%}
+    </a>
+  </cart-remove-button>
+{% endcapture %}
+
+{% comment %} MAIN TEMPLATE STRUCTURE {% endcomment %}
+<div class="cart-item" id="CartItem-{{- line_item_index -}}">
+
+  {%- if cart_item != true -%}
+    {% comment %} CART DRAWER LAYOUT {% endcomment %}
+    <div class="cart-item__media">{{ product_image }}</div>
+
+    <div class="cart-item__details">
+      <div class="cart-item__content">
+        {{ product_title }}
+        <div class="cart-item__price" {{ rtl_attr }}>{{ price_display }}</div>
+    {% comment %}
+  Show tier promo ONLY on the free item that matches the tier gift:
+  - Free flip lighter when spending $60
+  - Free tote bag when spending $120
+  - Free tapestry when spending $200
+{% endcomment %}
+
+{% if line_item.final_line_price == 0 %}
+
+  {% if line_item.product.type == 'flip lighter' %}
+    <div class="cart-item-promo">
+      <span class="promo-label">
+        FREE LIGHTER (–{{ line_item.original_line_price | money }})
+      </span>
+    </div>
+
+  {% elsif line_item.product.type == 'tote bags' %}
+    <div class="cart-item-promo">
+      <span class="promo-label">
+        FREE TOTE BAG (–{{ line_item.original_line_price | money }})
+      </span>
+    </div>
+
+  {% elsif line_item.product.type == 'tapestry' %}
+    <div class="cart-item-promo">
+      <span class="promo-label">
+        FREE TAPESTRY (–{{ line_item.original_line_price | money }})
+      </span>
+    </div>
+
+  {% endif %}
+
+{% endif %}
+        {{ discounts_list }}
+        {{ product_options }}
+        {{ product_properties }}
+
+        {%- if line_item.selling_plan_allocation != nil -%}
+          <p class="cart-item__plan">{{- line_item.selling_plan_allocation.selling_plan.name -}}</p>
+        {%- endif -%}
+        <p class="cart-item__error color-red" role="alert" data-line-item-error data-line="{{- line_item_index -}}"></p>
+      </div>
+
+      <div class="cart-item__actions">
+        <div class="cart-item__actions--top">{{ quantity_controls }}</div>
+        <div class="cart-item__actions--price">{{ line_price_display }}</div>
+      </div>
+    </div>
+
+  {%- else -%}
+    {% comment %} CART PAGE LAYOUT {% endcomment %}
+    <div class="cart-item__content-area">
+      <div class="cart-item__media">{{ product_image }}</div>
+      <div class="cart-item__content">
+        {{ product_title }}
+
+        <div class="cart-item__info">
+          <div class="cart-item__price-content desktop-hide">
+            <div class="cart-item__price" {{ rtl_attr }}>{{ price_display }}</div>
+            {{ discounts_list }}
+          </div>
+          {{ product_options }}
+          {{ product_properties }}
+        </div>
+
+        {%- if line_item.selling_plan_allocation != nil -%}
+          <p class="cart-item__plan">{{- line_item.selling_plan_allocation.selling_plan.name -}}</p>
+        {%- endif -%}
+        <p class="cart-item__error color-red" role="alert" data-line-item-error data-line="{{- line_item_index -}}"></p>
+        {{ discounts_list }}
+      </div>
+    </div>
+
+    <div class="cart-item__price-content small-hide medium-hide">
+      <div class="cart-item__price" {{ rtl_attr }}>{{ price_display }}</div>
+    </div>
+
+    <div class="cart-item__actions">{{ quantity_controls }}</div>
+    <div class="cart-item__total-price" {{ rtl_attr }}>{{ line_price_display }}</div>
+  {%- endif -%}
+</div>

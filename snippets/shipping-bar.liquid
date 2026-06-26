@@ -1,0 +1,68 @@
+{%- comment -%}
+  Shipping + Tiered Rewards Progress Bar
+  Used in cart drawer and cart page.
+{%- endcomment -%}
+
+{%- liquid
+  assign cart_subtotal = cart.items_subtotal_price
+
+  comment
+    thresholds in cents
+  endcomment
+  assign lighter_threshold   = 7500
+  assign shipping_threshold  = 10000
+  assign tote_threshold      = 12000
+  assign tapestry_threshold  = 20000
+
+  assign extra_class = class | default: ''
+-%}
+
+<shipping-bar
+  class="shipping-bar progress-bar {{ extra_class }}"
+  data-cart-subtotal="{{ cart_subtotal }}"
+  data-lighter-threshold="{{ lighter_threshold }}"
+  data-shipping-threshold="{{ shipping_threshold }}"
+  data-tote-threshold="{{ tote_threshold }}"
+  data-tapestry-threshold="{{ tapestry_threshold }}"
+>
+    <div class="progress-bar__top">
+    <span class="gift-icon">🎁</span>
+
+    {%- comment -%}
+      JS will overwrite this text, but this is a better default one-liner.
+    {%- endcomment -%}
+    <p class="progress-bar__text" data-upsell-main>
+      A Free SpicedAnime Gift Is Waiting
+    </p>
+  </div>
+
+
+  <div class="progress-bar__progress">
+
+  <span
+    data-progress-line
+    class="progress-bar__progress-inner"
+    style="width: 0%;"
+  ></span>
+
+  {%- assign max_threshold = tapestry_threshold -%}
+
+  <!-- $75 milestone -->
+  <span class="progress-marker" style="left: {{ lighter_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+
+  <!-- $100 milestone -->
+  <span class="progress-marker" style="left: {{ shipping_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+
+  <!-- $120 milestone -->
+  <span class="progress-marker" style="left: {{ tote_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+
+  <!-- $200 milestone -->
+  <span class="progress-marker" style="left: {{ tapestry_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+
+</div>
+
+
+  <p class="progress-bar__subtext" data-upsell-sub>
+    Add more to your cart for free SpicedAnime products
+  </p>
+</shipping-bar>

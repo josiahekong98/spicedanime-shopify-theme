@@ -1,0 +1,165 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+  - picker_type: {String} type of picker to display
+{% endcomment %}
+
+{%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+{%- for value in option.values -%}
+
+  {%- liquid
+    assign option_disabled = true
+    if value.available or block.settings.enable_back_in_stock
+      assign option_disabled = false
+    endif
+  -%}
+
+  {%- capture input_id -%}
+    {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+  {%- endcapture -%}
+
+  {%- capture input_name -%}
+    {{ option.name }}-{{ option.position }}
+  {%- endcapture -%}
+
+  {%- capture input_dataset -%}
+    data-product-url="{{ value.product_url }}"
+    data-option-value-id="{{ value.id }}"
+  {%- endcapture -%}
+
+  {%- if picker_type == 'sa_color' -%}
+
+    {%- liquid
+      assign color_value = '#dddddd'
+      assign value_handle = value | handleize
+
+      if value_handle == 'matte-white'
+        assign color_value = '#f2f0eb'
+      elsif value_handle == 'aluminum-silver'
+        assign color_value = '#bcc2c8'
+      elsif value_handle == 'gold'
+        assign color_value = '#c79c43'
+      elsif value.swatch.color
+        assign color_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+      endif
+    -%}
+
+    {% if forloop.first %}
+      <div class="sa-color-options">
+    {% endif %}
+
+    <div class="sa-color-option">
+  <input
+    type="radio"
+    id="{{ input_id }}"
+    name="{{ input_name }}"
+    value="{{ value | escape }}"
+    form="{{ product_form_id }}"
+    class="sa-color-option-input"
+    data-color-label="{{ value | escape }}"
+    {% if value.selected %}checked{% endif %}
+    {% if option_disabled %}disabled{% endif %}
+    {{ input_dataset }}
+  >
+  <label class="sa-color-option-label" for="{{ input_id }}" title="{{ value | escape }}" style="color: {{ color_value }};">
+    <span class="sa-color-option-dot"></span>
+  </label>
+  <div class="sa-color-chip">{{ value }}</div>
+</div>
+
+    {% if forloop.last %}
+      </div>
+    {% endif %}
+
+  {%- elsif picker_type == 'sa_bundle_cards' -%}
+
+    {%- liquid
+      assign bundle_variant = blank
+
+      for variant in product.variants
+        if option.position == 1 and variant.option1 == value
+          assign bundle_variant = variant
+          break
+        elsif option.position == 2 and variant.option2 == value
+          assign bundle_variant = variant
+          break
+        elsif option.position == 3 and variant.option3 == value
+          assign bundle_variant = variant
+          break
+        endif
+      endfor
+
+      assign bundle_handle = value | handleize
+      assign is_popular = false
+      if bundle_handle contains 'lighter' and bundle_handle contains 'tin'
+        assign is_popular = true
+      endif
+    -%}
+
+    {% if forloop.first %}
+      <div class="sa-bundle-cards">
+    {% endif %}
+
+    <div class="sa-bundle-option">
+      <input
+        type="radio"
+        id="{{ input_id }}"
+        name="{{ input_name }}"
+        value="{{ value | escape }}"
+        form="{{ product_form_id }}"
+        class="sa-bundle-option-input"
+        {% if value.selected %}checked{% endif %}
+        {% if option_disabled %}disabled{% endif %}
+        {{ input_dataset }}
+      >
+
+      <label class="sa-bundle-option-label" for="{{ input_id }}">
+        <div class="sa-bundle-option-image-wrap">
+          {% if is_popular %}
+            <div class="sa-bundle-option-popular">Most popular</div>
+          {% endif %}
+
+          {% if bundle_variant.featured_image %}
+            {{ bundle_variant.featured_image | image_url: width: 500 | image_tag: loading: 'eager', alt: value }}
+          {% elsif product.featured_image %}
+            {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'eager', alt: value }}
+          {% endif %}
+        </div>
+
+        <div class="sa-bundle-option-body">
+          <div class="sa-bundle-option-title">{{ value }}</div>
+          {% if bundle_variant %}
+            <div class="sa-bundle-option-price">{{ bundle_variant.price | money_without_trailing_zeros }}</div>
+          {% endif %}
+        </div>
+      </label>
+    </div>
+
+    {% if forloop.last %}
+      </div>
+    {% endif %}
+
+  {%- elsif picker_type == 'dropdown' -%}
+
+    <option
+      id="{{ input_id }}"
+      value="{{ value | escape }}"
+      {% if value.selected %}
+        selected="selected"
+      {% endif %}
+      {{ input_dataset }}
+    >
+      {% if option_disabled -%}
+        {{- 'product.value_unavailable' | t: option_value: value -}}
+      {%- else -%}
+        {{- value -}}
+      {%- endif %}
+    </option>
+
+  {%- endif -%}
+{%- endfor -%}

@@ -1,0 +1,823 @@
+{% assign series_title = collection.title | replace: "(Series)", "" | strip %}
+{% assign series_filter = series_title | url_encode %}
+{% assign accent_color = collection.metafields.custom.accent_color.value | default: '#d44336' %}
+
+{% assign hero_image = collection.metafields.custom.series_hero_image.value | default: section.settings.hero_image | default: collection.image %}
+{% assign about_image = collection.metafields.custom.series_about_image.value | default: section.settings.about_image | default: collection.image %}
+{% assign logo_image = collection.metafields.custom.series_logo.value | default: section.settings.logo_image %}
+
+{% assign about_text_1 = collection.metafields.custom.series_about_text_1.value | default: section.settings.about_text_1 %}
+{% assign about_text_2 = collection.metafields.custom.series_about_text_2.value | default: section.settings.about_text_2 %}
+{% assign about_text_3 = collection.metafields.custom.series_about_text_3.value | default: section.settings.about_text_3 %}
+
+{% assign grinder_img = blank %}
+{% assign tray_img = blank %}
+{% assign jar_img = blank %}
+{% assign lighter_img = blank %}
+{% assign box_img = blank %}
+{% assign ashtray_img = blank %}
+{% assign tapestry_img = blank %}
+{% assign tote_img = blank %}
+{% assign wallet_img = blank %}
+{% assign tin_img = blank %}
+
+{% for product in collection.products %}
+  {% assign ptitle = product.title | downcase %}
+  {% assign ptype = product.type | downcase %}
+
+  {% if product.featured_image %}
+
+    {% if grinder_img == blank and ptype contains 'grinder' %}
+      {% assign grinder_img = product.featured_image %}
+    {% endif %}
+
+    {% if tray_img == blank and ptype contains 'rolling tray' %}
+      {% assign tray_img = product.featured_image %}
+    {% endif %}
+
+    {% if jar_img == blank and ptype contains 'stash jar' %}
+      {% assign jar_img = product.featured_image %}
+    {% endif %}
+
+    {% if lighter_img == blank and ptype contains 'lighter' %}
+      {% assign lighter_img = product.featured_image %}
+    {% endif %}
+
+    {% if box_img == blank and ptitle contains 'box' %}
+      {% assign box_img = product.featured_image %}
+    {% endif %}
+
+    {% if ashtray_img == blank and ptitle contains 'ashtray' %}
+      {% assign ashtray_img = product.featured_image %}
+    {% endif %}
+
+    {% if tapestry_img == blank and ptype contains 'tapestry' and ptype != 'black art tapestry' %}
+      {% assign tapestry_img = product.featured_image %}
+    {% endif %}
+
+    {% if tote_img == blank and ptype contains 'tote' %}
+      {% assign tote_img = product.featured_image %}
+    {% endif %}
+
+    {% if wallet_img == blank and ptype contains 'wallet' %}
+      {% assign wallet_img = product.featured_image %}
+    {% endif %}
+
+    {% if tin_img == blank and ptitle contains 'tin' %}
+      {% assign tin_img = product.featured_image %}
+    {% endif %}
+
+  {% endif %}
+{% endfor %}
+
+<style>
+.sa-series-page {
+  background:#111;
+  color:#ededed;
+  width:100vw;
+  position:relative;
+  left:50%;
+  margin-left:-50vw;
+  padding-bottom:42px;
+}
+
+.sa-series-container {
+  width:min(1180px, 92vw);
+  margin:0 auto;
+}
+
+.sa-series-hero {
+  min-height:420px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.45)),
+    {% if hero_image %}
+      url({{ hero_image | image_url: width: 1800 }})
+    {% else %}
+      #111
+    {% endif %};
+  background-size:cover;
+  background-position:center;
+  padding:95px 0 58px;
+}
+
+.sa-series-hero-inner {
+  max-width:560px;
+}
+
+.sa-series-hero h1 {
+  font-size:clamp(48px, 9vw, 96px);
+  line-height:.9;
+  margin:0;
+  color:#fff;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.sa-series-hero h1 span {
+  display:block;
+  color:{{ accent_color }};
+  font-style:italic;
+  font-size:.48em;
+  letter-spacing:.04em;
+  margin-top:10px;
+}
+
+.sa-series-hero p {
+  max-width:520px;
+  font-size:17px;
+  line-height:1.45;
+  margin:18px 0 26px;
+  color:#fff;
+}
+
+.sa-series-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid {{ accent_color }};
+  color:{{ accent_color }};
+  padding:12px 20px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:11px;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.sa-series-btn:hover {
+  background:{{ accent_color }};
+  color:#111;
+}
+
+.sa-series-section {
+  padding:34px 0 0;
+}
+
+.sa-series-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:18px;
+  border-bottom:1px solid {{ accent_color }};
+  padding-bottom:10px;
+}
+
+.sa-series-head h2,
+.sa-series-section h2 {
+  color:#fff;
+  font-size:24px;
+  line-height:1.05;
+  margin:0;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+
+.sa-series-view {
+  color:{{ accent_color }};
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.sa-type-scroll,
+.sa-related-scroll {
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-bottom:8px;
+}
+
+.sa-type-scroll::-webkit-scrollbar,
+.sa-related-scroll::-webkit-scrollbar {
+  display:none;
+}
+
+.sa-type-card {
+  flex:0 0 240px;
+  scroll-snap-align:start;
+  border:1px solid rgba(255,255,255,.18);
+  background:#181818;
+  color:#fff;
+  text-decoration:none;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.sa-type-card img {
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  opacity:.95;
+}
+
+.sa-type-card span {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px;
+  font-size:14px;
+  min-height:60px;
+  font-weight:700;
+}
+
+.sa-type-card span::after {
+  content:"›";
+  color:{{ accent_color }};
+  font-size:22px;
+  line-height:1;
+}
+
+.sa-series-products {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:14px;
+}
+
+.sa-series-product {
+  background:#181818;
+  border:1px solid rgba(255,255,255,.08);
+  padding:0 0 13px;
+  color:#fff;
+  text-decoration:none;
+}
+
+.sa-series-product img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+}
+
+.sa-series-product h3 {
+  font-size:13px;
+  line-height:1.25;
+  margin:10px 10px 4px;
+  color:#fff;
+}
+
+.sa-series-product p {
+  margin:0 10px;
+  font-size:12px;
+  opacity:.75;
+}
+
+.sa-series-center {
+  text-align:center;
+  margin-top:18px;
+}
+
+.sa-about-card {
+  display:grid;
+  grid-template-columns:.85fr 1.15fr .65fr;
+  gap:26px;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:12px;
+  background:#181818;
+  padding:18px;
+}
+
+.sa-about-card img {
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.sa-about-text h2 {
+  margin-bottom:10px;
+}
+
+.sa-about-text p {
+  color:#ddd;
+  line-height:1.5;
+  margin:0 0 10px;
+  font-size:14px;
+}
+
+.sa-series-logo {
+  text-align:center;
+}
+
+.sa-series-logo img {
+  max-width:220px;
+  max-height:150px;
+  object-fit:contain;
+  margin:auto;
+}
+
+.sa-series-logo-text {
+  color:{{ accent_color }};
+  font-size:clamp(42px, 6vw, 78px);
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  line-height:.9;
+}
+
+.sa-series-logo-text span {
+  display:block;
+  color:#fff;
+  font-size:14px;
+  letter-spacing:.55em;
+  margin-top:18px;
+  padding-left:.55em;
+}
+
+.sa-related-card {
+  flex:0 0 160px;
+  scroll-snap-align:start;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  position:relative;
+}
+
+.sa-related-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+  border:1px solid rgba(255,255,255,.12);
+  filter:brightness(.82);
+}
+
+.sa-related-card span {
+  position:absolute;
+  left:8px;
+  right:8px;
+  bottom:10px;
+  font-size:12px;
+  line-height:1.15;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  text-shadow:0 2px 10px rgba(0,0,0,.8);
+}
+
+.sa-series-faq {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px 12px;
+}
+
+.sa-series-faq details {
+  border:1px solid rgba(255,255,255,.16);
+  background:#181818;
+  padding:13px 15px;
+}
+
+.sa-series-faq summary {
+  cursor:pointer;
+  font-weight:700;
+  font-size:13px;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.sa-series-faq summary::-webkit-details-marker {
+  display:none;
+}
+
+.sa-series-faq summary::after {
+  content:"+";
+  color:{{ accent_color }};
+  font-size:18px;
+  line-height:1;
+}
+
+.sa-series-faq details[open] summary::after {
+  content:"–";
+}
+
+.sa-series-faq p {
+  margin:10px 0 0;
+  color:#cfcfcf;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.sa-series-trust {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(255,255,255,.18);
+  margin-top:34px;
+  background:#151515;
+}
+
+.sa-series-trust-item {
+  padding:14px 16px;
+  border-right:1px solid rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.sa-series-trust-item:last-child {
+  border-right:0;
+}
+
+.sa-series-trust-icon {
+  color:{{ accent_color }};
+  font-size:22px;
+}
+
+.sa-series-trust-item strong {
+  display:block;
+  font-size:12px;
+}
+
+.sa-series-trust-item span {
+  display:block;
+  font-size:11px;
+  opacity:.7;
+}
+
+@media(max-width:900px) {
+  .sa-series-container {
+    width:min(100%, 92vw);
+  }
+
+  .sa-series-hero {
+    min-height:420px;
+    padding:120px 0 48px;
+  }
+
+  .sa-series-hero h1 {
+    font-size:clamp(46px, 14vw, 72px);
+  }
+
+  .sa-series-hero p {
+    font-size:15px;
+    max-width:92%;
+  }
+
+   .sa-type-card {
+    flex:0 0 38%;
+  }
+
+  .sa-type-card img {
+    height:170px;
+  }
+
+  .sa-type-card span {
+    min-height:auto;
+    padding:10px 12px;
+    font-size:12px;
+  }
+
+  .sa-series-products {
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .sa-about-card {
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  .sa-series-logo-text {
+    font-size:42px;
+  }
+
+  .sa-related-card {
+    flex:0 0 38%;
+  }
+
+  .sa-series-faq {
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+  }
+
+  .sa-series-faq details {
+    padding:11px 10px;
+  }
+
+  .sa-series-faq summary {
+    font-size:11px;
+    line-height:1.25;
+  }
+
+  .sa-series-faq p {
+    font-size:10.5px;
+    line-height:1.35;
+  }
+
+  .sa-series-trust {
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:8px;
+  }
+
+  .sa-series-trust::-webkit-scrollbar {
+    display:none;
+  }
+
+  .sa-series-trust-item {
+    min-width:218px;
+    border-right:0;
+    padding:11px 13px;
+  }
+}
+</style>
+
+<div class="sa-series-page">
+
+  <section class="sa-series-hero">
+    <div class="sa-series-container">
+      <div class="sa-series-hero-inner">
+        <h1>{{ series_title }} <span>Anime Accessories</span></h1>
+        <p>Shop {{ series_title }} inspired grinders, rolling trays, stash jars, lighters, stash boxes and more.</p>
+        <a class="sa-series-btn" href="/collections/all?sort_by=best-selling&filter.p.m.custom.series={{ series_filter }}">Shop Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="sa-series-container">
+
+    <section class="sa-series-section">
+      <div class="sa-series-head">
+        <h2>Shop By Product Type</h2>
+      </div>
+
+      <div class="sa-type-scroll">
+        {% if grinder_img != blank %}
+          <a class="sa-type-card" href="/collections/herb-grinders?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ grinder_img | image_url: width: 500 }}" alt="{{ series_title }} grinders">
+            <span>Grinders</span>
+          </a>
+        {% endif %}
+
+        {% if tray_img != blank %}
+          <a class="sa-type-card" href="/collections/all-rolling-trays?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ tray_img | image_url: width: 500 }}" alt="{{ series_title }} rolling trays">
+            <span>Rolling Trays</span>
+          </a>
+        {% endif %}
+
+        {% if jar_img != blank %}
+          <a class="sa-type-card" href="/collections/all-products-stash-jars?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ jar_img | image_url: width: 500 }}" alt="{{ series_title }} stash jars">
+            <span>Stash Jars</span>
+          </a>
+        {% endif %}
+
+        {% if lighter_img != blank %}
+          <a class="sa-type-card" href="/collections/all-products-lighters?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ lighter_img | image_url: width: 500 }}" alt="{{ series_title }} lighters">
+            <span>Lighters</span>
+          </a>
+        {% endif %}
+
+        {% if box_img != blank %}
+          <a class="sa-type-card" href="/collections/all-products-stash-boxes?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ box_img | image_url: width: 500 }}" alt="{{ series_title }} stash boxes">
+            <span>Stash Boxes</span>
+          </a>
+        {% endif %}
+
+        {% if ashtray_img != blank %}
+          <a class="sa-type-card" href="/collections/all-products-ashtray?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ ashtray_img | image_url: width: 500 }}" alt="{{ series_title }} ashtrays">
+            <span>Ashtrays</span>
+          </a>
+        {% endif %}
+
+        {% if tapestry_img != blank %}
+          <a class="sa-type-card" href="/collections/all-tapestries?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ tapestry_img | image_url: width: 500 }}" alt="{{ series_title }} tapestries">
+            <span>Tapestries</span>
+          </a>
+        {% endif %}
+
+        {% if tote_img != blank %}
+          <a class="sa-type-card" href="/collections/all-tote-bags?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ tote_img | image_url: width: 500 }}" alt="{{ series_title }} tote bags">
+            <span>Tote Bags</span>
+          </a>
+        {% endif %}
+
+        {% if wallet_img != blank %}
+          <a class="sa-type-card" href="/collections/wallets-category?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ wallet_img | image_url: width: 500 }}" alt="{{ series_title }} wallets">
+            <span>Wallets</span>
+          </a>
+        {% endif %}
+
+        {% if tin_img != blank %}
+          <a class="sa-type-card" href="/collections/all-products-lighters?filter.p.m.custom.series={{ series_filter }}">
+            <img src="{{ tin_img | image_url: width: 500 }}" alt="{{ series_title }} tin cases">
+            <span>Tin Cases</span>
+          </a>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="sa-series-section" id="sa-series-products">
+      <div class="sa-series-head">
+        <h2>{{ series_title }} Collection</h2>
+        <a class="sa-series-view" href="/collections/all?sort_by=best-selling&filter.p.m.custom.series={{ series_filter }}">View All →</a>
+      </div>
+
+      <div class="sa-series-products">
+        {% for product in collection.products limit: 6 %}
+          <a class="sa-series-product" href="{{ product.url }}">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
+            {% endif %}
+            <h3>{{ product.title }}</h3>
+            <p>{{ product.price_min | money }}</p>
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="sa-series-center">
+        <a class="sa-series-btn" href="/collections/all?sort_by=best-selling&filter.p.m.custom.series={{ series_filter }}">View All {{ series_title }} Products</a>
+      </div>
+    </section>
+
+    <section class="sa-series-section">
+      <div class="sa-about-card">
+        {% if about_image %}
+          <img src="{{ about_image | image_url: width: 800 }}" alt="{{ series_title }} collection">
+        {% endif %}
+
+        <div class="sa-about-text">
+          <h2>About {{ series_title }}</h2>
+
+          {% if about_text_1 != blank %}
+            <p>{{ about_text_1 }}</p>
+          {% else %}
+            <p>Explore {{ series_title }} inspired smoking accessories featuring bold artwork and collectible designs.</p>
+          {% endif %}
+
+          {% if about_text_2 != blank %}
+            <p>{{ about_text_2 }}</p>
+          {% else %}
+            <p>This collection may include grinders, rolling trays, stash jars, lighters, stash boxes and other accessories made for anime fans and collectors.</p>
+          {% endif %}
+
+          {% if about_text_3 != blank %}
+            <p>{{ about_text_3 }}</p>
+          {% else %}
+            <p>New designs are added regularly, so check back often for limited drops.</p>
+          {% endif %}
+        </div>
+
+        <div class="sa-series-logo">
+          {% if logo_image %}
+            <img src="{{ logo_image | image_url: width: 500 }}" alt="{{ series_title }} logo">
+          {% else %}
+            <div class="sa-series-logo-text">
+              {{ series_title }}
+              <span>{{ series_title }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-series-section">
+      <div class="sa-series-head">
+        <h2>You May Also Like</h2>
+        <a class="sa-series-view" href="/pages/all-anime-collections">View All Anime Collections →</a>
+      </div>
+
+      <div class="sa-related-scroll">
+        {% assign shown = 0 %}
+        {% for related_collection in collections %}
+          {% if related_collection.title contains "(Series)" and related_collection.handle != collection.handle and shown < 8 %}
+            {% assign clean_related = related_collection.title | replace: "(Series)", "" | strip %}
+            <a href="{{ related_collection.url }}" class="sa-related-card">
+              {% if related_collection.image %}
+                <img src="{{ related_collection.image | image_url: width: 420 }}" alt="{{ clean_related }}">
+              {% elsif related_collection.products.first.featured_image %}
+                <img src="{{ related_collection.products.first.featured_image | image_url: width: 420 }}" alt="{{ clean_related }}">
+              {% endif %}
+              <span>{{ clean_related }}</span>
+            </a>
+            {% assign shown = shown | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sa-series-section">
+      <div class="sa-series-head">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+
+      <div class="sa-series-faq">
+        <details>
+          <summary>What products are in the {{ series_title }} collection?</summary>
+          <p>This collection may include grinders, rolling trays, stash jars, lighters, stash boxes and other collectible accessories.</p>
+        </details>
+
+        <details>
+          <summary>Are these officially licensed {{ series_title }} products?</summary>
+          <p>SpicedAnime products feature anime-inspired artwork and collectible accessory designs.</p>
+        </details>
+
+        <details>
+          <summary>Do the designs match across products?</summary>
+          <p>Many designs are made to match across grinders, trays, jars, lighters and accessories.</p>
+        </details>
+
+        <details>
+          <summary>Do you release new {{ series_title }} designs?</summary>
+          <p>Yes. New designs and limited drops are added regularly.</p>
+        </details>
+
+        <details>
+          <summary>Do you ship in the United States?</summary>
+          <p>Yes. Orders ship from the United States with tracking once fulfilled.</p>
+        </details>
+
+        <details>
+          <summary>Are these good gifts for anime fans?</summary>
+          <p>Yes. These accessories are popular gifts for anime fans, collectors and people building matching setups.</p>
+        </details>
+      </div>
+    </section>
+
+    <div class="sa-series-trust">
+      <div class="sa-series-trust-item">
+        <div class="sa-series-trust-icon">💎</div>
+        <div><strong>Premium Quality</strong><span>Built to last</span></div>
+      </div>
+
+      <div class="sa-series-trust-item">
+        <div class="sa-series-trust-icon">🚚</div>
+        <div><strong>Fast US Shipping</strong><span>Tracked & reliable</span></div>
+      </div>
+
+      <div class="sa-series-trust-item">
+        <div class="sa-series-trust-icon">⭐</div>
+        <div><strong>Collector Approved</strong><span>Loved by thousands</span></div>
+      </div>
+
+      <div class="sa-series-trust-item">
+        <div class="sa-series-trust-icon">🔒</div>
+        <div><strong>Secure Checkout</strong><span>Safe & encrypted</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Series Collection Landing",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Fallback hero image"
+    },
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "Fallback about image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Fallback series logo"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_1",
+      "label": "Fallback about text 1"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_2",
+      "label": "Fallback about text 2"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text_3",
+      "label": "Fallback about text 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Series Collection Landing"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,678 @@
+<style>
+.sa-grinder-page {
+  background:#111;
+  color:#ededed;
+  width:100vw;
+  position:relative;
+  left:50%;
+  margin-left:-50vw;
+  padding-bottom:42px;
+}
+
+.sa-grinder-container {
+  width:min(1180px, 92vw);
+  margin:0 auto;
+}
+
+.sa-hero {
+  min-height:420px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.88), rgba(0,0,0,.38)),
+    url({{ section.settings.hero_image | image_url: width: 1800 }});
+  background-size:cover;
+  background-position:center;
+  padding:90px 0 55px;
+}
+
+.sa-hero h1 {
+  font-size:clamp(42px, 8vw, 92px);
+  line-height:.9;
+  margin:0;
+  color:#fff;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.sa-hero h1 span {
+  display:block;
+  color:#d4a63a;
+  font-style:italic;
+}
+
+.sa-hero p {
+  max-width:460px;
+  font-size:17px;
+  line-height:1.45;
+  margin:18px 0 26px;
+}
+
+.sa-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #d4a63a;
+  color:#d4a63a;
+  padding:12px 20px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:11px;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.sa-btn:hover {
+  background:#d4a63a;
+  color:#111;
+}
+
+.sa-trust-row {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(255,255,255,.24);
+  margin-top:-28px;
+  background:rgba(15,15,15,.92);
+  backdrop-filter:blur(10px);
+}
+
+.sa-trust-item {
+  padding:14px 16px;
+  border-right:1px solid rgba(255,255,255,.14);
+  display:flex;
+  gap:11px;
+  align-items:center;
+  min-height:68px;
+}
+
+.sa-trust-item:last-child {
+  border-right:0;
+}
+
+.sa-trust-icon {
+  color:#d4a63a;
+  font-size:22px;
+  line-height:1;
+  flex:0 0 auto;
+}
+
+.sa-trust-item strong {
+  display:block;
+  font-size:12px;
+  line-height:1.15;
+}
+
+.sa-trust-item span {
+  display:block;
+  font-size:11px;
+  line-height:1.25;
+  opacity:.72;
+}
+
+.sa-section {
+  padding:34px 0 0;
+}
+
+.sa-section-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.sa-section h2 {
+  color:#fff;
+  font-size:24px;
+  line-height:1.05;
+  margin:0;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+
+.sa-copy-grid {
+  display:grid;
+  grid-template-columns:1.35fr .75fr;
+  gap:28px;
+  align-items:center;
+}
+
+.sa-copy p {
+  color:#ddd;
+  line-height:1.52;
+  margin:10px 0 0;
+  max-width:720px;
+}
+
+.sa-copy .sa-short-note {
+  color:#fff;
+  font-size:14px;
+}
+
+.sa-copy .sa-short-note strong {
+  color:#d4a63a;
+}
+
+.sa-tip {
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:18px;
+  padding:20px 22px;
+  background:linear-gradient(135deg, rgba(212,166,58,.14), rgba(255,255,255,.03));
+}
+
+.sa-tip h2 {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:20px;
+  margin-bottom:8px;
+}
+
+.sa-tip strong {
+  color:#d4a63a;
+}
+
+.sa-tip p {
+  margin:8px 0 0;
+  color:#ddd;
+  line-height:1.45;
+}
+
+.sa-product-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+
+.sa-product-card {
+  background:#181818;
+  border:1px solid rgba(255,255,255,.08);
+  padding:0 0 13px;
+  color:#fff;
+  text-decoration:none;
+}
+
+.sa-product-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+}
+
+.sa-product-card h3 {
+  font-size:13px;
+  line-height:1.25;
+  margin:10px 10px 4px;
+  color:#fff;
+}
+
+.sa-product-card p {
+  margin:0 10px 11px;
+  font-size:12px;
+  opacity:.75;
+}
+
+.sa-product-card .sa-small-btn {
+  display:block;
+  margin:0 10px;
+  border:1px solid rgba(255,255,255,.5);
+  padding:9px 8px;
+  text-align:center;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.sa-anime-scroll {
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-bottom:8px;
+}
+
+.sa-anime-scroll::-webkit-scrollbar {
+  display:none;
+}
+
+.sa-anime-card {
+  flex:0 0 150px;
+  scroll-snap-align:start;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+}
+
+.sa-anime-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.sa-anime-card span {
+  display:block;
+  margin-top:7px;
+  font-size:11px;
+  line-height:1.25;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.sa-benefits {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.sa-benefit {
+  border:1px solid rgba(255,255,255,.14);
+  padding:14px;
+  background:#181818;
+}
+
+.sa-benefit .icon {
+  color:#d4a63a;
+  font-size:24px;
+  line-height:1;
+  margin-bottom:9px;
+}
+
+.sa-benefit strong {
+  display:block;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.sa-benefit span {
+  display:block;
+  font-size:11px;
+  opacity:.75;
+  line-height:1.32;
+}
+
+.sa-faq {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px 12px;
+}
+
+.sa-faq details {
+  border:1px solid rgba(255,255,255,.16);
+  background:#181818;
+  padding:13px 15px;
+}
+
+.sa-faq summary {
+  cursor:pointer;
+  font-weight:700;
+  font-size:13px;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.sa-faq summary::-webkit-details-marker {
+  display:none;
+}
+
+.sa-faq summary::after {
+  content:"+";
+  color:#d4a63a;
+  font-size:18px;
+  line-height:1;
+}
+
+.sa-faq details[open] summary::after {
+  content:"–";
+}
+
+.sa-faq p {
+  margin:10px 0 0;
+  color:#cfcfcf;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.sa-related {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+
+.sa-related a {
+  border:1px solid rgba(255,255,255,.3);
+  padding:10px 16px;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#fff;
+  text-decoration:none;
+}
+
+@media(max-width:900px) {
+  .sa-grinder-container {
+    width:min(100%, 92vw);
+  }
+
+  .sa-hero {
+    min-height:520px;
+    padding:130px 0 55px;
+    background-position:center;
+  }
+
+  .sa-hero h1 {
+    font-size:clamp(42px, 13vw, 64px);
+  }
+
+  .sa-hero p {
+    font-size:17px;
+    max-width:92%;
+  }
+
+  .sa-btn {
+    padding:12px 17px;
+    font-size:10px;
+  }
+
+  .sa-trust-row {
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:8px;
+    margin-top:-34px;
+    border:1px solid rgba(255,255,255,.18);
+  }
+
+  .sa-trust-row::-webkit-scrollbar {
+    display:none;
+  }
+
+  .sa-trust-item {
+    min-width:218px;
+    min-height:64px;
+    border-right:0;
+    padding:11px 13px;
+    background:transparent;
+    border:0;
+  }
+
+  .sa-section {
+    padding:30px 0 0;
+  }
+
+  .sa-copy-grid {
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  .sa-product-grid {
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .sa-anime-card {
+    flex:0 0 38%;
+  }
+
+  .sa-benefits {
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .sa-benefit {
+    padding:12px;
+    min-height:118px;
+  }
+
+  .sa-faq {
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+  }
+
+  .sa-faq details {
+    padding:11px 10px;
+  }
+
+  .sa-faq summary {
+    font-size:11px;
+    line-height:1.25;
+  }
+
+  .sa-faq p {
+    font-size:10.5px;
+    line-height:1.35;
+  }
+
+  .sa-related {
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:480px) {
+  .sa-hero {
+    min-height:500px;
+    padding:120px 0 48px;
+  }
+
+  .sa-anime-card {
+    flex:0 0 28%;
+  }
+}
+</style>
+
+<div class="sa-grinder-page">
+
+  <section class="sa-hero">
+    <div class="sa-grinder-container">
+      <h1>Anime <span>Stash Jars</span></h1>
+      <p>Shop anime stash jars with airtight lids, bold artwork, and collectible designs made to match your favorite SpicedAnime setup.</p>
+      <a class="sa-btn" href="/collections/all-products-stash-jars">View All Stash Jars</a>
+    </div>
+  </section>
+
+  <div class="sa-grinder-container">
+
+    <div class="sa-trust-row">
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🫙</div>
+        <div>
+          <strong>Airtight Storage</strong>
+          <span>Keeps contents sealed</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🎨</div>
+        <div>
+          <strong>Bold Artwork</strong>
+          <span>Anime-inspired jar designs</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">📦</div>
+        <div>
+          <strong>Set Friendly</strong>
+          <span>Match with trays & grinders</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🚚</div>
+        <div>
+          <strong>Fast US Shipping</strong>
+          <span>Tracked & reliable</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="sa-section">
+      <div class="sa-copy-grid">
+        <div class="sa-copy">
+          <h2>Premium Anime Stash Jars</h2>
+          <p>SpicedAnime stash jars are bamboo lid glass stash jars featuring printed anime artwork, great for storage. </p>
+          <p class="sa-short-note"><strong>Build your setup.</strong> Match with a tray, grinder, or lighter.</p>
+        </div>
+
+        <div class="sa-tip">
+          <h2>💡 Bundle Tip</h2>
+          <p><strong>Grab multiple jars for a discounted price.</strong></p>
+          <p>Different strains deserve different jars. Mix and match your favorite designs while keeping contents fresh and organized.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <div class="sa-section-head">
+        <h2>Best Sellers</h2>
+        <a class="sa-btn" href="/collections/all-products-stash-jars">View All Stash Jars</a>
+      </div>
+
+      <div class="sa-product-grid">
+        {% assign jar_collection = collections['all-products-stash-jars'] %}
+        {% for product in jar_collection.products limit: 6 %}
+          <a class="sa-product-card" href="{{ product.url }}">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
+            {% endif %}
+            <h3>{{ product.title }}</h3>
+            <p>From {{ product.price_min | money }}</p>
+            <span class="sa-small-btn">Choose Options</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <div class="sa-section-head">
+        <h2>Shop By Anime</h2>
+        <a class="sa-btn" href="/pages/all-anime-collections">View All</a>
+      </div>
+
+      <div class="sa-anime-scroll">
+        {% for collection in collections %}
+          {% if collection.title contains "(Series)" %}
+            {% assign clean_title = collection.title | replace: "(Series)", "" | strip %}
+            <a href="{{ collection.url }}" class="sa-anime-card">
+              {% if collection.image %}
+                <img src="{{ collection.image | image_url: width: 420 }}" alt="{{ clean_title }}">
+              {% elsif collection.products.first.featured_image %}
+                <img src="{{ collection.products.first.featured_image | image_url: width: 420 }}" alt="{{ clean_title }}">
+              {% endif %}
+              <span>{{ clean_title }}</span>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Why Choose SpicedAnime?</h2>
+
+      <div class="sa-benefits">
+        <div class="sa-benefit">
+          <div class="icon">🫙</div>
+          <strong>Airtight Design</strong>
+          <span>Useful for keeping herbs, spices, and small items sealed.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">🎨</div>
+          <strong>Collectible Artwork</strong>
+          <span>Anime-inspired designs made for display.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">📦</div>
+          <strong>Matching Sets</strong>
+          <span>Pairs well with trays, grinders, lighters, and boxes.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">💎</div>
+          <strong>Premium Look</strong>
+          <span>Clean glass jar style with decorative lid artwork.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">⭐</div>
+          <strong>Gift Friendly</strong>
+          <span>Great for collectors, anime fans, and full setups.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="sa-faq">
+        <details>
+          <summary>Are the stash jars airtight?</summary>
+          <p>Yes. SpicedAnime stash jars are designed with airtight lids for sealed storage.</p>
+        </details>
+
+        <details>
+          <summary>What can I store in them?</summary>
+          <p>They can be used for herbs, spices, small accessories, collectibles, or decorative storage.</p>
+        </details>
+
+        <details>
+          <summary>Do the jars match other products?</summary>
+          <p>Yes. Many stash jar designs can be matched with rolling trays, grinders, lighters, and stash boxes.</p>
+        </details>
+
+        <details>
+          <summary>Are these good gifts?</summary>
+          <p>Yes. Anime stash jars make great gifts because they combine practical storage with collectible artwork.</p>
+        </details>
+
+        <details>
+          <summary>Can I buy a full matching set?</summary>
+          <p>Yes. Some designs are available as part of matching grinder sets or accessory bundles.</p>
+        </details>
+
+        <details>
+          <summary>How long does shipping take?</summary>
+          <p>Most orders ship from the United States with tracking once fulfilled.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Shop More Accessories</h2>
+
+      <div class="sa-related">
+        <a href="/collections/all-products-stash-jars">Stash Jars</a>
+        <a href="/pages/grinder-sets">Grinder Sets</a>
+        <a href="/pages/anime-rolling-trays">Rolling Trays</a>
+        <a href="/pages/anime-lighters">Lighters</a>
+        <a href="/collections/all-products-stash-boxes">Stash Boxes</a>
+        <a href="/collections/all-products-ashtray">Ashtrays</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Anime Stash Jars Landing",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anime Stash Jars Landing"
+    }
+  ]
+}
+{% endschema %}

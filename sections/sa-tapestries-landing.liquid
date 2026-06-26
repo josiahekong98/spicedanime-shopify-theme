@@ -1,0 +1,648 @@
+
+<style>
+.sa-tapestry-page {
+  background:#111;
+  color:#ededed;
+  width:100vw;
+  position:relative;
+  left:50%;
+  margin-left:-50vw;
+  padding-bottom:42px;
+}
+
+.sa-tapestry-container {
+  width:min(1180px, 92vw);
+  margin:0 auto;
+}
+
+.sa-hero {
+  min-height:430px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.88), rgba(0,0,0,.35)),
+    url({{ section.settings.hero_image | image_url: width: 1800 }});
+  background-size:cover;
+  background-position:center;
+  padding:90px 0 55px;
+}
+
+.sa-hero h1 {
+  font-size:clamp(42px, 8vw, 92px);
+  line-height:.9;
+  margin:0;
+  color:#fff;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.sa-hero h1 span {
+  display:block;
+  color:#b86cff;
+  font-style:italic;
+}
+
+.sa-hero p {
+  max-width:500px;
+  font-size:17px;
+  line-height:1.45;
+  margin:18px 0 26px;
+}
+
+.sa-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #b86cff;
+  color:#b86cff;
+  padding:12px 20px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:11px;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.sa-btn:hover {
+  background:#b86cff;
+  color:#111;
+}
+
+.sa-trust-row {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(255,255,255,.24);
+  margin-top:-28px;
+  background:rgba(15,15,15,.92);
+  backdrop-filter:blur(10px);
+}
+
+.sa-trust-item {
+  padding:14px 16px;
+  border-right:1px solid rgba(255,255,255,.14);
+  display:flex;
+  gap:11px;
+  align-items:center;
+  min-height:68px;
+}
+
+.sa-trust-item:last-child { border-right:0; }
+
+.sa-trust-icon {
+  color:#b86cff;
+  font-size:22px;
+  line-height:1;
+  flex:0 0 auto;
+}
+
+.sa-trust-item strong {
+  display:block;
+  font-size:12px;
+  line-height:1.15;
+}
+
+.sa-trust-item span {
+  display:block;
+  font-size:11px;
+  line-height:1.25;
+  opacity:.72;
+}
+
+.sa-section { padding:34px 0 0; }
+
+.sa-section-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.sa-section h2 {
+  color:#fff;
+  font-size:24px;
+  line-height:1.05;
+  margin:0 0 18px;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+}
+
+.sa-section-head h2 { margin:0; }
+
+.sa-copy-grid {
+  display:grid;
+  grid-template-columns:1.35fr .75fr;
+  gap:28px;
+  align-items:center;
+}
+
+.sa-copy p {
+  color:#ddd;
+  line-height:1.52;
+  margin:10px 0 0;
+  max-width:720px;
+}
+
+.sa-copy .sa-short-note {
+  color:#fff;
+  font-size:14px;
+}
+
+.sa-copy .sa-short-note strong { color:#b86cff; }
+
+.sa-tip {
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:18px;
+  padding:20px 22px;
+  background:linear-gradient(135deg, rgba(184,108,255,.16), rgba(255,255,255,.03));
+}
+
+.sa-tip h2 {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:20px;
+  margin-bottom:8px;
+}
+
+.sa-tip strong { color:#b86cff; }
+
+.sa-tip p {
+  margin:8px 0 0;
+  color:#ddd;
+  line-height:1.45;
+}
+
+.sa-product-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+
+.sa-product-card {
+  background:#181818;
+  border:1px solid rgba(255,255,255,.08);
+  padding:0 0 13px;
+  color:#fff;
+  text-decoration:none;
+}
+
+.sa-product-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+}
+
+.sa-product-card h3 {
+  font-size:13px;
+  line-height:1.25;
+  margin:10px 10px 4px;
+  color:#fff;
+}
+
+.sa-product-card p {
+  margin:0 10px 11px;
+  font-size:12px;
+  opacity:.75;
+}
+
+.sa-small-btn {
+  display:block;
+  margin:0 10px;
+  border:1px solid rgba(255,255,255,.5);
+  padding:9px 8px;
+  text-align:center;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+/* SHOP BY ANIME SCROLLER */
+.sa-anime-scroll {
+  display:flex !important;
+  flex-direction:row !important;
+  gap:14px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  padding-bottom:8px;
+  width:100%;
+  white-space:nowrap;
+}
+
+.sa-anime-scroll::-webkit-scrollbar {
+  display:none;
+}
+
+.sa-anime-card {
+  flex:0 0 150px !important;
+  width:150px;
+  max-width:150px;
+  scroll-snap-align:start;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  display:block;
+  white-space:normal;
+}
+
+.sa-anime-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.sa-anime-card span {
+  display:block;
+  margin-top:7px;
+  font-size:11px;
+  line-height:1.25;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+@media(max-width:900px) {
+  .sa-anime-card {
+    flex:0 0 38% !important;
+    width:38%;
+    max-width:38%;
+  }
+}
+
+@media(max-width:480px) {
+  .sa-anime-card {
+    flex:0 0 28% !important;
+    width:28%;
+    max-width:28%;
+  }
+}
+
+.sa-benefits {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.sa-benefit {
+  border:1px solid rgba(255,255,255,.14);
+  padding:14px;
+  background:#181818;
+}
+
+.sa-benefit .icon {
+  color:#b86cff;
+  font-size:24px;
+  line-height:1;
+  margin-bottom:9px;
+}
+
+.sa-benefit strong {
+  display:block;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.sa-benefit span {
+  display:block;
+  font-size:11px;
+  opacity:.75;
+  line-height:1.32;
+}
+
+.sa-faq {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px 12px;
+}
+
+.sa-faq details {
+  border:1px solid rgba(255,255,255,.16);
+  background:#181818;
+  padding:13px 15px;
+}
+
+.sa-faq summary {
+  cursor:pointer;
+  font-weight:700;
+  font-size:13px;
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.sa-faq summary::-webkit-details-marker { display:none; }
+
+.sa-faq summary::after {
+  content:"+";
+  color:#b86cff;
+  font-size:18px;
+  line-height:1;
+}
+
+.sa-faq details[open] summary::after { content:"–"; }
+
+.sa-faq p {
+  margin:10px 0 0;
+  color:#cfcfcf;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.sa-related {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+
+.sa-related a {
+  border:1px solid rgba(255,255,255,.3);
+  padding:10px 16px;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#fff;
+  text-decoration:none;
+}
+
+@media(max-width:900px) {
+  .sa-tapestry-container { width:min(100%, 92vw); }
+
+  .sa-hero {
+    min-height:520px;
+    padding:130px 0 55px;
+    background-position:center;
+  }
+
+  .sa-hero h1 { font-size:clamp(42px, 13vw, 64px); }
+
+  .sa-trust-row {
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:8px;
+    margin-top:-34px;
+  }
+
+  .sa-trust-row::-webkit-scrollbar { display:none; }
+
+  .sa-trust-item {
+    min-width:218px;
+    min-height:64px;
+    border-right:0;
+    padding:11px 13px;
+  }
+
+  .sa-copy-grid { grid-template-columns:1fr; }
+
+  .sa-product-grid {
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .sa-benefits {
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .sa-faq {
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+  }
+
+  .sa-faq details { padding:11px 10px; }
+
+  .sa-faq summary {
+    font-size:11px;
+    line-height:1.25;
+  }
+
+  .sa-faq p { font-size:10.5px; }
+
+  .sa-related { justify-content:flex-start; }
+}
+
+@media(max-width:480px) {
+  .sa-hero {
+    min-height:500px;
+    padding:120px 0 48px;
+  }
+}
+</style>
+
+<div class="sa-tapestry-page">
+
+  <section class="sa-hero">
+    <div class="sa-tapestry-container">
+      <h1>Anime <span>Tapestries</span></h1>
+      <p>Shop anime-inspired wall tapestries made for bedrooms, dorm rooms, vendor setups, gaming rooms, and collector spaces.</p>
+      <a class="sa-btn" href="/collections/all-tapestries">View All Tapestries</a>
+    </div>
+  </section>
+
+  <div class="sa-tapestry-container">
+
+    <div class="sa-trust-row">
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🖼️</div>
+        <div>
+          <strong>Room Decor</strong>
+          <span>Upgrade blank walls fast</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🎨</div>
+        <div>
+          <strong>Bold Artwork</strong>
+          <span>Anime-inspired designs</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🏠</div>
+        <div>
+          <strong>Dorm Friendly</strong>
+          <span>Easy wall styling</span>
+        </div>
+      </div>
+
+      <div class="sa-trust-item">
+        <div class="sa-trust-icon">🚚</div>
+        <div>
+          <strong>Fast US Shipping</strong>
+          <span>Tracked & reliable</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="sa-section">
+      <div class="sa-copy-grid">
+        <div class="sa-copy">
+          <h2>Anime Wall Tapestries For Your Setup</h2>
+          <p>SpicedAnime tapestries are made for fans who want their space to feel more personal. Use them as wall art, room decor, dorm decor, photo backdrops, gaming room pieces, or vendor booth display pieces.</p>
+          <p class="sa-short-note"><strong>Make the room match your taste.</strong> Choose a design that fits your favorite anime, character, or aesthetic.</p>
+        </div>
+
+        <div class="sa-tip">
+          <h2>💡 Style Tip</h2>
+          <p><strong>Use tapestries as statement wall pieces.</strong></p>
+          <p>Hang one over your bed, behind your desk, near your setup, or use it as a background for photos and videos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <div class="sa-section-head">
+        <h2>Best Sellers</h2>
+        <a class="sa-btn" href="/collections/all-tapestries">View All Tapestries</a>
+      </div>
+
+      <div class="sa-product-grid">
+        {% assign tapestry_collection = collections['all-tapestries'] %}
+        {% for product in tapestry_collection.products limit: 10 %}
+          <a class="sa-product-card" href="{{ product.url }}">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
+            {% endif %}
+            <h3>{{ product.title }}</h3>
+            <p>From {{ product.price_min | money }}</p>
+            <span class="sa-small-btn">Choose Options</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <div class="sa-section-head">
+        <h2>Shop By Anime</h2>
+        <a class="sa-btn" href="/pages/all-anime-collections">View All</a>
+      </div>
+
+      <div class="sa-anime-scroll">
+        {% for collection in collections %}
+          {% if collection.title contains "(Series)" %}
+            {% assign clean_title = collection.title | replace: "(Series)", "" | strip %}
+            <a href="{{ collection.url }}" class="sa-anime-card">
+              {% if collection.image %}
+                <img src="{{ collection.image | image_url: width: 420 }}" alt="{{ clean_title }}">
+              {% elsif collection.products.first.featured_image %}
+                <img src="{{ collection.products.first.featured_image | image_url: width: 420 }}" alt="{{ clean_title }}">
+              {% endif %}
+              <span>{{ clean_title }}</span>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Why Choose SpicedAnime Tapestries?</h2>
+
+      <div class="sa-benefits">
+        <div class="sa-benefit">
+          <div class="icon">🖼️</div>
+          <strong>Statement Decor</strong>
+          <span>Large artwork that makes your space feel finished.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">🎨</div>
+          <strong>Collectible Designs</strong>
+          <span>Anime-inspired artwork made for fans and collectors.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">📸</div>
+          <strong>Photo Backdrop</strong>
+          <span>Great for content, room photos, and display setups.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">🏠</div>
+          <strong>Easy Room Upgrade</strong>
+          <span>Perfect for bedrooms, dorms, apartments, and gaming rooms.</span>
+        </div>
+
+        <div class="sa-benefit">
+          <div class="icon">⭐</div>
+          <strong>Gift Friendly</strong>
+          <span>A strong gift option for anime fans and room decor lovers.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="sa-faq">
+        <details>
+          <summary>What can I use the tapestry for?</summary>
+          <p>You can use it as wall decor, dorm decor, a gaming room backdrop, a photo backdrop, or a display piece.</p>
+        </details>
+
+        <details>
+          <summary>Are these good for dorm rooms?</summary>
+          <p>Yes. Anime tapestries are a simple way to add personality to dorm rooms, bedrooms, and apartments.</p>
+        </details>
+
+        <details>
+          <summary>Do you have different anime designs?</summary>
+          <p>Yes. SpicedAnime carries multiple anime-inspired tapestry designs across different series and aesthetics.</p>
+        </details>
+
+        <details>
+          <summary>Are tapestries good gifts?</summary>
+          <p>Yes. They make strong gifts because they are useful, decorative, and easy for anime fans to display.</p>
+        </details>
+
+        <details>
+          <summary>Can I use it as a photo background?</summary>
+          <p>Yes. Tapestries work well behind desks, beds, product photos, content setups, and vendor displays.</p>
+        </details>
+
+        <details>
+          <summary>How long does shipping take?</summary>
+          <p>Most orders ship from the United States with tracking once fulfilled.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="sa-section">
+      <h2>Shop More Accessories</h2>
+
+      <div class="sa-related">
+        <a href="/collections/all-tapestries">Tapestries</a>
+        <a href="/collections/wallets-category">Wallets</a>
+        <a href="/pages/grinder-sets">Grinder Sets</a>
+        <a href="/pages/anime-lighters">Lighters</a>
+        <a href="/collections/all-products-stash-jars">Stash Jars</a>
+        <a href="/collections/all-products-stash-boxes">Stash Boxes</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Anime Tapestries Landing",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anime Tapestries Landing"
+    }
+  ]
+}
+{% endschema %}
+

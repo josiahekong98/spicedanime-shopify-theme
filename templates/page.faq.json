@@ -1,0 +1,115 @@
+{
+  "sections": {
+    "e4a22221-96e8-47eb-8e41-ff9780104ed3": {
+      "type": "page-banner",
+      "settings": {
+        "text": "<p>If you have a question, please consult our list of frequently asked questions before reaching out for assistance.</p>",
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-5",
+        "spacing_top": "1",
+        "spacing_bottom": "1"
+      }
+    },
+    "15d37dcd-dfe5-404c-80f1-8f76c2017e23": {
+      "type": "accordions",
+      "blocks": {
+        "template--17062096503099__15d37dcd-dfe5-404c-80f1-8f76c2017e23-16696259764c4b7b62-0": {
+          "type": "topic",
+          "settings": {
+            "is_open": true,
+            "title": "How do I return my order?",
+            "text": "<p>If you would like to return your order, please fill out the return form that came with the package. Make sure to include all the information requested on the form, such as the order number and the reason for the return. Once the form is complete, carefully seal the package and attach the shipping label that was also included with the package. Place the package in an appropriate shipping box and be sure to take the package to the post office or a courier service as soon as possible. If you have any questions about the return process, please contact our customer service team for assistance. We hope that you are completely satisfied with your purchase, but if you are not, we are here to help.</p>",
+            "page": ""
+          }
+        },
+        "template--17062096503099__15d37dcd-dfe5-404c-80f1-8f76c2017e23-16696259764c4b7b62-1": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "All orders can be returned within 30 days?",
+            "text": "<p>Once we have received the order return, the refund will be processed within 14 business days.</p>",
+            "page": ""
+          }
+        },
+        "topic_XrnUQ6": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "Are there any shipping costs?",
+            "text": "<p>For orders under $100 a shipping cost of $9,95 is charged.<br/>All orders over $100 will be delivered for free.</p>",
+            "page": ""
+          }
+        },
+        "topic_YLNTXA": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "Can I still change my order?",
+            "text": "<p>If you want to change your order, please send us an email to hello@release.com. We will see what is still possible.</p>",
+            "page": ""
+          }
+        },
+        "topic_MQcTt7": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "How can I track my order?",
+            "text": "<p>As soon as your order is shipped we will send you a track & trace code by mail. This way you can track your order.<br/><br/>Keep in mind that it can take up to 48 hours before the track & trace is available. Can't track your package after 48h? Please send us an email to hello@release.com and we will contact the shipping company.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--17062096503099__15d37dcd-dfe5-404c-80f1-8f76c2017e23-16696259764c4b7b62-0",
+        "template--17062096503099__15d37dcd-dfe5-404c-80f1-8f76c2017e23-16696259764c4b7b62-1",
+        "topic_XrnUQ6",
+        "topic_YLNTXA",
+        "topic_MQcTt7"
+      ],
+      "settings": {
+        "section_width": "max-w-narrower",
+        "color_scheme": "scheme-1",
+        "spacing_top": "4",
+        "spacing_bottom": "4"
+      }
+    },
+    "accordions": {
+      "type": "accordions",
+      "blocks": {
+        "06f97daa-496a-417b-aa49-d8a47260cf78": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "Do I have to create an account?",
+            "text": "<p>No, you don't have to create an account. However, we strongly recommend that you create an account so that you can take advantage of the various benefits it offers. For example, you will be able to access your account easily the next time you visit us, and you will also be able to get personalized recommendations and services tailored to your needs. By creating an account with us, you will be able to make the most out of our services and save time in the future.</p>",
+            "page": ""
+          }
+        },
+        "e957eb44-fbe4-4f40-a034-48a4d0a4099a": {
+          "type": "topic",
+          "settings": {
+            "is_open": false,
+            "title": "How do I change my account password?",
+            "text": "<p>If you have forgotten your password, don't worry. You can easily reset it by clicking the 'forgot password' link. Once you click the link, you will receive an email with instructions on how to create a new password. Follow the instructions to set a new password that is secure and easy to remember. Remember to keep your password safe and never share it with anyone.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "06f97daa-496a-417b-aa49-d8a47260cf78",
+        "e957eb44-fbe4-4f40-a034-48a4d0a4099a"
+      ],
+      "settings": {
+        "section_width": "max-w-narrower",
+        "color_scheme": "scheme-3ecfe127-9e1a-41fc-b9f0-518d3d1cf67c",
+        "spacing_top": "2",
+        "spacing_bottom": "6"
+      }
+    }
+  },
+  "order": [
+    "e4a22221-96e8-47eb-8e41-ff9780104ed3",
+    "15d37dcd-dfe5-404c-80f1-8f76c2017e23",
+    "accordions"
+  ]
+}

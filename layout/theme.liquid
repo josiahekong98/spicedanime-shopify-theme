@@ -1,0 +1,294 @@
+<!doctype html>
+{%- liquid
+  assign rtl_attr = ''
+  if request.locale.iso_code == 'ar' or request.locale.iso_code == 'he'
+    assign rtl_attr = ' dir="rtl"'
+  endif
+-%}
+
+<html class="no-js" lang="{{ request.locale.iso_code }}" {{ rtl_attr }}>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.type_heading_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {% render 'meta-tags' %}
+    <script src="{{- 'swiper-bundle.min.js' | asset_url -}}" defer="defer"></script>
+    <script src="{{- 'bodyScrollLock.min.js' | asset_url -}}" defer="defer"></script>
+    <script src="{{- 'pubsub.js' | asset_url -}}" defer="defer"></script>
+    <script src="{{- 'global.js' | asset_url -}}" defer="defer"></script>
+    <noscript>
+      <style>
+        img[loading='lazy'] { opacity: 1; }
+      </style>
+    </noscript>
+    <script src="{{ 'cookies.js' | asset_url }}" defer="defer"></script>
+
+    {{ content_for_header }}
+
+    {%- render 'settings' -%}
+
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+    {% render 'css', css: 'component-drawer.css' %}
+
+    {%- if settings.enable_predictive_search -%}
+      {% render 'css', css: 'component-predictive-search.css' %}
+      <script src="{{- 'predictive-search.js' | asset_url -}}" defer="defer"></script>
+    {%- endif -%}
+
+    {% comment %}theme-check-disable AssetPreload{% endcomment %}
+    {%- unless settings.type_heading_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_heading_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+    {%- unless settings.type_body_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+      {%- endunless -%}
+    {% comment %}theme-check-enable AssetPreload{% endcomment %}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+    </script>
+  {% include 'dadao_reviews_core.liquid' %}
+
+<link rel="stylesheet" href="{{ 'fumicase-pagination.css' | asset_url }}">
+
+
+</head>
+
+  <body class="template template--{{ template.name }}{% if template.suffix %} template--{{- template.suffix -}}{% endif %} is-at-top">
+
+    {% render 'spicedanime-loader' %}
+
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{- 'theme.accessibility.skip_to_content' | t -}}
+    </a>
+
+    {%- sections 'header-group' -%}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    <footer class="js-animation-fade-in">
+      {%- sections 'footer-group' -%}
+    </footer>
+
+    {%- sections 'overlay-group' -%}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{- 'theme.accessibility.refresh_page' | t -}}</li>
+    </ul>
+
+    <script>
+      window.theme = window.theme || {};
+      theme = {
+        settings: {
+          money_format: {{ shop.money_format | json }},
+          money_with_currency_format: {{ shop.money_with_currency_format | json }},
+          cart_free_shipping_threshold: {{ settings.shipping_notification_threshold | times: 100 }},
+          cart_free_shipping_text: `{{ 'cart.free_shipping_text_html' | t: amount: '0' }}`,
+          cart_free_shipping_text_success: `{{ 'cart.free_shipping_text_success' | t }}`,
+        }
+      }
+      window.shopUrl = '{{ request.origin }}';
+      window.routes = {
+        cart_url: '{{ routes.cart_url }}',
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        search_url: '{{ routes.search_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}',
+      };
+      window.cartStrings = {
+        error: `{{ 'cart.error' | t }}`,
+        quantityError: `{{ 'cart.quantity_error_html' | t: quantity: '[quantity]' }}`
+      }
+      window.variantStrings = {
+        addToCart: '{{ 'theme.actions.add_to_cart' | t }}',
+        unavailable: '{{ 'product.unavailable' | t }}',
+        soldOut: '{{ 'product.sold_out' | t }}',
+        addSubscriptionToCart: 'Add subscription to cart',
+        preOrder: '{{ 'product.preorder' | t }}'
+      }
+      window.validationStrings = {
+        invalidEmail: '{{ 'theme.form.invalid_email' | t }}'
+      }
+      window.accessibilityStrings = {
+        recipientFormExpanded: `{{ 'gift_card.recipient.expanded' | t }}`,
+        recipientFormCollapsed: `{{ 'gift_card.recipient.collapsed' | t }}`,
+      };
+    </script>
+
+    {% if settings.back_to_top_button != 'disable' %}
+      <back-to-top class="hide">
+        <button href="#" class="button back-to-top {{ settings.back_to_top_button }}">
+          {% render 'icon', icon_name: 'theme-chevron', class: 'icon--rotate-270' %}
+        </button>
+      </back-to-top>
+    {% endif %}
+
+    {% render 'subify-snippet' %}
+<script>
+document.addEventListener("scroll", function () {
+  const header = document.querySelector(".header.js-header");
+  if (!header) return;
+  if (window.scrollY > 20) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const title = document.querySelector(".page-banner__title");
+  if (!title) return;
+
+  // List of phrases to remove (case-insensitive)
+  const removals = [
+    "series",
+    "(category)",
+    "anime smoking accessories and collectibles",
+    "cartoon smoking accessories & collectibles",
+    "anime smoking accessories & collectibles"
+  ];
+
+  let newTitle = title.textContent.toLowerCase();
+
+  removals.forEach(text => {
+    newTitle = newTitle.replace(text, "");
+  });
+
+  // Clean spacing
+  newTitle = newTitle.replace(/\s+/g, " ").trim();
+
+  // Apply cleaned text as a new display string
+  title.setAttribute("data-clean-title", newTitle);
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const drawer  = document.querySelector('details[id*="Filters-drawer"]');
+  const trigger = document.querySelector('.facets__button-filters');
+  const icon    = trigger ? trigger.querySelector('svg') : null;
+  const closeBtn = document.querySelector('.drawer__button-close--facets');
+
+  if (!drawer || !trigger || !icon) return;
+
+  // OPEN vs CLOSE handled in ONE place
+  trigger.addEventListener("pointerdown", () => {
+    if (drawer.open) {
+      // Drawer is currently open → we are about to close it
+      icon.style.transition = "transform .01s linear";
+      icon.style.transform  = "rotate(0deg)";
+    } else {
+      // Drawer is currently closed → we are about to open it
+      icon.style.transition = "transform .10s cubic-bezier(0.3, 2.2, 0.3, 1)";
+      icon.style.transform  = "rotate(180deg)";
+    }
+  });
+
+  // Extra safety: X button inside drawer also forces it back to 0°
+  if (closeBtn) {
+    closeBtn.addEventListener("pointerdown", () => {
+      icon.style.transition = "transform .01s linear";
+      icon.style.transform  = "rotate(0deg)";
+    });
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const drawer = document.querySelector('details[id*="Filters-drawer"]');
+  const seriesSection = document.querySelector('#Filters-accordion-section-4');
+
+  if (!drawer || !seriesSection) return;
+
+  drawer.addEventListener("toggle", () => {
+    if (drawer.open) {
+      // Close all other accordions first
+      document.querySelectorAll('.facets__accordion-section').forEach(sec => {
+        if (sec !== seriesSection && sec.hasAttribute("open")) {
+          sec.removeAttribute("open");
+        }
+      });
+
+      // Ensure the section opens via theme JS
+      const summaryBtn = seriesSection.querySelector("summary");
+      if (summaryBtn && !seriesSection.open) {
+        summaryBtn.click();
+      }
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const loader = document.getElementById("loading-screen");
+  if (!loader) return;
+
+  const isDesktop = window.innerWidth > 768;
+
+  /* ⬅ DESKTOP: FORCE REMOVE FAST */
+  if (isDesktop) {
+    setTimeout(() => {
+      if (document.body.contains(loader)) {
+        loader.classList.add("fade-out");
+        setTimeout(() => loader.remove(), 350); // fade faster
+      }
+    }, 250); // HARD CAP ~0.45s after DOM starts
+  }
+
+  /* ⬅ MOBILE + NORMAL BEHAVIOR */
+  window.addEventListener("load", () => {
+    // If desktop already removed, ignore
+    if (!document.body.contains(loader)) return;
+
+    loader.classList.add("fade-out");
+    setTimeout(() => loader.remove(), 400);
+  });
+});
+</script>
+
+
+
+<script>
+/* Show loader again when clicking internal links */
+document.addEventListener("click", e => {
+  const link = e.target.closest("a");
+
+  // Ignore new tab or non-navigation clicks
+  if (!link || link.target === "_blank" || link.href.includes("#")) return;
+
+  const loader = document.getElementById("loading-screen");
+  if (loader) {
+    loader.classList.remove("fade-out");  // SAME
+    loader.style.opacity = "1";           // SAME
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>

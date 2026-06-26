@@ -1,0 +1,161 @@
+{% comment %}
+BEST SELLING — Styled to Match SHOP BY ANIME
+Full-width, minimal, tight spacing, square images
+{% endcomment %}
+
+<style>
+
+/* FULL-BLEED WRAPPER (matches anime section) */
+.best-grid-wrap {
+  background:#1F1F1F;
+  padding:16px 0 8px;
+  margin:0;
+  width:100vw;
+  position:relative;
+  left:50%;
+  right:50%;
+  margin-left:-50vw;
+  margin-right:-50vw;
+  color:#ededed;
+}
+
+/* HEADING — match anime section */
+.best-grid-heading {
+  margin:-10px 0 12px;
+  display:flex;
+  justify-content:center;
+}
+.best-grid-heading span {
+  font-weight:300;
+  letter-spacing:.18em;
+  font-size:16px;
+  text-transform:uppercase;
+  color:#ededed;
+}
+
+/* GRID — tight spacing & centered */
+.best-grid-container {
+  display:grid;
+  gap:12px;
+  padding:0 16px;
+  grid-template-columns:repeat(2,1fr);
+}
+@media(min-width:768px){
+  .best-grid-container { grid-template-columns:repeat(3,1fr); }
+}
+@media(min-width:1024px){
+  .best-grid-container { grid-template-columns:repeat(4,1fr); }
+}
+
+/* CARD RESET — remove product-card formatting */
+.best-grid-card {
+  text-align:center;
+}
+
+/* IMAGE — square, smaller, match anime */
+.best-grid-card img {
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:6px;
+  display:block;
+  transition:transform .18s ease;
+}
+.best-grid-card:hover img {
+  transform:scale(1.025);
+}
+
+/* TITLE — match anime exactly */
+.best-title {
+  font-size:10px;
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  margin-top:4px;
+  line-height:1.2;
+  color:#ededed;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  position:relative;
+  padding-bottom:1px;
+}
+
+/* underline animation */
+.best-title::after {
+  content:"";
+  position:absolute;
+  bottom:-1px;
+  left:0;
+  width:100%;
+  height:1px;
+  background:#dcdcdc;
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .18s ease;
+}
+.best-grid-card:hover .best-title::after {
+  transform:scaleX(1);
+}
+
+/* RATING */
+.best-rating {
+  font-size:10px;
+  color:#ffd84d;
+  margin-top:2px;
+  letter-spacing:.1em;
+}
+.best-rating .score {
+  color:#dcdcdc;
+  margin-left:3px;
+}
+
+/* PRICE — small like anime section */
+.best-price {
+  font-size:10px;
+  font-weight:600;
+  color:#ededed;
+  margin-top:2px;
+  letter-spacing:.05em;
+}
+
+</style>
+
+
+<div class="best-grid-wrap">
+
+  <div class="best-grid-heading">
+    <span>BEST SELLING</span>
+  </div>
+
+  <div class="best-grid-container">
+
+    {% assign best = collections['best-selling'] %}
+
+    {% for product in best.products %}
+      <div class="best-grid-card">
+
+        <a href="{{ product.url }}">
+          <img 
+            src="{{ product.featured_image | image_url: width: 540 }}"
+            alt="{{ product.title }}"
+            loading="lazy"
+          >
+        </a>
+
+        <div class="best-title">{{ product.title }}</div>
+
+        <div class="best-rating">
+          ★★★★★ <span class="score">(5.0)</span>
+        </div>
+
+        <div class="best-price">
+          {{ product.price | money }}
+        </div>
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+</div>

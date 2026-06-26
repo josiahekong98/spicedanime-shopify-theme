@@ -1,0 +1,23 @@
+<link rel="dns-prefetch" href="https://review.wsy400.com/">
+{% if shop.metafields.ddreviews.widget_star_enable %}
+  <script type="text/javascript" src="https://review.wsy400.com/scriptTag/star.js" defer="defer"></script>
+{% endif %}
+{% if 'product' contains request.page_type %}
+  {% if product.metafields.ddreviews.content.enable and product.metafields.ddreviews.content.total > 0 %}
+    <script id="ddReviewSchemaJson" type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.ddreviews.content.average_star | json }}",
+        "reviewCount": "{{ product.metafields.ddreviews.content.total | string }}",
+        "itemReviewed": {
+          "@type": "Product",
+          "name": "{{ product.title}}",
+          "offers": {
+            "@type": "AggregateOffer"
+          }
+        }
+      }
+    </script>
+  {%- endif -%}
+{% endif %}

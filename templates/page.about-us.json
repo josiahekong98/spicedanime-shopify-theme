@@ -1,0 +1,712 @@
+{
+  "sections": {
+    "page_banner_qGiqWj": {
+      "type": "page-banner",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "text": "<p>ABOUT GRASSE</p>",
+        "content_alignment": "center",
+        "enable_breadcrumbs": true,
+        "section_width": "max-w-narrow",
+        "color_scheme": "scheme-1",
+        "spacing_top": "2",
+        "spacing_bottom": "6"
+      }
+    },
+    "1658995208ad05f95f": {
+      "type": "hero-banner",
+      "blocks": {
+        "e3867974-072c-4cfe-968e-a10d22e8941a": {
+          "type": "slide",
+          "settings": {
+            "banner_layout": "hero-banner--full",
+            "color_scheme": "scheme-1",
+            "header_menu_text_color": "#ffffff",
+            "heading": "<p>Grasse' Story</p>",
+            "subheading": "about grasse",
+            "subheading_link": "",
+            "text": "",
+            "button_label_1": "",
+            "button_link_1": "/",
+            "button_style_1": "button--filled",
+            "button_label_2": "",
+            "button_link_2": "/",
+            "button_style_2": "button--outlined",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "enable_media_overlay_desktop": true,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "enable_media_overlay_mobile": true
+          }
+        }
+      },
+      "block_order": [
+        "e3867974-072c-4cfe-968e-a10d22e8941a"
+      ],
+      "settings": {
+        "slider_height": 90,
+        "slideshow_autoplay_interval": 6,
+        "show_slideshow_navigation": true,
+        "slideshow_navigation_position": "hero__swiper-buttons--left",
+        "color_scheme_arrows": "",
+        "show_slideshow_pagination": true,
+        "slideshow_pagination_style": "style-1",
+        "floating_bar": false
+      }
+    },
+    "9585dbdf-5519-43bd-a4c5-6aa99afe9a31": {
+      "type": "seo-content",
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "text": "<p>At Grasse, we believe that self-care is an art form—a timeless expression of individuality and refinement. Our range of premium men's care products is meticulously crafted to elevate your daily grooming routine to an experience of indulgence and luxury.</p><p>Nestled in the heart of tradition and innovation, Grasse draws inspiration from the picturesque landscapes of the French Riviera. Named after the legendary perfume capital of the world, our brand embodies the essence of timeless elegance and uncompromising quality.</p><p>From nourishing face creams to invigorating body washes, Grasse offers a comprehensive collection of grooming essentials tailored to the modern gentleman. Whether you're refining your complexion or enhancing your natural allure, our products are designed to deliver unparalleled results, leaving you feeling confident and empowered.</p>",
+        "content_alignment": "center",
+        "section_width": "max-w-narrower",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "dual_tiles_86XNQJ": {
+      "type": "dual-tiles",
+      "blocks": {
+        "tile_WhnBJc": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        },
+        "tile_ABCmBB": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "natural ingredients at our core",
+            "heading_size": "h2",
+            "text": "<p>At Grasse, we believe that nature holds the key to true beauty. That's why we place natural ingredients at the heart of every product we create. Our formulations harness the power of pure, sustainably sourced botanicals, ensuring that your skin receives the gentle yet effective care it deserves.</p><p>We meticulously select each ingredient for its proven benefits, crafting products that are not only luxurious but also kind to the earth. From nourishing oils to revitalizing extracts, Grasse transforms nature's bounty into premium skincare solutions that elevate your grooming routine.</p><p>Experience the essence of nature with Grasse – where natural ingredients and exceptional quality come together for unparalleled results.</p>",
+            "button_label": "LEARN MORE",
+            "button_style": "button--outlined",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-start align-start",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        }
+      },
+      "block_order": [
+        "tile_WhnBJc",
+        "tile_ABCmBB"
+      ],
+      "settings": {
+        "section_layout": "stacked",
+        "block_size": "half",
+        "block_order_mobile": false,
+        "color_scheme": "scheme-7",
+        "section_width": "max-w-fluid",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "seo_content_Xj8ngr": {
+      "type": "seo-content",
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "text": "<p>Unleash your inner debonair with our signature line of beard<br/>care essentials. Crafted with precision and expertise, our beard oils and balms are formulated to tame, nourish, and style your facial hair, ensuring a groomed and polished appearance that commands attention.</p><p>Indulge your senses with our exquisite range of candles and<br/>perfumes, each one a harmonious blend of sophistication and allure. From the warm embrace of aromatic woods to the refreshing zest of citrus notes, our fragrances captivate the senses and evoke a sense of timeless allure.</p><p>At Grasse, we are committed to redefining the standards of<br/>men's grooming, blending tradition with innovation to create products that transcend the ordinary and embody the extraordinary. Join us on a journey of self-discovery and refinement, where every grooming ritual becomes a celebration of your unique style and identity.</p><p>Elevate your grooming experience with Grasse—where sophistication meets masculinity, and indulgence knows no bounds.</p>",
+        "content_alignment": "center",
+        "section_width": "max-w-narrower",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "dual_tiles_pyKrzx": {
+      "type": "dual-tiles",
+      "blocks": {
+        "tile_L3f4g8": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "\"Self-care isn't just a routine—it's a reflection of strength and confidence. Every man deserves to feel his best, and our products are crafted to make that possible.",
+            "heading_size": "h2",
+            "text": "<p>FOUNDER</p><p>James R. Anderson</p>",
+            "button_label": "LEARN MORE",
+            "button_style": "button--outlined",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-start align-start",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-start--mobile align-start--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        },
+        "tile_gDrnWT": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        }
+      },
+      "block_order": [
+        "tile_L3f4g8",
+        "tile_gDrnWT"
+      ],
+      "settings": {
+        "section_layout": "stacked",
+        "block_size": "half",
+        "block_order_mobile": false,
+        "color_scheme": "",
+        "section_width": "max-w-fluid",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "dual_tiles_rNheJ9": {
+      "type": "dual-tiles",
+      "blocks": {
+        "tile_kwwmrj": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-1",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "<p>Unleash your inner debonair with our signature line of beard<br/>care essentials. Crafted with precision and expertise, our beard oils and balms are formulated to tame, nourish, and style your facial hair, ensuring a groomed and polished appearance that commands attention.</p><p>Indulge your senses with our exquisite range of candles and<br/>perfumes, each one a harmonious blend of sophistication and allure. From the warm embrace of aromatic woods to the refreshing zest of citrus notes, our fragrances captivate the senses and evoke a sense of timeless allure.</p><p>At Grasse, we are committed to redefining the standards of<br/>men's grooming, blending tradition with innovation to create products that transcend the ordinary and embody the extraordinary. Join us on a journey of self-discovery and refinement, where every grooming ritual becomes a celebration of your unique style and identity.</p><p>Elevate your grooming experience with Grasse—where sophistication meets masculinity, and indulgence knows no bounds.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        },
+        "tile_dwkYPy": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "4/5",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        }
+      },
+      "block_order": [
+        "tile_kwwmrj",
+        "tile_dwkYPy"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_layout": "seperated",
+        "block_size": "half",
+        "block_order_mobile": false,
+        "color_scheme": "",
+        "section_width": "max-w-narrow",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "testimonials_i7qHRM": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_zw3z6K": {
+          "type": "testimonial",
+          "settings": {
+            "author": "Alex Thompson",
+            "quote": "<p>After trying countless products, I finally found the perfect match with this brand; my skin has never looked better, and the ordering process was a breeze!</p>",
+            "rating_score": 5,
+            "color_scheme": ""
+          }
+        },
+        "testimonial_yDJbYL": {
+          "type": "testimonial",
+          "settings": {
+            "author": "Michael Richards",
+            "quote": "<p>The results are astounding—my skin feels rejuvenated, and the fast shipping and eco-friendly packaging were the cherries on top!</p>",
+            "rating_score": 4,
+            "color_scheme": ""
+          }
+        },
+        "testimonial_J8bMRa": {
+          "type": "testimonial",
+          "settings": {
+            "author": "David Lee",
+            "quote": "<p>Exceptional quality and affordable prices; this skincare line has made a noticeable difference in my complexion, and I love the natural ingredients they use!</p>",
+            "rating_score": 4,
+            "color_scheme": "scheme-1"
+          }
+        },
+        "testimonial_47c9bq": {
+          "type": "testimonial",
+          "settings": {
+            "author": "Jonathan Carter",
+            "quote": "<p>Five stars all the way! The customer service was outstanding, and my sensitive skin is now smooth and clear thanks to their gentle formulas.</p>",
+            "rating_score": 5,
+            "color_scheme": "scheme-1"
+          }
+        },
+        "testimonial_D7efjU": {
+          "type": "testimonial",
+          "settings": {
+            "author": "Chris Wu",
+            "quote": "<p>I'm genuinely impressed with the effectiveness of these products; they've transformed my skincare routine, and I've received so many compliments on my improved skin!</p>",
+            "rating_score": 5,
+            "color_scheme": "scheme-1"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_zw3z6K",
+        "testimonial_yDJbYL",
+        "testimonial_J8bMRa",
+        "testimonial_47c9bq",
+        "testimonial_D7efjU"
+      ],
+      "settings": {
+        "heading": "From the people",
+        "heading_size": "h3",
+        "subheading": "why our clients love us",
+        "rating_icon": "circle",
+        "layout": "carousel-none-media",
+        "slider_autoplay": 3,
+        "image_position": "image-left",
+        "image_aspect_ratio": "1 / 1",
+        "spacing_inner": "2",
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "dual_tiles_DrRa8w": {
+      "type": "dual-tiles",
+      "blocks": {
+        "tile_FkqFAj": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        },
+        "tile_mGNxK8": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "Meet the founders",
+            "heading_size": "h2",
+            "text": "<p>Grasse is the brainchild of a dynamic father-son duo, whose shared passion for quality and sophistication has redefined men's cosmetics. Drawing inspiration from the rich heritage of the world-renowned perfume capital of the same name, our founders have meticulously crafted a brand that embodies elegance, tradition, and modernity.</p><p>With decades of experience in the beauty and wellness industry, the father brings a wealth of knowledge and a discerning eye for quality to Grasse. His deep understanding of ingredients and formulations ensures that every product meets the highest standards.</p><p>The son, an innovator at heart, infuses the brand with a fresh, contemporary perspective. His commitment to sustainability and cutting-edge technology drives Grasse to constantly evolve, meeting the needs of today’s discerning gentleman.</p><p>Together, they have created a line of products that not only pamper the skin but also elevate the daily grooming ritual into a moment of pure indulgence. At Grasse, tradition meets innovation, delivering exceptional skincare solutions for the modern man.</p><p>Experience the refined luxury and meticulous craftsmanship of Grasse – where every product tells a story of passion, heritage, and a commitment to excellence.</p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "aspect_ratio": "auto",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-start align-start",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "auto",
+            "content_alignment_mobile": "text-start--mobile align-start--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        }
+      },
+      "block_order": [
+        "tile_FkqFAj",
+        "tile_mGNxK8"
+      ],
+      "settings": {
+        "section_layout": "stacked",
+        "block_size": "half",
+        "block_order_mobile": false,
+        "color_scheme": "",
+        "section_width": "max-w-fluid",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "store_locator_NB3mEV": {
+      "type": "store-locator",
+      "blocks": {
+        "pin_7Yqd7h": {
+          "type": "pin",
+          "settings": {
+            "store_title": "<h3>Antwerp, <em>Belgium</em></h3>",
+            "store_address": "Ellermanstraat 14",
+            "store_opening_hours": "<p>Mon-Sat: 10am-8pm<br/>Sunday</p>",
+            "store_latitude": "41.902331905731444",
+            "store_longitude": "12.45445667605574",
+            "coordinate_title": "",
+            "button_style": "button--outlined",
+            "store_tel_button": "Call",
+            "store_tel": "+01 234 567 8900",
+            "store_pin": "Directions",
+            "store_pin_link": "",
+            "color_scheme": "scheme-6"
+          }
+        },
+        "pin_HVNc6c": {
+          "type": "pin",
+          "settings": {
+            "store_title": "<h3>Paris, <em>France</em></h3>",
+            "store_address": "Champ de Mars, 5 Av. Anatole",
+            "store_opening_hours": "<p>Mon-Sat: 10am-8pm<br/>Sunday</p>",
+            "store_latitude": "48.85850418716008",
+            "store_longitude": "2.294803163425021",
+            "coordinate_title": "",
+            "button_style": "button--outlined",
+            "store_tel_button": "Call",
+            "store_tel": "+01 234 567 8900",
+            "store_pin": "Directions",
+            "store_pin_link": "",
+            "color_scheme": "scheme-6"
+          }
+        },
+        "see_more_wKpKF8": {
+          "type": "see-more",
+          "settings": {
+            "card_title": "<h3>Discover our <em>other stores</em></h3>",
+            "button_style": "button--outlined",
+            "button_label": "See all stores",
+            "search": false,
+            "color_scheme": "scheme-5"
+          }
+        }
+      },
+      "block_order": [
+        "pin_7Yqd7h",
+        "pin_HVNc6c",
+        "see_more_wKpKF8"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "layout": "image",
+        "image_grid_columns": "3",
+        "cards_height": 70,
+        "cards_height_auto": false,
+        "cards_height_mobile": 60,
+        "api_key": "",
+        "zoom_level": 4,
+        "card_background_style": "solid",
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "marquees_YVDnjU": {
+      "type": "marquees",
+      "blocks": {
+        "item_BfHPQe": {
+          "type": "item",
+          "settings": {
+            "icon": "",
+            "title": "FACE CARE",
+            "link": ""
+          }
+        },
+        "item_jGJQRw": {
+          "type": "item",
+          "settings": {
+            "icon": "",
+            "title": "BODY CARE",
+            "link": ""
+          }
+        },
+        "item_nThFtT": {
+          "type": "item",
+          "settings": {
+            "icon": "",
+            "title": "BEARD CARE",
+            "link": ""
+          }
+        },
+        "item_HFRAHQ": {
+          "type": "item",
+          "settings": {
+            "icon": "",
+            "title": "CANDLES",
+            "link": ""
+          }
+        },
+        "item_RXhL96": {
+          "type": "item",
+          "settings": {
+            "icon": "",
+            "title": "perfumes",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_BfHPQe",
+        "item_jGJQRw",
+        "item_nThFtT",
+        "item_HFRAHQ",
+        "item_RXhL96"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_animation": true,
+        "marquee_duration_rate": 5,
+        "marquee_font_size": 5,
+        "marquee_items_spacing": 1.6,
+        "color_scheme": "",
+        "spacing_top": "0",
+        "spacing_bottom": "0"
+      }
+    },
+    "featured_products_T3GqtE": {
+      "type": "featured-products",
+      "blocks": {
+        "collection_aEWtnC": {
+          "type": "collection",
+          "settings": {
+            "title": "",
+            "collection": "",
+            "products": [
+              "after-shave",
+              "aloe-vera-deodorant",
+              "beard-shampoo",
+              "beard-oil",
+              "conditioner-homme",
+              "after-shave-brown"
+            ],
+            "show_unavailable_products": false
+          }
+        }
+      },
+      "block_order": [
+        "collection_aEWtnC"
+      ],
+      "settings": {
+        "layout": "layout-1",
+        "heading": "Best Sellers",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "View all",
+        "button_style": "button--filled",
+        "max_products": 8,
+        "enable_slideshow_overflow": false,
+        "show_navigation_arrows": true,
+        "slideshow_autoplay_interval": 0,
+        "tab_button_style": "button--filled",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "social_media_highlights_taWDhY": {
+      "type": "social-media-highlights",
+      "blocks": {
+        "image_cbH87m": {
+          "type": "image",
+          "settings": {
+            "image_url": ""
+          }
+        },
+        "image_PAnX6b": {
+          "type": "image",
+          "settings": {
+            "image_url": ""
+          }
+        },
+        "image_M43JgC": {
+          "type": "image",
+          "settings": {
+            "image_url": ""
+          }
+        },
+        "image_QYh4B8": {
+          "type": "image",
+          "settings": {
+            "image_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_cbH87m",
+        "image_PAnX6b",
+        "image_M43JgC",
+        "image_QYh4B8"
+      ],
+      "disabled": true,
+      "settings": {
+        "layout": "stacked",
+        "heading": "Join the <em>family</em>",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "Follow us",
+        "button_link": "https://www.instagram.com/digifist/",
+        "button_style": "button--filled",
+        "button_icon": "brand-instagram",
+        "content_card_color_scheme": "",
+        "media_aspect_ratio": "media--1-1",
+        "autoplay_speed": 7,
+        "section_width": "max-w-full",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    }
+  },
+  "order": [
+    "page_banner_qGiqWj",
+    "1658995208ad05f95f",
+    "9585dbdf-5519-43bd-a4c5-6aa99afe9a31",
+    "dual_tiles_86XNQJ",
+    "seo_content_Xj8ngr",
+    "dual_tiles_pyKrzx",
+    "dual_tiles_rNheJ9",
+    "testimonials_i7qHRM",
+    "dual_tiles_DrRa8w",
+    "store_locator_NB3mEV",
+    "marquees_YVDnjU",
+    "featured_products_T3GqtE",
+    "social_media_highlights_taWDhY"
+  ]
+}

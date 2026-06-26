@@ -1,0 +1,79 @@
+{%- comment -%}
+  render 'newsletter-form',
+    namespace: 'Newsletter',
+    class: 'newsletter-form',
+    js_class: 'js-newsletter-form',
+    submit_button_text: 'theme.newsletter.submit',
+    submit_button_style: 'text'
+  ###
+
+  Accepts:
+  - namespace {String} - an unique id for the form fields.
+  - js_class? {String} - JS selector class
+  - submit_button_text {String} - Submit button text
+  Usage:
+  {% render 'newsletter-form' %}
+
+{%- endcomment -%}
+
+{%- liquid
+  assign class = 'newsletter-form ' | append: js_class
+  assign namespace = namespace | default: 'Newsletter'
+  assign submit_button_text_default = 'theme.newsletter.button_label' | t
+  assign submit_button_text = submit_button_text | default: submit_button_text_default
+-%}
+
+{%- form 'customer', id: namespace, class: class -%}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+
+  {%- liquid
+    assign label = 'theme.newsletter.label' | t
+    if form.errors
+      assign message = form.errors.translated_fields.email | capitalize | append: ' ' | append: form.errors.messages.email
+      assign has_error = true
+    elsif form.posted_successfully?
+      assign message = 'theme.newsletter.success' | t
+    endif
+    assign id = 'NewsletterForm--' | append: section.id
+  -%}
+
+  <div class="field newsletter__field{% if has_error %} has-error{% endif %}" data-input-wrapper>
+    {%- if label and id -%}
+      <label for="{{- id -}}" class="field__label visually-hidden">{{- 'theme.newsletter.label' | t -}}</label>
+    {%- endif -%}
+    <div class="field__input-wrapper">
+      <input class="field__input" type="email"
+        name="contact[email]"
+        value="{{- form.email -}}"
+        {% if id %}id="{{- id -}}"{% endif %}
+        placeholder="{{- 'theme.newsletter.email_placeholder' | t -}}"
+        required
+        pattern="^([a-zA-Z0-9_\-\+\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,9})$"
+        aria-required="true"
+        autocapitalize="off"
+        autocomplete="email"
+        {% if form.errors %}autofocus{% endif %}
+      />
+      <button type="submit" class="button" id="Subscribe-{{- section.id -}}" name="commit" aria-label="{{- submit_button_text -}}">
+        {{- submit_button_text -}}
+      </button>
+    </div>
+
+    <span class="field__message{% unless message %} hidden{% endunless %}"
+      data-message
+      {% if message and has_error == false %} tabindex="-1" autofocus{% endif %}
+    >{%- if message -%}{{- message -}}{%- endif -%}</span>
+  </div>
+
+  {% if settings.show_newsletter_form_terms %}
+    {%- assign terms_text = settings.newsletter_form_terms | replace: '<p>', '' | replace: '</p>', '' -%}
+    <div class="newsletter__terms">
+      <div class="checkbox checkbox--plain">
+        <input type="checkbox" name="terms" required id="Terms-Conditions-{{- section.id -}}">
+        <label for="Terms-Conditions-{{- section.id -}}">
+          {{- terms_text -}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+{%- endform -%}

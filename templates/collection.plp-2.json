@@ -1,0 +1,192 @@
+{
+  "sections": {
+    "page_banner_tDVWmd": {
+      "type": "page-banner",
+      "settings": {
+        "heading": "",
+        "heading_size": "h2",
+        "text": "",
+        "show_default_description": true,
+        "show_on_description": "desktop",
+        "content_position": "end",
+        "content_alignment": "start",
+        "media_position": "bottom",
+        "page_menu": "",
+        "enable_breadcrumbs": true,
+        "section_height": "33svh",
+        "image": "{{ collection.image }}",
+        "video_external": "",
+        "show_controls_on_video": false,
+        "section_height_mobile": "50svh",
+        "video_external_mobile": "",
+        "show_controls_on_video_mobile": false,
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "color_scheme_for_media": "",
+        "spacing_top": "0",
+        "spacing_bottom": "2"
+      }
+    },
+    "featured_collections_bmfjgk": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_slide_YAzV4p": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "beard",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_UL78xk": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "face-care",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_NhbgrN": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "hair",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_zTmP6M": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "body",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_igkYLB": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "perfumes",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_wecHAd": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "candle",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_slide_YAzV4p",
+        "collection_slide_UL78xk",
+        "collection_slide_NhbgrN",
+        "collection_slide_zTmP6M",
+        "collection_slide_igkYLB",
+        "collection_slide_wecHAd"
+      ],
+      "settings": {
+        "layout": "layout-2",
+        "heading": "",
+        "heading_size": "h3",
+        "subheading": "",
+        "content_padding": "0",
+        "button_label": "",
+        "button_link": "#",
+        "button_style": "button--filled",
+        "card_layout": "product",
+        "card_style": "compact",
+        "image_aspect_ratio": "4/5",
+        "card_content_alignment": "center",
+        "card_title_style": "card-text-arrow",
+        "collection_product_count": "show",
+        "slides_per_view": 3,
+        "slides_per_view_mobile": 1,
+        "show_carousel_arrows": false,
+        "slideshow_alignment_center": false,
+        "enable_slideshow_overflow": false,
+        "slideshow_border": "top",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "color_scheme_for_cards": "scheme-5",
+        "spacing_top": "1",
+        "spacing_bottom": "1"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "text_card_J6n8hm": {
+          "type": "text-card",
+          "settings": {
+            "color_scheme": "scheme-8",
+            "text": "<h1>LOOK GOOD,<br/>FEEL AMAZING</h1>",
+            "button_link": "",
+            "link_type": "button",
+            "button_label": "",
+            "button_style": "button--text",
+            "content_position": "center",
+            "content_alignment": "center",
+            "content_position_mobile": "center",
+            "content_alignment_mobile": "center",
+            "position": 3,
+            "column_factor": 2,
+            "row_factor": 2
+          }
+        },
+        "96d74506-d90d-4c41-b78f-4d67853600e5": {
+          "type": "text-card",
+          "disabled": true,
+          "settings": {
+            "color_scheme": "scheme-3",
+            "text": "<h3>THE ULTIMATE PLACE FOR MEN’S BEAUTY</h3>",
+            "button_link": "",
+            "link_type": "button",
+            "button_label": "",
+            "button_style": "button--text",
+            "content_position": "center",
+            "content_alignment": "center",
+            "content_position_mobile": "center",
+            "content_alignment_mobile": "center",
+            "position": 9,
+            "column_factor": 1,
+            "row_factor": 1
+          }
+        }
+      },
+      "block_order": [
+        "text_card_J6n8hm",
+        "96d74506-d90d-4c41-b78f-4d67853600e5"
+      ],
+      "settings": {
+        "show_top_border_for_utilities_bar": false,
+        "enable_products_count": true,
+        "enable_sorting": true,
+        "enable_opened_accordions": true,
+        "filters": "sidebar",
+        "products_per_row": "4",
+        "products_per_row_mobile": "2",
+        "products_per_page": 19,
+        "pagination_style": "default",
+        "enable_infinity_scroll": false,
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "0",
+        "spacing_bottom": "6"
+      }
+    }
+  },
+  "order": [
+    "page_banner_tDVWmd",
+    "featured_collections_bmfjgk",
+    "main"
+  ]
+}

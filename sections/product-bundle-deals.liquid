@@ -1,0 +1,338 @@
+{% liquid
+  assign show_bundle_section = false
+  assign bundle_heading = 'Save with Bundles'
+  assign bundle_type_label = ''
+  assign bundle_link_text = ''
+  assign shop_now_url = ''
+  assign deal_2 = ''
+  assign deal_3 = ''
+  assign deal_4 = ''
+
+  assign lighter_collection_url = '/collections/all-products-lighters'
+  assign rolling_tray_collection_url = '/collections/all-rolling-trays'
+  assign grinder_set_collection_url = '/collections/herb-grinders'
+  assign tapestry_collection_url = '/collections/all-tapestries'
+  assign wallet_collection_url = '/collections/wallets-category'
+  assign pillow_collection_url = '/collections/lighters-category-copy'
+  assign stash_jar_collection_url = '/collections/all-products-stash-jars'
+  assign ashtray_collection_url = '/collections/all-products-ashtray'
+  assign hoodie_collection_url = '/collections/hoodies-category'
+  assign stash_box_collection_url = '/collections/all-products-stash-boxes'
+  assign tote_bag_collection_url = '/collections/all-tote-bags'
+
+  if product.type == 'Flip Lighter'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Lighters'
+    assign bundle_link_text = 'PICK MORE LIGHTERS'
+    assign shop_now_url = lighter_collection_url
+    assign deal_2 = '$45'
+    assign deal_3 = '$60'
+    assign deal_4 = '$75'
+
+  elsif product.type == 'Rolling Tray'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Rolling Trays'
+    assign bundle_link_text = 'PICK MORE ROLLING TRAYS'
+    assign shop_now_url = rolling_tray_collection_url
+    assign deal_2 = '$25'
+    assign deal_3 = '$30'
+    assign deal_4 = '$35'
+
+  elsif product.type == 'Grinder Sets'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Grinder Sets'
+    assign bundle_link_text = 'PICK MORE GRINDER SETS'
+    assign shop_now_url = grinder_set_collection_url
+    assign deal_2 = 'Save $15'
+    assign deal_3 = 'Save $25'
+    assign deal_4 = 'Save $40'
+
+  elsif product.type == 'Tapestry'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Tapestries'
+    assign bundle_link_text = 'PICK MORE TAPESTRIES'
+    assign shop_now_url = tapestry_collection_url
+    assign deal_2 = 'Save $20'
+    assign deal_3 = 'Save $35'
+    assign deal_4 = 'Save $50'
+
+  elsif product.type == 'Wallet'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Wallets'
+    assign bundle_link_text = 'PICK MORE WALLETS'
+    assign shop_now_url = wallet_collection_url
+    assign deal_2 = '$60'
+    assign deal_3 = '$85'
+    assign deal_4 = '$110'
+
+  elsif product.type == 'Pillow Covers'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Pillow Cases'
+    assign bundle_link_text = 'PICK MORE PILLOW CASES'
+    assign shop_now_url = pillow_collection_url
+    assign deal_2 = '$30'
+    assign deal_3 = '$40'
+    assign deal_4 = '$50'
+
+  elsif product.type == 'Stash Jar'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Stash Jars'
+    assign bundle_link_text = 'PICK MORE STASH JARS'
+    assign shop_now_url = stash_jar_collection_url
+    assign deal_2 = '$15'
+    assign deal_3 = '$20'
+    assign deal_4 = '$25'
+
+  elsif product.type == 'Ashtray'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Ashtrays'
+    assign bundle_link_text = 'PICK MORE ASHTRAYS'
+    assign shop_now_url = ashtray_collection_url
+    assign deal_2 = '$30'
+    assign deal_3 = '$40'
+    assign deal_4 = '$50'
+
+  elsif product.type == 'Hoodies'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Hoodies'
+    assign bundle_link_text = 'PICK MORE HOODIES'
+    assign shop_now_url = hoodie_collection_url
+    assign deal_2 = 'Save $20'
+    assign deal_3 = 'Save $35'
+    assign deal_4 = 'Save $50'
+
+  elsif product.type == 'Stash Box'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Stash Boxes'
+    assign bundle_link_text = 'PICK MORE STASH BOXES'
+    assign shop_now_url = stash_box_collection_url
+    assign deal_2 = 'Save $10'
+    assign deal_3 = 'Save $20'
+    assign deal_4 = 'Save $30'
+
+  elsif product.type == 'Tote Bags'
+    assign show_bundle_section = true
+    assign bundle_type_label = 'Tote Bags'
+    assign bundle_link_text = 'PICK MORE TOTE BAGS'
+    assign shop_now_url = tote_bag_collection_url
+    assign deal_2 = 'Save $10'
+    assign deal_3 = 'Save $20'
+    assign deal_4 = 'Save $30'
+  endif
+%}
+
+{% if show_bundle_section %}
+<section id="shopify-section-{{ section.id }}" class="product-bundle-deals">
+  <div class="product-bundle-deals__inner">
+    <div class="product-bundle-deals__header">
+      <span class="product-bundle-deals__header-line"></span>
+      <h2 class="product-bundle-deals__title">{{ bundle_heading }}</h2>
+      <span class="product-bundle-deals__header-line"></span>
+    </div>
+
+    <div class="product-bundle-deals__top-link-row">
+      <a href="{{ shop_now_url }}" class="product-bundle-deals__top-link">
+        {{ bundle_link_text }}
+      </a>
+    </div>
+
+    <div class="product-bundle-deals__box">
+      <div class="product-bundle-deals__grid">
+        <div class="product-bundle-deals__card">
+          <div class="product-bundle-deals__label">Pick 2 {{ bundle_type_label }}</div>
+          <div class="product-bundle-deals__price">{{ deal_2 }}</div>
+        </div>
+
+        <div class="product-bundle-deals__card">
+          <div class="product-bundle-deals__label">Pick 3 {{ bundle_type_label }}</div>
+          <div class="product-bundle-deals__price">{{ deal_3 }}</div>
+        </div>
+
+        <div class="product-bundle-deals__card">
+          <div class="product-bundle-deals__label">Pick 4 {{ bundle_type_label }}</div>
+          <div class="product-bundle-deals__price">{{ deal_4 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }}{
+    background:#F8F8F8;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__inner{
+    max-width:1200px;
+    margin:0 auto;
+    padding:6px 12px 4px;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:3px;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__header-line{
+    flex:1 1 0;
+    min-width:12px;
+    height:1px;
+    background:linear-gradient(
+      to right,
+      rgba(17,17,17,0),
+      rgba(17,17,17,.10),
+      rgba(17,17,17,0)
+    );
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__title{
+    margin:0;
+    color:#111111;
+    font-size:18px;
+    line-height:1.05;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:6px;
+    padding-right:2px;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
+    color:#65706E;
+    font-size:5px;
+    line-height:1;
+    font-weight:500;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    text-decoration:underline;
+      text-underline-offset: 2px;
+    opacity:.95;
+    transition:color .18s ease, opacity .18s ease;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__top-link:hover{
+    color:#111111;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__box{
+    position:relative;
+    overflow:hidden;
+    border-radius:12px;
+    padding:8px 10px 8px;
+    background:linear-gradient(180deg, #ffffff, #f7f7f7);
+    border:1px solid #EBEBEB;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.9) inset,
+      0 3px 10px rgba(17,17,17,.04);
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(
+      180deg,
+      rgba(255,255,255,.45) 0%,
+      rgba(255,255,255,0) 38%
+    );
+    opacity:1;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:0;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__card{
+    text-align:center;
+    padding:2px 4px;
+    border-left:1px solid #EBEBEB;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__card:first-child{
+    border-left:none;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__label{
+    color:#65706E;
+    font-size:11px;
+    line-height:1.2;
+    font-weight:500;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__price{
+    margin-top:3px;
+    color:#111111;
+    font-size:15px;
+    line-height:1.1;
+    font-weight:700;
+  }
+
+  @media(max-width:749px){
+    #shopify-section-{{ section.id }} .product-bundle-deals__inner{
+      padding:6px 10px 2px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__header{
+      gap:8px;
+      margin-bottom:2px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__title{
+      font-size:17px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
+      margin-bottom:4px;
+      padding-right:8px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
+      font-size:8px;
+      letter-spacing:.14em;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__box{
+      padding:8px 8px 8px;
+      border-radius:12px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__card{
+      padding:4px 4px;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__label{
+      font-size:11px;
+      line-height:1.2;
+    }
+
+    #shopify-section-{{ section.id }} .product-bundle-deals__price{
+      font-size:15px;
+    }
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Bundle Deals",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Product Bundle Deals"
+    }
+  ]
+}
+{% endschema %}

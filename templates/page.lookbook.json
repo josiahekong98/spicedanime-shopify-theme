@@ -1,0 +1,545 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "breadcrumbs": true,
+        "show_page_title": true,
+        "page_title_alignment": "text-center",
+        "info_title": "",
+        "info_content": "",
+        "section_width": "max-w-narrower",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "page_banner_mXLppV": {
+      "type": "page-banner",
+      "settings": {
+        "heading": "",
+        "heading_size": "h3",
+        "text": "",
+        "show_default_description": true,
+        "show_on_description": "desktop",
+        "content_position": "center",
+        "content_alignment": "center",
+        "media_position": "background",
+        "page_menu": "",
+        "enable_breadcrumbs": true,
+        "section_height": "50svh",
+        "video_external": "",
+        "show_controls_on_video": false,
+        "section_height_mobile": "50svh",
+        "video_external_mobile": "",
+        "show_controls_on_video_mobile": false,
+        "section_width": "max-w-narrow",
+        "color_scheme": "",
+        "color_scheme_for_media": "",
+        "spacing_top": "2",
+        "spacing_bottom": "6"
+      }
+    },
+    "featured_collections_DLiHga": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_slide_LBFKQe": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_wUMd44": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        },
+        "collection_slide_8rMFRm": {
+          "type": "collection-slide",
+          "settings": {
+            "collection": "",
+            "heading": "",
+            "heading_size": "h4",
+            "subheading": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_slide_LBFKQe",
+        "collection_slide_wUMd44",
+        "collection_slide_8rMFRm"
+      ],
+      "settings": {
+        "layout": "layout-2",
+        "heading": "",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "",
+        "button_style": "button--text",
+        "image_aspect_ratio": "3 / 4",
+        "card_content_alignment": "start",
+        "card_title_style": "card-single-text",
+        "collection_product_count": "show",
+        "slides_per_view": 3,
+        "slides_per_view_mobile": 1,
+        "show_carousel_arrows": true,
+        "slideshow_alignment_center": false,
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "seo_content_TEz7cm": {
+      "type": "seo-content",
+      "settings": {
+        "section_layout": "normal",
+        "heading": "The Ultimate place for men's beauty",
+        "heading_size": "h3",
+        "text": "<p>Inspired by the rich tradition of perfumery in the town of Grasse, France, our brand embodies sophistication, luxury, and timeless elegance. We specialize in crafting exquisite grooming products that capture the essence of masculinity, from bold and adventurous scents to refined and understated blends.</p>",
+        "content_alignment": "center",
+        "section_width": "max-w-narrower",
+        "color_scheme": "",
+        "spacing_inner": "2",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "dual_tiles_whGVqz": {
+      "type": "dual-tiles",
+      "blocks": {
+        "tile_4hzAnL": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "show_other_elements_with_product": true,
+            "aspect_ratio": "4/5",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "1/1",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        },
+        "tile_mUNYf7": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "color_scheme": "scheme-5",
+            "custom_background_color": "",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "product": "",
+            "product_width": 24,
+            "show_other_elements_with_product": true,
+            "aspect_ratio": "4/5",
+            "vertical_position": "stretch",
+            "content_position": "justify-center",
+            "content_alignment": "text-center align-center",
+            "product_position": "0",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "aspect_ratio_mobile": "1/1",
+            "content_alignment_mobile": "text-center--mobile align-center--mobile",
+            "content_position_mobile": "justify-center--mobile",
+            "product_position_mobile": "0",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "3"
+          }
+        }
+      },
+      "block_order": [
+        "tile_4hzAnL",
+        "tile_mUNYf7"
+      ],
+      "settings": {
+        "section_layout": "seperated",
+        "block_size": "half",
+        "block_order_mobile": false,
+        "color_scheme": "",
+        "section_width": "max-w-page",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "full_width_banner_Di7mkB": {
+      "type": "full-width-banner",
+      "blocks": {
+        "subheading_eXTqpG": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "men care starts here",
+            "link": ""
+          }
+        },
+        "heading_iCN7tM": {
+          "type": "heading",
+          "settings": {
+            "heading": "Smell fresh, look good",
+            "heading_size": "h2"
+          }
+        },
+        "buttons_3Nma4X": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Discover our products",
+            "button_style_1": "button--outlined",
+            "color_scheme_first_button": "",
+            "button_label_2": "Collections",
+            "button_style_2": "button--outlined",
+            "color_scheme_second_button": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_eXTqpG",
+        "heading_iCN7tM",
+        "buttons_3Nma4X"
+      ],
+      "settings": {
+        "media_position": "background",
+        "section_height": "half",
+        "content_position": "center",
+        "content_alignment": "center",
+        "video_external": "",
+        "show_controls_on_video": false,
+        "aspect_ratio": "auto",
+        "section_height_mobile": "half",
+        "content_position_mobile": "center",
+        "content_alignment_mobile": "center",
+        "video_external_mobile": "",
+        "show_controls_on_video_mobile": false,
+        "aspect_ratio_mobile": "auto",
+        "section_width": "max-w-fluid",
+        "color_scheme": "",
+        "color_scheme_for_content": "",
+        "spacing_inner": "2",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "multitile_GDG3tC": {
+      "type": "multitile",
+      "blocks": {
+        "tile_J4A8cF": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "column_factor": 3,
+            "row_factor": 6,
+            "tile_aspect_ratio": "5/4",
+            "color_scheme": "",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        },
+        "tile_daxwr6": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "column_factor": 3,
+            "row_factor": 3,
+            "tile_aspect_ratio": "auto",
+            "color_scheme": "",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "men's favourite",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        },
+        "tile_nfqytT": {
+          "type": "tile",
+          "settings": {
+            "show_on": "both",
+            "column_factor": 3,
+            "row_factor": 3,
+            "tile_aspect_ratio": "auto",
+            "color_scheme": "",
+            "gradient_background_color": "",
+            "content_position_vertical": "justify-center",
+            "content_alignment": "align-center text-center",
+            "content_alignment_for_mobile": "start",
+            "media_position": "background",
+            "heading": "",
+            "heading_size": "h3",
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "button--filled",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "spacing_inner": "2"
+          }
+        }
+      },
+      "block_order": [
+        "tile_J4A8cF",
+        "tile_daxwr6",
+        "tile_nfqytT"
+      ],
+      "disabled": true,
+      "settings": {
+        "block_order_mobile": false,
+        "color_scheme": "",
+        "section_width": "max-w-page",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "featured_collections_e3iR7d": {
+      "type": "featured-collections",
+      "settings": {
+        "layout": "layout-1",
+        "heading": "Our collections",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "Explore all",
+        "button_style": "button--text",
+        "image_aspect_ratio": "3 / 4",
+        "card_content_alignment": "start",
+        "card_title_style": "card-single-text",
+        "collection_product_count": "show",
+        "slides_per_view": 3,
+        "slides_per_view_mobile": 1,
+        "show_carousel_arrows": true,
+        "slideshow_alignment_center": false,
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "shop_the_look_UzdLG8": {
+      "type": "shop-the-look",
+      "blocks": {
+        "slide_fbMgyt": {
+          "type": "slide",
+          "settings": {
+            "product": "guasha-stone",
+            "dot_position_horizontal": 61,
+            "dot_position_vertical": 38
+          }
+        },
+        "slide_ePefiT": {
+          "type": "slide",
+          "settings": {
+            "product": "after-shave",
+            "dot_position_horizontal": 35,
+            "dot_position_vertical": 87
+          }
+        },
+        "slide_giTxUa": {
+          "type": "slide",
+          "settings": {
+            "product": "facial-cleanser",
+            "dot_position_horizontal": 39,
+            "dot_position_vertical": 22
+          }
+        }
+      },
+      "block_order": [
+        "slide_fbMgyt",
+        "slide_ePefiT",
+        "slide_giTxUa"
+      ],
+      "settings": {
+        "heading": "Shop the look",
+        "heading_size": "h3",
+        "section_layout": "dual-content",
+        "reverse_positions": false,
+        "show_dots": true,
+        "aspect_ratio": "1/1",
+        "aspect_ratio_mobile": "auto",
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-5",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "highlighted_collections_kfbBAc": {
+      "type": "highlighted-collections",
+      "blocks": {
+        "highlighted_collection_4LnCcq": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "face-care",
+            "title": "Face Care",
+            "italic_title": false,
+            "products_counter": true
+          }
+        },
+        "highlighted_collection_P8Ubtn": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "body",
+            "title": "Body Care",
+            "italic_title": false,
+            "products_counter": true
+          }
+        },
+        "highlighted_collection_zawUiX": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "beard",
+            "title": "Beard Care",
+            "italic_title": false,
+            "products_counter": true
+          }
+        },
+        "highlighted_collection_q6kKMY": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "hair",
+            "title": "Hair Care",
+            "italic_title": false,
+            "products_counter": true
+          }
+        },
+        "highlighted_collection_EN9U7a": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "candle",
+            "title": "Candles",
+            "italic_title": false,
+            "products_counter": true
+          }
+        },
+        "highlighted_collection_fwRji6": {
+          "type": "highlighted-collection",
+          "settings": {
+            "collection": "perfumes",
+            "title": "Perfumes",
+            "italic_title": false,
+            "products_counter": true
+          }
+        }
+      },
+      "block_order": [
+        "highlighted_collection_4LnCcq",
+        "highlighted_collection_P8Ubtn",
+        "highlighted_collection_zawUiX",
+        "highlighted_collection_q6kKMY",
+        "highlighted_collection_EN9U7a",
+        "highlighted_collection_fwRji6"
+      ],
+      "settings": {
+        "section_height": 70,
+        "title_font_size": 8,
+        "image_width": "40%-60%",
+        "image_height": "adaptive",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "featured_products_MJpffL": {
+      "type": "featured-products",
+      "blocks": {
+        "collection_wz3Jw7": {
+          "type": "collection",
+          "settings": {
+            "title": "",
+            "collection": "bestsellers",
+            "products": [],
+            "vendor": "",
+            "collection_of_products": "",
+            "show_unavailable_products": false
+          }
+        }
+      },
+      "block_order": [
+        "collection_wz3Jw7"
+      ],
+      "settings": {
+        "layout": "layout-1",
+        "heading": "Best Sellers",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "View all",
+        "button_link": "",
+        "button_style": "button--filled",
+        "max_products": 8,
+        "enable_slideshow_overflow": false,
+        "show_navigation_arrows": true,
+        "slideshow_autoplay_interval": 0,
+        "tab_button_style": "button button--filled",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "page_banner_mXLppV",
+    "featured_collections_DLiHga",
+    "seo_content_TEz7cm",
+    "dual_tiles_whGVqz",
+    "full_width_banner_Di7mkB",
+    "multitile_GDG3tC",
+    "featured_collections_e3iR7d",
+    "shop_the_look_UzdLG8",
+    "highlighted_collections_kfbBAc",
+    "featured_products_MJpffL"
+  ]
+}

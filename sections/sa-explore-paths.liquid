@@ -1,0 +1,401 @@
+{% liquid
+  assign section_label = section.settings.label | default: 'ARCHIVE PATHS'
+  assign section_heading = section.settings.heading | default: 'Choose how you want to explore'
+  assign section_text = section.settings.text | default: 'Start with a series, a product family, or the way you use your collection.'
+%}
+
+<section class="sa-section sa-section--spotlight sa-explore-paths" aria-labelledby="sa-explore-paths-title-{{ section.id }}">
+  <style>
+    #shopify-section-{{ section.id }} .sa-explore-paths__header {
+      display: grid;
+      gap: var(--sa-space-3);
+      margin-block-end: var(--sa-space-6);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__eyebrow {
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sa-card-gap);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card {
+      min-height: 320px;
+      display: grid;
+      align-content: end;
+      isolation: isolate;
+      text-decoration: none;
+      --sa-card-accent: var(--sa-relic-red);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 72%;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(11, 11, 11, 0.88));
+      z-index: 1;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover {
+      border-color: var(--sa-card-accent);
+      box-shadow: var(--sa-shadow-card), 0 0 0 1px color-mix(in srgb, var(--sa-card-accent) 70%, transparent), 0 0 42px color-mix(in srgb, var(--sa-card-accent) 24%, transparent);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: var(--sa-archive-black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--sa-texture-concrete), radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--sa-card-accent) 24%, transparent), transparent 42%);
+      opacity: 0.62;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0.78;
+      transform: scale(1.01);
+      transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__image {
+      opacity: 0.92;
+      transform: scale(1.035);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__icon {
+      position: absolute;
+      inset: var(--sa-space-5) auto auto var(--sa-space-5);
+      z-index: 2;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in srgb, var(--sa-card-accent) 72%, var(--sa-museum-ivory));
+      border-radius: var(--sa-radius-sm);
+      background: rgba(16, 16, 16, 0.68);
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-archive);
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 28px color-mix(in srgb, var(--sa-card-accent) 20%, transparent);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: var(--sa-space-3);
+      padding: var(--sa-space-5);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__archive-label {
+      color: color-mix(in srgb, var(--sa-card-accent) 82%, var(--sa-gallery-stone));
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__title {
+      margin: 0;
+      color: var(--sa-museum-ivory);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__text {
+      margin: 0;
+      color: var(--sa-gallery-stone);
+      font-size: var(--sa-type-body);
+      line-height: var(--sa-line-body);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__cta {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: var(--sa-space-2);
+      margin-block-start: var(--sa-space-2);
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-archive);
+      font-size: var(--sa-type-label);
+      letter-spacing: 0.12em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__cta::after {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--sa-card-accent);
+      transition: width var(--sa-motion-fast);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__cta::after {
+      width: 42px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__empty {
+      padding: var(--sa-space-6);
+      border: var(--sa-border-hairline);
+      border-radius: var(--sa-radius-md);
+      background: rgba(16, 16, 16, 0.72);
+      color: var(--sa-gallery-stone);
+    }
+
+    @media screen and (min-width: 768px) {
+      #shopify-section-{{ section.id }} .sa-explore-paths__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      #shopify-section-{{ section.id }} .sa-explore-paths__card {
+        min-height: clamp(360px, 38vw, 520px);
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} .sa-explore-paths__card {
+        min-height: 280px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-explore-paths__icon {
+        inset-block-start: var(--sa-space-4);
+        inset-inline-start: var(--sa-space-4);
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-explore-paths__content {
+        padding: var(--sa-space-4);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .sa-explore-paths__image,
+      #shopify-section-{{ section.id }} .sa-explore-paths__cta::after {
+        transition-duration: 1ms;
+      }
+
+      #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__image {
+        transform: none;
+      }
+    }
+  </style>
+
+  <div class="sa-container">
+    <div class="sa-explore-paths__header sa-section-header">
+      {% if section_label != blank %}
+        <p class="sa-explore-paths__eyebrow sa-kicker">{{ section_label | escape }}</p>
+      {% endif %}
+
+      {% if section_heading != blank %}
+        <h2 class="sa-heading" id="sa-explore-paths-title-{{ section.id }}">{{ section_heading | escape }}</h2>
+      {% endif %}
+
+      {% if section_text != blank %}
+        <p class="sa-copy">{{ section_text }}</p>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="sa-explore-paths__grid" role="list">
+        {% for block in section.blocks %}
+          {% liquid
+            assign card_heading = block.settings.heading | default: 'Explore Path'
+            assign card_text = block.settings.text
+            assign card_label = block.settings.label | default: 'PATH'
+            assign card_icon = block.settings.icon_label | default: card_heading | slice: 0, 1
+            assign card_cta = block.settings.link_label | default: 'Enter Archive'
+            assign card_link = block.settings.link
+            assign card_accent = block.settings.accent_color | default: '#B3362D'
+            assign card_aria = block.settings.accessibility_label
+            if card_aria == blank
+              assign card_aria = card_heading | append: ': ' | append: card_cta
+            endif
+          %}
+
+          {% capture card_inner %}
+            <span class="sa-explore-paths__media" aria-hidden="true">
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1200 | image_tag: class: 'sa-explore-paths__image', loading: 'lazy', sizes: '(min-width: 768px) 33vw, 100vw', widths: '360, 540, 720, 900, 1200', alt: block.settings.image.alt | default: card_heading | escape }}
+              {% endif %}
+            </span>
+
+            <span class="sa-explore-paths__icon" aria-hidden="true">{{ card_icon | escape }}</span>
+
+            <span class="sa-explore-paths__content">
+              <span class="sa-explore-paths__archive-label sa-archive-label">{{ card_label | escape }}</span>
+              <span class="sa-explore-paths__title sa-heading">{{ card_heading | escape }}</span>
+              {% if card_text != blank %}
+                <span class="sa-explore-paths__text">{{ card_text }}</span>
+              {% endif %}
+              <span class="sa-explore-paths__cta">{{ card_cta | escape }}</span>
+            </span>
+          {% endcapture %}
+
+          {% if card_link != blank %}
+            <a class="sa-explore-paths__card sa-card sa-card--exhibit" href="{{ card_link }}" aria-label="{{ card_aria | escape }}" style="--sa-card-accent: {{ card_accent }};" role="listitem" {{ block.shopify_attributes }}>
+              {{ card_inner }}
+            </a>
+          {% else %}
+            <div class="sa-explore-paths__card sa-card sa-card--exhibit" aria-label="{{ card_aria | escape }}" style="--sa-card-accent: {{ card_accent }};" role="listitem" {{ block.shopify_attributes }}>
+              {{ card_inner }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="sa-explore-paths__empty" role="status">
+        Add up to three path cards: Series, Product, and Lifestyle.
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Explore Paths",
+  "tag": "section",
+  "class": "sa-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Archive label",
+      "default": "START HERE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose how you want to explore"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Shop by the anime you love, the product you need, or the lifestyle setup you are building."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "path_card",
+      "name": "Path card",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Archive label",
+          "default": "PATH 01"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Explore by Series"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Start with your anime universe, then narrow into lighters, wallets, grinders, tapestries, and matching sets."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "icon_label",
+          "label": "Fallback icon text",
+          "default": "S"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Enter Archive"
+        },
+        {
+          "type": "text",
+          "id": "accessibility_label",
+          "label": "Accessibility label",
+          "info": "Optional. Used as the card link aria-label."
+        },
+        {
+          "type": "select",
+          "id": "accent_color",
+          "label": "Accent color",
+          "options": [
+            { "value": "#B3362D", "label": "Relic Red" },
+            { "value": "#C45A2A", "label": "Ember Orange" },
+            { "value": "#2F5138", "label": "Deep Moss" },
+            { "value": "#332A52", "label": "Indigo Smoke" },
+            { "value": "#9D7A3C", "label": "Bamboo Amber" }
+          ],
+          "default": "#B3362D"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Explore Paths",
+      "blocks": [
+        {
+          "type": "path_card",
+          "settings": {
+            "label": "PATH 01",
+            "heading": "Explore by Series",
+            "text": "Start with your anime universe, then narrow into lighters, wallets, grinders, tapestries, and matching sets.",
+            "icon_label": "S",
+            "link_label": "Shop Series",
+            "accent_color": "#B3362D"
+          }
+        },
+        {
+          "type": "path_card",
+          "settings": {
+            "label": "PATH 02",
+            "heading": "Explore by Product",
+            "text": "Know what you need? Jump straight into lighters, grinder sets, trays, jars, wallets, tapestries, and more.",
+            "icon_label": "P",
+            "link_label": "Shop Product Types",
+            "accent_color": "#C45A2A"
+          }
+        },
+        {
+          "type": "path_card",
+          "settings": {
+            "label": "PATH 03",
+            "heading": "Explore by Lifestyle",
+            "text": "Build a smoke session, everyday carry, room decor wall, desk setup, travel kit, or gift path.",
+            "icon_label": "L",
+            "link_label": "Shop Lifestyle",
+            "accent_color": "#2F5138"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

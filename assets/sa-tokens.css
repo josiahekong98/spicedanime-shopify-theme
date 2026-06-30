@@ -1,0 +1,94 @@
+/* SpicedAnime Volume 2 foundation tokens. */
+:root {
+  --sa-archive-black: #101010;
+  --sa-concrete-charcoal: #1c1b19;
+  --sa-museum-ivory: #f4f0e8;
+  --sa-gallery-stone: #d8d2c7;
+  --sa-relic-red: #b3362d;
+  --sa-ember-orange: #c45a2a;
+  --sa-deep-moss: #2f5138;
+  --sa-indigo-smoke: #332a52;
+  --sa-bamboo-amber: #9d7a3c;
+  --sa-steel-gray: #5f625f;
+  --sa-ink-black: #0b0b0b;
+  --sa-archive-green: #3c7a45;
+  --sa-drop-amber: #b8822b;
+  --sa-signal-red: #c83a32;
+
+  --sa-surface-page: var(--sa-concrete-charcoal);
+  --sa-surface-panel: #24221f;
+  --sa-surface-raised: #2b2925;
+  --sa-surface-light: var(--sa-museum-ivory);
+  --sa-text-primary: var(--sa-museum-ivory);
+  --sa-text-secondary: var(--sa-gallery-stone);
+  --sa-text-muted: rgba(216, 210, 199, 0.72);
+  --sa-border-subtle: rgba(216, 210, 199, 0.18);
+  --sa-border-strong: rgba(244, 240, 232, 0.34);
+  --sa-border-active: var(--sa-relic-red);
+
+  --sa-space-1: 4px;
+  --sa-space-2: 8px;
+  --sa-space-3: 12px;
+  --sa-space-4: 16px;
+  --sa-space-5: 24px;
+  --sa-space-6: 32px;
+  --sa-space-7: 48px;
+  --sa-space-8: 64px;
+  --sa-space-9: 96px;
+  --sa-space-10: 128px;
+
+  --sa-page-gutter: clamp(16px, 4vw, 72px);
+  --sa-section-padding-y: clamp(var(--sa-space-7), 7vw, var(--sa-space-9));
+  --sa-section-padding-y-compact: clamp(var(--sa-space-5), 5vw, var(--sa-space-8));
+  --sa-card-gap: clamp(14px, 2vw, var(--sa-space-6));
+
+  --sa-radius-none: 0;
+  --sa-radius-xs: 4px;
+  --sa-radius-sm: 8px;
+  --sa-radius-md: 12px;
+  --sa-radius-lg: 18px;
+  --sa-radius-xl: 28px;
+
+  --sa-border-hairline: 1px solid var(--sa-border-subtle);
+  --sa-border-focus: 2px solid var(--sa-relic-red);
+
+  --sa-shadow-card: 0 10px 24px rgba(0, 0, 0, 0.32);
+  --sa-shadow-exhibit: 0 24px 70px rgba(0, 0, 0, 0.55);
+  --sa-shadow-drawer: -24px 0 60px rgba(0, 0, 0, 0.55);
+  --sa-glow-red: 0 0 0 1px rgba(179, 54, 45, 0.45), 0 0 36px rgba(179, 54, 45, 0.18);
+  --sa-glow-spotlight: radial-gradient(circle, rgba(244, 240, 232, 0.15), transparent 55%);
+  --sa-texture-concrete:
+    radial-gradient(circle at 18% 22%, rgba(244, 240, 232, 0.055), transparent 16%),
+    radial-gradient(circle at 78% 12%, rgba(244, 240, 232, 0.035), transparent 18%),
+    radial-gradient(circle at 42% 88%, rgba(11, 11, 11, 0.28), transparent 24%),
+    linear-gradient(135deg, rgba(244, 240, 232, 0.025), rgba(11, 11, 11, 0.16));
+
+  --sa-font-display: Georgia, "Times New Roman", serif;
+  --sa-font-ui: var(--font-body-family, Inter, Arial, sans-serif);
+  --sa-font-archive: "Courier New", Courier, monospace;
+
+  --sa-type-hero: clamp(38px, 6vw, 80px);
+  --sa-type-page-title: clamp(30px, 4.4vw, 56px);
+  --sa-type-section-title: clamp(24px, 3vw, 38px);
+  --sa-type-card-title: clamp(16px, 1.5vw, 22px);
+  --sa-type-body: clamp(15px, 1.1vw, 17px);
+  --sa-type-label: clamp(10px, 0.8vw, 12px);
+  --sa-type-button: clamp(13px, 1vw, 14px);
+
+  --sa-line-tight: 1.05;
+  --sa-line-heading: 1.15;
+  --sa-line-body: 1.55;
+
+  --sa-motion-fast: 160ms ease-out;
+  --sa-motion-standard: 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --sa-motion-drawer: 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --sa-page-gutter: clamp(14px, 5vw, 20px);
+    --sa-section-padding-y: clamp(var(--sa-space-6), 10vw, var(--sa-space-7));
+    --sa-section-padding-y-compact: clamp(var(--sa-space-5), 8vw, var(--sa-space-6));
+    --sa-card-gap: clamp(12px, 4vw, 18px);
+  }
+}

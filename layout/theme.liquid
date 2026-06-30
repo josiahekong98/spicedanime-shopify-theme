@@ -40,6 +40,9 @@
     {%- render 'settings' -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'sa-tokens.css' | asset_url | stylesheet_tag }}
+    {{ 'sa-components.css' | asset_url | stylesheet_tag }}
+    {{ 'sa-sections.css' | asset_url | stylesheet_tag }}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     {% render 'css', css: 'component-drawer.css' %}
 

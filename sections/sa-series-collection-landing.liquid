@@ -637,9 +637,10 @@
         {% for product in collection.products limit: 6 %}
           <a class="sa-series-product" href="{{ product.url }}">
             {% if product.featured_image %}
-              <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
+                            <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
             {% endif %}
             <h3>{{ product.title }}</h3>
+<div data-shop-id="{{shop.id}}" product-id="{{product.id }}" data-page="{{request.page_type}}" class="ddreview-star"></div>
             <p>{{ product.price_min | money }}</p>
           </a>
         {% endfor %}

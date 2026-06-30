@@ -1,1 +1,318 @@
-{"sections":{"product_bundle_deals_DFRebA":{"type":"product-bundle-deals","custom_css":[".product-bundle-deals {margin-bottom: 4px;}"],"name":"Product Bundle Deals","settings":{}},"main":{"type":"main-product","blocks":{"1e0c79e9-7de0-4eee-b9c5-f27132635fb8":{"type":"title","settings":{"heading_size":"h3","spacing_bottom":"0"}},"badge_hK7aJa":{"type":"badge","settings":{"spacing_bottom":"1","show_badges":true,"show_badges_discount":true,"show_badges_sold":true}},"8effeb43-55b7-4ec4-ab9b-68bcd89b865b":{"type":"price","settings":{"spacing_bottom":"0","show_price_tax_info":true,"show_price_shipping_info":false,"show_price_custom_info":""}},"divider_kJmP4b":{"type":"divider","settings":{"spacing_bottom":"1"}},"1e939cd6-0958-4135-a9e5-c50faef01437":{"type":"variant_picker","settings":{"spacing_bottom":"1","title":"Variant picker","enable_back_in_stock":false,"picker_type":"dropdown","variant_options_with_thumbnails":"Color","size_guide_page":"","sizes_option":"Size"}},"1e939cd6-0955-4135-a9e5-c50faef01437":{"type":"purchase_options","settings":{"spacing_bottom":"1","show_subscription_title":true,"show_subscription_custom_info":"","show_subscription_policy":true}},"8604a6ff-ad0b-44dd-8068-1de4e062f8e8":{"type":"buy_buttons","settings":{"spacing_bottom":"1","show_quantity":false,"layout":"inline","show_dynamic_checkout":false,"show_gift_card_recipient":false}},"e6d841d6-2f71-40b3-956a-912df13f9f6e":{"type":"inventory_notice","settings":{"spacing_bottom":"1","inventory_threshold":15,"notice_just_text":false}},"b2dabe12-2158-4ba6-bc54-9baae453acf5":{"type":"text","settings":{"spacing_bottom":"1","heading":"Free and easy returns","icon":"theme-check","link_to_resource":"none","text_before_link":false,"heading_secondary":"","metafield_for_product_variant":"","show_block_content":true}},"1ad0121e-439d-45c0-b45d-4f080836ade5":{"type":"text","settings":{"spacing_bottom":"1","heading":"Secure payments","icon":"theme-check","link_to_resource":"none","text_before_link":false,"heading_secondary":"","metafield_for_product_variant":"","show_block_content":true}},"text_A7bV6x":{"type":"text","settings":{"spacing_bottom":"1","heading":"Free delivery on orders over $150","icon":"theme-check","link_to_resource":"none","text_before_link":false,"heading_secondary":"","metafield_for_product_variant":"","show_block_content":true}},"description_z7AANy":{"type":"description","settings":{"spacing_bottom":"1","behaviour":"row","heading":"","text_truncate":3,"icon":"","metafield_for_product_variant":"","show_block_content":true}},"content_block_aXjKBq":{"type":"content_block","settings":{"spacing_bottom":"1","heading":"Delivery & Returns","row_content":"<ul><li>Free shipping on US orders over $150<\/li><li>US Flat Rate Shipping $5<\/li><li>International shipping & duties charges calculated at checkout<\/li><li>Carbon-Neutral Shipping<\/li><li>All of our packaging is plastic-free and recyclable. <br\/><\/li><\/ul>","icon":"","page":"","metafield_for_product_variant":"","show_block_content":true}},"content_block_JXcJef":{"type":"content_block","settings":{"spacing_bottom":"1","heading":"Shipping","row_content":"<ul><li>Free shipping on US orders over $150<\/li><li>US Flat Rate Shipping $5<\/li><li>International shipping & duties charges calculated at checkout<\/li><li>Carbon-Neutral Shipping<\/li><li>All of our packaging is plastic-free and recyclable. <\/li><li>Yes we offer international shipping to most countries<\/li><li>You'll automatically recieve a tracking link once your order has shipped.<br\/><\/li><\/ul>","icon":"","page":"","metafield_for_product_variant":"","show_block_content":true}},"breadcrumbs_UGFmBV":{"type":"breadcrumbs","disabled":true,"settings":{}},"goback_Hz9gef":{"type":"goback","settings":{"goback_style":"filled","goback_label":"","display_goback_mobile":"on-media","show_on":"mobile"}},"complementary_products_HQH74T":{"type":"complementary_products","settings":{"spacing_bottom":"1","heading":"Complete your routine","icon":"option-plant","limit":4}}},"block_order":["1e0c79e9-7de0-4eee-b9c5-f27132635fb8","badge_hK7aJa","8effeb43-55b7-4ec4-ab9b-68bcd89b865b","divider_kJmP4b","1e939cd6-0958-4135-a9e5-c50faef01437","1e939cd6-0955-4135-a9e5-c50faef01437","8604a6ff-ad0b-44dd-8068-1de4e062f8e8","e6d841d6-2f71-40b3-956a-912df13f9f6e","b2dabe12-2158-4ba6-bc54-9baae453acf5","1ad0121e-439d-45c0-b45d-4f080836ade5","text_A7bV6x","description_z7AANy","content_block_aXjKBq","content_block_JXcJef","breadcrumbs_UGFmBV","goback_Hz9gef","complementary_products_HQH74T"],"custom_css":[],"settings":{"product_media_layout":"product__media-layout--full","product_media_layout_mobile":"product__media-layout--partial--sm","product_media_aspect_ratio":"auto","product_media_object_fit":"contain","product_slider_auto_height":false,"media_transparent_background":true,"display_media_zoom":"none","product_media_with_thumbs":"desktop_and_mobile","product_media_thumbs_ratio":"square","product_media_thumbs_object_fit":"cover","gallery_arrows_show_on":"desktop","display_media_gallery_pagination":"none","media_gallery_info":"","metafield_as_seen_on":"","color_scheme_gallery":"scheme-5","enable_sticky_info":true,"enable_actions_bar":true,"media_grid_size":"medium","media_grid_position":"start","grid_gap":"2","spacing_grid":1.6,"grid_content_alignment":"start","section_width":"max-w-fluid","color_scheme":"scheme-5","spacing_top":"0","spacing_bottom":"1"}},"753757662477391814":{"type":"apps","blocks":{"0202d3b0-6742-4544-83be-1397136ef522":{"type":"shopify:\/\/apps\/dadao-product-reviews\/blocks\/product-reviews\/3cc4253a-05eb-4164-8778-b76d83ce00cc","settings":{"product":"{{product}}","show_sample_reviews":true}}},"block_order":["0202d3b0-6742-4544-83be-1397136ef522"],"disabled":true,"settings":{"section_layout":"normal","spacing_inner":"2","section_width":"max-w-page","color_scheme":"","spacing_top":"2","spacing_bottom":"2"}},"recommendations":{"type":"product-recommendations","disabled":true,"settings":{"layout":"layout-2","enable_slideshow_overflow":false,"heading":"You may also like","heading_size":"h3","subheading":"","button_label":"View all","button_link":"","button_style":"button--text","show_navigation_arrows":true,"slider_autoplay":10,"tabs_button_style":"tab-btn-filled","max_products":8,"show_unavailable_products":false,"section_width":"max-w-fluid","color_scheme":"scheme-1","spacing_top":"4","spacing_bottom":"4"}},"330849762908770426":{"type":"apps","blocks":{"47a58b38-be77-4207-bab7-cc1e595d3dc2":{"type":"shopify:\/\/apps\/dadao-product-reviews\/blocks\/featured-reviews\/3cc4253a-05eb-4164-8778-b76d83ce00cc","disabled":true,"settings":{}}},"block_order":["47a58b38-be77-4207-bab7-cc1e595d3dc2"],"disabled":true,"settings":{"section_layout":"normal","spacing_inner":"2","section_width":"max-w-page","color_scheme":"","spacing_top":"2","spacing_bottom":"2"}}},"order":["product_bundle_deals_DFRebA","main","753757662477391814","recommendations","330849762908770426"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "753757662477391814": {
+      "settings": {
+        "spacing_top": "2",
+        "spacing_inner": "2",
+        "spacing_bottom": "2",
+        "section_layout": "normal",
+        "section_width": "max-w-page",
+        "color_scheme": ""
+      },
+      "blocks": {
+        "0202d3b0-6742-4544-83be-1397136ef522": {
+          "settings": {
+            "product": "{{product}}",
+            "show_sample_reviews": true
+          },
+          "type": "shopify://apps/dadao-product-reviews/blocks/product-reviews/3cc4253a-05eb-4164-8778-b76d83ce00cc"
+        }
+      },
+      "disabled": true,
+      "type": "apps",
+      "block_order": [
+        "0202d3b0-6742-4544-83be-1397136ef522"
+      ]
+    },
+    "product_bundle_deals_DFRebA": {
+      "settings": {},
+      "name": "Product Bundle Deals",
+      "custom_css": [
+        ".product-bundle-deals {margin-bottom: 4px;}"
+      ],
+      "type": "product-bundle-deals"
+    },
+    "330849762908770426": {
+      "settings": {
+        "spacing_top": "2",
+        "spacing_inner": "2",
+        "spacing_bottom": "2",
+        "section_layout": "normal",
+        "section_width": "max-w-page",
+        "color_scheme": ""
+      },
+      "blocks": {
+        "47a58b38-be77-4207-bab7-cc1e595d3dc2": {
+          "settings": {},
+          "disabled": true,
+          "type": "shopify://apps/dadao-product-reviews/blocks/featured-reviews/3cc4253a-05eb-4164-8778-b76d83ce00cc"
+        }
+      },
+      "disabled": true,
+      "type": "apps",
+      "block_order": [
+        "47a58b38-be77-4207-bab7-cc1e595d3dc2"
+      ]
+    },
+    "main": {
+      "settings": {
+        "enable_sticky_info": true,
+        "spacing_top": "0",
+        "product_media_with_thumbs": "desktop_and_mobile",
+        "product_media_object_fit": "contain",
+        "color_scheme_gallery": "scheme-5",
+        "section_width": "max-w-fluid",
+        "media_grid_size": "medium",
+        "product_media_aspect_ratio": "auto",
+        "product_slider_auto_height": false,
+        "grid_content_alignment": "start",
+        "color_scheme": "scheme-5",
+        "product_media_layout": "product__media-layout--full",
+        "spacing_grid": 1.6,
+        "enable_actions_bar": true,
+        "product_media_thumbs_object_fit": "cover",
+        "media_grid_position": "start",
+        "grid_gap": "2",
+        "display_media_gallery_pagination": "none",
+        "metafield_as_seen_on": "",
+        "gallery_arrows_show_on": "desktop",
+        "media_transparent_background": true,
+        "media_gallery_info": "",
+        "spacing_bottom": "1",
+        "display_media_zoom": "none",
+        "product_media_layout_mobile": "product__media-layout--partial--sm",
+        "product_media_thumbs_ratio": "square"
+      },
+      "blocks": {
+        "1e0c79e9-7de0-4eee-b9c5-f27132635fb8": {
+          "settings": {
+            "spacing_bottom": "0",
+            "heading_size": "h3"
+          },
+          "type": "title"
+        },
+        "1e939cd6-0955-4135-a9e5-c50faef01437": {
+          "settings": {
+            "show_subscription_custom_info": "",
+            "show_subscription_policy": true,
+            "spacing_bottom": "1",
+            "show_subscription_title": true
+          },
+          "type": "purchase_options"
+        },
+        "goback_Hz9gef": {
+          "settings": {
+            "goback_style": "filled",
+            "display_goback_mobile": "on-media",
+            "show_on": "mobile",
+            "goback_label": ""
+          },
+          "type": "goback"
+        },
+        "divider_kJmP4b": {
+          "settings": {
+            "spacing_bottom": "1"
+          },
+          "type": "divider"
+        },
+        "1ad0121e-439d-45c0-b45d-4f080836ade5": {
+          "settings": {
+            "link_to_resource": "none",
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "Secure payments",
+            "heading_secondary": "",
+            "icon": "theme-check",
+            "metafield_for_product_variant": "",
+            "text_before_link": false
+          },
+          "type": "text"
+        },
+        "description_z7AANy": {
+          "settings": {
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "",
+            "icon": "",
+            "behaviour": "row",
+            "metafield_for_product_variant": "",
+            "text_truncate": 3
+          },
+          "type": "description"
+        },
+        "content_block_aXjKBq": {
+          "settings": {
+            "row_content": "<ul><li>Free shipping on US orders over $150</li><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All of our packaging is plastic-free and recyclable. <br/></li></ul>",
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "Delivery & Returns",
+            "icon": "",
+            "page": "",
+            "metafield_for_product_variant": ""
+          },
+          "type": "content_block"
+        },
+        "1e939cd6-0958-4135-a9e5-c50faef01437": {
+          "settings": {
+            "variant_options_with_thumbnails": "Color",
+            "size_guide_page": "",
+            "spacing_bottom": "1",
+            "sizes_option": "Size",
+            "picker_type": "dropdown",
+            "title": "Variant picker",
+            "enable_back_in_stock": false
+          },
+          "type": "variant_picker"
+        },
+        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8": {
+          "settings": {
+            "layout": "inline",
+            "show_dynamic_checkout": false,
+            "spacing_bottom": "1",
+            "show_gift_card_recipient": false,
+            "show_quantity": false
+          },
+          "type": "buy_buttons"
+        },
+        "b2dabe12-2158-4ba6-bc54-9baae453acf5": {
+          "settings": {
+            "link_to_resource": "none",
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "Free and easy returns",
+            "heading_secondary": "",
+            "icon": "theme-check",
+            "metafield_for_product_variant": "",
+            "text_before_link": false
+          },
+          "type": "text"
+        },
+        "text_A7bV6x": {
+          "settings": {
+            "link_to_resource": "none",
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "Free delivery on orders over $150",
+            "heading_secondary": "",
+            "icon": "theme-check",
+            "metafield_for_product_variant": "",
+            "text_before_link": false
+          },
+          "type": "text"
+        },
+        "complementary_products_HQH74T": {
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Complete your routine",
+            "icon": "option-plant",
+            "limit": 4
+          },
+          "type": "complementary_products"
+        },
+        "content_block_JXcJef": {
+          "settings": {
+            "row_content": "<ul><li>Free shipping on US orders over $150</li><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All of our packaging is plastic-free and recyclable. </li><li>Yes we offer international shipping to most countries</li><li>You'll automatically recieve a tracking link once your order has shipped.<br/></li></ul>",
+            "show_block_content": true,
+            "spacing_bottom": "1",
+            "heading": "Shipping",
+            "icon": "",
+            "page": "",
+            "metafield_for_product_variant": ""
+          },
+          "type": "content_block"
+        },
+        "badge_hK7aJa": {
+          "settings": {
+            "show_badges_sold": true,
+            "spacing_bottom": "1",
+            "show_badges_discount": true,
+            "show_badges": true
+          },
+          "type": "badge"
+        },
+        "e6d841d6-2f71-40b3-956a-912df13f9f6e": {
+          "settings": {
+            "notice_just_text": false,
+            "spacing_bottom": "1",
+            "inventory_threshold": 15
+          },
+          "type": "inventory_notice"
+        },
+        "breadcrumbs_UGFmBV": {
+          "settings": {},
+          "disabled": true,
+          "type": "breadcrumbs"
+        },
+        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b": {
+          "settings": {
+            "spacing_bottom": "0",
+            "show_price_shipping_info": false,
+            "show_price_tax_info": true,
+            "show_price_custom_info": ""
+          },
+          "type": "price"
+        }
+      },
+      "custom_css": [],
+      "type": "main-product",
+      "block_order": [
+        "1e0c79e9-7de0-4eee-b9c5-f27132635fb8",
+        "badge_hK7aJa",
+        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b",
+        "divider_kJmP4b",
+        "1e939cd6-0958-4135-a9e5-c50faef01437",
+        "1e939cd6-0955-4135-a9e5-c50faef01437",
+        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8",
+        "e6d841d6-2f71-40b3-956a-912df13f9f6e",
+        "b2dabe12-2158-4ba6-bc54-9baae453acf5",
+        "1ad0121e-439d-45c0-b45d-4f080836ade5",
+        "text_A7bV6x",
+        "description_z7AANy",
+        "content_block_aXjKBq",
+        "content_block_JXcJef",
+        "breadcrumbs_UGFmBV",
+        "goback_Hz9gef",
+        "complementary_products_HQH74T"
+      ]
+    },
+    "recommendations": {
+      "settings": {
+        "tabs_button_style": "tab-btn-filled",
+        "spacing_top": "4",
+        "button_style": "button--text",
+        "heading": "You may also like",
+        "slider_autoplay": 10,
+        "section_width": "max-w-fluid",
+        "show_navigation_arrows": true,
+        "heading_size": "h3",
+        "layout": "layout-2",
+        "show_unavailable_products": false,
+        "spacing_bottom": "4",
+        "enable_slideshow_overflow": false,
+        "max_products": 8,
+        "button_link": "",
+        "color_scheme": "scheme-1",
+        "button_label": "View all",
+        "subheading": ""
+      },
+      "disabled": true,
+      "type": "product-recommendations"
+    }
+  },
+  "order": [
+    "product_bundle_deals_DFRebA",
+    "main",
+    "753757662477391814",
+    "recommendations",
+    "330849762908770426"
+  ]
+}

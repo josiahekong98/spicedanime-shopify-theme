@@ -73,38 +73,32 @@
       opacity: 0.62;
     }
 
-    #shopify-section-{{ section.id }} .sa-explore-paths__image {
+    #shopify-section-{{ section.id }} .sa-explore-paths__thumb {
+      position: absolute;
+      inset: var(--sa-space-4) auto auto var(--sa-space-4);
+      z-index: 2;
+      width: 82px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--sa-card-accent) 72%, var(--sa-museum-ivory));
+      border-radius: var(--sa-radius-xs);
+      background: rgba(16, 16, 16, 0.68);
+      box-shadow: 0 0 28px color-mix(in srgb, var(--sa-card-accent) 20%, transparent);
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__thumb-image {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      opacity: 0.78;
+      opacity: 0.9;
       transform: scale(1.01);
       transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
     }
 
-    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__image {
-      opacity: 0.92;
+    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__thumb-image {
+      opacity: 1;
       transform: scale(1.035);
-    }
-
-    #shopify-section-{{ section.id }} .sa-explore-paths__icon {
-      position: absolute;
-      inset: var(--sa-space-4) auto auto var(--sa-space-4);
-      z-index: 2;
-      width: 46px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border: 1px solid color-mix(in srgb, var(--sa-card-accent) 72%, var(--sa-museum-ivory));
-      border-radius: var(--sa-radius-xs);
-      background: rgba(16, 16, 16, 0.68);
-      color: var(--sa-museum-ivory);
-      font-family: var(--sa-font-archive);
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      box-shadow: 0 0 28px color-mix(in srgb, var(--sa-card-accent) 20%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__content {
@@ -179,40 +173,45 @@
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-explore-paths__header {
         gap: var(--sa-space-2);
-        margin-block-end: var(--sa-space-4);
+        margin-block-end: var(--sa-space-5);
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__grid {
-        gap: var(--sa-space-4);
+        gap: var(--sa-space-3);
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__card {
-        min-height: 236px;
+        min-height: 196px;
       }
 
-      #shopify-section-{{ section.id }} .sa-explore-paths__icon {
-        width: 38px;
-        height: 32px;
-        font-size: 11px;
+      #shopify-section-{{ section.id }} .sa-explore-paths__thumb {
+        inset-block-start: var(--sa-space-3);
+        inset-inline-start: var(--sa-space-3);
+        width: 58px;
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__content {
-        padding: var(--sa-space-4);
-        gap: var(--sa-space-2);
+        padding: var(--sa-space-3);
+        gap: var(--sa-space-1);
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__text {
-        font-size: 15px;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      #shopify-section-{{ section.id }} .sa-explore-paths__cta {
+        margin-block-start: var(--sa-space-1);
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #shopify-section-{{ section.id }} .sa-explore-paths__image,
+      #shopify-section-{{ section.id }} .sa-explore-paths__thumb-image,
       #shopify-section-{{ section.id }} .sa-explore-paths__cta::after {
         transition-duration: 1ms;
       }
 
-      #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__image {
+      #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__thumb-image {
         transform: none;
       }
     }
@@ -240,8 +239,12 @@
             assign card_heading = block.settings.heading | default: 'Explore Path'
             assign card_text = block.settings.text
             assign card_label = block.settings.label | default: 'PATH'
-            assign card_icon = block.settings.icon_label | default: card_heading | slice: 0, 1
             assign card_cta = block.settings.link_label | default: 'Enter Archive'
+            if card_cta == 'Shop Series'
+              assign card_cta = 'Shop by Series'
+            elsif card_cta == 'Shop Lifestyle'
+              assign card_cta = 'Shop by Lifestyle'
+            endif
             assign card_link = block.settings.link
             assign card_accent = block.settings.accent_color | default: '#B3362D'
             assign card_aria = block.settings.accessibility_label
@@ -251,13 +254,13 @@
           %}
 
           {% capture card_inner %}
-            <span class="sa-explore-paths__media" aria-hidden="true">
-              {% if block.settings.image != blank %}
-                {{ block.settings.image | image_url: width: 1200 | image_tag: class: 'sa-explore-paths__image', loading: 'lazy', sizes: '(min-width: 768px) 33vw, 100vw', widths: '360, 540, 720, 900, 1200', alt: block.settings.image.alt | default: card_heading | escape }}
-              {% endif %}
-            </span>
+            <span class="sa-explore-paths__media" aria-hidden="true"></span>
 
-            <span class="sa-explore-paths__icon" aria-hidden="true">{{ card_icon | escape }}</span>
+            {% if block.settings.image != blank %}
+              <span class="sa-explore-paths__thumb" aria-hidden="true">
+                {{ block.settings.image | image_url: width: 240 | image_tag: class: 'sa-explore-paths__thumb-image', loading: 'lazy', sizes: '(min-width: 768px) 82px, 58px', widths: '96, 144, 192, 240', alt: block.settings.image.alt | default: card_heading | escape }}
+              </span>
+            {% endif %}
 
             <span class="sa-explore-paths__content">
               <span class="sa-explore-paths__archive-label sa-archive-label">{{ card_label | escape }}</span>
@@ -345,7 +348,8 @@
         {
           "type": "text",
           "id": "icon_label",
-          "label": "Fallback icon text",
+          "label": "Legacy fallback icon text",
+          "info": "Deprecated. This section now hides placeholder letters and uses the image picker for optional editorial thumbnails.",
           "default": "S"
         },
         {
@@ -392,7 +396,7 @@
             "heading": "Explore by Series",
             "text": "Start with your anime universe, then narrow into lighters, wallets, grinders, tapestries, and matching sets.",
             "icon_label": "S",
-            "link_label": "Shop Series",
+            "link_label": "Shop by Series",
             "accent_color": "#B3362D"
           }
         },
@@ -414,7 +418,7 @@
             "heading": "Explore by Lifestyle",
             "text": "Build a smoke session, everyday carry, room decor wall, desk setup, travel kit, or gift path.",
             "icon_label": "L",
-            "link_label": "Shop Lifestyle",
+            "link_label": "Shop by Lifestyle",
             "accent_color": "#2F5138"
           }
         }

@@ -9,6 +9,167 @@
  */
 {
   "sections": {
+    "sa_top_series_WngH7B": {
+      "type": "sa-top-series",
+      "blocks": {
+        "series_94QzJM": {
+          "type": "series",
+          "settings": {
+            "series_name": "One Piece",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "top_seller",
+            "accessibility_label": "",
+            "accent_color": "#B3362D"
+          }
+        },
+        "series_n7eB3W": {
+          "type": "series",
+          "settings": {
+            "series_name": "Cowboy Bebop",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "trending",
+            "accessibility_label": "",
+            "accent_color": "#C45A2A"
+          }
+        },
+        "series_xmkDkt": {
+          "type": "series",
+          "settings": {
+            "series_name": "Naruto",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "top_seller",
+            "accessibility_label": "",
+            "accent_color": "#2F5138"
+          }
+        },
+        "series_XYJC9Y": {
+          "type": "series",
+          "settings": {
+            "series_name": "Bleach",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "trending",
+            "accessibility_label": "",
+            "accent_color": "#332A52"
+          }
+        },
+        "series_QcMqB3": {
+          "type": "series",
+          "settings": {
+            "series_name": "JJK",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#9D7A3C"
+          }
+        },
+        "series_K3JpHm": {
+          "type": "series",
+          "settings": {
+            "series_name": "Dragon Ball Z",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#B3362D"
+          }
+        },
+        "series_egEFRC": {
+          "type": "series",
+          "settings": {
+            "series_name": "Demon Slayer",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#C45A2A"
+          }
+        },
+        "series_9JQrbA": {
+          "type": "series",
+          "settings": {
+            "series_name": "Pokemon",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#2F5138"
+          }
+        },
+        "series_mpRBwd": {
+          "type": "series",
+          "settings": {
+            "series_name": "Hunter x Hunter",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#332A52"
+          }
+        },
+        "series_XWiEQw": {
+          "type": "series",
+          "settings": {
+            "series_name": "Jojo",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#9D7A3C"
+          }
+        },
+        "series_HxQFVQ": {
+          "type": "series",
+          "settings": {
+            "series_name": "Evangelion",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#B3362D"
+          }
+        },
+        "series_fDNxam": {
+          "type": "series",
+          "settings": {
+            "series_name": "Samurai Champloo",
+            "collection_link": "",
+            "product_count_text": "",
+            "badge": "none",
+            "accessibility_label": "",
+            "accent_color": "#C45A2A"
+          }
+        }
+      },
+      "block_order": [
+        "series_94QzJM",
+        "series_n7eB3W",
+        "series_xmkDkt",
+        "series_XYJC9Y",
+        "series_QcMqB3",
+        "series_K3JpHm",
+        "series_egEFRC",
+        "series_9JQrbA",
+        "series_mpRBwd",
+        "series_XWiEQw",
+        "series_HxQFVQ",
+        "series_fDNxam"
+      ],
+      "name": "SA Top Series",
+      "settings": {
+        "label": "SERIES ARCHIVE",
+        "heading": "Shop Top Performing Series",
+        "intro": "Enter through the fandom first. These series paths help customers find the product families and matching sets they might miss in a standard grid.",
+        "visible_count": "12",
+        "mobile_layout": "scroll",
+        "view_all_label": "View All Series",
+        "view_all_link": ""
+      }
+    },
     "1658995208ad05f95f": {
       "type": "hero-banner",
       "blocks": {
@@ -178,6 +339,7 @@
     },
     "custom_liquid_XHQ6pD": {
       "type": "custom-liquid",
+      "disabled": true,
       "name": "shop by product type",
       "settings": {
         "custom_liquid": "<style>\n/* WRAPPER – full bleed, breaks out of Shopify container */\n.anime-slider-wrap {\n  background:#1F1F1F;\n  padding:12px 0px 0;\n  margin:0;\n\n  width:100vw;\n  position:relative;\n  left:50%;\n  right:50%;\n  margin-left:-50vw;\n  margin-right:-50vw;\n}\n\n\n/* HEADING */\n.anime-slider-heading {\n  margin:-20px 0 12px;\n  text-align:center;\n  font-weight:300;\n  letter-spacing:.18em;\n  font-size:16px;\n  text-transform:uppercase;\n  color:#ededed;\n}\n\n/* SLIDER – edge-to-edge */\n.anime-slider {\n  display:flex;\n  overflow-x:auto;\n  gap:12px;\n  padding:0 0 4px;\n  margin:0;\n  scroll-snap-type:x mandatory;\n  -webkit-overflow-scrolling:touch;\n}\n\n/* Scrollbar */\n.anime-slider::-webkit-scrollbar { height:3px; }\n.anime-slider::-webkit-scrollbar-track { background:#1a1a1a; }\n.anime-slider::-webkit-scrollbar-thumb {\n  background:#373737;\n  border-radius:10px;\n}\n\n/* CARD – show 2.3 at once */\n.anime-collection-card {\n  flex:0 0 40%;      /* THE FIX — perfect Fumicase ratio */\n  scroll-snap-align:start;\n  text-align:center;\n  text-decoration:none;\n  border-radius:0 !important;\n}\n\n/* IMAGE */\n.anime-collection-card img {\n  width:100%;\n  height:auto;\n  border-radius:0 !important;\n  display:block;\n  transition:transform .18s ease;\n}\n\n.anime-collection-card:hover img {\n  transform:scale(1.025);\n}\n\n/* TITLE */\n.anime-collection-title {\n  font-size:10px;\n  font-weight:400;\n  text-transform:uppercase;\n  letter-spacing:.14em;\n  margin-top:4px;\n  line-height:1.2;\n  color:#ededed;\n  display:inline-block;\n  position:relative;\n  padding-bottom:1px;\n}\n\n/* UNDERLINE */\n.anime-collection-title::after {\n  content:\"\";\n  position:absolute;\n  bottom:-1px;\n  left:0;\n  width:100%;\n  height:1px;\n  background:#dcdcdc;\n  transform:scaleX(0);\n  transform-origin:left center;\n  transition:transform .18s ease;\n}\n\n.anime-collection-card:hover .anime-collection-title::after {\n  transform:scaleX(1);\n}\n</style>\n\n\n\n<div class=\"anime-slider-wrap\">\n\n  <div class=\"anime-slider-heading\">SHOP BY PRODUCT TYPE</div>\n\n  <div class=\"anime-slider\">\n\n   {% assign priority_order = \"Lighters|Graphic Anime Tapestries Designed Like Wall Art|Grinder Sets\" | split: \"|\" %}\n\n{% for priority_title in priority_order %}\n  {% for collection in collections %}\n    {% if collection.title contains \"(category)\" %}\n      {% assign clean_title = collection.title | replace: \"(category)\", \"\" | strip %}\n\n      {% if clean_title == priority_title %}\n\n        {% assign card_link = collection.url %}\n\n        {% if clean_title == \"Grinder Sets\" %}\n          {% assign card_link = \"/pages/grinder-sets\" %}\n        {% elsif clean_title == \"Rolling Trays\" %}\n          {% assign card_link = \"/pages/anime-rolling-trays\" %}\n        {% elsif clean_title == \"Lighters\" %}\n          {% assign card_link = \"/pages/anime-lighters\" %}\n        {% elsif clean_title == \"Stash Jars\" %}\n          {% assign card_link = \"/pages/anime-stash-jars\" %}\n        {% elsif clean_title == \"Graphic Anime Tapestries Designed Like Wall Art\" %}\n          {% assign card_link = \"/pages/anime-tapestries\" %}\n        {% endif %}\n\n        <a href=\"{{ card_link }}\" class=\"anime-collection-card\">\n          {% if collection.image %}\n            <img src=\"{{ collection.image | img_url: '540x540' }}\" alt=\"{{ clean_title }}\">\n          {% endif %}\n          <div class=\"anime-collection-title\">{{ clean_title }}</div>\n        </a>\n\n      {% endif %}\n    {% endif %}\n  {% endfor %}\n{% endfor %}\n\n{% for collection in collections %}\n  {% if collection.title contains \"(category)\" %}\n    {% assign clean_title = collection.title | replace: \"(category)\", \"\" | strip %}\n\n    {% unless priority_order contains clean_title %}\n\n      {% assign card_link = collection.url %}\n\n      {% if clean_title == \"Rolling Trays\" %}\n        {% assign card_link = \"/pages/anime-rolling-trays\" %}\n      {% elsif clean_title == \"Stash Jars\" %}\n        {% assign card_link = \"/pages/anime-stash-jars\" %}\n      {% endif %}\n\n      <a href=\"{{ card_link }}\" class=\"anime-collection-card\">\n        {% if collection.image %}\n          <img src=\"{{ collection.image | img_url: '540x540' }}\" alt=\"{{ clean_title }}\">\n        {% endif %}\n        <div class=\"anime-collection-title\">{{ clean_title }}</div>\n      </a>\n\n    {% endunless %}\n  {% endif %}\n{% endfor %}\n\n  </div>\n\n</div>\n\n\n<script>\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  const slider = document.querySelector(\".anime-slider\");\n  if (!slider) return;\n\n  let isDown = false;\n  let startX = 0;\n  let scrollLeft = 0;\n\n  slider.addEventListener(\"mousedown\", e => {\n    isDown = true;\n    startX = e.pageX - slider.offsetLeft;\n    scrollLeft = slider.scrollLeft;\n  });\n\n  slider.addEventListener(\"mouseleave\", () => { isDown = false; });\n  slider.addEventListener(\"mouseup\", () => { isDown = false; });\n\n  slider.addEventListener(\"mousemove\", e => {\n    if (!isDown) return;\n    e.preventDefault();\n    const x = e.pageX - slider.offsetLeft;\n    slider.scrollLeft = scrollLeft - (x - startX) * 1.5;\n  });\n});\n</script>",
@@ -189,6 +351,7 @@
     },
     "custom_liquid_7rGzw4": {
       "type": "custom-liquid",
+      "disabled": true,
       "custom_css": [],
       "name": "shop by anime",
       "settings": {
@@ -212,6 +375,7 @@
     },
     "best_selling_grid_QdawFr": {
       "type": "best-selling-grid",
+      "disabled": true,
       "custom_css": [
         "/* IMAGE: PERFECT SQUARE BUT SMALLER */.custom-image-wrap {position: relative; width: 100%;}",
         ".product-img {width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 6px; display: block; transition: transform 0.18s ease; max-height: 240px; /* keeps cards from being massive */}",
@@ -463,6 +627,7 @@
   "order": [
     "1658995208ad05f95f",
     "announcement_bar_hNziXA",
+    "sa_top_series_WngH7B",
     "sa_explore_paths_LCD4k8",
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",

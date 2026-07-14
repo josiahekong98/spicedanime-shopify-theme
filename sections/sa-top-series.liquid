@@ -3,7 +3,7 @@
   assign section_heading = section.settings.heading | default: 'Shop Top Performing Series'
   assign section_intro = section.settings.intro | default: 'Start with the fandom, then discover the product families, matching sets, and archive finds inside each series.'
   assign visible_count = section.settings.visible_count | plus: 0
-  assign mobile_layout = section.settings.mobile_layout | default: 'scroll'
+  assign mobile_layout = section.settings.mobile_layout | default: 'grid'
 %}
 
 <section class="sa-section sa-section--archive-black sa-top-series sa-top-series--mobile-{{ mobile_layout }}" aria-labelledby="sa-top-series-title-{{ section.id }}">
@@ -27,6 +27,15 @@
       max-width: 780px;
     }
 
+    #shopify-section-{{ section.id }} .sa-top-series__heading-group .sa-heading {
+      color: var(--sa-museum-ivory);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__heading-group .sa-copy {
+      color: var(--sa-gallery-stone);
+      max-width: 62ch;
+    }
+
     #shopify-section-{{ section.id }} .sa-top-series__cta {
       flex: 0 0 auto;
     }
@@ -38,11 +47,12 @@
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__card {
-      min-height: 280px;
+      min-height: 254px;
       display: grid;
       align-content: stretch;
       text-decoration: none;
       --sa-series-accent: var(--sa-relic-red);
+      border-radius: var(--sa-radius-md);
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__card:hover {
@@ -52,7 +62,7 @@
 
     #shopify-section-{{ section.id }} .sa-top-series__image-wrap {
       position: relative;
-      min-height: 188px;
+      min-height: 166px;
       background: var(--sa-archive-black);
       overflow: hidden;
     }
@@ -69,7 +79,7 @@
     #shopify-section-{{ section.id }} .sa-top-series__image {
       width: 100%;
       height: 100%;
-      min-height: 188px;
+      min-height: 166px;
       display: block;
       object-fit: cover;
       opacity: 0.86;
@@ -83,15 +93,28 @@
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__fallback {
-      min-height: 188px;
+      min-height: 166px;
       display: grid;
+      gap: var(--sa-space-2);
       place-items: center;
+      align-content: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.12), transparent 58%), var(--sa-texture-concrete), var(--sa-surface-panel);
       color: var(--sa-gallery-stone);
       font-family: var(--sa-font-archive);
-      font-size: clamp(28px, 4vw, 44px);
-      letter-spacing: 0.1em;
+      text-align: center;
       text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__fallback-label {
+      color: color-mix(in srgb, var(--sa-series-accent) 78%, var(--sa-gallery-stone));
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__fallback-initials {
+      color: var(--sa-gallery-stone);
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: 0.12em;
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__badge {
@@ -188,7 +211,7 @@
       #shopify-section-{{ section.id }} .sa-top-series__image-wrap,
       #shopify-section-{{ section.id }} .sa-top-series__image,
       #shopify-section-{{ section.id }} .sa-top-series__fallback {
-        min-height: 152px;
+        min-height: 126px;
       }
 
       #shopify-section-{{ section.id }} .sa-top-series--mobile-scroll .sa-top-series__wall,
@@ -209,7 +232,7 @@
       }
 
       #shopify-section-{{ section.id }} .sa-top-series__card {
-        flex: 0 0 min(78vw, 320px);
+        flex: 0 0 min(64vw, 260px);
         scroll-snap-align: start;
       }
 
@@ -223,6 +246,18 @@
 
       #shopify-section-{{ section.id }} .sa-top-series--mobile-grid .sa-top-series__card {
         flex: initial;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__content {
+        padding: var(--sa-space-3);
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__name {
+        font-size: clamp(16px, 5vw, 20px);
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__meta {
+        font-size: 10px;
       }
     }
 
@@ -290,7 +325,10 @@
                 {% if block.settings.image != blank %}
                   {{ block.settings.image | image_url: width: 900 | image_tag: class: 'sa-top-series__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 78vw', widths: '320, 480, 640, 760, 900', alt: block.settings.image.alt | default: series_name | escape }}
                 {% else %}
-                  <span class="sa-top-series__fallback">{{ initials_source | escape }}</span>
+                  <span class="sa-top-series__fallback">
+                    <span class="sa-top-series__fallback-label">Series File</span>
+                    <span class="sa-top-series__fallback-initials">{{ initials_source | escape }}</span>
+                  </span>
                 {% endif %}
 
                 {% if badge != 'none' %}
@@ -376,7 +414,7 @@
         { "value": "scroll", "label": "Horizontal scroll" },
         { "value": "grid", "label": "2-column grid" }
       ],
-      "default": "scroll"
+      "default": "grid"
     },
     {
       "type": "text",

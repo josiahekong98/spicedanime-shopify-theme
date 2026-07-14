@@ -1,0 +1,474 @@
+{% liquid
+  assign section_label = section.settings.label | default: 'SERIES ARCHIVE'
+  assign section_heading = section.settings.heading | default: 'Shop Top Performing Series'
+  assign section_intro = section.settings.intro | default: 'Start with the fandom, then discover the product families, matching sets, and archive finds inside each series.'
+  assign visible_count = section.settings.visible_count | plus: 0
+  assign mobile_layout = section.settings.mobile_layout | default: 'scroll'
+%}
+
+<section class="sa-section sa-section--archive-black sa-top-series sa-top-series--mobile-{{ mobile_layout }}" aria-labelledby="sa-top-series-title-{{ section.id }}">
+  <style>
+    #shopify-section-{{ section.id }} .sa-top-series__header {
+      display: grid;
+      gap: var(--sa-space-3);
+      margin-block-end: var(--sa-space-6);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__header-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--sa-space-5);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__heading-group {
+      display: grid;
+      gap: var(--sa-space-3);
+      max-width: 780px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__cta {
+      flex: 0 0 auto;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__wall {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sa-card-gap);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__card {
+      min-height: 280px;
+      display: grid;
+      align-content: stretch;
+      text-decoration: none;
+      --sa-series-accent: var(--sa-relic-red);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__card:hover {
+      border-color: var(--sa-series-accent);
+      box-shadow: var(--sa-shadow-card), 0 0 0 1px rgba(179, 54, 45, 0.34);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__image-wrap {
+      position: relative;
+      min-height: 188px;
+      background: var(--sa-archive-black);
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__image-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 34%, rgba(11, 11, 11, 0.74)), var(--sa-texture-concrete);
+      opacity: 0.82;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__image {
+      width: 100%;
+      height: 100%;
+      min-height: 188px;
+      display: block;
+      object-fit: cover;
+      opacity: 0.86;
+      transform: scale(1.01);
+      transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__card:hover .sa-top-series__image {
+      opacity: 0.96;
+      transform: scale(1.035);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__fallback {
+      min-height: 188px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle, rgba(244, 240, 232, 0.12), transparent 58%), var(--sa-texture-concrete), var(--sa-surface-panel);
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-archive);
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__badge {
+      position: absolute;
+      inset: var(--sa-space-3) var(--sa-space-3) auto auto;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__content {
+      display: grid;
+      gap: var(--sa-space-3);
+      padding: var(--sa-space-4);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__name-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: var(--sa-space-3);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__name {
+      margin: 0;
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-display);
+      font-size: var(--sa-type-card-title);
+      line-height: var(--sa-line-heading);
+      letter-spacing: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__index {
+      color: var(--sa-series-accent);
+      font-family: var(--sa-font-archive);
+      font-size: var(--sa-type-label);
+      letter-spacing: 0.12em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sa-space-2);
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-archive);
+      font-size: var(--sa-type-label);
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__meta::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--sa-series-accent);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__empty {
+      padding: var(--sa-space-6);
+      border: var(--sa-border-hairline);
+      border-radius: var(--sa-radius-md);
+      background: rgba(16, 16, 16, 0.72);
+      color: var(--sa-gallery-stone);
+    }
+
+    @media screen and (max-width: 1199px) {
+      #shopify-section-{{ section.id }} .sa-top-series__wall {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 899px) {
+      #shopify-section-{{ section.id }} .sa-top-series__header-row {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__wall {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} .sa-top-series__cta {
+        width: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__card {
+        min-height: auto;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__image-wrap,
+      #shopify-section-{{ section.id }} .sa-top-series__image,
+      #shopify-section-{{ section.id }} .sa-top-series__fallback {
+        min-height: 152px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series--mobile-scroll .sa-top-series__wall,
+      #shopify-section-{{ section.id }} .sa-top-series__wall {
+        display: flex;
+        gap: var(--sa-card-gap);
+        overflow-x: auto;
+        margin-inline: calc(var(--sa-page-gutter) * -1);
+        padding-inline: var(--sa-page-gutter);
+        padding-block-end: var(--sa-space-2);
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__wall::-webkit-scrollbar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__card {
+        flex: 0 0 min(78vw, 320px);
+        scroll-snap-align: start;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series--mobile-grid .sa-top-series__wall {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        overflow: visible;
+        margin-inline: 0;
+        padding-inline: 0;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series--mobile-grid .sa-top-series__card {
+        flex: initial;
+      }
+    }
+
+    @media screen and (max-width: 374px) {
+      #shopify-section-{{ section.id }} .sa-top-series--mobile-grid .sa-top-series__wall {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .sa-top-series__image {
+        transition-duration: 1ms;
+      }
+
+      #shopify-section-{{ section.id }} .sa-top-series__card:hover .sa-top-series__image {
+        transform: none;
+      }
+    }
+  </style>
+
+  <div class="sa-container">
+    <div class="sa-top-series__header">
+      <div class="sa-top-series__header-row">
+        <div class="sa-top-series__heading-group">
+          {% if section_label != blank %}
+            <p class="sa-kicker">{{ section_label | escape }}</p>
+          {% endif %}
+
+          {% if section_heading != blank %}
+            <h2 class="sa-heading" id="sa-top-series-title-{{ section.id }}">{{ section_heading | escape }}</h2>
+          {% endif %}
+
+          {% if section_intro != blank %}
+            <p class="sa-copy">{{ section_intro }}</p>
+          {% endif %}
+        </div>
+
+        {% if section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+          <a class="sa-top-series__cta sa-button sa-button--secondary" href="{{ section.settings.view_all_link }}">
+            {{ section.settings.view_all_label | escape }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="sa-top-series__wall" role="list" aria-label="{{ section_heading | escape }}">
+        {% for block in section.blocks %}
+          {% if forloop.index <= visible_count %}
+            {% liquid
+              assign series_name = block.settings.series_name | default: 'Series Archive'
+              assign product_count_text = block.settings.product_count_text
+              assign badge = block.settings.badge
+              assign collection_link = block.settings.collection_link
+              assign accent = block.settings.accent_color | default: '#B3362D'
+              assign initials_source = series_name | remove: ' ' | slice: 0, 2 | upcase
+              assign card_label = block.settings.accessibility_label
+              if card_label == blank
+                assign card_label = 'Shop ' | append: series_name
+              endif
+            %}
+
+            {% capture card_content %}
+              <span class="sa-top-series__image-wrap" aria-hidden="true">
+                {% if block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: 900 | image_tag: class: 'sa-top-series__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 78vw', widths: '320, 480, 640, 760, 900', alt: block.settings.image.alt | default: series_name | escape }}
+                {% else %}
+                  <span class="sa-top-series__fallback">{{ initials_source | escape }}</span>
+                {% endif %}
+
+                {% if badge != 'none' %}
+                  <span class="sa-top-series__badge sa-badge{% if badge == 'trending' %} sa-badge--outline{% endif %}">
+                    {% if badge == 'top_seller' %}Top Seller{% else %}Trending{% endif %}
+                  </span>
+                {% endif %}
+              </span>
+
+              <span class="sa-top-series__content">
+                <span class="sa-top-series__name-row">
+                  <span class="sa-top-series__name">{{ series_name | escape }}</span>
+                  <span class="sa-top-series__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                </span>
+
+                {% if product_count_text != blank %}
+                  <span class="sa-top-series__meta">{{ product_count_text | escape }}</span>
+                {% endif %}
+              </span>
+            {% endcapture %}
+
+            {% if collection_link != blank %}
+              <a class="sa-top-series__card sa-card" href="{{ collection_link }}" aria-label="{{ card_label | escape }}" style="--sa-series-accent: {{ accent }};" role="listitem" {{ block.shopify_attributes }}>
+                {{ card_content }}
+              </a>
+            {% else %}
+              <div class="sa-top-series__card sa-card" aria-label="{{ card_label | escape }}" style="--sa-series-accent: {{ accent }};" role="listitem" {{ block.shopify_attributes }}>
+                {{ card_content }}
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="sa-top-series__empty" role="status">
+        Add series blocks to build the top-performing series archive wall.
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Top Series",
+  "tag": "section",
+  "class": "sa-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Archive label",
+      "default": "SERIES ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop Top Performing Series"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Enter through the fandom first. These series paths help customers find the product families and matching sets they might miss in a standard grid."
+    },
+    {
+      "type": "select",
+      "id": "visible_count",
+      "label": "Visible series",
+      "options": [
+        { "value": "6", "label": "6" },
+        { "value": "8", "label": "8" },
+        { "value": "10", "label": "10" },
+        { "value": "12", "label": "12" }
+      ],
+      "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "scroll", "label": "Horizontal scroll" },
+        { "value": "grid", "label": "2-column grid" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "View All Series"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "series",
+      "name": "Series",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "series_name",
+          "label": "Series name",
+          "default": "One Piece"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "collection_link",
+          "label": "Collection link"
+        },
+        {
+          "type": "text",
+          "id": "product_count_text",
+          "label": "Product count text",
+          "info": "Enter manually, for example: 42 products. Leave blank if unknown."
+        },
+        {
+          "type": "select",
+          "id": "badge",
+          "label": "Badge",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "top_seller", "label": "Top Seller" },
+            { "value": "trending", "label": "Trending" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "accessibility_label",
+          "label": "Accessibility label",
+          "info": "Optional. Used as the card link aria-label."
+        },
+        {
+          "type": "select",
+          "id": "accent_color",
+          "label": "Accent color",
+          "options": [
+            { "value": "#B3362D", "label": "Relic Red" },
+            { "value": "#C45A2A", "label": "Ember Orange" },
+            { "value": "#2F5138", "label": "Deep Moss" },
+            { "value": "#332A52", "label": "Indigo Smoke" },
+            { "value": "#9D7A3C", "label": "Bamboo Amber" }
+          ],
+          "default": "#B3362D"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Top Series",
+      "blocks": [
+        { "type": "series", "settings": { "series_name": "One Piece", "badge": "top_seller", "accent_color": "#B3362D" } },
+        { "type": "series", "settings": { "series_name": "Cowboy Bebop", "badge": "trending", "accent_color": "#C45A2A" } },
+        { "type": "series", "settings": { "series_name": "Naruto", "badge": "top_seller", "accent_color": "#2F5138" } },
+        { "type": "series", "settings": { "series_name": "Bleach", "badge": "trending", "accent_color": "#332A52" } },
+        { "type": "series", "settings": { "series_name": "JJK", "badge": "none", "accent_color": "#9D7A3C" } },
+        { "type": "series", "settings": { "series_name": "Dragon Ball Z", "badge": "none", "accent_color": "#B3362D" } },
+        { "type": "series", "settings": { "series_name": "Demon Slayer", "badge": "none", "accent_color": "#C45A2A" } },
+        { "type": "series", "settings": { "series_name": "Pokemon", "badge": "none", "accent_color": "#2F5138" } },
+        { "type": "series", "settings": { "series_name": "Hunter x Hunter", "badge": "none", "accent_color": "#332A52" } },
+        { "type": "series", "settings": { "series_name": "Jojo", "badge": "none", "accent_color": "#9D7A3C" } },
+        { "type": "series", "settings": { "series_name": "Evangelion", "badge": "none", "accent_color": "#B3362D" } },
+        { "type": "series", "settings": { "series_name": "Samurai Champloo", "badge": "none", "accent_color": "#C45A2A" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

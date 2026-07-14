@@ -326,8 +326,45 @@
         "text": ""
       }
     },
+    "sa_product_row_NHap6p": {
+      "type": "sa-product-row",
+      "name": "SA Row Best Sellers",
+      "settings": {
+        "eyebrow": "Best Sellers",
+        "heading": "Shop the Current Favorites",
+        "intro": "A fast path into the pieces shoppers are already choosing.",
+        "collection": "adventure-time",
+        "max_products": 8,
+        "sort_label": "Performance archive",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row"
+      }
+    },
+    "sa_product_row_pCMm6U": {
+      "type": "sa-product-row",
+      "name": "SA Row Trending",
+      "settings": {
+        "eyebrow": "Trending This Week",
+        "heading": "Currently Moving Fast",
+        "intro": "The pieces getting the most attention right now, gathered into one easy row.",
+        "collection": "",
+        "max_products": 8,
+        "sort_label": "Weekly signal",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row"
+      }
+    },
     "custom_liquid_L7PtK9": {
       "type": "custom-liquid",
+      "disabled": true,
       "name": "t:sections.custom-liquid.name",
       "settings": {
         "custom_liquid": "<style>\n/* SHARED SECTION STYLE */\n.sa-home-slider-wrap {\n  background:#1F1F1F;\n  width:100vw;\n  position:relative;\n  left:50%;\n  right:50%;\n  margin-left:-50vw;\n  margin-right:-50vw;\n  padding:26px 0 6px;\n}\n\n.sa-home-slider-wrap + .sa-home-slider-wrap {\n  padding-top:22px;\n}\n\n.sa-home-slider-heading {\n  display:flex;\n  align-items:center;\n  justify-content:space-between;\n  padding:0 28px;\n  margin:0 0 18px;\n}\n\n.sa-home-slider-heading span {\n  font-weight:300;\n  letter-spacing:.16em;\n  font-size:clamp(24px, 5vw, 34px);\n  line-height:1.05;\n  text-transform:uppercase;\n  color:#ededed;\n}\n\n.sa-home-view-all {\n  border:1px solid #ffffff;\n  color:#ffffff;\n  padding:15px 24px;\n  font-size:11px;\n  font-weight:700;\n  letter-spacing:.13em;\n  text-transform:uppercase;\n  text-decoration:none;\n  background:transparent;\n  transition:all .2s ease;\n  white-space:nowrap;\n}\n\n.sa-home-view-all:hover {\n  background:#ffffff;\n  color:#111111;\n}\n\n/* SLIDER */\n.sa-home-slider {\n  display:flex;\n  overflow-x:auto;\n  gap:28px;\n  padding:0 28px 12px;\n  margin:0;\n  scroll-snap-type:x mandatory;\n  -webkit-overflow-scrolling:touch;\n}\n\n.sa-home-slider::-webkit-scrollbar {\n  display:none;\n}\n\n.sa-home-slider {\n  scrollbar-width:none;\n  -ms-overflow-style:none;\n}\n\n/* CARD */\n.sa-home-card {\n  flex:0 0 26%;\n  scroll-snap-align:start;\n  text-align:center;\n  text-decoration:none;\n  color:#fff;\n}\n\n.sa-home-card img {\n  width:100%;\n  aspect-ratio:1/1;\n  object-fit:cover;\n  display:block;\n  transition:transform .18s ease;\n}\n\n.sa-home-card:hover img {\n  transform:scale(1.025);\n}\n\n.sa-home-card-title {\n  display:block;\n  margin-top:10px;\n  font-size:14px;\n  font-weight:800;\n  letter-spacing:.16em;\n  line-height:1.18;\n  text-transform:uppercase;\n  color:#fff;\n}\n\n/* MOBILE CLEANUP */\n@media(max-width:749px) {\n  .sa-home-slider-wrap {\n    padding:24px 0 4px;\n  }\n\n  .sa-home-slider-wrap + .sa-home-slider-wrap {\n    padding-top:28px;\n  }\n\n  .sa-home-slider-heading {\n    padding:0 28px;\n    margin-bottom:18px;\n  }\n\n  .sa-home-slider-heading span {\n    font-size:25px;\n    letter-spacing:.15em;\n  }\n\n  .sa-home-view-all {\n    padding:14px 22px;\n    font-size:10px;\n  }\n\n  .sa-home-slider {\n    gap:28px;\n    padding:0 28px 8px;\n  }\n\n  .sa-home-card {\n    flex:0 0 26%;\n  }\n\n  .sa-home-card-title {\n    font-size:13px;\n    letter-spacing:.15em;\n    margin-top:9px;\n  }\n}\n\n@media(max-width:420px) {\n  .sa-home-slider-heading {\n    padding:0 24px;\n  }\n\n  .sa-home-slider {\n    padding:0 24px 8px;\n    gap:24px;\n  }\n\n  .sa-home-slider-heading span {\n    font-size:24px;\n  }\n\n  .sa-home-card {\n    flex:0 0 27%;\n  }\n\n  .sa-home-card-title {\n    font-size:12px;\n  }\n}\n</style>\n\n\n<!-- SHOP BY PRODUCT TYPE -->\n<div class=\"sa-home-slider-wrap\">\n\n  <div class=\"sa-home-slider-heading\">\n    <span>SHOP BY PRODUCT TYPE</span>\n  </div>\n\n  <div class=\"sa-home-slider\">\n\n    {% assign product_priority_order = \"Lighters|Graphic Anime Tapestries Designed Like Wall Art|Grinder Sets\" | split: \"|\" %}\n\n    {% for priority_title in product_priority_order %}\n      {% for collection in collections %}\n        {% if collection.title contains \"(category)\" %}\n          {% assign clean_title = collection.title | replace: \"(category)\", \"\" | strip %}\n\n          {% if clean_title == priority_title %}\n            {% assign card_link = collection.url %}\n\n            {% if clean_title == \"Grinder Sets\" %}\n              {% assign card_link = \"/pages/grinder-sets\" %}\n            {% elsif clean_title == \"Rolling Trays\" %}\n              {% assign card_link = \"/pages/anime-rolling-trays\" %}\n            {% elsif clean_title == \"Lighters\" %}\n              {% assign card_link = \"/pages/anime-lighters\" %}\n            {% elsif clean_title == \"Stash Jars\" %}\n              {% assign card_link = \"/pages/anime-stash-jars\" %}\n            {% elsif clean_title == \"Graphic Anime Tapestries Designed Like Wall Art\" %}\n              {% assign card_link = \"/pages/anime-tapestries\" %}\n            {% endif %}\n\n            <a href=\"{{ card_link }}\" class=\"sa-home-card\">\n              {% if collection.image %}\n                <img src=\"{{ collection.image | image_url: width: 540 }}\" alt=\"{{ clean_title }}\">\n              {% endif %}\n              <span class=\"sa-home-card-title\">\n                {% if clean_title == \"Graphic Anime Tapestries Designed Like Wall Art\" %}\n                  Graphic Tapestries\n                {% else %}\n                  {{ clean_title }}\n                {% endif %}\n              </span>\n            </a>\n          {% endif %}\n\n        {% endif %}\n      {% endfor %}\n    {% endfor %}\n\n    {% for collection in collections %}\n      {% if collection.title contains \"(category)\" %}\n        {% assign clean_title = collection.title | replace: \"(category)\", \"\" | strip %}\n\n        {% unless product_priority_order contains clean_title %}\n          {% assign card_link = collection.url %}\n\n          {% if clean_title == \"Rolling Trays\" %}\n            {% assign card_link = \"/pages/anime-rolling-trays\" %}\n          {% elsif clean_title == \"Stash Jars\" %}\n            {% assign card_link = \"/pages/anime-stash-jars\" %}\n          {% endif %}\n\n          <a href=\"{{ card_link }}\" class=\"sa-home-card\">\n            {% if collection.image %}\n              <img src=\"{{ collection.image | image_url: width: 540 }}\" alt=\"{{ clean_title }}\">\n            {% endif %}\n            <span class=\"sa-home-card-title\">\n              {% if clean_title == \"Graphic Anime Tapestries Designed Like Wall Art\" %}\n                Graphic Tapestries\n              {% else %}\n                {{ clean_title }}\n              {% endif %}\n            </span>\n          </a>\n        {% endunless %}\n\n      {% endif %}\n    {% endfor %}\n\n  </div>\n</div>\n\n\n<!-- SHOP BY ANIME -->\n<div class=\"sa-home-slider-wrap\">\n\n  <div class=\"sa-home-slider-heading\">\n    <span>SHOP BY ANIME</span>\n    <a href=\"/pages/all-anime-collections\" class=\"sa-home-view-all\">View All</a>\n  </div>\n\n  <div class=\"sa-home-slider\">\n\n    {% assign anime_priority_order = \"Neon Genesis|Cowboy Bebop|Soul Eater|Bleach\" | split: \"|\" %}\n\n    {% for priority_title in anime_priority_order %}\n      {% for collection in collections %}\n        {% if collection.title contains \"(Series)\" %}\n          {% assign clean_title = collection.title | replace: \"(Series)\", \"\" | strip %}\n\n          {% if clean_title == priority_title %}\n            <a href=\"{{ collection.url }}\" class=\"sa-home-card\">\n              {% if collection.image %}\n                <img src=\"{{ collection.image | image_url: width: 420 }}\" alt=\"{{ clean_title }}\">\n              {% elsif collection.products.first.featured_image %}\n                <img src=\"{{ collection.products.first.featured_image | image_url: width: 420 }}\" alt=\"{{ clean_title }}\">\n              {% endif %}\n              <span class=\"sa-home-card-title\">{{ clean_title }}</span>\n            </a>\n          {% endif %}\n\n        {% endif %}\n      {% endfor %}\n    {% endfor %}\n\n    {% for collection in collections %}\n      {% if collection.title contains \"(Series)\" %}\n        {% assign clean_title = collection.title | replace: \"(Series)\", \"\" | strip %}\n\n        {% unless anime_priority_order contains clean_title %}\n          <a href=\"{{ collection.url }}\" class=\"sa-home-card\">\n            {% if collection.image %}\n              <img src=\"{{ collection.image | image_url: width: 420 }}\" alt=\"{{ clean_title }}\">\n            {% elsif collection.products.first.featured_image %}\n              <img src=\"{{ collection.products.first.featured_image | image_url: width: 420 }}\" alt=\"{{ clean_title }}\">\n            {% endif %}\n            <span class=\"sa-home-card-title\">{{ clean_title }}</span>\n          </a>\n        {% endunless %}\n\n      {% endif %}\n    {% endfor %}\n\n  </div>\n</div>",
@@ -629,6 +666,8 @@
     "announcement_bar_hNziXA",
     "sa_top_series_WngH7B",
     "sa_explore_paths_LCD4k8",
+    "sa_product_row_NHap6p",
+    "sa_product_row_pCMm6U",
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",
     "custom_liquid_7rGzw4",

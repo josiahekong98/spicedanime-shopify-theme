@@ -116,7 +116,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero {
-      min-height: 460px;
+      min-height: 430px;
       display: grid;
       align-items: end;
       background:
@@ -141,7 +141,7 @@
     #shopify-section-{{ section.id }} .sa-series-hero__content {
       max-width: 680px;
       display: grid;
-      gap: 18px;
+      gap: 16px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__label,
@@ -159,8 +159,8 @@
       margin: 0;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
-      font-size: clamp(48px, 9vw, 104px);
-      line-height: 0.9;
+      font-size: clamp(42px, 8vw, 88px);
+      line-height: 0.92;
       letter-spacing: 0;
       text-transform: uppercase;
     }
@@ -178,8 +178,8 @@
       max-width: 62ch;
       margin: 0;
       color: var(--sa-gallery-stone, #D8D2C7);
-      font-size: clamp(15px, 1.4vw, 18px);
-      line-height: 1.52;
+      font-size: clamp(15px, 1.25vw, 17px);
+      line-height: 1.48;
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__actions,
@@ -188,6 +188,21 @@
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-hero__actions .sa-button {
+      min-height: 42px;
+      padding-inline: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-meta {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid color-mix(in srgb, var(--sa-series-accent) 62%, transparent);
+      background: rgba(16, 16, 16, 0.58);
+      padding: 8px 12px;
+      color: var(--sa-gallery-stone, #D8D2C7);
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__mark {
@@ -217,7 +232,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-section {
-      padding-block-start: clamp(32px, 5vw, 58px);
+      padding-block-start: clamp(30px, 4vw, 48px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-head {
@@ -225,7 +240,7 @@
       align-items: end;
       justify-content: space-between;
       gap: 18px;
-      margin-block-end: 18px;
+      margin-block-end: 16px;
       border-block-end: 1px solid color-mix(in srgb, var(--sa-series-accent) 72%, transparent);
       padding-block-end: 12px;
     }
@@ -240,8 +255,8 @@
       margin: 0;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
-      font-size: clamp(24px, 3vw, 38px);
-      line-height: 1.04;
+      font-size: clamp(23px, 2.6vw, 34px);
+      line-height: 1.06;
       letter-spacing: 0;
       text-transform: uppercase;
     }
@@ -271,7 +286,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card {
-      min-height: 214px;
+      min-height: 190px;
       display: grid;
       grid-template-rows: 1fr auto;
       overflow: hidden;
@@ -287,7 +302,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media {
-      min-height: 150px;
+      min-height: 128px;
       display: grid;
       place-items: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-texture-concrete), #101010;
@@ -296,7 +311,7 @@
     #shopify-section-{{ section.id }} .sa-series-family-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 150px;
+      min-height: 128px;
       object-fit: cover;
       display: block;
     }
@@ -307,15 +322,16 @@
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
+      text-align: center;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label {
-      min-height: 58px;
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 13px;
+      padding: 12px;
       font-weight: 800;
       font-size: 13px;
       line-height: 1.2;
@@ -393,6 +409,10 @@
       color: #fff;
       font-size: 13px;
       line-height: 1.25;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__price {
@@ -418,7 +438,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card {
-      min-height: 210px;
+      min-height: 190px;
       position: relative;
       display: grid;
       align-items: end;
@@ -516,8 +536,8 @@
 
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-series-hero {
-        min-height: 420px;
-        padding-block: 112px 42px;
+        min-height: 360px;
+        padding-block: 72px 34px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__layout,
@@ -532,6 +552,7 @@
       #shopify-section-{{ section.id }} .sa-series-head {
         align-items: start;
         flex-direction: column;
+        gap: 10px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-grid,
@@ -556,24 +577,37 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card {
-        flex: 0 0 min(58vw, 230px);
-        min-height: 190px;
+        flex: 0 0 min(46vw, 190px);
+        min-height: 164px;
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-product {
-        flex: 0 0 min(62vw, 250px);
+        flex: 0 0 min(54vw, 220px);
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-related-card {
-        flex: 0 0 min(62vw, 250px);
+        flex: 0 0 min(58vw, 230px);
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card__media,
       #shopify-section-{{ section.id }} .sa-series-family-card__media img {
-        min-height: 130px;
+        min-height: 108px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-hero__title {
+        font-size: clamp(40px, 13vw, 58px);
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-title {
+        font-size: clamp(26px, 8vw, 38px);
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-hero__actions .sa-button {
+        width: 100%;
+        min-height: 48px;
       }
     }
   </style>
@@ -621,8 +655,8 @@
       <div class="sa-series-head">
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">Product Family Shortcuts</p>
-          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Shop {{ series_title | escape }} By Product Family</h2>
-          <p class="sa-series-copy">Jump into the product type you came for, then use the full collection grid below when you want filters and sorting.</p>
+          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Shop By Product Family</h2>
+          <p class="sa-series-copy">{{ series_title | escape }} paths for quick browsing. Use the full grid below when you want filters and sorting.</p>
         </div>
       </div>
 
@@ -662,7 +696,7 @@
           <div class="sa-series-head__copy">
             <p class="sa-series-eyebrow">Complete The Set</p>
             <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Build The {{ series_title | escape }} Setup</h2>
-            <p class="sa-series-copy">Matching-set products appear here when the collection has setup, bundle, or matching group data.</p>
+            <p class="sa-series-copy">Build a coordinated setup from matching trays, jars, grinders, and accessories when available.</p>
           </div>
         </div>
 
@@ -691,7 +725,7 @@
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">More From This Series</p>
           <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Browse The {{ series_title | escape }} Wall</h2>
-          <p class="sa-series-copy">Preview more pieces here, then use the full collection grid below for filters, sorting, and pagination.</p>
+          <p class="sa-series-copy">A quick preview before the full filterable collection grid.</p>
         </div>
         <a class="sa-series-view" href="#ProductGridContainer">Open Full Grid -></a>
       </div>
@@ -711,34 +745,36 @@
       </div>
     </section>
 
-    <section class="sa-series-section" aria-labelledby="sa-series-related-title-{{ section.id }}">
-      <div class="sa-series-head">
-        <div class="sa-series-head__copy">
-          <p class="sa-series-eyebrow">Related Series</p>
-          <h2 class="sa-series-title" id="sa-series-related-title-{{ section.id }}">Nearby Archive Rooms</h2>
+    {% if section.blocks.size > 0 or request.design_mode %}
+      <section class="sa-series-section" aria-labelledby="sa-series-related-title-{{ section.id }}">
+        <div class="sa-series-head">
+          <div class="sa-series-head__copy">
+            <p class="sa-series-eyebrow">Related Series</p>
+            <h2 class="sa-series-title" id="sa-series-related-title-{{ section.id }}">Nearby Archive Rooms</h2>
+          </div>
         </div>
-      </div>
 
-      {% if section.blocks.size > 0 %}
-        <div class="sa-series-related-grid" role="list" aria-label="Related series collections">
-          {% for block in section.blocks %}
-            {% assign related_collection = block.settings.collection %}
-            {% assign related_title = block.settings.title | default: related_collection.title | replace: '(Series)', '' | strip %}
-            {% assign related_image = block.settings.image | default: related_collection.image | default: related_collection.products.first.featured_image %}
-            {% if related_collection != blank %}
-              <a class="sa-series-related-card" href="{{ related_collection.url }}" role="listitem" {{ block.shopify_attributes }}>
-                {% if related_image != blank %}
-                  <img src="{{ related_image | image_url: width: 700 }}" alt="{{ related_title | escape }}">
-                {% endif %}
-                <span class="sa-series-related-card__label">{{ related_title | escape }}</span>
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="sa-series-empty" role="status">Add related series blocks in the Theme Editor to connect this fandom to nearby archive rooms.</div>
-      {% endif %}
-    </section>
+        {% if section.blocks.size > 0 %}
+          <div class="sa-series-related-grid" role="list" aria-label="Related series collections">
+            {% for block in section.blocks %}
+              {% assign related_collection = block.settings.collection %}
+              {% assign related_title = block.settings.title | default: related_collection.title | replace: '(Series)', '' | strip %}
+              {% assign related_image = block.settings.image | default: related_collection.image | default: related_collection.products.first.featured_image %}
+              {% if related_collection != blank %}
+                <a class="sa-series-related-card" href="{{ related_collection.url }}" role="listitem" {{ block.shopify_attributes }}>
+                  {% if related_image != blank %}
+                    <img src="{{ related_image | image_url: width: 700 }}" alt="{{ related_title | escape }}">
+                  {% endif %}
+                  <span class="sa-series-related-card__label">{{ related_title | escape }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="sa-series-empty" role="status">Add related series blocks in the Theme Editor to connect this fandom to nearby archive rooms.</div>
+        {% endif %}
+      </section>
+    {% endif %}
 
     {% if collection.description != blank %}
       <section class="sa-series-section" aria-labelledby="sa-series-seo-title-{{ section.id }}">

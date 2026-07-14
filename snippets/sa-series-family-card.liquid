@@ -15,7 +15,7 @@
       {% if image != blank %}
         <img src="{{ image | image_url: width: 560 }}" alt="{{ title | escape }}">
       {% else %}
-        <span class="sa-series-family-card__fallback">Archive file</span>
+        <span class="sa-series-family-card__fallback">In archive</span>
       {% endif %}
     </span>
     <span class="sa-series-family-card__label">{{ title | escape }}</span>
@@ -23,7 +23,7 @@
 {% else %}
   <div class="sa-series-family-card" role="listitem" aria-disabled="true">
     <span class="sa-series-family-card__media">
-      <span class="sa-series-family-card__fallback">No products yet</span>
+      <span class="sa-series-family-card__fallback">Not stocked yet</span>
     </span>
     <span class="sa-series-family-card__label">{{ title | escape }}</span>
   </div>

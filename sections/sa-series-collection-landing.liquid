@@ -14,37 +14,67 @@
   assign tapestry_img = blank
   assign tray_img = blank
   assign jar_img = blank
+  assign lighter_available = false
+  assign wallet_available = false
+  assign grinder_set_available = false
+  assign tapestry_available = false
+  assign tray_available = false
+  assign jar_available = false
   assign complete_set_count = 0
 
   for product in collection.products
     assign ptitle = product.title | downcase
     assign ptype = product.type | downcase
+    assign ptags = product.tags | join: ' ' | downcase
+    assign product_family_text = ptitle | append: ' ' | append: ptype | append: ' ' | append: ptags
     assign matching_set = product.metafields.custom.matching_set_group.value
 
+    if product_family_text contains 'lighter'
+      assign lighter_available = true
+    endif
+
+    if product_family_text contains 'wallet'
+      assign wallet_available = true
+    endif
+
+    if product_family_text contains 'grinder set'
+      assign grinder_set_available = true
+    endif
+
+    if product_family_text contains 'tapestry'
+      assign tapestry_available = true
+    endif
+
+    if product_family_text contains 'rolling tray'
+      assign tray_available = true
+    endif
+
+    if product_family_text contains 'stash jar'
+      assign jar_available = true
+    endif
+
     if product.featured_image
-      if lighter_img == blank and ptype contains 'lighter'
+      if lighter_img == blank and product_family_text contains 'lighter'
         assign lighter_img = product.featured_image
       endif
 
-      if wallet_img == blank and ptype contains 'wallet'
+      if wallet_img == blank and product_family_text contains 'wallet'
         assign wallet_img = product.featured_image
       endif
 
-      if grinder_set_img == blank and ptype contains 'grinder set'
-        assign grinder_set_img = product.featured_image
-      elsif grinder_set_img == blank and ptitle contains 'grinder set'
+      if grinder_set_img == blank and product_family_text contains 'grinder set'
         assign grinder_set_img = product.featured_image
       endif
 
-      if tapestry_img == blank and ptype contains 'tapestry'
+      if tapestry_img == blank and product_family_text contains 'tapestry'
         assign tapestry_img = product.featured_image
       endif
 
-      if tray_img == blank and ptype contains 'rolling tray'
+      if tray_img == blank and product_family_text contains 'rolling tray'
         assign tray_img = product.featured_image
       endif
 
-      if jar_img == blank and ptype contains 'stash jar'
+      if jar_img == blank and product_family_text contains 'stash jar'
         assign jar_img = product.featured_image
       endif
     endif
@@ -597,12 +627,12 @@
       </div>
 
       <div class="sa-series-family-grid" role="list">
-        {% render 'sa-series-family-card', title: 'Lighters', image: lighter_img, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Wallets', image: wallet_img, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Grinder Sets', image: grinder_set_img, url: section.settings.grinder_sets_url, fallback_url: '/collections/grinder-sets', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Tapestries', image: tapestry_img, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Rolling Trays', image: tray_img, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Stash Jars', image: jar_img, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Lighters', image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Wallets', image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Grinder Sets', image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/grinder-sets', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Tapestries', image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Rolling Trays', image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Stash Jars', image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
       </div>
     </section>
 

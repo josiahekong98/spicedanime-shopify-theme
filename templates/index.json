@@ -9,6 +9,107 @@
  */
 {
   "sections": {
+    "1658995208ad05f95f": {
+      "type": "hero-banner",
+      "blocks": {
+        "slide_gAjkFT": {
+          "type": "slide",
+          "settings": {
+            "banner_layout": "hero-banner--full",
+            "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
+            "header_menu_text_color": "#ffffff",
+            "heading": "<h6>MADE FOR REAL ANIME FANS.</h6>",
+            "subheading": "",
+            "subheading_link": "",
+            "text": "",
+            "button_link_1": "/",
+            "button_link_1_type": "button",
+            "button_label_1": "",
+            "button_style_1": "button--filled",
+            "button_link_2": "/",
+            "button_label_2": "",
+            "button_style_2": "button--outlined",
+            "content_position": "end",
+            "content_alignment": "center",
+            "image": "shopify://shop_images/Untitled_3552_x_806_px_1.png",
+            "video_external": "",
+            "show_controls_on_video": false,
+            "enable_media_overlay_desktop": true,
+            "content_position_mobile": "center",
+            "content_alignment_mobile": "center",
+            "image_mobile": "shopify://shop_images/Untitled_3552_x_806_px_806_x_3552_px_4.png",
+            "video_external_mobile": "",
+            "show_controls_on_video_mobile": false,
+            "enable_media_overlay_mobile": true
+          }
+        }
+      },
+      "block_order": [
+        "slide_gAjkFT"
+      ],
+      "custom_css": [
+        ".hero__heading {padding-top: 440px;}"
+      ],
+      "settings": {
+        "enable_transparent_header": true,
+        "slider_height_auto": false,
+        "slider_height": 70,
+        "slideshow_autoplay_interval": 5,
+        "show_slideshow_navigation": true,
+        "slideshow_navigation_position": "hero__swiper-buttons--center",
+        "color_scheme_arrows": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
+        "show_slideshow_pagination": true,
+        "slideshow_pagination_style": "style-1",
+        "floating_bar": false
+      }
+    },
+    "announcement_bar_hNziXA": {
+      "type": "announcement-bar",
+      "blocks": {
+        "text_slide_9b9bHb": {
+          "type": "text-slide",
+          "name": "free lighter",
+          "settings": {
+            "content": "<p>Spend $75 → FREE Lighter!</p>",
+            "icon": ""
+          }
+        },
+        "text_slide_3p7CFa": {
+          "type": "text-slide",
+          "settings": {
+            "content": "<p>Spend $110 → FREE Tote Bag</p>",
+            "icon": ""
+          }
+        },
+        "text_slide_CNGVEP": {
+          "type": "text-slide",
+          "name": "free tapestry",
+          "settings": {
+            "content": "<p>Spend $200 → FREE Tapestry!</p>",
+            "icon": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_slide_9b9bHb",
+        "text_slide_3p7CFa",
+        "text_slide_CNGVEP"
+      ],
+      "custom_css": [
+        ".announcement-bar__message {color: #ededed;}",
+        ".announcement-bar,.announcement,.marquee-section {border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; padding: 3px 0;}",
+        ".announcement-bar .splide__slide,.marquee-section .splide__slide {display: flex !important; justify-content: center !important; align-items: center !important;}",
+        ".announcement-bar,.marquee-section {box-shadow: none !important; margin: 0 !important;}"
+      ],
+      "name": "t:sections.announcement-bar.name",
+      "settings": {
+        "text_block_behaviour": "marquee",
+        "slider_autoplay_interval": 3,
+        "font_weight": "500",
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c"
+      }
+    },
     "sa_top_series_WngH7B": {
       "type": "sa-top-series",
       "blocks": {
@@ -16,7 +117,7 @@
           "type": "series",
           "settings": {
             "series_name": "One Piece",
-            "collection_link": "",
+            "collection_link": "shopify://collections/one-piece",
             "product_count_text": "",
             "badge": "top_seller",
             "accessibility_label": "",
@@ -168,107 +269,6 @@
         "mobile_layout": "scroll",
         "view_all_label": "View All Series",
         "view_all_link": ""
-      }
-    },
-    "1658995208ad05f95f": {
-      "type": "hero-banner",
-      "blocks": {
-        "slide_gAjkFT": {
-          "type": "slide",
-          "settings": {
-            "banner_layout": "hero-banner--full",
-            "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
-            "header_menu_text_color": "#ffffff",
-            "heading": "<h6>MADE FOR REAL ANIME FANS.</h6>",
-            "subheading": "",
-            "subheading_link": "",
-            "text": "",
-            "button_link_1": "/",
-            "button_link_1_type": "button",
-            "button_label_1": "",
-            "button_style_1": "button--filled",
-            "button_link_2": "/",
-            "button_label_2": "",
-            "button_style_2": "button--outlined",
-            "content_position": "end",
-            "content_alignment": "center",
-            "image": "shopify://shop_images/Untitled_3552_x_806_px_1.png",
-            "video_external": "",
-            "show_controls_on_video": false,
-            "enable_media_overlay_desktop": true,
-            "content_position_mobile": "center",
-            "content_alignment_mobile": "center",
-            "image_mobile": "shopify://shop_images/Untitled_3552_x_806_px_806_x_3552_px_4.png",
-            "video_external_mobile": "",
-            "show_controls_on_video_mobile": false,
-            "enable_media_overlay_mobile": true
-          }
-        }
-      },
-      "block_order": [
-        "slide_gAjkFT"
-      ],
-      "custom_css": [
-        ".hero__heading {padding-top: 440px;}"
-      ],
-      "settings": {
-        "enable_transparent_header": true,
-        "slider_height_auto": false,
-        "slider_height": 70,
-        "slideshow_autoplay_interval": 5,
-        "show_slideshow_navigation": true,
-        "slideshow_navigation_position": "hero__swiper-buttons--center",
-        "color_scheme_arrows": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
-        "show_slideshow_pagination": true,
-        "slideshow_pagination_style": "style-1",
-        "floating_bar": false
-      }
-    },
-    "announcement_bar_hNziXA": {
-      "type": "announcement-bar",
-      "blocks": {
-        "text_slide_9b9bHb": {
-          "type": "text-slide",
-          "name": "free lighter",
-          "settings": {
-            "content": "<p>Spend $75 → FREE Lighter!</p>",
-            "icon": ""
-          }
-        },
-        "text_slide_3p7CFa": {
-          "type": "text-slide",
-          "settings": {
-            "content": "<p>Spend $110 → FREE Tote Bag</p>",
-            "icon": ""
-          }
-        },
-        "text_slide_CNGVEP": {
-          "type": "text-slide",
-          "name": "free tapestry",
-          "settings": {
-            "content": "<p>Spend $200 → FREE Tapestry!</p>",
-            "icon": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_slide_9b9bHb",
-        "text_slide_3p7CFa",
-        "text_slide_CNGVEP"
-      ],
-      "custom_css": [
-        ".announcement-bar__message {color: #ededed;}",
-        ".announcement-bar,.announcement,.marquee-section {border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; padding: 3px 0;}",
-        ".announcement-bar .splide__slide,.marquee-section .splide__slide {display: flex !important; justify-content: center !important; align-items: center !important;}",
-        ".announcement-bar,.marquee-section {box-shadow: none !important; margin: 0 !important;}"
-      ],
-      "name": "t:sections.announcement-bar.name",
-      "settings": {
-        "text_block_behaviour": "marquee",
-        "slider_autoplay_interval": 3,
-        "font_weight": "500",
-        "section_width": "max-w-fluid",
-        "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c"
       }
     },
     "sa_explore_paths_LCD4k8": {

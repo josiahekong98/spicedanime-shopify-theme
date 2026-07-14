@@ -12,9 +12,29 @@
     "main": {
       "type": "sa-series-collection-landing",
       "settings": {}
+    },
+    "product_grid": {
+      "type": "main-collection",
+      "settings": {
+        "show_top_border_for_utilities_bar": true,
+        "enable_products_count": true,
+        "enable_sorting": true,
+        "enable_opened_accordions": true,
+        "filters": "drawer",
+        "products_per_row": "4",
+        "products_per_row_mobile": "2",
+        "products_per_page": 24,
+        "pagination_style": "default",
+        "enable_infinity_scroll": false,
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "spacing_top": "2",
+        "spacing_bottom": "4"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "product_grid"
   ]
 }

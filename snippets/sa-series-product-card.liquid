@@ -1,0 +1,36 @@
+{% liquid
+  assign product_title = product.title | default: 'Product Exhibit'
+  assign image_alt = product.featured_image.alt | default: product_title
+  assign compare_price = product.compare_at_price_max
+  assign current_price = product.price
+%}
+
+<a class="sa-series-product" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
+  <span class="sa-series-product__media">
+    {% if product.featured_image != blank %}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ image_alt | escape }}" loading="lazy">
+    {% else %}
+      <span class="sa-series-product__fallback">{{ product_title | slice: 0, 2 | upcase }}</span>
+    {% endif %}
+  </span>
+
+  <span class="sa-series-product__content">
+    {% if product.type != blank %}
+      <span class="sa-series-product__type">{{ product.type | escape }}</span>
+    {% endif %}
+
+    <span class="sa-series-product__title">{{ product_title | escape }}</span>
+
+    <span class="sa-series-product__price">
+      {% if product.available == false %}
+        Sold out
+      {% elsif product.price_varies %}
+        {{ product.price_min | money }}+
+      {% elsif compare_price > current_price %}
+        {{ current_price | money }}
+      {% else %}
+        {{ current_price | money }}
+      {% endif %}
+    </span>
+  </span>
+</a>

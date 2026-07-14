@@ -1,0 +1,521 @@
+{% liquid
+  assign section_eyebrow = section.settings.eyebrow | default: 'Archive Row'
+  assign section_heading = section.settings.heading | default: 'Best Sellers'
+  assign section_intro = section.settings.intro
+  assign selected_collection = section.settings.collection
+  assign max_products = section.settings.max_products | default: 8
+  assign row_label = section.settings.sort_label
+  assign layout_style = section.settings.layout_style | default: 'row'
+  assign show_badges = section.settings.show_badges
+  assign show_variant_indicators = section.settings.show_variant_indicators
+  assign show_quick_add = section.settings.show_quick_add
+  assign product_action_label = 'View Exhibit'
+  if show_quick_add
+    assign product_action_label = 'View Product'
+  endif
+%}
+
+<section class="sa-section sa-section--archive-black sa-product-row sa-product-row--{{ layout_style }}" aria-labelledby="sa-product-row-title-{{ section.id }}">
+  <style>
+    #shopify-section-{{ section.id }} .sa-product-row__header {
+      display: grid;
+      gap: var(--sa-space-4);
+      margin-block-end: var(--sa-space-6);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__header-main {
+      display: grid;
+      gap: var(--sa-space-3);
+      max-width: 760px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__header-actions {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--sa-space-5);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__heading {
+      color: var(--sa-museum-ivory);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__intro {
+      color: var(--sa-gallery-stone);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__label {
+      flex: 0 0 auto;
+      color: var(--sa-gallery-stone);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__products {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sa-card-gap);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row--row .sa-product-row__products {
+      display: flex;
+      overflow-x: auto;
+      margin-inline: calc(var(--sa-page-gutter) * -1);
+      padding-inline: var(--sa-page-gutter);
+      padding-block-end: var(--sa-space-2);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(216, 210, 199, 0.46) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row--row .sa-product-row__product {
+      flex: 0 0 clamp(220px, 22vw, 304px);
+      scroll-snap-align: start;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product:hover .sa-product-row__image {
+      opacity: 0.96;
+      transform: scale(1.035);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__media {
+      position: relative;
+      display: block;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-archive-black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 46%, rgba(11, 11, 11, 0.62)), var(--sa-texture-concrete);
+      opacity: 0.68;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0.9;
+      transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__image-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-archive);
+      font-size: clamp(22px, 4vw, 38px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__badges {
+      position: absolute;
+      inset: var(--sa-space-3) var(--sa-space-3) auto auto;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: var(--sa-space-2);
+      max-width: calc(100% - var(--sa-space-6));
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__content {
+      display: grid;
+      align-content: start;
+      gap: var(--sa-space-3);
+      padding: var(--sa-space-4);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sa-space-2);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__type {
+      color: var(--sa-bamboo-amber);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__title {
+      margin: 0;
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-display);
+      font-size: var(--sa-type-card-title);
+      line-height: var(--sa-line-heading);
+      letter-spacing: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__price {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--sa-space-2);
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-ui);
+      font-size: var(--sa-type-body);
+      line-height: var(--sa-line-body);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__price-sale {
+      color: var(--sa-museum-ivory);
+      font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__price-compare {
+      color: rgba(216, 210, 199, 0.68);
+      text-decoration: line-through;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__variant-note {
+      color: var(--sa-gallery-stone);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__action {
+      margin-block-start: var(--sa-space-2);
+      justify-self: start;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__footer {
+      display: flex;
+      justify-content: center;
+      margin-block-start: var(--sa-space-6);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__empty {
+      padding: var(--sa-space-6);
+      border: var(--sa-border-hairline);
+      border-radius: var(--sa-radius-md);
+      background: rgba(16, 16, 16, 0.72);
+      color: var(--sa-gallery-stone);
+    }
+
+    @media screen and (max-width: 1199px) {
+      #shopify-section-{{ section.id }} .sa-product-row__products {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 899px) {
+      #shopify-section-{{ section.id }} .sa-product-row__header-actions {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} .sa-product-row__products,
+      #shopify-section-{{ section.id }} .sa-product-row--grid .sa-product-row__products,
+      #shopify-section-{{ section.id }} .sa-product-row--row .sa-product-row__products {
+        display: flex;
+        gap: var(--sa-card-gap);
+        overflow-x: auto;
+        margin-inline: calc(var(--sa-page-gutter) * -1);
+        padding-inline: var(--sa-page-gutter);
+        padding-block-end: var(--sa-space-2);
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__products::-webkit-scrollbar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__product,
+      #shopify-section-{{ section.id }} .sa-product-row--grid .sa-product-row__product,
+      #shopify-section-{{ section.id }} .sa-product-row--row .sa-product-row__product {
+        flex: 0 0 min(72vw, 284px);
+        scroll-snap-align: start;
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__content {
+        padding: var(--sa-space-3);
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__action,
+      #shopify-section-{{ section.id }} .sa-product-row__footer .sa-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .sa-product-row__image {
+        transition-duration: 1ms;
+      }
+
+      #shopify-section-{{ section.id }} .sa-product-row__product:hover .sa-product-row__image {
+        transform: none;
+      }
+    }
+  </style>
+
+  <div class="sa-container">
+    <div class="sa-product-row__header">
+      <div class="sa-product-row__header-actions">
+        <div class="sa-product-row__header-main">
+          {% if section_eyebrow != blank %}
+            <p class="sa-kicker">{{ section_eyebrow | escape }}</p>
+          {% endif %}
+
+          {% if section_heading != blank %}
+            <h2 class="sa-heading sa-product-row__heading" id="sa-product-row-title-{{ section.id }}">{{ section_heading | escape }}</h2>
+          {% endif %}
+
+          {% if section_intro != blank %}
+            <p class="sa-copy sa-product-row__intro">{{ section_intro }}</p>
+          {% endif %}
+        </div>
+
+        {% if row_label != blank %}
+          <p class="sa-archive-label sa-product-row__label">{{ row_label | escape }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if selected_collection != blank and selected_collection.products_count > 0 %}
+      <div class="sa-product-row__products" role="list" aria-label="{{ section_heading | escape }}">
+        {% for product in selected_collection.products limit: max_products %}
+          {% liquid
+            assign product_title = product.title | default: 'Product Exhibit'
+            assign product_type = product.type
+            assign image_alt = product.featured_image.alt | default: product_title
+            assign product_initials = product_title | remove: ' ' | slice: 0, 2 | upcase
+            assign compare_price = product.compare_at_price_max
+            assign current_price = product.price
+            assign variant_count = product.variants.size
+            assign tag_badge = blank
+            for tag in product.tags
+              assign normalized_tag = tag | downcase
+              if normalized_tag contains 'badge:'
+                assign tag_badge = tag | split: ':' | last | strip
+                break
+              endif
+            endfor
+          %}
+
+          <article class="sa-card sa-product-row__product" role="listitem">
+            <a class="sa-product-row__media" href="{{ product.url }}" aria-label="View {{ product_title | escape }}">
+              {% if product.featured_image != blank %}
+                {{ product.featured_image | image_url: width: 900 | image_tag: class: 'sa-product-row__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 72vw', widths: '320, 480, 640, 760, 900', alt: image_alt | escape }}
+              {% else %}
+                <span class="sa-product-row__image-fallback" aria-hidden="true">{{ product_initials | escape }}</span>
+              {% endif %}
+
+              {% if show_badges %}
+                <span class="sa-product-row__badges" aria-label="Product badges">
+                  {% if product.available == false %}
+                    <span class="sa-badge sa-badge--sold-out">Sold Out</span>
+                  {% elsif compare_price > current_price %}
+                    <span class="sa-badge">On Sale</span>
+                  {% elsif tag_badge != blank %}
+                    <span class="sa-badge sa-badge--outline">{{ tag_badge | escape }}</span>
+                  {% endif %}
+                </span>
+              {% endif %}
+            </a>
+
+            <div class="sa-product-row__content">
+              <div class="sa-product-row__meta">
+                {% if product_type != blank %}
+                  <span class="sa-archive-label sa-product-row__type">{{ product_type | escape }}</span>
+                {% endif %}
+
+                {% if show_variant_indicators and product.has_only_default_variant == false %}
+                  <span class="sa-archive-label sa-product-row__variant-note">
+                    {{ variant_count }} {% if variant_count == 1 %}variant{% else %}variants{% endif %}
+                  </span>
+                {% endif %}
+              </div>
+
+              <h3 class="sa-product-row__title">
+                <a class="sa-archive-link" href="{{ product.url }}">{{ product_title | escape }}</a>
+              </h3>
+
+              <p class="sa-product-row__price">
+                {% if product.price_varies %}
+                  <span>{{ product.price_min | money }}+</span>
+                {% elsif compare_price > current_price %}
+                  <span class="sa-product-row__price-sale">{{ current_price | money }}</span>
+                  <span class="sa-product-row__price-compare">{{ compare_price | money }}</span>
+                {% else %}
+                  <span>{{ current_price | money }}</span>
+                {% endif %}
+              </p>
+
+              <a class="sa-button sa-button--secondary sa-product-row__action" href="{{ product.url }}" aria-label="{{ product_action_label }}: {{ product_title | escape }}">
+                {{ product_action_label }}
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <div class="sa-product-row__footer">
+          <a class="sa-button sa-button--primary" href="{{ section.settings.cta_link }}">
+            {{ section.settings.cta_label | escape }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="sa-product-row__empty" role="status">
+        Choose a collection with products to build this SpicedAnime product row.
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Product Row",
+  "tag": "section",
+  "class": "sa-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Curated Row"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text",
+      "default": "A focused archive row for shoppers who want the strongest product paths first."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection picker"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Max products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "sort_label",
+      "label": "Sort/label text",
+      "default": "Archive selection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add when safe",
+      "info": "Phase 1 keeps product links only to protect variant and cart behavior.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variant_indicators",
+      "label": "Show variant indicators",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "View Full Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "row", "label": "Carousel-style row" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "row"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA Row Best Sellers",
+      "settings": {
+        "eyebrow": "Best Sellers",
+        "heading": "Shop the Current Favorites",
+        "intro": "A fast path into the pieces shoppers are already choosing.",
+        "sort_label": "Performance archive"
+      }
+    },
+    {
+      "name": "SA Row Trending",
+      "settings": {
+        "eyebrow": "Trending This Week",
+        "heading": "Currently Moving Fast",
+        "intro": "The pieces getting the most attention right now, gathered into one easy row.",
+        "sort_label": "Weekly signal"
+      }
+    },
+    {
+      "name": "SA Row New Drops",
+      "settings": {
+        "eyebrow": "New Drops",
+        "heading": "Recently Added Exhibits",
+        "intro": "Fresh additions for collectors checking the latest product wall.",
+        "sort_label": "Newest arrivals"
+      }
+    },
+    {
+      "name": "SA Row Event Picks",
+      "settings": {
+        "eyebrow": "Convention Favorites",
+        "heading": "Event Table Standouts",
+        "intro": "A focused row for the designs that are easy to understand, gift, and grab.",
+        "sort_label": "Crowd favorites"
+      }
+    },
+    {
+      "name": "SA Row Complete Setup",
+      "settings": {
+        "eyebrow": "Complete the Setup",
+        "heading": "Finish the Matching Set",
+        "intro": "A practical path for shoppers building a full desk, bag, wall, or gift-ready setup.",
+        "sort_label": "Set builder"
+      }
+    }
+  ]
+}
+{% endschema %}

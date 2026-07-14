@@ -11,7 +11,21 @@
   "sections": {
     "main": {
       "type": "sa-series-collection-landing",
-      "settings": {}
+      "settings": {
+        "archive_label": "Series Archive",
+        "intro": "Explore this fandom through collectible anime-inspired accessories, setup pieces, and archive-worthy everyday carry.",
+        "accent_color": "#b3362d",
+        "best_seller_limit": 4,
+        "more_from_limit": 8,
+        "show_complete_set": true,
+        "complete_set_limit": 4,
+        "lighters_url": "",
+        "wallets_url": "",
+        "grinder_sets_url": "",
+        "tapestries_url": "",
+        "rolling_trays_url": "",
+        "stash_jars_url": ""
+      }
     },
     "product_grid": {
       "type": "main-collection",
@@ -27,7 +41,7 @@
         "pagination_style": "default",
         "enable_infinity_scroll": false,
         "section_width": "max-w-page",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-6",
         "spacing_top": "2",
         "spacing_bottom": "4"
       }

@@ -165,7 +165,8 @@
           "type": "series",
           "settings": {
             "series_name": "JJK",
-            "collection_link": "",
+            "image": "shopify://shop_images/GIYih4HXsAAGccK.jpg",
+            "collection_link": "shopify://collections/jujutsu-kaisen",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",

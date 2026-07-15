@@ -53,13 +53,16 @@
         "complete_include_rolling_tray": true,
         "complete_include_wallet": false,
         "complete_include_stash_jar": true,
+        "complete_include_stash_box": true,
         "complete_include_tapestry": false,
         "lighters_url": "",
         "wallets_url": "",
         "grinder_sets_url": "",
         "tapestries_url": "",
         "rolling_trays_url": "",
-        "stash_jars_url": ""
+        "stash_jars_url": "",
+        "ashtrays_url": "",
+        "stash_boxes_url": ""
       }
     },
     "product_grid": {

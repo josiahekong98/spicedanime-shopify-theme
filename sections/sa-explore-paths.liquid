@@ -6,11 +6,15 @@
 
 <section class="sa-section sa-section--spotlight sa-explore-paths" aria-labelledby="sa-explore-paths-title-{{ section.id }}">
   <style>
+    #shopify-section-{{ section.id }} .sa-explore-paths {
+      padding-block: clamp(24px, 4vw, 40px);
+    }
+
     #shopify-section-{{ section.id }} .sa-explore-paths__header {
       display: grid;
       gap: var(--sa-space-2);
       max-width: 720px;
-      margin-block-end: var(--sa-space-4);
+      margin-block-end: 14px;
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__eyebrow {
@@ -19,7 +23,7 @@
 
     #shopify-section-{{ section.id }} .sa-explore-paths__header .sa-heading {
       color: var(--sa-museum-ivory);
-      font-size: clamp(26px, 4vw, 42px);
+      font-size: clamp(24px, 3.6vw, 36px);
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__header .sa-copy {
@@ -34,7 +38,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__card {
-      min-height: 240px;
+      min-height: 212px;
       display: grid;
       align-content: end;
       isolation: isolate;
@@ -106,8 +110,8 @@
       position: relative;
       z-index: 2;
       display: grid;
-      gap: var(--sa-space-3);
-      padding: var(--sa-space-5);
+      gap: var(--sa-space-2);
+      padding: var(--sa-space-4);
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__archive-label {
@@ -167,14 +171,14 @@
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__card {
-        min-height: clamp(300px, 30vw, 420px);
+        min-height: clamp(260px, 26vw, 360px);
       }
     }
 
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-explore-paths__header {
         gap: var(--sa-space-2);
-        margin-block-end: var(--sa-space-4);
+        margin-block-end: 12px;
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__grid {
@@ -182,7 +186,7 @@
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__card {
-        min-height: 174px;
+        min-height: 154px;
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__thumb {

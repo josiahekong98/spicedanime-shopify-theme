@@ -15,6 +15,10 @@
   assign tapestry_img = blank
   assign tray_img = blank
   assign jar_img = blank
+  assign complete_grinder_set_product = blank
+  assign complete_lighter_product = blank
+  assign complete_ashtray_product = blank
+  assign complete_tray_product = blank
   assign lighter_available = false
   assign wallet_available = false
   assign grinder_set_available = false
@@ -34,11 +38,13 @@
     assign ptype = product.type | downcase
     assign phandle = product.handle | downcase
     assign product_family_text = ptitle | append: ' ' | append: ptype | append: ' ' | append: phandle
-    assign matching_set = product.metafields.custom.matching_set_group.value
-
     if product_family_text contains 'lighter'
       assign lighter_available = true
       assign lighter_count = lighter_count | plus: 1
+      if complete_lighter_product == blank
+        assign complete_lighter_product = product
+        assign complete_set_count = complete_set_count | plus: 1
+      endif
     endif
 
     if product_family_text contains 'wallet' or product_family_text contains 'bifold'
@@ -49,6 +55,10 @@
     if product_family_text contains 'grinder set'
       assign grinder_set_available = true
       assign grinder_set_count = grinder_set_count | plus: 1
+      if complete_grinder_set_product == blank
+        assign complete_grinder_set_product = product
+        assign complete_set_count = complete_set_count | plus: 1
+      endif
     endif
 
     if product_family_text contains 'tapestry'
@@ -61,11 +71,20 @@
     if product_family_text contains 'rolling tray'
       assign tray_available = true
       assign tray_count = tray_count | plus: 1
+      if complete_tray_product == blank
+        assign complete_tray_product = product
+        assign complete_set_count = complete_set_count | plus: 1
+      endif
     endif
 
     if product_family_text contains 'stash jar'
       assign jar_available = true
       assign jar_count = jar_count | plus: 1
+    endif
+
+    if complete_ashtray_product == blank and product_family_text contains 'ashtray'
+      assign complete_ashtray_product = product
+      assign complete_set_count = complete_set_count | plus: 1
     endif
 
     if product.featured_image
@@ -97,10 +116,6 @@
         assign jar_img = product.featured_image
       endif
 
-    endif
-
-    if matching_set != blank or product.tags contains 'complete-set' or product.tags contains 'Complete the Set' or ptype contains 'grinder set'
-      assign complete_set_count = complete_set_count | plus: 1
     endif
   endfor
 %}
@@ -774,7 +789,7 @@
             {% if hero_intro != blank %}
               {{ hero_intro | strip_html | escape }}
             {% else %}
-              Shop {{ series_title | escape }} inspired lighters, wallets, grinder sets, tapestries, rolling trays, stash jars, and collectible setup pieces.
+              Collectible accessories for this fandom. Shop one piece or build the full setup.
             {% endif %}
           </p>
 
@@ -807,7 +822,7 @@
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">Best Sellers</p>
           <h2 class="sa-series-title" id="sa-series-best-title-{{ section.id }}">Top {{ series_title | escape }} Picks</h2>
-          <p class="sa-series-copy">Start with the pieces shoppers are most likely to understand, gift, and add to the collection.</p>
+          <p class="sa-series-copy">Fan-favorite pieces from this series.</p>
         </div>
         <a class="sa-series-view" href="{{ collection.url }}?sort_by=best-selling#ProductGridContainer">Sort Best Selling -></a>
       </div>
@@ -833,23 +848,24 @@
           <div class="sa-series-head__copy">
             <p class="sa-series-eyebrow">Complete The Set</p>
             <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Complete Your {{ series_title | escape }} Collection</h2>
-            <p class="sa-series-copy">Matching accessories designed to go together, so shoppers can build the full setup instead of stopping at one piece.</p>
+            <p class="sa-series-copy">Mix product types to build your setup and unlock bundle savings.</p>
           </div>
         </div>
 
         {% if complete_set_count > 0 %}
           <div class="sa-series-products" role="list" aria-label="Complete the set products for {{ series_title | escape }}">
-            {% assign rendered_sets = 0 %}
-            {% for product in collection.products %}
-              {% assign ptype = product.type | downcase %}
-              {% assign matching_set = product.metafields.custom.matching_set_group.value %}
-              {% if matching_set != blank or product.tags contains 'complete-set' or product.tags contains 'Complete the Set' or ptype contains 'grinder set' %}
-                {% if rendered_sets < section.settings.complete_set_limit %}
-                  {% render 'sa-series-product-card', product: product %}
-                  {% assign rendered_sets = rendered_sets | plus: 1 %}
-                {% endif %}
-              {% endif %}
-            {% endfor %}
+            {% if complete_grinder_set_product != blank %}
+              {% render 'sa-series-product-card', product: complete_grinder_set_product %}
+            {% endif %}
+            {% if complete_lighter_product != blank %}
+              {% render 'sa-series-product-card', product: complete_lighter_product %}
+            {% endif %}
+            {% if complete_ashtray_product != blank %}
+              {% render 'sa-series-product-card', product: complete_ashtray_product %}
+            {% endif %}
+            {% if complete_tray_product != blank %}
+              {% render 'sa-series-product-card', product: complete_tray_product %}
+            {% endif %}
           </div>
         {% else %}
           <div class="sa-series-empty" role="status">No complete-set products are marked for this series yet.</div>
@@ -860,17 +876,15 @@
     <section class="sa-series-section" aria-labelledby="sa-series-family-title-{{ section.id }}">
       <div class="sa-series-head">
         <div class="sa-series-head__copy">
-          <p class="sa-series-eyebrow">Shop By Product</p>
-          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Choose A {{ series_title | escape }} Product Family</h2>
-          <p class="sa-series-copy">Use these fast paths when you already know the kind of piece you want.</p>
+          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Shop By Product</h2>
         </div>
       </div>
 
       <div class="sa-series-family-grid" role="list">
-        {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Wallets', count: wallet_count, image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Tapestries', count: tapestry_count, image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Wallets', count: wallet_count, image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Rolling Trays', count: tray_count, image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Stash Jars', count: jar_count, image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
       </div>
@@ -979,7 +993,7 @@
       "type": "textarea",
       "id": "intro",
       "label": "Fallback intro",
-      "default": "Explore this fandom through collectible anime-inspired accessories, setup pieces, and archive-worthy everyday carry."
+      "default": "Collectible accessories for this fandom. Shop one piece or build the full setup."
     },
     {
       "type": "text",
@@ -1026,15 +1040,6 @@
       "id": "show_complete_set",
       "label": "Show Complete the Set row",
       "default": true
-    },
-    {
-      "type": "range",
-      "id": "complete_set_limit",
-      "label": "Complete the Set products",
-      "min": 2,
-      "max": 8,
-      "step": 1,
-      "default": 4
     },
     {
       "type": "url",

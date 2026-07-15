@@ -386,11 +386,11 @@
     #shopify-section-{{ section.id }} .sa-series-family-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card {
-      min-height: 258px;
+      min-height: 190px;
       display: grid;
       grid-template-rows: 1fr auto;
       overflow: hidden;
@@ -420,7 +420,7 @@
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media {
       position: relative;
-      min-height: 176px;
+      min-height: 124px;
       display: grid;
       place-items: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-texture-concrete), #101010;
@@ -439,7 +439,7 @@
     #shopify-section-{{ section.id }} .sa-series-family-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 176px;
+      min-height: 124px;
       object-fit: cover;
       display: block;
       opacity: 0.9;
@@ -465,15 +465,15 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label {
-      min-height: 72px;
+      min-height: 58px;
       display: flex;
       align-items: start;
       justify-content: space-between;
-      gap: 12px;
-      padding: 14px;
+      gap: 10px;
+      padding: 10px;
       background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
       font-weight: 800;
-      font-size: clamp(18px, 1.6vw, 24px);
+      font-size: clamp(15px, 1.3vw, 18px);
       font-family: var(--sa-font-display, serif);
       line-height: 1.2;
       letter-spacing: 0;
@@ -506,7 +506,7 @@
     #shopify-section-{{ section.id }} .sa-series-products {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      gap: 10px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-products--compact {
@@ -577,8 +577,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__content {
       display: grid;
-      gap: 7px;
-      padding: 13px;
+      gap: 6px;
+      padding: 10px;
       background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
     }
 
@@ -619,7 +619,7 @@
       white-space: nowrap;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
-      font-size: clamp(16px, 1.45vw, 22px);
+      font-size: clamp(15px, 1.2vw, 18px);
       line-height: 1.08;
     }
 
@@ -645,11 +645,11 @@
     #shopify-section-{{ section.id }} .sa-series-related-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      gap: 10px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card {
-      min-height: 260px;
+      min-height: 190px;
       position: relative;
       display: grid;
       align-items: end;
@@ -673,10 +673,10 @@
 
     #shopify-section-{{ section.id }} .sa-series-related-card__label {
       position: relative;
-      padding: 14px;
+      padding: 10px;
       color: #fff;
       font-family: var(--sa-font-display, serif);
-      font-size: 22px;
+      font-size: 18px;
       line-height: 1;
       text-transform: uppercase;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.82);
@@ -800,24 +800,29 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card {
-        flex: 0 0 min(56vw, 228px);
-        min-height: 218px;
+        flex: 0 0 min(46vw, 178px);
+        min-height: auto;
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-product {
-        flex: 0 0 min(54vw, 220px);
+        flex: 0 0 min(46vw, 178px);
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-related-card {
-        flex: 0 0 min(58vw, 230px);
+        flex: 0 0 min(46vw, 178px);
+        min-height: 172px;
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card__media,
       #shopify-section-{{ section.id }} .sa-series-family-card__media img {
-        min-height: 146px;
+        min-height: 98px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-related-card__label {
+        font-size: 16px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__title {

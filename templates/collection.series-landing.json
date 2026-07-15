@@ -11,6 +11,34 @@
   "sections": {
     "main": {
       "type": "sa-series-collection-landing",
+      "blocks": {
+        "related_series_XyTi44": {
+          "type": "related_series",
+          "settings": {
+            "collection": "naruto-1",
+            "title": ""
+          }
+        },
+        "related_series_9k4hM8": {
+          "type": "related_series",
+          "settings": {
+            "collection": "bleach",
+            "title": ""
+          }
+        },
+        "related_series_EEkhdL": {
+          "type": "related_series",
+          "settings": {
+            "collection": "dragon-ball-z",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "related_series_XyTi44",
+        "related_series_9k4hM8",
+        "related_series_EEkhdL"
+      ],
       "settings": {
         "archive_label": "Series Archive",
         "intro": "Explore through collectible anime-inspired accessories, setup pieces, and archive-worthy everyday carry.",
@@ -19,7 +47,6 @@
         "best_seller_limit": 6,
         "more_from_limit": 8,
         "show_complete_set": true,
-        "complete_set_limit": 5,
         "lighters_url": "",
         "wallets_url": "",
         "grinder_sets_url": "",

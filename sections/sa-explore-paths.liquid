@@ -8,9 +8,9 @@
   <style>
     #shopify-section-{{ section.id }} .sa-explore-paths__header {
       display: grid;
-      gap: var(--sa-space-3);
+      gap: var(--sa-space-2);
       max-width: 720px;
-      margin-block-end: var(--sa-space-5);
+      margin-block-end: var(--sa-space-4);
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__eyebrow {
@@ -19,6 +19,7 @@
 
     #shopify-section-{{ section.id }} .sa-explore-paths__header .sa-heading {
       color: var(--sa-museum-ivory);
+      font-size: clamp(26px, 4vw, 42px);
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__header .sa-copy {
@@ -29,11 +30,11 @@
     #shopify-section-{{ section.id }} .sa-explore-paths__grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: var(--sa-card-gap);
+      gap: 14px;
     }
 
     #shopify-section-{{ section.id }} .sa-explore-paths__card {
-      min-height: 300px;
+      min-height: 240px;
       display: grid;
       align-content: end;
       isolation: isolate;
@@ -166,22 +167,22 @@
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__card {
-        min-height: clamp(360px, 38vw, 520px);
+        min-height: clamp(300px, 30vw, 420px);
       }
     }
 
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-explore-paths__header {
         gap: var(--sa-space-2);
-        margin-block-end: var(--sa-space-5);
+        margin-block-end: var(--sa-space-4);
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__grid {
-        gap: var(--sa-space-3);
+        gap: 12px;
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__card {
-        min-height: 196px;
+        min-height: 174px;
       }
 
       #shopify-section-{{ section.id }} .sa-explore-paths__thumb {

@@ -426,6 +426,17 @@
         "spacing_bottom": "4"
       }
     },
+    "sa_more_from_series": {
+      "type": "sa-more-from-series",
+      "settings": {
+        "eyebrow": "More From This Series",
+        "heading": "More From This Series",
+        "intro": "",
+        "max_products": 8,
+        "pool_limit": 36,
+        "fallback_collection": "best-selling"
+      }
+    },
     "accordions_VHkjgW": {
       "type": "accordions",
       "blocks": {
@@ -586,6 +597,7 @@
     "main",
     "complete_the_set_b7W3Ex",
     "multitile_VdkN7j",
+    "sa_more_from_series",
     "recommendations",
     "accordions_VHkjgW",
     "social_media_highlights_Dy6xKY",

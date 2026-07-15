@@ -70,39 +70,28 @@
       background: var(--sa-archive-black);
     }
 
-    #shopify-section-{{ section.id }} .sa-explore-paths__media::after {
-      content: "";
+    #shopify-section-{{ section.id }} .sa-explore-paths__media-image {
       position: absolute;
       inset: 0;
-      background: var(--sa-texture-concrete), radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--sa-card-accent) 24%, transparent), transparent 42%);
-      opacity: 0.62;
-    }
-
-    #shopify-section-{{ section.id }} .sa-explore-paths__thumb {
-      position: absolute;
-      inset: var(--sa-space-4) auto auto var(--sa-space-4);
-      z-index: 2;
-      width: 82px;
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      border: 1px solid color-mix(in srgb, var(--sa-card-accent) 72%, var(--sa-museum-ivory));
-      border-radius: var(--sa-radius-xs);
-      background: rgba(16, 16, 16, 0.68);
-      box-shadow: 0 0 28px color-mix(in srgb, var(--sa-card-accent) 20%, transparent);
-    }
-
-    #shopify-section-{{ section.id }} .sa-explore-paths__thumb-image {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      opacity: 0.9;
+      opacity: 0.58;
       transform: scale(1.01);
       transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
     }
 
-    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__thumb-image {
-      opacity: 1;
+    #shopify-section-{{ section.id }} .sa-explore-paths__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0.18), rgba(11, 11, 11, 0.86)), var(--sa-texture-concrete), radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--sa-card-accent) 24%, transparent), transparent 42%);
+      opacity: 0.78;
+    }
+
+    #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__media-image {
+      opacity: 0.72;
       transform: scale(1.035);
     }
 
@@ -189,12 +178,6 @@
         min-height: 154px;
       }
 
-      #shopify-section-{{ section.id }} .sa-explore-paths__thumb {
-        inset-block-start: var(--sa-space-3);
-        inset-inline-start: var(--sa-space-3);
-        width: 58px;
-      }
-
       #shopify-section-{{ section.id }} .sa-explore-paths__content {
         padding: var(--sa-space-3);
         gap: var(--sa-space-1);
@@ -211,12 +194,12 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #shopify-section-{{ section.id }} .sa-explore-paths__thumb-image,
+      #shopify-section-{{ section.id }} .sa-explore-paths__media-image,
       #shopify-section-{{ section.id }} .sa-explore-paths__cta::after {
         transition-duration: 1ms;
       }
 
-      #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__thumb-image {
+      #shopify-section-{{ section.id }} .sa-explore-paths__card:hover .sa-explore-paths__media-image {
         transform: none;
       }
     }
@@ -259,13 +242,11 @@
           %}
 
           {% capture card_inner %}
-            <span class="sa-explore-paths__media" aria-hidden="true"></span>
-
-            {% if block.settings.image != blank %}
-              <span class="sa-explore-paths__thumb" aria-hidden="true">
-                {{ block.settings.image | image_url: width: 240 | image_tag: class: 'sa-explore-paths__thumb-image', loading: 'lazy', sizes: '(min-width: 768px) 82px, 58px', widths: '96, 144, 192, 240', alt: block.settings.image.alt | default: card_heading | escape }}
-              </span>
-            {% endif %}
+            <span class="sa-explore-paths__media" aria-hidden="true">
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1000 | image_tag: class: 'sa-explore-paths__media-image', loading: 'lazy', sizes: '(min-width: 768px) 33vw, 100vw', widths: '360, 540, 720, 900, 1000', alt: block.settings.image.alt | default: card_heading | escape }}
+              {% endif %}
+            </span>
 
             <span class="sa-explore-paths__content">
               <span class="sa-explore-paths__archive-label sa-archive-label">{{ card_label | escape }}</span>

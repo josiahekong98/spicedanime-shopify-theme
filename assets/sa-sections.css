@@ -368,6 +368,15 @@
   color: var(--sa-museum-ivory);
 }
 
+.sa-series-product-grid .product-card__content {
+  display: grid;
+  grid-template-rows: auto minmax(2.8rem, auto);
+}
+
+.sa-series-product-grid .product-card__info {
+  min-width: 0;
+}
+
 .sa-series-product-grid .product-card__title,
 .sa-series-product-grid .product-card__title a,
 .sa-series-product-grid .product-card__title span {
@@ -375,6 +384,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sa-series-product-grid .product-card__options {
+  min-height: 2.8rem;
 }
 
 @media screen and (max-width: 767px) {

@@ -53,6 +53,11 @@ endif
       render 'facets', results: collection, filters: section.settings.filters, enable_sorting: section.settings.enable_sorting, section_id: section.id, container_width: section.settings.section_width, opened_accordions: section.settings.enable_opened_accordions, pagination_style: section.settings.pagination_style, products_per_page: products_per_page
     endcapture
   endif
+
+  assign sa_collection_class = ''
+  if section.id contains 'product_grid'
+    assign sa_collection_class = ' sa-series-product-grid'
+  endif
 -%}
 
 {%- style -%}
@@ -85,7 +90,7 @@ endif
   <script src="{{- 'dynamic-load-more.js' | asset_url -}}" defer="defer"></script>
 {%- endif -%}
 
-<div class="collection js-animation-fade-in color-{{ section.settings.color_scheme }} filters--{{ section.settings.filters }} {{ settings.card_product_layout }}">
+<div class="collection js-animation-fade-in color-{{ section.settings.color_scheme }} filters--{{ section.settings.filters }} {{ settings.card_product_layout }}{{ sa_collection_class }}">
 
   {{ facets_html }}
 

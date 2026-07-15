@@ -177,7 +177,8 @@
           "type": "series",
           "settings": {
             "series_name": "Dragon Ball Z",
-            "collection_link": "",
+            "image": "shopify://shop_images/db-v4-premium-heavyweight-t-shirt.jpg",
+            "collection_link": "shopify://collections/dragon-ball-z",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",

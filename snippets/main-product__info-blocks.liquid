@@ -50,7 +50,7 @@
 
   <p class="sa-product-status">
     <span class="sa-product-status__dot" aria-hidden="true"></span>
-    Limited stock | Ships out in 3 – 7 business days
+    Limited stock | Ships in 3 - 7 business days
   </p>
 
 </div>
@@ -66,6 +66,11 @@
           {%- continue -%}
         {%- endif -%}
         {%- assign product_block_class = 'product__text' | append: ' ' | append: product_block_class -%}
+        {%- assign sa_trust_note = false -%}
+        {%- if block.settings.heading == 'Free and easy returns' or block.settings.heading == 'Secure payments' or block.settings.heading == 'Free delivery on orders over $150' -%}
+          {%- assign sa_trust_note = true -%}
+          {%- assign product_block_class = product_block_class | append: ' sa-product-trust-note' -%}
+        {%- endif -%}
         <div
           class="{{ product_block_class }} product__text--{{- block.settings.link_to_resource }} {% unless block.settings.link_to_resource == 'none' %}product__text--link{% else %}product__text--body{% if block.settings.heading_secondary != blank %}-animated{% endif %}{% endunless %}{% if block.settings.text_before_link and block.settings.link_to_resource != 'none' %} product__text--before-link{% endif %} font-size-sm"
           {{ block.shopify_attributes }}

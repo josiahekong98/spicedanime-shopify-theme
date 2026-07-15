@@ -130,7 +130,7 @@
           "settings": {
             "series_name": "Cowboy Bebop",
             "image": "shopify://shop_images/images_14.jpg",
-            "collection_link": "",
+            "collection_link": "shopify://collections/cowboy",
             "product_count_text": "",
             "badge": "trending",
             "accessibility_label": "",
@@ -142,7 +142,7 @@
           "settings": {
             "series_name": "Naruto",
             "image": "shopify://shop_images/shikmaru-premium-heavyweight-t-shirt-black_1.jpg",
-            "collection_link": "",
+            "collection_link": "shopify://collections/naruto-1",
             "product_count_text": "",
             "badge": "top_seller",
             "accessibility_label": "",
@@ -154,7 +154,7 @@
           "settings": {
             "series_name": "Bleach",
             "image": "shopify://shop_images/F-DR9QMWkAAEwNh.jpg",
-            "collection_link": "",
+            "collection_link": "shopify://collections/bleach",
             "product_count_text": "",
             "badge": "trending",
             "accessibility_label": "",

@@ -224,7 +224,7 @@
         "display_media_gallery_pagination": "none",
         "media_gallery_info": "",
         "metafield_as_seen_on": "",
-        "color_scheme_gallery": "scheme-5",
+        "color_scheme_gallery": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
         "enable_sticky_info": true,
         "enable_actions_bar": true,
         "media_grid_size": "medium",
@@ -233,9 +233,21 @@
         "spacing_grid": 1.6,
         "grid_content_alignment": "start",
         "section_width": "max-w-fluid",
-        "color_scheme": "scheme-5",
+        "color_scheme": "scheme-6",
         "spacing_top": "0",
         "spacing_bottom": "1"
+      }
+    },
+    "sa_more_from_series_eEk3ct": {
+      "type": "sa-more-from-series",
+      "name": "SA More From Series",
+      "settings": {
+        "eyebrow": "More From This Series",
+        "heading": "More From This Series",
+        "intro": "More pieces from the same series, mixed across product types.",
+        "max_products": 8,
+        "pool_limit": 36,
+        "fallback_collection": ""
       }
     },
     "753757662477391814": {
@@ -282,18 +294,6 @@
         "color_scheme": "scheme-1",
         "spacing_top": "4",
         "spacing_bottom": "4"
-      }
-    },
-    "sa_more_from_series_eEk3ct": {
-      "type": "sa-more-from-series",
-      "name": "SA More From Series",
-      "settings": {
-        "eyebrow": "More From This Series",
-        "heading": "More From This Series",
-        "intro": "More pieces from the same series, mixed across product types.",
-        "max_products": 8,
-        "pool_limit": 36,
-        "fallback_collection": ""
       }
     }
   },

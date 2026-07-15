@@ -190,7 +190,7 @@
           "settings": {
             "series_name": "Demon Slayer",
             "image": "shopify://shop_images/f74f340817de37f11e5043a92f5ac37e.jpg",
-            "collection_link": "",
+            "collection_link": "shopify://collections/demon-slayer",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",
@@ -213,7 +213,8 @@
           "type": "series",
           "settings": {
             "series_name": "Hunter x Hunter",
-            "collection_link": "",
+            "image": "shopify://shop_images/hunter-premium-heavyweight-t-shirt-white.jpg",
+            "collection_link": "shopify://collections/hunter-x-hunter",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",

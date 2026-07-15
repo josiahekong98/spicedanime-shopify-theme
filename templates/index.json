@@ -284,6 +284,7 @@
             "label": "PATH 01",
             "heading": "Explore by Series",
             "text": "Shop by anime, cartoon, and collection.",
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_01_27_58_AM_a601b5b7-9299-4375-816e-46d6c8572a5f.png",
             "icon_label": "sad",
             "link": "shopify://pages/all-anime-collections",
             "link_label": "Shop Series",

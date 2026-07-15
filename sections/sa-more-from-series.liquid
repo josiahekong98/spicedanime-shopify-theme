@@ -1,0 +1,433 @@
+{% liquid
+  capture current_series_capture
+    if product.metafields.custom.series.value != blank
+      echo product.metafields.custom.series.value
+    elsif product.metafields.custom.series != blank
+      echo product.metafields.custom.series
+    endif
+  endcapture
+
+  assign current_series = current_series_capture | strip
+  assign current_series_key = current_series | handleize
+  assign current_product_type_key = product.type | handleize
+  assign source_collection = blank
+  assign using_fallback = false
+
+  if current_series != blank
+    for block in section.blocks
+      assign block_series_key = block.settings.series_name | handleize
+      if block.type == 'series_source' and block_series_key == current_series_key and block.settings.collection != blank
+        assign source_collection = block.settings.collection
+        break
+      endif
+    endfor
+
+    if source_collection == blank
+      for product_collection in product.collections
+        assign collection_handle = product_collection.handle
+        if collection_handle == current_series_key or collection_handle contains current_series_key
+          assign source_collection = product_collection
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  if source_collection == blank and section.settings.fallback_collection != blank
+    assign source_collection = section.settings.fallback_collection
+    assign using_fallback = true
+  endif
+
+  assign priority_type_keys = ''
+  if current_product_type_key contains 'lighter'
+    assign priority_type_keys = '|grinder-sets|herb-grinder|ashtray|stash-box|stashbox|stash-jar|rolling-tray|'
+  elsif current_product_type_key contains 'grinder'
+    assign priority_type_keys = '|stash-jar|rolling-tray|flip-lighter|lighter|ashtray|stash-box|stashbox|'
+  elsif current_product_type_key contains 'tapestry'
+    assign priority_type_keys = '|pillow-covers|pillow|tote-bags|tote-bag|wallet|'
+  elsif current_product_type_key contains 'pillow' or current_product_type_key contains 'tote'
+    assign priority_type_keys = '|black-art-tapestry|tapestry|tapestries|'
+  endif
+
+  assign max_products = section.settings.max_products | default: 8
+  assign pool_limit = section.settings.pool_limit | default: 36
+  assign rendered_count = 0
+  assign section_heading = section.settings.heading | default: 'More From This Series'
+  assign section_intro = section.settings.intro
+%}
+
+<script src="{{ 'sa-product-recommendations.js' | asset_url }}" defer="defer"></script>
+
+<section
+  class="sa-section sa-section--archive-black sa-more-series"
+  aria-labelledby="sa-more-series-title-{{ section.id }}"
+  data-sa-recommendations
+  data-sa-max-products="{{ max_products }}"
+>
+  <style>
+    #shopify-section-{{ section.id }} .sa-more-series {
+      padding-block: clamp(24px, 4vw, 42px);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__header {
+      display: grid;
+      gap: 8px;
+      margin-block-end: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__heading {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__intro {
+      color: var(--sa-gallery-stone);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__grid {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-inline: calc(var(--sa-page-gutter) * -1);
+      padding-inline: var(--sa-page-gutter);
+      padding-block-end: var(--sa-space-2);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(216, 210, 199, 0.46) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__grid::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card {
+      flex: 0 0 clamp(168px, 16vw, 218px);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-width: 0;
+      scroll-snap-align: start;
+      text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card[hidden] {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__media {
+      display: block;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-archive-black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 52%, rgba(11, 11, 11, 0.64)), var(--sa-texture-concrete);
+      opacity: 0.62;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__image,
+    #shopify-section-{{ section.id }} .sa-more-series-card__fallback {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__image {
+      object-fit: cover;
+      opacity: 0.9;
+      transition: transform var(--sa-motion-standard), opacity var(--sa-motion-standard);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card:hover .sa-more-series-card__image {
+      transform: scale(1.035);
+      opacity: 0.96;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__fallback {
+      display: grid;
+      place-items: center;
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-archive);
+      font-size: clamp(22px, 4vw, 38px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__content {
+      display: grid;
+      align-content: start;
+      gap: 6px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--sa-concrete-charcoal) 88%, black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__type {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--sa-bamboo-amber);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__title {
+      margin: 0;
+      min-width: 0;
+      overflow: hidden;
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-display);
+      font-size: clamp(15px, 1.2vw, 18px);
+      font-weight: 400;
+      line-height: var(--sa-line-heading);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series-card__price {
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-ui);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__empty {
+      padding: var(--sa-space-5);
+      border: var(--sa-border-hairline);
+      border-radius: var(--sa-radius-md);
+      background: rgba(16, 16, 16, 0.72);
+      color: var(--sa-gallery-stone);
+    }
+
+    @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} .sa-more-series {
+        padding-block: 22px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-more-series__grid {
+        scrollbar-width: none;
+      }
+
+      #shopify-section-{{ section.id }} .sa-more-series__grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .sa-more-series-card {
+        flex-basis: min(46vw, 178px);
+      }
+
+      #shopify-section-{{ section.id }} .sa-more-series-card__content {
+        padding: 9px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .sa-more-series-card__image {
+        transition-duration: 1ms;
+      }
+
+      #shopify-section-{{ section.id }} .sa-more-series-card:hover .sa-more-series-card__image {
+        transform: none;
+      }
+    }
+  </style>
+
+  <div class="sa-container">
+    <header class="sa-more-series__header">
+      <p class="sa-kicker">{{ section.settings.eyebrow | default: 'More From This Series' | escape }}</p>
+      <h2 class="sa-heading sa-more-series__heading" id="sa-more-series-title-{{ section.id }}">
+        {{ section_heading | escape }}
+      </h2>
+      {% if section_intro != blank %}
+        <p class="sa-copy sa-more-series__intro">{{ section_intro | escape }}</p>
+      {% elsif current_series != blank and using_fallback == false %}
+        <p class="sa-copy sa-more-series__intro">More {{ current_series | escape }} pieces across different product types.</p>
+      {% endif %}
+    </header>
+
+    {% if source_collection != blank %}
+      <div class="sa-more-series__grid" role="list" aria-label="{{ section_heading | escape }}">
+        {% for recommendation in source_collection.products limit: pool_limit %}
+          {% liquid
+            capture candidate_series_capture
+              if recommendation.metafields.custom.series.value != blank
+                echo recommendation.metafields.custom.series.value
+              elsif recommendation.metafields.custom.series != blank
+                echo recommendation.metafields.custom.series
+              endif
+            endcapture
+
+            assign candidate_series = candidate_series_capture | strip
+            assign candidate_series_key = candidate_series | handleize
+            assign candidate_type_key = recommendation.type | handleize
+            assign same_series = false
+            assign priority_match = false
+
+            if using_fallback
+              assign same_series = true
+            elsif candidate_series_key == current_series_key
+              assign same_series = true
+            endif
+
+            assign priority_probe = '|' | append: candidate_type_key | append: '|'
+            if priority_type_keys contains priority_probe
+              assign priority_match = true
+            endif
+          %}
+
+          {% if same_series and recommendation.id != product.id and recommendation.available %}
+            {% assign rendered_count = rendered_count | plus: 1 %}
+            {% liquid
+              assign product_title = recommendation.title | default: 'Product Exhibit'
+              assign image_alt = recommendation.featured_image.alt | default: product_title
+              assign initials = product_title | remove: ' ' | slice: 0, 2 | upcase
+              assign compare_price = recommendation.compare_at_price_max
+              assign current_price = recommendation.price
+            %}
+
+            <a
+              class="sa-card sa-more-series-card"
+              href="{{ recommendation.url }}"
+              role="listitem"
+              aria-label="View {{ product_title | escape }}"
+              data-sa-product-card
+              data-sa-product-type="{{ candidate_type_key | escape }}"
+              data-sa-priority="{% if priority_match %}true{% else %}false{% endif %}"
+            >
+              <span class="sa-more-series-card__media">
+                {% if recommendation.featured_image != blank %}
+                  {{ recommendation.featured_image | image_url: width: 700 | image_tag: class: 'sa-more-series-card__image', loading: 'lazy', sizes: '(min-width: 1200px) 18vw, (min-width: 768px) 28vw, 48vw', widths: '320, 480, 600, 700', alt: image_alt | escape }}
+                {% else %}
+                  <span class="sa-more-series-card__fallback" aria-hidden="true">{{ initials | escape }}</span>
+                {% endif %}
+              </span>
+
+              <span class="sa-more-series-card__content">
+                {% if recommendation.type != blank %}
+                  <span class="sa-archive-label sa-more-series-card__type">{{ recommendation.type | escape }}</span>
+                {% endif %}
+                <span class="sa-more-series-card__title">{{ product_title | escape }}</span>
+                <span class="sa-more-series-card__price">
+                  {% if recommendation.price_varies %}
+                    {{ recommendation.price_min | money }}+
+                  {% elsif compare_price > current_price %}
+                    {{ current_price | money }}
+                  {% else %}
+                    {{ current_price | money }}
+                  {% endif %}
+                </span>
+              </span>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if rendered_count == 0 %}
+        <div class="sa-more-series__empty" role="status">
+          {% if current_series != blank %}
+            Add more {{ current_series | escape }} products to the mapped series collection to populate this row.
+          {% else %}
+            Add the custom.series metafield to this product to show series recommendations.
+          {% endif %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="sa-more-series__empty" role="status">
+        {% if current_series != blank %}
+          Map {{ current_series | escape }} to a collection in this section, or add the product to a matching series collection.
+        {% else %}
+          Add the custom.series metafield to this product, or choose a fallback best sellers collection.
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA More From Series",
+  "tag": "section",
+  "class": "sa-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "More From This Series"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Accessible heading",
+      "default": "More From This Series"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text",
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Visible products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pool_limit",
+      "label": "Products to scan from source collection",
+      "min": 12,
+      "max": 50,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Fallback best sellers collection",
+      "info": "Used only when no series metafield or source collection is available."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "series_source",
+      "name": "Series source",
+      "settings": [
+        {
+          "type": "text",
+          "id": "series_name",
+          "label": "Series metafield value",
+          "info": "Must match product.metafields.custom.series, for example One Piece."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Series collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SA More From Series"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  }
+}
+{% endschema %}

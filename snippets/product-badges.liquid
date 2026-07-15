@@ -59,6 +59,87 @@
           assign badges = badges | append: badge | append: ','
         endif
       endfor
+
+      assign sa_optional_badges_added = 0
+      for tag in product.tags
+        assign normalized_tag = tag | downcase | strip
+        assign sa_badge = blank
+
+        if normalized_tag == 'best seller' or normalized_tag == 'best-seller' or normalized_tag == 'best_seller' or normalized_tag == 'top seller' or normalized_tag == 'top-seller'
+          assign sa_badge = 'Best Seller'
+        elsif normalized_tag == 'new drop' or normalized_tag == 'new-drop' or normalized_tag == 'new_drop' or normalized_tag == 'new arrival' or normalized_tag == 'new-arrival'
+          assign sa_badge = 'New Drop'
+        elsif normalized_tag == 'trending' or normalized_tag == 'trend'
+          assign sa_badge = 'Trending'
+        elsif normalized_tag == 'complete set available' or normalized_tag == 'complete-set-available' or normalized_tag == 'complete_set_available' or normalized_tag == 'complete set' or normalized_tag == 'matching set'
+          assign sa_badge = 'Complete Set Available'
+        elsif normalized_tag == 'matching tin' or normalized_tag == 'matching-tin' or normalized_tag == 'matching_tin' or normalized_tag == 'tin available'
+          assign sa_badge = 'Matching Tin'
+        elsif normalized_tag == 'convention favorite' or normalized_tag == 'convention-favorite' or normalized_tag == 'convention_favorite' or normalized_tag == 'event favorite' or normalized_tag == 'event-favorite'
+          assign sa_badge = 'Convention Favorite'
+        endif
+
+        if sa_badge != blank and sa_optional_badges_added < 2
+          assign badges_downcase = badges | downcase
+          assign sa_badge_downcase = sa_badge | downcase
+          unless badges_downcase contains sa_badge_downcase
+            assign badges = badges | append: sa_badge | append: ','
+            assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+          endunless
+        endif
+      endfor
+
+      if product.metafields.custom.best_seller.value and sa_optional_badges_added < 2
+        assign badges_downcase = badges | downcase
+        unless badges_downcase contains 'best seller'
+          assign badges = badges | append: 'Best Seller,'
+          assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+        endunless
+      endif
+
+      if product.metafields.custom.new_drop.value and sa_optional_badges_added < 2
+        assign badges_downcase = badges | downcase
+        unless badges_downcase contains 'new drop'
+          assign badges = badges | append: 'New Drop,'
+          assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+        endunless
+      endif
+
+      if product.metafields.custom.trending.value and sa_optional_badges_added < 2
+        assign badges_downcase = badges | downcase
+        unless badges_downcase contains 'trending'
+          assign badges = badges | append: 'Trending,'
+          assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+        endunless
+      endif
+
+      if sa_optional_badges_added < 2
+        if product.metafields.custom.complete_set_available.value or product.metafields.custom.matching_set_group.value != blank or product.metafields.custom.matching_set_code.value != blank
+          assign badges_downcase = badges | downcase
+          unless badges_downcase contains 'complete set available'
+            assign badges = badges | append: 'Complete Set Available,'
+            assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+          endunless
+        endif
+      endif
+
+      if sa_optional_badges_added < 2
+        if product.metafields.custom.matching_tin.value or product.metafields.custom.matching_tin_available.value
+          assign badges_downcase = badges | downcase
+          unless badges_downcase contains 'matching tin'
+            assign badges = badges | append: 'Matching Tin,'
+            assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+          endunless
+        endif
+      endif
+
+      if product.metafields.custom.convention_favorite.value and sa_optional_badges_added < 2
+        assign badges_downcase = badges | downcase
+        unless badges_downcase contains 'convention favorite'
+          assign badges = badges | append: 'Convention Favorite,'
+          assign sa_optional_badges_added = sa_optional_badges_added | plus: 1
+        endunless
+      endif
     endif
 
     if product.available == false and show_badges_sold
@@ -81,16 +162,16 @@
 
     {%- assign badges = badges | split: ',' -%}
 
-    <span class="product-card__badges">
+    <span class="product-card__badges sa-product-card__badges">
       {%- for badge in badges -%}
         {% if badge != blank %}
-          {% capture additional_badge_classes %}{% if badge contains discount_locale and discount_locale != blank %} product-card__badge--discount{% endif %}{% if badge contains discount_locale_ghost and discount_locale_ghost != blank %} product-card__badge--discount hidden{% endif %} {% if settings.button_border_radius == "0" %}product-card__badge--square{% else %}product-card__badge--rounded{% endif %}{% endcapture %}
-          {%- assign badge_classes = 'product-card__badge' | append: additional_badge_classes | strip -%}
+          {%- assign badge_handle = badge | handleize | replace: '-', '_' -%}
+          {% capture additional_badge_classes %}{% if badge contains discount_locale and discount_locale != blank %} product-card__badge--discount{% endif %}{% if badge contains discount_locale_ghost and discount_locale_ghost != blank %} product-card__badge--discount hidden{% endif %} {% if settings.button_border_radius == "0" %}product-card__badge--square{% else %}product-card__badge--rounded{% endif %} sa-product-card__badge--{{ badge_handle }}{% endcapture %}
+          {%- assign badge_classes = 'product-card__badge sa-product-card__badge' | append: additional_badge_classes | strip -%}
           <span class="{{ badge_classes }}">
             {%- if badge contains discount_locale or badge contains discount_locale_ghost -%}
               {{ badge }}
             {%- else -%}
-              {%- assign badge_handle = badge | handleize | replace: '-', '_' -%}
               {%- assign badge_translate = 'product.badges.' | append: badge_handle -%}
               {%- assign translated_badge = badge_translate | t -%}
 

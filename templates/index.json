@@ -129,6 +129,7 @@
           "type": "series",
           "settings": {
             "series_name": "Cowboy Bebop",
+            "image": "shopify://shop_images/Cowboy_Bebop_key_visual.jpg",
             "collection_link": "",
             "product_count_text": "",
             "badge": "trending",

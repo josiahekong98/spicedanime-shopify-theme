@@ -368,6 +368,15 @@
   color: var(--sa-museum-ivory);
 }
 
+.sa-series-product-grid .product-card__title,
+.sa-series-product-grid .product-card__title a,
+.sa-series-product-grid .product-card__title span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media screen and (max-width: 767px) {
   .sa-series-product-grid {
     padding-block-start: var(--sa-space-3);

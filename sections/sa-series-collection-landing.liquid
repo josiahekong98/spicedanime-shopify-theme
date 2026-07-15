@@ -610,14 +610,15 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__title {
       margin: 0;
+      min-width: 0;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
       font-size: clamp(16px, 1.45vw, 22px);
       line-height: 1.08;
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__price {

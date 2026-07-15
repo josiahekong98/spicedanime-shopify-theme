@@ -166,11 +166,23 @@
 
     #shopify-section-{{ section.id }} .sa-product-row__title {
       margin: 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: var(--sa-museum-ivory);
       font-family: var(--sa-font-display);
       font-size: clamp(15px, 1.2vw, 18px);
       line-height: var(--sa-line-heading);
       letter-spacing: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__title .sa-archive-link {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__price {

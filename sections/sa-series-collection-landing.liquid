@@ -15,12 +15,15 @@
   assign tapestry_img = blank
   assign tray_img = blank
   assign jar_img = blank
+  assign ashtray_img = blank
+  assign stash_box_img = blank
   assign complete_grinder_set_product = blank
   assign complete_lighter_product = blank
   assign complete_ashtray_product = blank
   assign complete_tray_product = blank
   assign complete_wallet_product = blank
   assign complete_jar_product = blank
+  assign complete_stash_box_product = blank
   assign complete_tapestry_product = blank
   assign lighter_available = false
   assign wallet_available = false
@@ -28,12 +31,16 @@
   assign tapestry_available = false
   assign tray_available = false
   assign jar_available = false
+  assign ashtray_available = false
+  assign stash_box_available = false
   assign lighter_count = 0
   assign wallet_count = 0
   assign grinder_set_count = 0
   assign tapestry_count = 0
   assign tray_count = 0
   assign jar_count = 0
+  assign ashtray_count = 0
+  assign stash_box_count = 0
 
   for product in collection.products
     assign ptitle = product.title | downcase
@@ -47,6 +54,7 @@
     assign is_rolling_tray = false
     assign is_stash_jar = false
     assign is_ashtray = false
+    assign is_stash_box = false
 
     if product_family_text contains 'lighter'
       assign is_lighter = true
@@ -78,6 +86,10 @@
 
     if ptype contains 'ashtray' or product_family_text contains 'ashtray'
       assign is_ashtray = true
+    endif
+
+    if ptype contains 'stash box' or product_family_text contains 'stash box' or product_family_text contains 'stashbox'
+      assign is_stash_box = true
     endif
 
     if is_lighter
@@ -128,8 +140,20 @@
       endif
     endif
 
-    if complete_ashtray_product == blank and is_ashtray
-      assign complete_ashtray_product = product
+    if is_ashtray
+      assign ashtray_available = true
+      assign ashtray_count = ashtray_count | plus: 1
+      if complete_ashtray_product == blank
+        assign complete_ashtray_product = product
+      endif
+    endif
+
+    if is_stash_box
+      assign stash_box_available = true
+      assign stash_box_count = stash_box_count | plus: 1
+      if complete_stash_box_product == blank
+        assign complete_stash_box_product = product
+      endif
     endif
 
     if product.featured_image
@@ -157,6 +181,24 @@
         assign jar_img = product.featured_image
       endif
 
+      if ashtray_img == blank and is_ashtray
+        assign ashtray_img = product.featured_image
+      endif
+
+      if stash_box_img == blank and is_stash_box
+        assign stash_box_img = product.featured_image
+      endif
+
+    endif
+  endfor
+
+  for collection_product_type in collection.all_types
+    assign collection_product_type_down = collection_product_type | downcase
+    if collection_product_type_down contains 'ashtray'
+      assign ashtray_available = true
+    endif
+    if collection_product_type_down contains 'stash box' or collection_product_type_down contains 'stashbox'
+      assign stash_box_available = true
     endif
   endfor
 %}
@@ -650,36 +692,132 @@
 
     #shopify-section-{{ section.id }} .sa-series-related-card {
       min-height: 190px;
-      position: relative;
       display: grid;
-      align-items: end;
+      align-content: stretch;
       overflow: hidden;
       border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.14));
       border-radius: var(--sa-radius-md, 8px);
       background: var(--sa-surface-panel, #181818);
-      color: #fff;
+      color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
       box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
+      transition: transform var(--sa-motion-standard, 220ms ease), border-color var(--sa-motion-standard, 220ms ease), box-shadow var(--sa-motion-standard, 220ms ease);
     }
 
-    #shopify-section-{{ section.id }} .sa-series-related-card img {
+    #shopify-section-{{ section.id }} .sa-series-related-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--sa-series-accent);
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 34%, transparent);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__media {
+      position: relative;
+      min-height: 124px;
+      display: grid;
+      place-items: center;
+      background: var(--sa-archive-black, #101010);
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__media::after {
+      content: "";
       position: absolute;
       inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 34%, rgba(11, 11, 11, 0.74)), var(--sa-texture-concrete);
+      opacity: 0.82;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__media img {
       width: 100%;
       height: 100%;
+      min-height: 124px;
+      display: block;
       object-fit: cover;
-      filter: brightness(0.74);
+      opacity: 0.86;
+      transform: scale(1.01);
+      transition: transform var(--sa-motion-standard, 220ms ease), opacity var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card:hover .sa-series-related-card__media img {
+      opacity: 0.96;
+      transform: scale(1.035);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__fallback {
+      min-height: 124px;
+      display: grid;
+      gap: 8px;
+      place-items: center;
+      align-content: center;
+      background: radial-gradient(circle, rgba(244, 240, 232, 0.12), transparent 58%), var(--sa-texture-concrete), var(--sa-surface-panel, #181818);
+      color: var(--sa-gallery-stone, #D8D2C7);
+      font-family: var(--sa-font-archive, monospace);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__fallback-label {
+      color: color-mix(in srgb, var(--sa-series-accent) 78%, var(--sa-gallery-stone, #D8D2C7));
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__fallback-initials {
+      color: var(--sa-gallery-stone, #D8D2C7);
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: 0.12em;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__content {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__name-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card__label {
-      position: relative;
-      padding: 10px;
-      color: #fff;
+      min-width: 0;
+      color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
       font-size: 18px;
-      line-height: 1;
+      line-height: var(--sa-line-heading, 1.08);
+      letter-spacing: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__index {
+      color: var(--sa-series-accent);
+      font-family: var(--sa-font-archive, monospace);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--sa-gallery-stone, #D8D2C7);
+      font-family: var(--sa-font-archive, monospace);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
       text-transform: uppercase;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.82);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-related-card__meta::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--sa-series-accent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-seo {
@@ -817,8 +955,15 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card__media,
-      #shopify-section-{{ section.id }} .sa-series-family-card__media img {
+      #shopify-section-{{ section.id }} .sa-series-family-card__media img,
+      #shopify-section-{{ section.id }} .sa-series-related-card__media,
+      #shopify-section-{{ section.id }} .sa-series-related-card__media img,
+      #shopify-section-{{ section.id }} .sa-series-related-card__fallback {
         min-height: 98px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-related-card__content {
+        padding: 9px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-related-card__label {
@@ -940,6 +1085,9 @@
           if section.settings.complete_include_stash_jar and complete_jar_product != blank
             assign complete_has_products = true
           endif
+          if section.settings.complete_include_stash_box and complete_stash_box_product != blank
+            assign complete_has_products = true
+          endif
           if section.settings.complete_include_tapestry and complete_tapestry_product != blank
             assign complete_has_products = true
           endif
@@ -989,6 +1137,13 @@
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
+          {% if section.settings.complete_include_stash_box and complete_stash_box_product != blank %}
+            {% assign setup_key = '|' | append: complete_stash_box_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
+              {% render 'sa-series-product-card', product: complete_stash_box_product %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
           {% if section.settings.complete_include_tapestry and complete_tapestry_product != blank %}
             {% assign setup_key = '|' | append: complete_tapestry_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
@@ -1022,6 +1177,8 @@
         {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Rolling Trays', count: tray_count, image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Ashtrays', count: ashtray_count, image: ashtray_img, available: ashtray_available, url: section.settings.ashtrays_url, fallback_url: '/collections/all?filter.p.product_type=Ashtray', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Stash Boxes', count: stash_box_count, image: stash_box_img, available: stash_box_available, url: section.settings.stash_boxes_url, fallback_url: '/collections/all?filter.p.product_type=Stash+Box', series_filter: series_filter %}
         {% render 'sa-series-family-card', title: 'Stash Jars', count: jar_count, image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
       </div>
     </section>
@@ -1066,11 +1223,24 @@
               {% assign related_title = block.settings.title | default: related_collection.title | replace: '(Series)', '' | strip %}
               {% assign related_image = block.settings.image | default: related_collection.image | default: related_collection.products.first.featured_image %}
               {% if related_collection != blank %}
-                <a class="sa-series-related-card" href="{{ related_collection.url }}" role="listitem" {{ block.shopify_attributes }}>
-                  {% if related_image != blank %}
-                    <img src="{{ related_image | image_url: width: 700 }}" alt="{{ related_title | escape }}">
-                  {% endif %}
-                  <span class="sa-series-related-card__label">{{ related_title | escape }}</span>
+                <a class="sa-series-related-card" href="{{ related_collection.url }}" aria-label="Explore {{ related_title | escape }}" role="listitem" {{ block.shopify_attributes }}>
+                  <span class="sa-series-related-card__media" aria-hidden="true">
+                    {% if related_image != blank %}
+                      <img src="{{ related_image | image_url: width: 700 }}" alt="" loading="lazy">
+                    {% else %}
+                      <span class="sa-series-related-card__fallback">
+                        <span class="sa-series-related-card__fallback-label">Series File</span>
+                        <span class="sa-series-related-card__fallback-initials">{{ related_title | slice: 0, 2 | upcase | escape }}</span>
+                      </span>
+                    {% endif %}
+                  </span>
+                  <span class="sa-series-related-card__content">
+                    <span class="sa-series-related-card__name-row">
+                      <span class="sa-series-related-card__label">{{ related_title | escape }}</span>
+                      <span class="sa-series-related-card__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                    </span>
+                    <span class="sa-series-related-card__meta">Series File</span>
+                  </span>
                 </a>
               {% endif %}
             {% endfor %}
@@ -1098,7 +1268,7 @@
           <div class="sa-series-faq">
             <details>
               <summary>What products are in the {{ series_title | escape }} collection?</summary>
-              <p>This archive can include lighters, wallets, grinder sets, tapestries, rolling trays, stash jars, and related collectible accessories.</p>
+              <p>This archive can include lighters, wallets, grinder sets, tapestries, rolling trays, ashtrays, stash boxes, stash jars, and related collectible accessories.</p>
             </details>
             <details>
               <summary>Can I filter this series by product type?</summary>
@@ -1215,6 +1385,12 @@
     },
     {
       "type": "checkbox",
+      "id": "complete_include_stash_box",
+      "label": "Complete the Set: Stash Boxes",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "complete_include_tapestry",
       "label": "Complete the Set: Tapestries",
       "default": false
@@ -1249,6 +1425,16 @@
       "type": "url",
       "id": "stash_jars_url",
       "label": "Stash Jars collection link"
+    },
+    {
+      "type": "url",
+      "id": "ashtrays_url",
+      "label": "Ashtrays collection link"
+    },
+    {
+      "type": "url",
+      "id": "stash_boxes_url",
+      "label": "Stash Boxes collection link"
     }
   ],
   "blocks": [

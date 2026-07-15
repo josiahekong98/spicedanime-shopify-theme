@@ -15,7 +15,7 @@
     {% if image != blank %}
       <img src="{{ image | image_url: width: 560 }}" alt="{{ title | escape }}">
     {% else %}
-      <span class="sa-series-family-card__fallback">Coming Soon</span>
+      <span class="sa-series-family-card__fallback">{% if family_available %}Explore{% else %}Coming Soon{% endif %}</span>
     {% endif %}
   </span>
   <span class="sa-series-family-card__label">
@@ -23,6 +23,8 @@
     <span class="sa-series-family-card__count">
       {% if family_count > 0 %}
         {{ family_count }} {% if family_count == 1 %}Design{% else %}Designs{% endif %}
+      {% elsif family_available %}
+        Explore
       {% else %}
         Coming Soon
       {% endif %}

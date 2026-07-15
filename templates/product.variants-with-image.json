@@ -349,8 +349,7 @@
         "heading": "More From This Series",
         "intro": "",
         "max_products": 8,
-        "pool_limit": 36,
-        "fallback_collection": "best-selling"
+        "pool_limit": 36
       }
     },
     "accordions_VHkjgW": {

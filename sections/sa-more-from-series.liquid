@@ -33,27 +33,13 @@
     endif
   endif
 
-  if source_collection == blank and section.settings.fallback_collection != blank
-    assign source_collection = section.settings.fallback_collection
-    assign using_fallback = true
-  endif
-
-  assign priority_type_keys = ''
-  if current_product_type_key contains 'lighter'
-    assign priority_type_keys = '|grinder-sets|herb-grinder|ashtray|stash-box|stashbox|stash-jar|rolling-tray|'
-  elsif current_product_type_key contains 'grinder'
-    assign priority_type_keys = '|stash-jar|rolling-tray|flip-lighter|lighter|ashtray|stash-box|stashbox|'
-  elsif current_product_type_key contains 'tapestry'
-    assign priority_type_keys = '|pillow-covers|pillow|tote-bags|tote-bag|wallet|'
-  elsif current_product_type_key contains 'pillow' or current_product_type_key contains 'tote'
-    assign priority_type_keys = '|black-art-tapestry|tapestry|tapestries|'
-  endif
-
   assign max_products = section.settings.max_products | default: 8
   assign pool_limit = section.settings.pool_limit | default: 36
   assign rendered_count = 0
   assign section_heading = section.settings.heading | default: 'More From This Series'
   assign section_intro = section.settings.intro
+  assign custom_request_href = section.settings.custom_request_url | default: '/pages/contact'
+  assign custom_request_label = section.settings.custom_request_label | default: 'Request a Custom Piece'
 %}
 
 <script src="{{ 'sa-product-recommendations.js' | asset_url }}" defer="defer"></script>
@@ -63,6 +49,7 @@
   aria-labelledby="sa-more-series-title-{{ section.id }}"
   data-sa-recommendations
   data-sa-max-products="{{ max_products }}"
+  data-sa-current-product-type="{{ current_product_type_key | escape }}"
 >
   <style>
     #shopify-section-{{ section.id }} .sa-more-series {
@@ -200,11 +187,33 @@
     }
 
     #shopify-section-{{ section.id }} .sa-more-series__empty {
+      display: grid;
+      gap: var(--sa-space-4);
       padding: var(--sa-space-5);
       border: var(--sa-border-hairline);
       border-radius: var(--sa-radius-md);
       background: rgba(16, 16, 16, 0.72);
       color: var(--sa-gallery-stone);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__empty-title {
+      margin: 0;
+      color: var(--sa-museum-ivory);
+      font-family: var(--sa-font-display);
+      font-size: clamp(22px, 4vw, 34px);
+      line-height: var(--sa-line-heading);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__empty-copy {
+      margin: 0;
+      max-width: 54ch;
+      color: var(--sa-gallery-stone);
+      font-size: var(--sa-type-body);
+      line-height: var(--sa-line-body);
+    }
+
+    #shopify-section-{{ section.id }} .sa-more-series__empty-action {
+      justify-self: start;
     }
 
     @media screen and (max-width: 767px) {
@@ -269,17 +278,11 @@
             assign candidate_series_key = candidate_series | handleize
             assign candidate_type_key = recommendation.type | handleize
             assign same_series = false
-            assign priority_match = false
 
             if using_fallback
               assign same_series = true
             elsif candidate_series_key == current_series_key
               assign same_series = true
-            endif
-
-            assign priority_probe = '|' | append: candidate_type_key | append: '|'
-            if priority_type_keys contains priority_probe
-              assign priority_match = true
             endif
           %}
 
@@ -300,7 +303,6 @@
               aria-label="View {{ product_title | escape }}"
               data-sa-product-card
               data-sa-product-type="{{ candidate_type_key | escape }}"
-              data-sa-priority="{% if priority_match %}true{% else %}false{% endif %}"
             >
               <span class="sa-more-series-card__media">
                 {% if recommendation.featured_image != blank %}
@@ -332,20 +334,44 @@
 
       {% if rendered_count == 0 %}
         <div class="sa-more-series__empty" role="status">
-          {% if current_series != blank %}
-            Add more {{ current_series | escape }} products to the mapped series collection to populate this row.
-          {% else %}
-            Add the custom.series metafield to this product to show series recommendations.
-          {% endif %}
+          <p class="sa-more-series__empty-title">
+            {% if current_series != blank %}
+              Want more {{ current_series | escape }} pieces?
+            {% else %}
+              Want this made as a custom?
+            {% endif %}
+          </p>
+          <p class="sa-more-series__empty-copy">
+            {% if current_series != blank %}
+              We do not have another matching {{ current_series | escape }} item in this row yet. Send a custom request and tell us what product type you want next.
+            {% else %}
+              Send a custom request and tell us the series, character, and product type you want.
+            {% endif %}
+          </p>
+          <a class="sa-button sa-button--secondary sa-more-series__empty-action" href="{{ custom_request_href }}">
+            {{ custom_request_label | escape }}
+          </a>
         </div>
       {% endif %}
     {% else %}
       <div class="sa-more-series__empty" role="status">
-        {% if current_series != blank %}
-          Map {{ current_series | escape }} to a collection in this section, or add the product to a matching series collection.
-        {% else %}
-          Add the custom.series metafield to this product, or choose a fallback best sellers collection.
-        {% endif %}
+        <p class="sa-more-series__empty-title">
+          {% if current_series != blank %}
+            Request more {{ current_series | escape }}
+          {% else %}
+            Request a custom piece
+          {% endif %}
+        </p>
+        <p class="sa-more-series__empty-copy">
+          {% if current_series != blank %}
+            This series does not have a mapped product pool yet. You can still request a custom item from this series.
+          {% else %}
+            Tell us the series, character, and product type you want us to make.
+          {% endif %}
+        </p>
+        <a class="sa-button sa-button--secondary sa-more-series__empty-action" href="{{ custom_request_href }}">
+          {{ custom_request_label | escape }}
+        </a>
       </div>
     {% endif %}
   </div>
@@ -394,10 +420,15 @@
       "default": 36
     },
     {
-      "type": "collection",
-      "id": "fallback_collection",
-      "label": "Fallback best sellers collection",
-      "info": "Used only when no series metafield or source collection is available."
+      "type": "url",
+      "id": "custom_request_url",
+      "label": "Custom request link"
+    },
+    {
+      "type": "text",
+      "id": "custom_request_label",
+      "label": "Custom request label",
+      "default": "Request a Custom Piece"
     }
   ],
   "blocks": [

@@ -246,8 +246,7 @@
         "heading": "More From This Series",
         "intro": "More pieces from the same series, mixed across product types.",
         "max_products": 8,
-        "pool_limit": 36,
-        "fallback_collection": ""
+        "pool_limit": 36
       }
     },
     "753757662477391814": {

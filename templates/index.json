@@ -333,11 +333,11 @@
         "text": ""
       }
     },
-    "sa_product_row_NHap6p": {
+    "sa_product_row_8jJbPF": {
       "type": "sa-product-row",
       "name": "SA Row Best Sellers",
       "settings": {
-        "eyebrow": "Best Sellers",
+        "eyebrow": "Best Sellers Lighters",
         "heading": "Shop the Current Favorites",
         "intro": "A fast path into the pieces shoppers are already choosing.",
         "collection": "best-sellers",
@@ -369,6 +369,24 @@
         "layout_style": "row"
       }
     },
+    "sa_product_row_NHap6p": {
+      "type": "sa-product-row",
+      "name": "SA Row Best Sellers",
+      "settings": {
+        "eyebrow": "All Product Best Sellers",
+        "heading": "Shop the Current Favorites",
+        "intro": "A fast path into the pieces shoppers are already choosing.",
+        "collection": "best-sellers",
+        "max_products": 8,
+        "sort_label": "Performance archive",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row"
+      }
+    },
     "sa_product_row_pCMm6U": {
       "type": "sa-product-row",
       "disabled": true,
@@ -377,7 +395,7 @@
         "eyebrow": "Trending This Week",
         "heading": "Currently Moving Fast",
         "intro": "The pieces getting the most attention right now, gathered into one easy row.",
-        "collection": "",
+        "collection": "adventure-time",
         "max_products": 8,
         "sort_label": "Weekly signal",
         "show_quick_add": false,
@@ -692,8 +710,9 @@
     "announcement_bar_hNziXA",
     "sa_top_series_WngH7B",
     "sa_explore_paths_LCD4k8",
-    "sa_product_row_NHap6p",
+    "sa_product_row_8jJbPF",
     "sa_product_row_yxTULQ",
+    "sa_product_row_NHap6p",
     "sa_product_row_pCMm6U",
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",

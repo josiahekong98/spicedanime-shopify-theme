@@ -215,6 +215,18 @@
       padding-inline: 22px;
     }
 
+    #shopify-section-{{ section.id }} .sa-series-hero__primary {
+      background: rgba(16, 16, 16, 0.34);
+      border-color: rgba(244, 240, 232, 0.42);
+      color: var(--sa-museum-ivory, #F4F0E8);
+      box-shadow: none;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-hero__primary:hover {
+      background: rgba(16, 16, 16, 0.48);
+      border-color: var(--sa-series-accent);
+    }
+
     #shopify-section-{{ section.id }} .sa-series-meta {
       min-height: 32px;
       display: inline-flex;
@@ -311,7 +323,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card {
-      min-height: 312px;
+      min-height: 258px;
       display: grid;
       grid-template-rows: 1fr auto;
       overflow: hidden;
@@ -341,7 +353,7 @@
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media {
       position: relative;
-      min-height: 232px;
+      min-height: 176px;
       display: grid;
       place-items: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-texture-concrete), #101010;
@@ -360,7 +372,7 @@
     #shopify-section-{{ section.id }} .sa-series-family-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 232px;
+      min-height: 176px;
       object-fit: cover;
       display: block;
       opacity: 0.9;
@@ -386,15 +398,15 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label {
-      min-height: 86px;
+      min-height: 72px;
       display: flex;
       align-items: start;
       justify-content: space-between;
       gap: 12px;
-      padding: var(--sa-space-4, 16px);
+      padding: 14px;
       background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
       font-weight: 800;
-      font-size: clamp(20px, 2vw, 30px);
+      font-size: clamp(18px, 1.6vw, 24px);
       font-family: var(--sa-font-display, serif);
       line-height: 1.2;
       letter-spacing: 0;
@@ -427,7 +439,7 @@
     #shopify-section-{{ section.id }} .sa-series-products {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: var(--sa-card-gap, 18px);
+      gap: 14px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-products--compact {
@@ -455,7 +467,7 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__media {
       position: relative;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 1 / 1;
       background: #101010;
       overflow: hidden;
     }
@@ -498,8 +510,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__content {
       display: grid;
-      gap: 8px;
-      padding: var(--sa-space-4, 16px);
+      gap: 7px;
+      padding: 13px;
       background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
     }
 
@@ -535,8 +547,8 @@
       margin: 0;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
-      font-size: clamp(18px, 1.75vw, 26px);
-      line-height: 1.05;
+      font-size: clamp(16px, 1.45vw, 22px);
+      line-height: 1.08;
       display: -webkit-box;
       overflow: hidden;
       -webkit-box-orient: vertical;
@@ -710,13 +722,13 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card {
-        flex: 0 0 min(68vw, 284px);
-        min-height: 278px;
+        flex: 0 0 min(56vw, 228px);
+        min-height: 218px;
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-product {
-        flex: 0 0 min(64vw, 260px);
+        flex: 0 0 min(54vw, 220px);
         scroll-snap-align: start;
       }
 
@@ -727,7 +739,7 @@
 
       #shopify-section-{{ section.id }} .sa-series-family-card__media,
       #shopify-section-{{ section.id }} .sa-series-family-card__media img {
-        min-height: 194px;
+        min-height: 146px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__title {
@@ -767,8 +779,7 @@
           </p>
 
           <div class="sa-series-hero__actions">
-            <a class="sa-button sa-button--primary" href="#ProductGridContainer">Shop All Products</a>
-            <a class="sa-button sa-button--secondary" href="#sa-series-best-title-{{ section.id }}">See Best Sellers First</a>
+            <a class="sa-button sa-button--secondary sa-series-hero__primary" href="#ProductGridContainer">Shop All Products</a>
             <span class="sa-series-meta">
               <span>{{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</span>
               {% if social_proof != blank %}

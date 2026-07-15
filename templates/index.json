@@ -129,7 +129,7 @@
           "type": "series",
           "settings": {
             "series_name": "Cowboy Bebop",
-            "image": "shopify://shop_images/images_14.jpg",
+            "image": "shopify://shop_images/faye-premium-heavyweight-t-shirt.jpg",
             "collection_link": "shopify://collections/cowboy",
             "product_count_text": "",
             "badge": "trending",
@@ -153,7 +153,7 @@
           "type": "series",
           "settings": {
             "series_name": "Bleach",
-            "image": "shopify://shop_images/F-DR9QMWkAAEwNh.jpg",
+            "image": "shopify://shop_images/bleach-v3-premium-heavyweight-t-shirt-shadow.jpg",
             "collection_link": "shopify://collections/bleach",
             "product_count_text": "",
             "badge": "trending",
@@ -189,6 +189,7 @@
           "type": "series",
           "settings": {
             "series_name": "Demon Slayer",
+            "image": "shopify://shop_images/f74f340817de37f11e5043a92f5ac37e.jpg",
             "collection_link": "",
             "product_count_text": "",
             "badge": "none",
@@ -200,6 +201,7 @@
           "type": "series",
           "settings": {
             "series_name": "Pokemon",
+            "image": "shopify://shop_images/pkmn-v2-premium-heavyweight-t-shirt-black.jpg",
             "collection_link": "",
             "product_count_text": "",
             "badge": "none",

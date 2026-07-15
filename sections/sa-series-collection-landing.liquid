@@ -19,6 +19,9 @@
   assign complete_lighter_product = blank
   assign complete_ashtray_product = blank
   assign complete_tray_product = blank
+  assign complete_wallet_product = blank
+  assign complete_jar_product = blank
+  assign complete_tapestry_product = blank
   assign lighter_available = false
   assign wallet_available = false
   assign grinder_set_available = false
@@ -31,88 +34,126 @@
   assign tapestry_count = 0
   assign tray_count = 0
   assign jar_count = 0
-  assign complete_set_count = 0
 
   for product in collection.products
     assign ptitle = product.title | downcase
     assign ptype = product.type | downcase
     assign phandle = product.handle | downcase
     assign product_family_text = ptitle | append: ' ' | append: ptype | append: ' ' | append: phandle
+    assign is_lighter = false
+    assign is_wallet = false
+    assign is_grinder_set = false
+    assign is_tapestry = false
+    assign is_rolling_tray = false
+    assign is_stash_jar = false
+    assign is_ashtray = false
+
     if product_family_text contains 'lighter'
+      assign is_lighter = true
+    endif
+
+    if product_family_text contains 'wallet' or product_family_text contains 'bifold'
+      assign is_wallet = true
+    endif
+
+    if ptype contains 'grinder set' or product_family_text contains 'grinder set'
+      assign is_grinder_set = true
+    endif
+
+    if ptype contains 'tapestry'
+      unless product_family_text contains 'tote' or product_family_text contains 'pillow' or product_family_text contains 'hoodie'
+        assign is_tapestry = true
+      endunless
+    endif
+
+    if ptype contains 'rolling tray'
+      assign is_rolling_tray = true
+    elsif product_family_text contains 'rolling tray' and is_grinder_set == false
+      assign is_rolling_tray = true
+    endif
+
+    if ptype contains 'stash jar' or product_family_text contains 'stash jar'
+      assign is_stash_jar = true
+    endif
+
+    if ptype contains 'ashtray' or product_family_text contains 'ashtray'
+      assign is_ashtray = true
+    endif
+
+    if is_lighter
       assign lighter_available = true
       assign lighter_count = lighter_count | plus: 1
       if complete_lighter_product == blank
         assign complete_lighter_product = product
-        assign complete_set_count = complete_set_count | plus: 1
       endif
     endif
 
-    if product_family_text contains 'wallet' or product_family_text contains 'bifold'
+    if is_wallet
       assign wallet_available = true
       assign wallet_count = wallet_count | plus: 1
+      if complete_wallet_product == blank
+        assign complete_wallet_product = product
+      endif
     endif
 
-    if product_family_text contains 'grinder set'
+    if is_grinder_set
       assign grinder_set_available = true
       assign grinder_set_count = grinder_set_count | plus: 1
       if complete_grinder_set_product == blank
         assign complete_grinder_set_product = product
-        assign complete_set_count = complete_set_count | plus: 1
       endif
     endif
 
-    if product_family_text contains 'tapestry'
-      unless product_family_text contains 'tote' or product_family_text contains 'pillow' or product_family_text contains 'hoodie'
-        assign tapestry_available = true
-        assign tapestry_count = tapestry_count | plus: 1
-      endunless
+    if is_tapestry
+      assign tapestry_available = true
+      assign tapestry_count = tapestry_count | plus: 1
+      if complete_tapestry_product == blank
+        assign complete_tapestry_product = product
+      endif
     endif
 
-    if product_family_text contains 'rolling tray'
+    if is_rolling_tray
       assign tray_available = true
       assign tray_count = tray_count | plus: 1
       if complete_tray_product == blank
         assign complete_tray_product = product
-        assign complete_set_count = complete_set_count | plus: 1
       endif
     endif
 
-    if product_family_text contains 'stash jar'
+    if is_stash_jar
       assign jar_available = true
       assign jar_count = jar_count | plus: 1
+      if complete_jar_product == blank
+        assign complete_jar_product = product
+      endif
     endif
 
-    if complete_ashtray_product == blank and product_family_text contains 'ashtray'
+    if complete_ashtray_product == blank and is_ashtray
       assign complete_ashtray_product = product
-      assign complete_set_count = complete_set_count | plus: 1
     endif
 
     if product.featured_image
-      if lighter_img == blank and product_family_text contains 'lighter'
+      if lighter_img == blank and is_lighter
         assign lighter_img = product.featured_image
       endif
 
-      if wallet_img == blank
-        if product_family_text contains 'wallet' or product_family_text contains 'bifold'
-          assign wallet_img = product.featured_image
-        endif
+      if wallet_img == blank and is_wallet
+        assign wallet_img = product.featured_image
       endif
 
-      if grinder_set_img == blank and product_family_text contains 'grinder set'
+      if grinder_set_img == blank and is_grinder_set
         assign grinder_set_img = product.featured_image
       endif
 
-      if tapestry_img == blank and product_family_text contains 'tapestry'
-        unless product_family_text contains 'tote' or product_family_text contains 'pillow' or product_family_text contains 'hoodie'
-          assign tapestry_img = product.featured_image
-        endunless
+      if tapestry_img == blank and is_tapestry
+        assign tapestry_img = product.featured_image
       endif
 
-      if tray_img == blank and product_family_text contains 'rolling tray'
+      if tray_img == blank and is_rolling_tray
         assign tray_img = product.featured_image
       endif
 
-      if jar_img == blank and product_family_text contains 'stash jar'
+      if jar_img == blank and is_stash_jar
         assign jar_img = product.featured_image
       endif
 
@@ -313,9 +354,18 @@
       text-transform: uppercase;
     }
 
+    #shopify-section-{{ section.id }} .sa-series-head .sa-series-title {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
     #shopify-section-{{ section.id }} .sa-series-copy {
       margin: 0;
-      color: var(--sa-gallery-stone, #D8D2C7);
+      color: rgba(216, 210, 199, 0.76);
       font-size: 14px;
       line-height: 1.5;
     }
@@ -852,30 +902,98 @@
           </div>
         </div>
 
-        {% if complete_set_count > 0 %}
-          <div class="sa-series-products" role="list" aria-label="Complete the set products for {{ series_title | escape }}">
-            {% if complete_grinder_set_product != blank %}
+        {% liquid
+          assign complete_has_products = false
+          if section.settings.complete_include_grinder_set and complete_grinder_set_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_lighter and complete_lighter_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_ashtray and complete_ashtray_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_rolling_tray and complete_tray_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_wallet and complete_wallet_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_stash_jar and complete_jar_product != blank
+            assign complete_has_products = true
+          endif
+          if section.settings.complete_include_tapestry and complete_tapestry_product != blank
+            assign complete_has_products = true
+          endif
+        %}
+
+        {% capture complete_set_products %}
+          {% assign rendered_setup_handles = '' %}
+          {% if section.settings.complete_include_grinder_set and complete_grinder_set_product != blank %}
+            {% assign setup_key = '|' | append: complete_grinder_set_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
               {% render 'sa-series-product-card', product: complete_grinder_set_product %}
-            {% endif %}
-            {% if complete_lighter_product != blank %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_lighter and complete_lighter_product != blank %}
+            {% assign setup_key = '|' | append: complete_lighter_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
               {% render 'sa-series-product-card', product: complete_lighter_product %}
-            {% endif %}
-            {% if complete_ashtray_product != blank %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_ashtray and complete_ashtray_product != blank %}
+            {% assign setup_key = '|' | append: complete_ashtray_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
               {% render 'sa-series-product-card', product: complete_ashtray_product %}
-            {% endif %}
-            {% if complete_tray_product != blank %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_rolling_tray and complete_tray_product != blank %}
+            {% assign setup_key = '|' | append: complete_tray_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
               {% render 'sa-series-product-card', product: complete_tray_product %}
-            {% endif %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_wallet and complete_wallet_product != blank %}
+            {% assign setup_key = '|' | append: complete_wallet_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
+              {% render 'sa-series-product-card', product: complete_wallet_product %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_stash_jar and complete_jar_product != blank %}
+            {% assign setup_key = '|' | append: complete_jar_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
+              {% render 'sa-series-product-card', product: complete_jar_product %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+          {% if section.settings.complete_include_tapestry and complete_tapestry_product != blank %}
+            {% assign setup_key = '|' | append: complete_tapestry_product.handle | append: '|' %}
+            {% unless rendered_setup_handles contains setup_key %}
+              {% render 'sa-series-product-card', product: complete_tapestry_product %}
+              {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
+            {% endunless %}
+          {% endif %}
+        {% endcapture %}
+
+        {% if complete_has_products %}
+          <div class="sa-series-products" role="list" aria-label="Complete the set products for {{ series_title | escape }}">
+            {{ complete_set_products }}
           </div>
         {% else %}
-          <div class="sa-series-empty" role="status">No complete-set products are marked for this series yet.</div>
+          <div class="sa-series-empty" role="status">Choose product types in the Theme Editor, or add matching products to this series.</div>
         {% endif %}
       </section>
     {% endif %}
 
     <section class="sa-series-section" aria-labelledby="sa-series-family-title-{{ section.id }}">
-      <div class="sa-series-head">
-        <div class="sa-series-head__copy">
+        <div class="sa-series-head">
+          <div class="sa-series-head__copy">
+          <p class="sa-series-eyebrow">Shop By Product</p>
           <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Shop By Product</h2>
         </div>
       </div>
@@ -1040,6 +1158,48 @@
       "id": "show_complete_set",
       "label": "Show Complete the Set row",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_grinder_set",
+      "label": "Complete the Set: Grinder Sets",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_lighter",
+      "label": "Complete the Set: Lighters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_ashtray",
+      "label": "Complete the Set: Ashtrays",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_rolling_tray",
+      "label": "Complete the Set: Rolling Trays",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_wallet",
+      "label": "Complete the Set: Wallets",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_stash_jar",
+      "label": "Complete the Set: Stash Jars",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_include_tapestry",
+      "label": "Complete the Set: Tapestries",
+      "default": false
     },
     {
       "type": "url",

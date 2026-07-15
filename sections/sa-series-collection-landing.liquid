@@ -165,9 +165,11 @@
   <style>
     #shopify-section-{{ section.id }} .sa-series-page {
       width: 100vw;
+      max-width: 100%;
       position: relative;
       left: 50%;
       margin-left: -50vw;
+      overflow-x: clip;
       background: var(--sa-archive-black, #101010);
       color: var(--sa-museum-ivory, #F4F0E8);
       padding-block-end: 28px;

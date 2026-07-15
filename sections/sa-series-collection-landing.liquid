@@ -170,7 +170,7 @@
       margin-left: -50vw;
       background: var(--sa-archive-black, #101010);
       color: var(--sa-museum-ivory, #F4F0E8);
-      padding-block-end: 42px;
+      padding-block-end: 28px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-page::before {
@@ -204,7 +204,7 @@
         {% endif %};
       background-size: cover;
       background-position: center;
-      padding-block: clamp(88px, 12vw, 138px) clamp(42px, 7vw, 78px);
+      padding-block: clamp(82px, 11vw, 128px) clamp(32px, 5vw, 56px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__layout {
@@ -325,17 +325,17 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-section {
-      padding-block-start: clamp(30px, 4vw, 48px);
+      padding-block-start: clamp(22px, 3vw, 36px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-head {
       display: flex;
       align-items: end;
       justify-content: space-between;
-      gap: 18px;
-      margin-block-end: 16px;
+      gap: 14px;
+      margin-block-end: 12px;
       border-block-end: 1px solid color-mix(in srgb, var(--sa-series-accent) 72%, transparent);
-      padding-block-end: 12px;
+      padding-block-end: 10px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-head__copy {
@@ -384,7 +384,7 @@
     #shopify-section-{{ section.id }} .sa-series-family-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--sa-card-gap, 18px);
+      gap: 14px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card {
@@ -504,7 +504,7 @@
     #shopify-section-{{ section.id }} .sa-series-products {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-products--compact {
@@ -642,7 +642,7 @@
     #shopify-section-{{ section.id }} .sa-series-related-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card {
@@ -747,7 +747,15 @@
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-series-hero {
         min-height: 360px;
-        padding-block: 72px 34px;
+        padding-block: 64px 24px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-page {
+        padding-block-end: 22px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-section {
+        padding-block-start: 24px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__layout,
@@ -762,7 +770,9 @@
       #shopify-section-{{ section.id }} .sa-series-head {
         align-items: start;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        margin-block-end: 10px;
+        padding-block-end: 9px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-grid,
@@ -770,11 +780,11 @@
       #shopify-section-{{ section.id }} .sa-series-products--compact,
       #shopify-section-{{ section.id }} .sa-series-related-grid {
         display: flex;
-        gap: 12px;
+        gap: 10px;
         overflow-x: auto;
         margin-inline: -4vw;
         padding-inline: 4vw;
-        padding-block-end: 8px;
+        padding-block-end: 6px;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
@@ -1027,7 +1037,7 @@
         <div class="sa-series-empty" role="status">More products will appear here when this series has enough items beyond the best-seller preview.</div>
       {% endif %}
 
-      <div class="sa-series-row__actions" style="margin-block-start: 18px;">
+      <div class="sa-series-row__actions" style="margin-block-start: 12px;">
         <a class="sa-button sa-button--secondary" href="#ProductGridContainer">Browse All {{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</a>
       </div>
     </section>

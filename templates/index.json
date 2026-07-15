@@ -347,8 +347,27 @@
         "layout_style": "row"
       }
     },
+    "sa_product_row_yxTULQ": {
+      "type": "sa-product-row",
+      "name": "SA Row New Drops",
+      "settings": {
+        "eyebrow": "New Drops",
+        "heading": "Recently Added Exhibits",
+        "intro": "Fresh additions for collectors checking the latest product wall.",
+        "collection": "akira-series",
+        "max_products": 8,
+        "sort_label": "Newest arrivals",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row"
+      }
+    },
     "sa_product_row_pCMm6U": {
       "type": "sa-product-row",
+      "disabled": true,
       "name": "SA Row Trending",
       "settings": {
         "eyebrow": "Trending This Week",
@@ -670,6 +689,7 @@
     "sa_top_series_WngH7B",
     "sa_explore_paths_LCD4k8",
     "sa_product_row_NHap6p",
+    "sa_product_row_yxTULQ",
     "sa_product_row_pCMm6U",
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",

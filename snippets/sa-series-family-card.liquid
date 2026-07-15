@@ -1,6 +1,7 @@
 {% liquid
   assign family_url = url | default: fallback_url
   assign family_available = available | default: false
+  assign family_count = count | default: 0
   assign family_href = family_url
   if family_href contains '?'
     assign family_href = family_href | append: '&filter.p.m.custom.series=' | append: series_filter
@@ -9,13 +10,32 @@
   endif
 %}
 
-<a class="sa-series-family-card{% unless family_available or image != blank %} sa-series-family-card--quiet{% endunless %}" href="{{ family_href }}" role="listitem" aria-label="Shop {{ title | escape }}">
+{% capture family_card_content %}
   <span class="sa-series-family-card__media">
     {% if image != blank %}
       <img src="{{ image | image_url: width: 560 }}" alt="{{ title | escape }}">
     {% else %}
-      <span class="sa-series-family-card__fallback">Explore</span>
+      <span class="sa-series-family-card__fallback">Coming Soon</span>
     {% endif %}
   </span>
-  <span class="sa-series-family-card__label">{{ title | escape }}</span>
-</a>
+  <span class="sa-series-family-card__label">
+    <span class="sa-series-family-card__title">{{ title | escape }}</span>
+    <span class="sa-series-family-card__count">
+      {% if family_count > 0 %}
+        {{ family_count }} {% if family_count == 1 %}Design{% else %}Designs{% endif %}
+      {% else %}
+        Coming Soon
+      {% endif %}
+    </span>
+  </span>
+{% endcapture %}
+
+{% if family_available %}
+  <a class="sa-series-family-card" href="{{ family_href }}" role="listitem" aria-label="Shop {{ title | escape }}">
+    {{ family_card_content }}
+  </a>
+{% else %}
+  <div class="sa-series-family-card sa-series-family-card--quiet" role="listitem" aria-disabled="true">
+    {{ family_card_content }}
+  </div>
+{% endif %}

@@ -7,6 +7,10 @@
 
 <a class="sa-series-product" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
   <span class="sa-series-product__media">
+    {% if badge != blank %}
+      <span class="sa-series-product__badge">{{ badge | escape }}</span>
+    {% endif %}
+
     {% if product.featured_image != blank %}
       <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ image_alt | escape }}" loading="lazy">
     {% else %}

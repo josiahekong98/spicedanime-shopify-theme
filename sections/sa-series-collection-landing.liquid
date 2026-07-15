@@ -7,6 +7,7 @@
   assign hero_image = collection.metafields.custom.series_hero_image.value | default: section.settings.hero_image | default: collection.image
   assign logo_image = collection.metafields.custom.series_logo.value | default: section.settings.logo_image
   assign product_count = collection.products_count | default: collection.all_products_count
+  assign social_proof = section.settings.social_proof
 
   assign lighter_img = blank
   assign wallet_img = blank
@@ -14,18 +15,18 @@
   assign tapestry_img = blank
   assign tray_img = blank
   assign jar_img = blank
-  assign tote_img = blank
-  assign pillow_img = blank
-  assign hoodie_img = blank
   assign lighter_available = false
   assign wallet_available = false
   assign grinder_set_available = false
   assign tapestry_available = false
   assign tray_available = false
   assign jar_available = false
-  assign tote_available = false
-  assign pillow_available = false
-  assign hoodie_available = false
+  assign lighter_count = 0
+  assign wallet_count = 0
+  assign grinder_set_count = 0
+  assign tapestry_count = 0
+  assign tray_count = 0
+  assign jar_count = 0
   assign complete_set_count = 0
 
   for product in collection.products
@@ -37,38 +38,34 @@
 
     if product_family_text contains 'lighter'
       assign lighter_available = true
+      assign lighter_count = lighter_count | plus: 1
     endif
 
     if product_family_text contains 'wallet' or product_family_text contains 'bifold'
       assign wallet_available = true
+      assign wallet_count = wallet_count | plus: 1
     endif
 
     if product_family_text contains 'grinder set'
       assign grinder_set_available = true
+      assign grinder_set_count = grinder_set_count | plus: 1
     endif
 
     if product_family_text contains 'tapestry'
-      assign tapestry_available = true
+      unless product_family_text contains 'tote' or product_family_text contains 'pillow' or product_family_text contains 'hoodie'
+        assign tapestry_available = true
+        assign tapestry_count = tapestry_count | plus: 1
+      endunless
     endif
 
     if product_family_text contains 'rolling tray'
       assign tray_available = true
+      assign tray_count = tray_count | plus: 1
     endif
 
     if product_family_text contains 'stash jar'
       assign jar_available = true
-    endif
-
-    if product_family_text contains 'tote'
-      assign tote_available = true
-    endif
-
-    if product_family_text contains 'pillow'
-      assign pillow_available = true
-    endif
-
-    if product_family_text contains 'hoodie'
-      assign hoodie_available = true
+      assign jar_count = jar_count | plus: 1
     endif
 
     if product.featured_image
@@ -100,17 +97,6 @@
         assign jar_img = product.featured_image
       endif
 
-      if tote_img == blank and product_family_text contains 'tote'
-        assign tote_img = product.featured_image
-      endif
-
-      if pillow_img == blank and product_family_text contains 'pillow'
-        assign pillow_img = product.featured_image
-      endif
-
-      if hoodie_img == blank and product_family_text contains 'hoodie'
-        assign hoodie_img = product.featured_image
-      endif
     endif
 
     if matching_set != blank or product.tags contains 'complete-set' or product.tags contains 'Complete the Set' or ptype contains 'grinder set'
@@ -233,10 +219,15 @@
       min-height: 32px;
       display: inline-flex;
       align-items: center;
+      gap: 8px;
       border: 1px solid color-mix(in srgb, var(--sa-series-accent) 62%, transparent);
       background: rgba(16, 16, 16, 0.58);
       padding: 8px 12px;
       color: var(--sa-gallery-stone, #D8D2C7);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-meta__proof {
+      color: var(--sa-museum-ivory, #F4F0E8);
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__mark {
@@ -315,46 +306,76 @@
 
     #shopify-section-{{ section.id }} .sa-series-family-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--sa-card-gap, 18px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card {
-      min-height: 190px;
+      min-height: 312px;
       display: grid;
       grid-template-rows: 1fr auto;
       overflow: hidden;
-      border: 1px solid rgba(244, 240, 232, 0.16);
-      background: #181818;
-      color: #fff;
+      border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.16));
+      border-radius: var(--sa-radius-md, 8px);
+      background: var(--sa-surface-panel, #181818);
+      color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
+      transition: transform var(--sa-motion-standard, 220ms ease), border-color var(--sa-motion-standard, 220ms ease), box-shadow var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--sa-series-accent);
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 34%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card[aria-disabled="true"] {
-      opacity: 0.46;
+      opacity: 0.78;
       pointer-events: none;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card--quiet {
-      background: linear-gradient(135deg, rgba(244, 240, 232, 0.04), rgba(179, 54, 45, 0.05)), #151515;
+      background: linear-gradient(135deg, rgba(244, 240, 232, 0.04), rgba(179, 54, 45, 0.05)), var(--sa-surface-panel, #181818);
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media {
-      min-height: 128px;
+      position: relative;
+      min-height: 232px;
       display: grid;
       place-items: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-texture-concrete), #101010;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 36%, rgba(11, 11, 11, 0.74)), var(--sa-texture-concrete);
+      opacity: 0.78;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 128px;
+      min-height: 232px;
       object-fit: cover;
       display: block;
+      opacity: 0.9;
+      transform: scale(1.01);
+      transition: transform var(--sa-motion-standard, 220ms ease), opacity var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card:hover .sa-series-family-card__media img {
+      opacity: 0.98;
+      transform: scale(1.035);
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__fallback {
+      position: relative;
+      z-index: 1;
       color: var(--sa-gallery-stone, #D8D2C7);
       font-family: var(--sa-font-archive, monospace);
       font-size: 11px;
@@ -365,49 +386,87 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label {
-      min-height: 52px;
+      min-height: 86px;
       display: flex;
-      align-items: center;
+      align-items: start;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px;
+      padding: var(--sa-space-4, 16px);
+      background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
       font-weight: 800;
-      font-size: 13px;
+      font-size: clamp(20px, 2vw, 30px);
+      font-family: var(--sa-font-display, serif);
       line-height: 1.2;
+      letter-spacing: 0;
       text-transform: uppercase;
     }
 
+    #shopify-section-{{ section.id }} .sa-series-family-card__count {
+      color: var(--sa-series-accent);
+      font-family: var(--sa-font-archive, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1.25;
+      text-align: right;
+      white-space: nowrap;
+    }
+
     #shopify-section-{{ section.id }} .sa-series-family-card__label::after {
-      content: ">";
+      content: none;
       color: var(--sa-series-accent);
       font-size: 18px;
       line-height: 1;
     }
 
+    #shopify-section-{{ section.id }} .sa-series-family-card__title {
+      display: block;
+      min-width: 0;
+    }
+
     #shopify-section-{{ section.id }} .sa-series-products {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: var(--sa-card-gap, 18px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-products--compact {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     #shopify-section-{{ section.id }} .sa-series-product {
       display: grid;
       grid-template-rows: auto 1fr;
-      background: #181818;
-      border: 1px solid rgba(244, 240, 232, 0.1);
-      color: #fff;
+      background: var(--sa-surface-panel, #181818);
+      border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.14));
+      border-radius: var(--sa-radius-md, 8px);
+      color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
       overflow: hidden;
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
+      transition: transform var(--sa-motion-standard, 220ms ease), border-color var(--sa-motion-standard, 220ms ease), box-shadow var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--sa-series-accent) 72%, rgba(244, 240, 232, 0.14));
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 26%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__media {
-      aspect-ratio: 1 / 1;
+      position: relative;
+      aspect-ratio: 4 / 5;
       background: #101010;
       overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(11, 11, 11, 0) 42%, rgba(11, 11, 11, 0.58)), var(--sa-texture-concrete);
+      opacity: 0.62;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__media img {
@@ -415,6 +474,14 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0.9;
+      transform: scale(1.01);
+      transition: transform var(--sa-motion-standard, 220ms ease), opacity var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product:hover .sa-series-product__media img {
+      opacity: 0.98;
+      transform: scale(1.035);
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__fallback {
@@ -431,8 +498,29 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__content {
       display: grid;
-      gap: 6px;
-      padding: 12px;
+      gap: 8px;
+      padding: var(--sa-space-4, 16px);
+      background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__badge {
+      position: absolute;
+      inset: var(--sa-space-3, 12px) var(--sa-space-3, 12px) auto auto;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 5px 10px;
+      border: 1px solid transparent;
+      border-radius: var(--sa-radius-xs, 3px);
+      background: var(--sa-relic-red, #B3362D);
+      color: var(--sa-museum-ivory, #F4F0E8);
+      font-family: var(--sa-font-archive, monospace);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      text-transform: uppercase;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__type {
@@ -445,9 +533,10 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__title {
       margin: 0;
-      color: #fff;
-      font-size: 13px;
-      line-height: 1.25;
+      color: var(--sa-museum-ivory, #F4F0E8);
+      font-family: var(--sa-font-display, serif);
+      font-size: clamp(18px, 1.75vw, 26px);
+      line-height: 1.05;
       display: -webkit-box;
       overflow: hidden;
       -webkit-box-orient: vertical;
@@ -457,8 +546,11 @@
     #shopify-section-{{ section.id }} .sa-series-product__price {
       margin: 0;
       color: rgba(244, 240, 232, 0.74);
-      font-size: 12px;
+      font-family: var(--sa-font-archive, monospace);
+      font-size: 11px;
+      letter-spacing: 0.1em;
       line-height: 1.3;
+      text-transform: uppercase;
     }
 
     #shopify-section-{{ section.id }} .sa-series-empty {
@@ -477,15 +569,17 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card {
-      min-height: 190px;
+      min-height: 260px;
       position: relative;
       display: grid;
       align-items: end;
       overflow: hidden;
-      border: 1px solid rgba(244, 240, 232, 0.14);
-      background: #181818;
+      border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.14));
+      border-radius: var(--sa-radius-md, 8px);
+      background: var(--sa-surface-panel, #181818);
       color: #fff;
       text-decoration: none;
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card img {
@@ -564,7 +658,7 @@
 
     @media screen and (max-width: 1100px) {
       #shopify-section-{{ section.id }} .sa-series-family-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       #shopify-section-{{ section.id }} .sa-series-products,
@@ -616,13 +710,13 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-family-card {
-        flex: 0 0 min(46vw, 190px);
-        min-height: 164px;
+        flex: 0 0 min(68vw, 284px);
+        min-height: 278px;
         scroll-snap-align: start;
       }
 
       #shopify-section-{{ section.id }} .sa-series-product {
-        flex: 0 0 min(54vw, 220px);
+        flex: 0 0 min(64vw, 260px);
         scroll-snap-align: start;
       }
 
@@ -633,7 +727,7 @@
 
       #shopify-section-{{ section.id }} .sa-series-family-card__media,
       #shopify-section-{{ section.id }} .sa-series-family-card__media img {
-        min-height: 108px;
+        min-height: 194px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__title {
@@ -674,7 +768,14 @@
 
           <div class="sa-series-hero__actions">
             <a class="sa-button sa-button--primary" href="#ProductGridContainer">Shop All Products</a>
-            <span class="sa-series-meta">{{ product_count }} {% if product_count == 1 %}product{% else %}products{% endif %}</span>
+            <a class="sa-button sa-button--secondary" href="#sa-series-best-title-{{ section.id }}">See Best Sellers First</a>
+            <span class="sa-series-meta">
+              <span>{{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</span>
+              {% if social_proof != blank %}
+                <span aria-hidden="true">|</span>
+                <span class="sa-series-meta__proof">{{ social_proof | escape }}</span>
+              {% endif %}
+            </span>
           </div>
         </div>
 
@@ -690,33 +791,12 @@
   </div>
 
   <div class="sa-series-container">
-    <section class="sa-series-section" aria-labelledby="sa-series-family-title-{{ section.id }}">
-      <div class="sa-series-head">
-        <div class="sa-series-head__copy">
-          <p class="sa-series-eyebrow">Product Family Shortcuts</p>
-          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Shop By Product Family</h2>
-          <p class="sa-series-copy">{{ series_title | escape }} paths for quick browsing. Use the full grid below when you want filters and sorting.</p>
-        </div>
-      </div>
-
-      <div class="sa-series-family-grid" role="list">
-        {% render 'sa-series-family-card', title: 'Lighters', image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Wallets', image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Grinder Sets', image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Tapestries', image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Rolling Trays', image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Stash Jars', image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Tote Bags', image: tote_img, available: tote_available, url: section.settings.tote_bags_url, fallback_url: '/collections/all-tote-bags', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Pillows', image: pillow_img, available: pillow_available, url: section.settings.pillows_url, fallback_url: '/collections/lighters-category-copy', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Hoodies', image: hoodie_img, available: hoodie_available, url: section.settings.hoodies_url, fallback_url: '/collections/hoodies-category', series_filter: series_filter %}
-      </div>
-    </section>
-
     <section class="sa-series-section" aria-labelledby="sa-series-best-title-{{ section.id }}">
       <div class="sa-series-head">
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">Best Sellers</p>
           <h2 class="sa-series-title" id="sa-series-best-title-{{ section.id }}">Top {{ series_title | escape }} Picks</h2>
+          <p class="sa-series-copy">Start with the pieces shoppers are most likely to understand, gift, and add to the collection.</p>
         </div>
         <a class="sa-series-view" href="{{ collection.url }}?sort_by=best-selling#ProductGridContainer">Sort Best Selling -></a>
       </div>
@@ -724,7 +804,11 @@
       {% if collection.products_count > 0 %}
         <div class="sa-series-products" role="list" aria-label="Best selling {{ series_title | escape }} products">
           {% for product in collection.products limit: section.settings.best_seller_limit %}
-            {% render 'sa-series-product-card', product: product %}
+            {% if forloop.first %}
+              {% render 'sa-series-product-card', product: product, badge: '#1 Pick' %}
+            {% else %}
+              {% render 'sa-series-product-card', product: product %}
+            {% endif %}
           {% endfor %}
         </div>
       {% else %}
@@ -737,8 +821,8 @@
         <div class="sa-series-head">
           <div class="sa-series-head__copy">
             <p class="sa-series-eyebrow">Complete The Set</p>
-            <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Build The {{ series_title | escape }} Setup</h2>
-            <p class="sa-series-copy">Build a coordinated setup from matching trays, jars, grinders, and accessories when available.</p>
+            <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Complete Your {{ series_title | escape }} Collection</h2>
+            <p class="sa-series-copy">Matching accessories designed to go together, so shoppers can build the full setup instead of stopping at one piece.</p>
           </div>
         </div>
 
@@ -762,14 +846,32 @@
       </section>
     {% endif %}
 
+    <section class="sa-series-section" aria-labelledby="sa-series-family-title-{{ section.id }}">
+      <div class="sa-series-head">
+        <div class="sa-series-head__copy">
+          <p class="sa-series-eyebrow">Shop By Product</p>
+          <h2 class="sa-series-title" id="sa-series-family-title-{{ section.id }}">Choose A {{ series_title | escape }} Product Family</h2>
+          <p class="sa-series-copy">Use these fast paths when you already know the kind of piece you want.</p>
+        </div>
+      </div>
+
+      <div class="sa-series-family-grid" role="list">
+        {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Wallets', count: wallet_count, image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Tapestries', count: tapestry_count, image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Rolling Trays', count: tray_count, image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Stash Jars', count: jar_count, image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
+      </div>
+    </section>
+
     <section class="sa-series-section" aria-labelledby="sa-series-more-title-{{ section.id }}">
       <div class="sa-series-head">
         <div class="sa-series-head__copy">
-          <p class="sa-series-eyebrow">More From This Series</p>
-          <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Browse The {{ series_title | escape }} Wall</h2>
-          <p class="sa-series-copy">A quick preview before the full filterable collection grid.</p>
+          <p class="sa-series-eyebrow">Collection Wall</p>
+          <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Browse The {{ series_title | escape }} Collection</h2>
+          <p class="sa-series-copy">Every {{ series_title | escape }} design in one place. Browse everything.</p>
         </div>
-        <a class="sa-series-view" href="#ProductGridContainer">Open Full Grid -></a>
       </div>
 
       {% if collection.products_count > section.settings.best_seller_limit %}
@@ -783,7 +885,7 @@
       {% endif %}
 
       <div class="sa-series-row__actions" style="margin-block-start: 18px;">
-        <a class="sa-button sa-button--secondary" href="#ProductGridContainer">Filter And Sort All Products</a>
+        <a class="sa-button sa-button--secondary" href="#ProductGridContainer">Browse All {{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</a>
       </div>
     </section>
 
@@ -869,6 +971,12 @@
       "default": "Explore this fandom through collectible anime-inspired accessories, setup pieces, and archive-worthy everyday carry."
     },
     {
+      "type": "text",
+      "id": "social_proof",
+      "label": "Social proof line",
+      "default": "Loved by anime fans"
+    },
+    {
       "type": "image_picker",
       "id": "hero_image",
       "label": "Fallback hero image"
@@ -896,7 +1004,7 @@
     {
       "type": "range",
       "id": "more_from_limit",
-      "label": "More from this series products",
+      "label": "Browse collection products",
       "min": 4,
       "max": 12,
       "step": 1,
@@ -947,23 +1055,6 @@
       "type": "url",
       "id": "stash_jars_url",
       "label": "Stash Jars collection link"
-    },
-    {
-      "type": "url",
-      "id": "tote_bags_url",
-      "label": "Tote Bags collection link"
-    },
-    {
-      "type": "url",
-      "id": "pillows_url",
-      "label": "Pillows collection link",
-      "info": "Defaults to /collections/lighters-category-copy unless replaced."
-    },
-    {
-      "type": "url",
-      "id": "hoodies_url",
-      "label": "Hoodies collection link",
-      "info": "Defaults to /collections/hoodies-category."
     }
   ],
   "blocks": [

@@ -117,6 +117,7 @@
           "type": "series",
           "settings": {
             "series_name": "One Piece",
+            "image": "shopify://shop_images/EA43610AABCD95810F30D2302C0B99EA.jpg",
             "collection_link": "shopify://collections/one-piece",
             "product_count_text": "",
             "badge": "top_seller",

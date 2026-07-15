@@ -153,6 +153,7 @@
           "type": "series",
           "settings": {
             "series_name": "Bleach",
+            "image": "shopify://shop_images/F-DR9QMWkAAEwNh.jpg",
             "collection_link": "",
             "product_count_text": "",
             "badge": "trending",

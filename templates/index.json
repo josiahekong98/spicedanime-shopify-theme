@@ -202,7 +202,7 @@
           "settings": {
             "series_name": "Pokemon",
             "image": "shopify://shop_images/pkmn-v2-premium-heavyweight-t-shirt-black.jpg",
-            "collection_link": "",
+            "collection_link": "shopify://collections/pokemon-series",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",

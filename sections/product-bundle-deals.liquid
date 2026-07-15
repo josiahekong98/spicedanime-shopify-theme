@@ -1,6 +1,6 @@
 {% liquid
   assign show_bundle_section = false
-  assign bundle_heading = 'Save with Bundles'
+  assign bundle_heading = 'Save When You Build a Set'
   assign bundle_type_label = ''
   assign bundle_link_text = ''
   assign shop_now_url = ''
@@ -122,12 +122,11 @@
 %}
 
 {% if show_bundle_section %}
-<section id="shopify-section-{{ section.id }}" class="product-bundle-deals">
+<section id="shopify-section-{{ section.id }}" class="product-bundle-deals sa-product-bundle">
   <div class="product-bundle-deals__inner">
     <div class="product-bundle-deals__header">
-      <span class="product-bundle-deals__header-line"></span>
+      <span class="product-bundle-deals__eyebrow">Bundle Archive</span>
       <h2 class="product-bundle-deals__title">{{ bundle_heading }}</h2>
-      <span class="product-bundle-deals__header-line"></span>
     </div>
 
     <div class="product-bundle-deals__top-link-row">
@@ -159,20 +158,19 @@
 
 <style>
   #shopify-section-{{ section.id }}{
-    background:#F8F8F8;
+    background:var(--sa-archive-black, #101010);
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__inner{
     max-width:1200px;
     margin:0 auto;
-    padding:6px 12px 4px;
+    padding:18px clamp(16px, 4vw, 48px) 14px;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__header{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:3px;
+    display:grid;
+    gap:7px;
+    margin-bottom:10px;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__header-line{
@@ -189,25 +187,27 @@
 
   #shopify-section-{{ section.id }} .product-bundle-deals__title{
     margin:0;
-    color:#111111;
-    font-size:18px;
+    margin:0;
+    color:var(--sa-museum-ivory, #f4f0e8);
+    font-family:var(--sa-font-display, Georgia, "Times New Roman", serif);
+    font-size:clamp(24px, 4vw, 38px);
     line-height:1.05;
-    font-weight:600;
-    letter-spacing:-0.01em;
-    text-align:center;
-    white-space:nowrap;
+    font-weight:500;
+    letter-spacing:0;
+    text-align:left;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
     display:flex;
-    justify-content:flex-end;
-    margin-bottom:6px;
+    justify-content:flex-start;
+    margin-bottom:10px;
     padding-right:2px;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
-    color:#65706E;
-    font-size:5px;
+    color:var(--sa-relic-red, #b3362d);
+    font-family:var(--sa-font-archive, "Courier New", monospace);
+    font-size:11px;
     line-height:1;
     font-weight:500;
     letter-spacing:.14em;
@@ -219,19 +219,21 @@
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__top-link:hover{
-    color:#111111;
+    color:var(--sa-museum-ivory, #f4f0e8);
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__box{
     position:relative;
     overflow:hidden;
-    border-radius:12px;
-    padding:8px 10px 8px;
-    background:linear-gradient(180deg, #ffffff, #f7f7f7);
-    border:1px solid #EBEBEB;
+    border-radius:8px;
+    padding:10px;
+    background:
+      radial-gradient(circle at 16% 0%, rgba(179,54,45,.16), transparent 38%),
+      linear-gradient(180deg, rgba(36,34,31,.95), rgba(16,16,16,.96));
+    border:1px solid var(--sa-border-subtle, rgba(216,210,199,.18));
     box-shadow:
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 3px 10px rgba(17,17,17,.04);
+      0 1px 0 rgba(244,240,232,.08) inset,
+      0 14px 36px rgba(0,0,0,.28);
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__box::before{
@@ -241,8 +243,8 @@
     pointer-events:none;
     background:linear-gradient(
       180deg,
-      rgba(255,255,255,.45) 0%,
-      rgba(255,255,255,0) 38%
+      rgba(244,240,232,.08) 0%,
+      rgba(244,240,232,0) 38%
     );
     opacity:1;
   }
@@ -258,7 +260,7 @@
   #shopify-section-{{ section.id }} .product-bundle-deals__card{
     text-align:center;
     padding:2px 4px;
-    border-left:1px solid #EBEBEB;
+    border-left:1px solid var(--sa-border-subtle, rgba(216,210,199,.18));
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__card:first-child{
@@ -266,7 +268,7 @@
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__label{
-    color:#65706E;
+    color:var(--sa-gallery-stone, #d8d2c7);
     font-size:11px;
     line-height:1.2;
     font-weight:500;
@@ -274,7 +276,7 @@
 
   #shopify-section-{{ section.id }} .product-bundle-deals__price{
     margin-top:3px;
-    color:#111111;
+    color:var(--sa-museum-ivory, #f4f0e8);
     font-size:15px;
     line-height:1.1;
     font-weight:700;
@@ -282,21 +284,21 @@
 
   @media(max-width:749px){
     #shopify-section-{{ section.id }} .product-bundle-deals__inner{
-      padding:6px 10px 2px;
+      padding:16px 16px 12px;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__header{
       gap:8px;
-      margin-bottom:2px;
+      margin-bottom:8px;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__title{
-      font-size:17px;
+      font-size:26px;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
-      margin-bottom:4px;
-      padding-right:8px;
+      margin-bottom:10px;
+      padding-right:0;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
@@ -306,7 +308,7 @@
 
     #shopify-section-{{ section.id }} .product-bundle-deals__box{
       padding:8px 8px 8px;
-      border-radius:12px;
+      border-radius:8px;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__card{

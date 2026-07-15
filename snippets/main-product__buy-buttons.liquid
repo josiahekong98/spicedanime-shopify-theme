@@ -40,9 +40,9 @@
       width: 100%;
       min-height: 56px;
       border-radius: 0 !important;
-      background: #111 !important;
-      border: 1px solid #111 !important;
-      color: #fff !important;
+      background: var(--sa-relic-red, #b3362d) !important;
+      border: 1px solid var(--sa-relic-red, #b3362d) !important;
+      color: var(--sa-museum-ivory, #f4f0e8) !important;
       box-shadow: none !important;
       padding: 0 18px !important;
       display: flex !important;
@@ -55,9 +55,9 @@
     #ProductSubmitButton-{{ section_id }}.sa-atc-btn:hover,
     #ProductSubmitButton-{{ section_id }}.sa-atc-btn:focus,
     #ProductSubmitButton-{{ section_id }}.sa-atc-btn:active {
-      background: #111 !important;
-      border-color: #111 !important;
-      color: #fff !important;
+      background: #9f3028 !important;
+      border-color: #9f3028 !important;
+      color: var(--sa-museum-ivory, #f4f0e8) !important;
       box-shadow: none !important;
     }
 
@@ -86,9 +86,9 @@
   font-family: Inter, "Helvetica Neue", Arial, sans-serif !important;
   font-size: 13px !important;
   font-weight: 500 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.04em !important;
   line-height: 1 !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   text-align: center !important;
   white-space: nowrap !important;
   order: 2;
@@ -245,7 +245,7 @@
             <span class="sa-atc-text">{{ 'product.sold_out' | t }}</span>
           {%- else -%}
           <span class="sa-atc-text" data-atc-text>
-  ADD TO CART - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+  Add to Cart
 </span>
 <span class="sa-atc-icon-wrap" data-atc-icon>
   {% render 'icon', icon_name: 'theme-bag-add' %}
@@ -309,7 +309,7 @@ if (!variantInput || !textEl || !iconEl) return;
       if (!match) return;
 
       if (match.available) {
-  textEl.textContent = 'ADD TO CART - ' + match.price;
+  textEl.textContent = 'Add to Cart';
   iconEl.style.display = 'inline-flex';
 } else {
   textEl.textContent = 'SOLD OUT';

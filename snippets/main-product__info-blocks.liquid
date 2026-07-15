@@ -19,76 +19,37 @@
         <hr class="{{ product_block_class }}" {{ block.shopify_attributes }}>
             {%- when 'title' -%}
 {%- assign product_block_class = 'product__title' | append: ' ' | append: product_block_class -%}
+{%- assign sa_series_value = product.metafields.custom.series.value | default: product.metafields.custom.series | default: '' -%}
 
-<div style="margin: 0 0 2px;" {{ block.shopify_attributes }}>
+<div class="sa-product-heading-block" {{ block.shopify_attributes }}>
+
+  <div class="sa-product-meta" aria-label="Product archive metadata">
+    {%- if sa_series_value != blank -%}
+      <span class="sa-product-meta__item">{{ sa_series_value }}</span>
+    {%- endif -%}
+    {%- if product.type != blank -%}
+      <span class="sa-product-meta__item">{{ product.type }}</span>
+    {%- endif -%}
+  </div>
 
   <div
     class="sa-review-inline"
-    style="margin: 0 0 4px; line-height: 1; min-height: 16px; font-size: 12px; color: #6b6b6b;"
+    aria-label="Product reviews"
   >
     <div
       data-shop-id="{{shop.id}}"
       product-id="{{product.id}}"
       data-page="{{request.page_type}}"
       class="ddreview-star"
-      style="display:block; line-height:1; font-size:12px; color:#6b6b6b;"
     ></div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      function styleDdReviews() {
-        const root = document.querySelector('.sa-review-inline .ddreview-star');
-        if (!root) return;
-
-        root.style.lineHeight = '1';
-        root.style.fontSize = '12px';
-        root.style.color = '#6b6b6b';
-
-        root.querySelectorAll('*').forEach(function (el) {
-          el.style.lineHeight = '1';
-          el.style.color = '#6b6b6b';
-          el.style.fontSize = '12px';
-        });
-
-        root.querySelectorAll('svg, i, .star').forEach(function (el) {
-          el.style.width = '15px';
-          el.style.height = '15px';
-          el.style.color = '#f4b21a';
-          el.style.fill = '#f4b21a';
-        });
-
-        root.querySelectorAll('svg path').forEach(function (el) {
-          el.style.fill = '#f4b21a';
-        });
-      }
-
-      styleDdReviews();
-
-      const reviewRoot = document.querySelector('.sa-review-inline .ddreview-star');
-      if (reviewRoot) {
-        const observer = new MutationObserver(function () {
-          styleDdReviews();
-        });
-        observer.observe(reviewRoot, { childList: true, subtree: true });
-      }
-
-      setTimeout(styleDdReviews, 500);
-      setTimeout(styleDdReviews, 1200);
-      setTimeout(styleDdReviews, 2000);
-    });
-  </script>
-
-  <h1
-    class="{{ product_block_class }} sa-product-title"
-    style="font-family: Inter, 'Helvetica Neue', Arial, sans-serif !important; font-size: 15px !important; line-height: 1.12 !important; font-weight: 500 !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; color: #777 !important; margin: 0 0 6px !important;"
-  >
+  <h1 class="{{ product_block_class }} sa-product-title">
         {{- product.title | escape -}}
   </h1>
-<div data-shop-id="{{shop.id}}" product-id="{{product.id }}" data-page="{{request.page_type}}" class="ddreview-star"></div>
 
-  <p style="display:flex; align-items:center; gap:8px; margin:0; color:#a3a3a3; font-size:10px; line-height:1.2; letter-spacing:0.14em; text-transform:uppercase; font-weight:400;">
-    <span style="width:7px; height:7px; min-width:7px; border-radius:999px; background:#e14b43; display:inline-block;"></span>
+  <p class="sa-product-status">
+    <span class="sa-product-status__dot" aria-hidden="true"></span>
     Limited stock | Ships out in 3 – 7 business days
   </p>
 

@@ -3,9 +3,10 @@
   assign image_alt = product.featured_image.alt | default: product_title
   assign compare_price = product.compare_at_price_max
   assign current_price = product.price
+  assign quick_add_enabled = show_quick_add | default: false
 %}
 
-<a class="sa-series-product" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
+{% capture sa_series_product_media %}
   <span class="sa-series-product__media">
     {% if badge != blank %}
       <span class="sa-series-product__badge">{{ badge | escape }}</span>
@@ -17,7 +18,9 @@
       <span class="sa-series-product__fallback">{{ product_title | slice: 0, 2 | upcase }}</span>
     {% endif %}
   </span>
+{% endcapture %}
 
+{% capture sa_series_product_content %}
   <span class="sa-series-product__content">
     {% if product.type != blank %}
       <span class="sa-series-product__type">{{ product.type | escape }}</span>
@@ -37,4 +40,45 @@
       {% endif %}
     </span>
   </span>
-</a>
+{% endcapture %}
+
+{% if quick_add_enabled %}
+  <product-card class="sa-series-product sa-series-product--quick" role="listitem">
+    <a class="sa-series-product__link" href="{{ product.url }}" aria-label="View {{ product_title | escape }}">
+      {{ sa_series_product_media }}
+      {{ sa_series_product_content }}
+    </a>
+
+    <div class="sa-series-product__quick-add">
+      {% if product.available %}
+        {% if product.variants.size == 1 %}
+          <form class="product-card__add-to-cart--form sa-series-product__quick-add-form" method="post" action="{{ routes.cart_add_url }}">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button class="sa-series-product__quick-add-button" type="submit">Add to Set</button>
+          </form>
+        {% else %}
+          <button
+            class="quick-cart-drawer__trigger quick-cart-drawer__trigger--recommendations sa-series-product__quick-add-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="quick-cart-drawer"
+            data-product-url="{{ product.handle | prepend: '/products/' }}"
+          >
+            Choose Options
+            <div class="quick-cart-drawer__trigger--loading">
+              {% render 'loading-spinner' %}
+            </div>
+          </button>
+        {% endif %}
+      {% else %}
+        <a class="sa-series-product__quick-add-button" href="{{ product.url }}">View Product</a>
+      {% endif %}
+    </div>
+  </product-card>
+{% else %}
+  <a class="sa-series-product" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
+    {{ sa_series_product_media }}
+    {{ sa_series_product_content }}
+  </a>
+{% endif %}

@@ -409,7 +409,7 @@
   min-width: 0;
   max-width: 100%;
   display: grid;
-  grid-template-rows: auto minmax(2.8rem, auto);
+  grid-template-rows: auto auto;
   gap: 6px;
   padding: 10px;
   background: color-mix(in srgb, var(--sa-concrete-charcoal) 88%, black);
@@ -467,15 +467,34 @@
 .sa-series-product-grid .product-card__price .price__container,
 .sa-series-product-grid .product-card__price .price__regular,
 .sa-series-product-grid .product-card__price .price__sale,
-.sa-series-product-grid .product-card__price .price__sale-inner {
+.sa-series-product-grid .product-card__price .price__sale-inner,
+.sa-series-product-grid .product-card__price span,
+.sa-series-product-grid .product-card__price ins,
+.sa-series-product-grid .product-card__price s {
   color: inherit;
   font: inherit;
   letter-spacing: inherit;
   line-height: inherit;
 }
 
+.sa-series-product-grid .product-card__price .price__regular {
+  margin-top: 0 !important;
+}
+
+/* Overrides inline price styles from the shared price snippet, scoped to series grids. */
+.sa-series-product-grid .product-card__price .price__regular span,
+.sa-series-product-grid .product-card__price ins,
+.sa-series-product-grid .product-card__price s {
+  color: var(--sa-gallery-stone) !important;
+  font-family: var(--sa-font-ui) !important;
+  font-size: inherit !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  line-height: inherit !important;
+}
+
 .sa-series-product-grid .product-card__options {
-  min-height: 2.4rem;
+  min-height: 0;
 }
 
 @media screen and (max-width: 767px) {

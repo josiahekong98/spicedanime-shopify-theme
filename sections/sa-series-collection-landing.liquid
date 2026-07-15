@@ -8,6 +8,7 @@
   assign logo_image = collection.metafields.custom.series_logo.value | default: section.settings.logo_image
   assign product_count = collection.products_count | default: collection.all_products_count
   assign social_proof = section.settings.social_proof
+  assign random_seed = 'now' | date: '%S' | plus: 0
 
   assign lighter_img = blank
   assign wallet_img = blank
@@ -17,6 +18,8 @@
   assign jar_img = blank
   assign ashtray_img = blank
   assign stash_box_img = blank
+  assign tote_img = blank
+  assign pillow_img = blank
   assign complete_grinder_set_product = blank
   assign complete_lighter_product = blank
   assign complete_ashtray_product = blank
@@ -33,6 +36,8 @@
   assign jar_available = false
   assign ashtray_available = false
   assign stash_box_available = false
+  assign tote_available = false
+  assign pillow_available = false
   assign lighter_count = 0
   assign wallet_count = 0
   assign grinder_set_count = 0
@@ -41,6 +46,8 @@
   assign jar_count = 0
   assign ashtray_count = 0
   assign stash_box_count = 0
+  assign tote_count = 0
+  assign pillow_count = 0
 
   for product in collection.products
     assign ptitle = product.title | downcase
@@ -55,6 +62,8 @@
     assign is_stash_jar = false
     assign is_ashtray = false
     assign is_stash_box = false
+    assign is_tote = false
+    assign is_pillow = false
 
     if product_family_text contains 'lighter'
       assign is_lighter = true
@@ -92,10 +101,19 @@
       assign is_stash_box = true
     endif
 
+    if ptype contains 'tote' or product_family_text contains 'tote bag' or product_family_text contains 'tote'
+      assign is_tote = true
+    endif
+
+    if ptype contains 'pillow' or product_family_text contains 'pillow'
+      assign is_pillow = true
+    endif
+
     if is_lighter
       assign lighter_available = true
       assign lighter_count = lighter_count | plus: 1
-      if complete_lighter_product == blank
+      assign lighter_pick_mod = random_seed | modulo: lighter_count
+      if complete_lighter_product == blank or lighter_pick_mod == 0
         assign complete_lighter_product = product
       endif
     endif
@@ -103,7 +121,8 @@
     if is_wallet
       assign wallet_available = true
       assign wallet_count = wallet_count | plus: 1
-      if complete_wallet_product == blank
+      assign wallet_pick_mod = random_seed | modulo: wallet_count
+      if complete_wallet_product == blank or wallet_pick_mod == 0
         assign complete_wallet_product = product
       endif
     endif
@@ -111,7 +130,8 @@
     if is_grinder_set
       assign grinder_set_available = true
       assign grinder_set_count = grinder_set_count | plus: 1
-      if complete_grinder_set_product == blank
+      assign grinder_set_pick_mod = random_seed | modulo: grinder_set_count
+      if complete_grinder_set_product == blank or grinder_set_pick_mod == 0
         assign complete_grinder_set_product = product
       endif
     endif
@@ -119,7 +139,8 @@
     if is_tapestry
       assign tapestry_available = true
       assign tapestry_count = tapestry_count | plus: 1
-      if complete_tapestry_product == blank
+      assign tapestry_pick_mod = random_seed | modulo: tapestry_count
+      if complete_tapestry_product == blank or tapestry_pick_mod == 0
         assign complete_tapestry_product = product
       endif
     endif
@@ -127,7 +148,8 @@
     if is_rolling_tray
       assign tray_available = true
       assign tray_count = tray_count | plus: 1
-      if complete_tray_product == blank
+      assign tray_pick_mod = random_seed | modulo: tray_count
+      if complete_tray_product == blank or tray_pick_mod == 0
         assign complete_tray_product = product
       endif
     endif
@@ -135,7 +157,8 @@
     if is_stash_jar
       assign jar_available = true
       assign jar_count = jar_count | plus: 1
-      if complete_jar_product == blank
+      assign jar_pick_mod = random_seed | modulo: jar_count
+      if complete_jar_product == blank or jar_pick_mod == 0
         assign complete_jar_product = product
       endif
     endif
@@ -143,7 +166,8 @@
     if is_ashtray
       assign ashtray_available = true
       assign ashtray_count = ashtray_count | plus: 1
-      if complete_ashtray_product == blank
+      assign ashtray_pick_mod = random_seed | modulo: ashtray_count
+      if complete_ashtray_product == blank or ashtray_pick_mod == 0
         assign complete_ashtray_product = product
       endif
     endif
@@ -151,9 +175,20 @@
     if is_stash_box
       assign stash_box_available = true
       assign stash_box_count = stash_box_count | plus: 1
-      if complete_stash_box_product == blank
+      assign stash_box_pick_mod = random_seed | modulo: stash_box_count
+      if complete_stash_box_product == blank or stash_box_pick_mod == 0
         assign complete_stash_box_product = product
       endif
+    endif
+
+    if is_tote
+      assign tote_available = true
+      assign tote_count = tote_count | plus: 1
+    endif
+
+    if is_pillow
+      assign pillow_available = true
+      assign pillow_count = pillow_count | plus: 1
     endif
 
     if product.featured_image
@@ -189,6 +224,14 @@
         assign stash_box_img = product.featured_image
       endif
 
+      if tote_img == blank and is_tote
+        assign tote_img = product.featured_image
+      endif
+
+      if pillow_img == blank and is_pillow
+        assign pillow_img = product.featured_image
+      endif
+
     endif
   endfor
 
@@ -199,6 +242,12 @@
     endif
     if collection_product_type_down contains 'stash box' or collection_product_type_down contains 'stashbox'
       assign stash_box_available = true
+    endif
+    if collection_product_type_down contains 'tote'
+      assign tote_available = true
+    endif
+    if collection_product_type_down contains 'pillow'
+      assign pillow_available = true
     endif
   endfor
 %}
@@ -267,6 +316,7 @@
     #shopify-section-{{ section.id }} .sa-series-hero__label,
     #shopify-section-{{ section.id }} .sa-series-meta,
     #shopify-section-{{ section.id }} .sa-series-eyebrow {
+      margin: 0;
       color: var(--sa-series-accent);
       font-family: var(--sa-font-archive, monospace);
       font-size: var(--sa-type-label, 11px);
@@ -369,22 +419,22 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-section {
-      padding-block-start: clamp(22px, 3vw, 36px);
+      padding-block-start: clamp(16px, 2.4vw, 26px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-head {
       display: flex;
       align-items: end;
       justify-content: space-between;
-      gap: 14px;
-      margin-block-end: 12px;
+      gap: 8px;
+      margin-block-end: 8px;
       border-block-end: 1px solid color-mix(in srgb, var(--sa-series-accent) 72%, transparent);
-      padding-block-end: 10px;
+      padding-block-end: 7px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-head__copy {
       display: grid;
-      gap: 8px;
+      gap: 5px;
       max-width: 720px;
     }
 
@@ -523,6 +573,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__count {
+      max-width: 44%;
       color: var(--sa-series-accent);
       font-family: var(--sa-font-archive, monospace);
       font-size: 10px;
@@ -530,7 +581,7 @@
       letter-spacing: 0.12em;
       line-height: 1.25;
       text-align: right;
-      white-space: nowrap;
+      overflow-wrap: anywhere;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label::after {
@@ -566,6 +617,18 @@
       overflow: hidden;
       box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
       transition: transform var(--sa-motion-standard, 220ms ease), border-color var(--sa-motion-standard, 220ms ease), box-shadow var(--sa-motion-standard, 220ms ease);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product--quick {
+      grid-template-rows: auto auto;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__link {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      color: inherit;
+      text-decoration: none;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product:hover {
@@ -673,6 +736,39 @@
       letter-spacing: 0.1em;
       line-height: 1.3;
       text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__quick-add {
+      padding: 0 10px 10px;
+      background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__quick-add-form {
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__quick-add-button {
+      width: 100%;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(244, 240, 232, 0.32);
+      border-radius: 4px;
+      background: rgba(16, 16, 16, 0.62);
+      color: var(--sa-museum-ivory, #F4F0E8);
+      font-family: var(--sa-font-ui, sans-serif);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__quick-add-button:hover {
+      border-color: var(--sa-series-accent);
+      background: color-mix(in srgb, var(--sa-series-accent) 22%, rgba(16, 16, 16, 0.72));
     }
 
     #shopify-section-{{ section.id }} .sa-series-empty {
@@ -1059,7 +1155,7 @@
       <section class="sa-series-section" aria-labelledby="sa-series-set-title-{{ section.id }}">
         <div class="sa-series-head">
           <div class="sa-series-head__copy">
-            <p class="sa-series-eyebrow">Complete The Set</p>
+            <p class="sa-series-eyebrow">Complete A Smoking Set</p>
             <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Complete Your {{ series_title | escape }} Collection</h2>
             <p class="sa-series-copy">Mix product types to build your setup and unlock bundle savings.</p>
           </div>
@@ -1098,56 +1194,56 @@
           {% if section.settings.complete_include_grinder_set and complete_grinder_set_product != blank %}
             {% assign setup_key = '|' | append: complete_grinder_set_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_grinder_set_product %}
+              {% render 'sa-series-product-card', product: complete_grinder_set_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_lighter and complete_lighter_product != blank %}
             {% assign setup_key = '|' | append: complete_lighter_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_lighter_product %}
+              {% render 'sa-series-product-card', product: complete_lighter_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_ashtray and complete_ashtray_product != blank %}
             {% assign setup_key = '|' | append: complete_ashtray_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_ashtray_product %}
+              {% render 'sa-series-product-card', product: complete_ashtray_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_rolling_tray and complete_tray_product != blank %}
             {% assign setup_key = '|' | append: complete_tray_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_tray_product %}
+              {% render 'sa-series-product-card', product: complete_tray_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_wallet and complete_wallet_product != blank %}
             {% assign setup_key = '|' | append: complete_wallet_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_wallet_product %}
+              {% render 'sa-series-product-card', product: complete_wallet_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_stash_jar and complete_jar_product != blank %}
             {% assign setup_key = '|' | append: complete_jar_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_jar_product %}
+              {% render 'sa-series-product-card', product: complete_jar_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_stash_box and complete_stash_box_product != blank %}
             {% assign setup_key = '|' | append: complete_stash_box_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_stash_box_product %}
+              {% render 'sa-series-product-card', product: complete_stash_box_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
           {% if section.settings.complete_include_tapestry and complete_tapestry_product != blank %}
             {% assign setup_key = '|' | append: complete_tapestry_product.handle | append: '|' %}
             {% unless rendered_setup_handles contains setup_key %}
-              {% render 'sa-series-product-card', product: complete_tapestry_product %}
+              {% render 'sa-series-product-card', product: complete_tapestry_product, show_quick_add: true %}
               {% assign rendered_setup_handles = rendered_setup_handles | append: setup_key %}
             {% endunless %}
           {% endif %}
@@ -1172,34 +1268,53 @@
       </div>
 
       <div class="sa-series-family-grid" role="list">
-        {% render 'sa-series-family-card', title: 'Tapestries', count: tapestry_count, image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Wallets', count: wallet_count, image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Rolling Trays', count: tray_count, image: tray_img, available: tray_available, url: section.settings.rolling_trays_url, fallback_url: '/collections/all-rolling-trays', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Ashtrays', count: ashtray_count, image: ashtray_img, available: ashtray_available, url: section.settings.ashtrays_url, fallback_url: '/collections/all?filter.p.product_type=Ashtray', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Stash Boxes', count: stash_box_count, image: stash_box_img, available: stash_box_available, url: section.settings.stash_boxes_url, fallback_url: '/collections/all?filter.p.product_type=Stash+Box', series_filter: series_filter %}
-        {% render 'sa-series-family-card', title: 'Stash Jars', count: jar_count, image: jar_img, available: jar_available, url: section.settings.stash_jars_url, fallback_url: '/collections/all-products-stash-jars', series_filter: series_filter %}
+        {% render 'sa-series-family-card', title: 'Tapestries', count: tapestry_count, image: tapestry_img, available: tapestry_available, url: section.settings.tapestries_url, fallback_url: '/collections/all-tapestries', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Lighters', count: lighter_count, image: lighter_img, available: lighter_available, url: section.settings.lighters_url, fallback_url: '/collections/all-products-lighters', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Grinder Sets', count: grinder_set_count, image: grinder_set_img, available: grinder_set_available, url: section.settings.grinder_sets_url, fallback_url: '/collections/herb-grinders', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Tote Bags', count: tote_count, image: tote_img, available: tote_available, url: section.settings.tote_bags_url, fallback_url: '/collections/all?filter.p.product_type=Tote+Bags', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Pillows', count: pillow_count, image: pillow_img, available: pillow_available, url: section.settings.pillows_url, fallback_url: '/collections/all?filter.p.product_type=Pillow+Covers', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Wallets', count: wallet_count, image: wallet_img, available: wallet_available, url: section.settings.wallets_url, fallback_url: '/collections/wallets-category', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Ashtray', count: ashtray_count, image: ashtray_img, available: ashtray_available, url: section.settings.ashtrays_url, fallback_url: '/collections/all?filter.p.product_type=Ashtray', series_filter: series_filter, request_url: section.settings.custom_request_url %}
+        {% render 'sa-series-family-card', title: 'Stashbox', count: stash_box_count, image: stash_box_img, available: stash_box_available, url: section.settings.stash_boxes_url, fallback_url: '/collections/all?filter.p.product_type=Stash+Box', series_filter: series_filter, request_url: section.settings.custom_request_url %}
       </div>
     </section>
 
     <section class="sa-series-section" aria-labelledby="sa-series-more-title-{{ section.id }}">
       <div class="sa-series-head">
         <div class="sa-series-head__copy">
-          <p class="sa-series-eyebrow">Collection Wall</p>
-          <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Browse The {{ series_title | escape }} Collection</h2>
-          <p class="sa-series-copy">Every {{ series_title | escape }} design in one place. Browse everything.</p>
+          <p class="sa-series-eyebrow">Best Selling Lighters</p>
+          <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Best Selling {{ series_title | escape }} Lighters</h2>
+          <p class="sa-series-copy">Pocket-sized fan favorites from this series.</p>
         </div>
       </div>
 
-      {% if collection.products_count > section.settings.best_seller_limit %}
-        <div class="sa-series-products sa-series-products--compact" role="list" aria-label="More {{ series_title | escape }} products">
-          {% for product in collection.products offset: section.settings.best_seller_limit limit: section.settings.more_from_limit %}
-            {% render 'sa-series-product-card', product: product %}
-          {% endfor %}
+      {% liquid
+        assign lighter_wall_count = 0
+      %}
+
+      {% capture lighter_wall_products %}
+        {% for product in collection.products %}
+          {% liquid
+            assign lighter_wall_title = product.title | downcase
+            assign lighter_wall_type = product.type | downcase
+            assign lighter_wall_handle = product.handle | downcase
+            assign lighter_wall_text = lighter_wall_title | append: ' ' | append: lighter_wall_type | append: ' ' | append: lighter_wall_handle
+          %}
+          {% if lighter_wall_text contains 'lighter' %}
+            {% if lighter_wall_count < section.settings.more_from_limit %}
+              {% render 'sa-series-product-card', product: product %}
+              {% assign lighter_wall_count = lighter_wall_count | plus: 1 %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endcapture %}
+
+      {% if lighter_wall_count > 0 %}
+        <div class="sa-series-products sa-series-products--compact" role="list" aria-label="Best selling {{ series_title | escape }} lighters">
+          {{ lighter_wall_products }}
         </div>
       {% else %}
-        <div class="sa-series-empty" role="status">More products will appear here when this series has enough items beyond the best-seller preview.</div>
+        <div class="sa-series-empty" role="status">Lighters will appear here when this series has lighter products available.</div>
       {% endif %}
 
       <div class="sa-series-row__actions" style="margin-block-start: 12px;">
@@ -1435,6 +1550,22 @@
       "type": "url",
       "id": "stash_boxes_url",
       "label": "Stash Boxes collection link"
+    },
+    {
+      "type": "url",
+      "id": "tote_bags_url",
+      "label": "Tote Bags collection link"
+    },
+    {
+      "type": "url",
+      "id": "pillows_url",
+      "label": "Pillows collection link"
+    },
+    {
+      "type": "url",
+      "id": "custom_request_url",
+      "label": "Custom request link",
+      "info": "Used when a series does not currently have a product type."
     }
   ],
   "blocks": [

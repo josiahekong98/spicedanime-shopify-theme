@@ -1,5 +1,13 @@
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign sa_trust_blocks = section.blocks | where: 'type', 'text' -%}
+{%- assign sa_shipping_threshold = settings.shipping_notification_threshold -%}
+{%- assign sa_shipping_threshold_cents = sa_shipping_threshold | times: 100 -%}
+{%- assign sa_shipping_threshold_money = sa_shipping_threshold_cents | money_without_trailing_zeros -%}
+{%- assign sa_show_free_shipping = false -%}
+{%- if settings.enable_shipping_notification and sa_shipping_threshold_cents > 0 -%}
+  {%- assign sa_show_free_shipping = true -%}
+{%- endif -%}
 
 <script src="{{ 'product-variants.js' | asset_url }}" defer="defer"></script>
 
@@ -48,11 +56,6 @@
         {{- product.title | escape -}}
   </h1>
 
-  <p class="sa-product-status">
-    <span class="sa-product-status__dot" aria-hidden="true"></span>
-    Limited stock | Ships in 3 - 7 business days
-  </p>
-
 </div>
       {%- when 'badge' -%}
         {%- assign product_block_class = 'product__badges' | append: ' ' | append: product_block_class -%}
@@ -65,12 +68,15 @@
         {%- if is_gift_card -%}
           {%- continue -%}
         {%- endif -%}
-        {%- assign product_block_class = 'product__text' | append: ' ' | append: product_block_class -%}
-        {%- assign sa_trust_note = false -%}
-        {%- if block.settings.heading == 'Free and easy returns' or block.settings.heading == 'Secure payments' or block.settings.heading == 'Free delivery on orders over $150' -%}
-          {%- assign sa_trust_note = true -%}
-          {%- assign product_block_class = product_block_class | append: ' sa-product-trust-note' -%}
+        {%- assign sa_text_heading = block.settings.heading | downcase -%}
+        {%- if sa_text_heading contains 'free and easy returns'
+          or sa_text_heading contains 'secure payments'
+          or sa_text_heading contains 'free delivery'
+          or sa_text_heading contains 'free shipping'
+        -%}
+          {%- continue -%}
         {%- endif -%}
+        {%- assign product_block_class = 'product__text' | append: ' ' | append: product_block_class -%}
         <div
           class="{{ product_block_class }} product__text--{{- block.settings.link_to_resource }} {% unless block.settings.link_to_resource == 'none' %}product__text--link{% else %}product__text--body{% if block.settings.heading_secondary != blank %}-animated{% endif %}{% endunless %}{% if block.settings.text_before_link and block.settings.link_to_resource != 'none' %} product__text--before-link{% endif %} font-size-sm"
           {{ block.shopify_attributes }}
@@ -289,23 +295,31 @@
             {%- endif -%}
           {% elsif block.settings.behaviour == 'row' %}
             {{- 'section-accordions.css' | asset_url | stylesheet_tag -}}
-            <accordion-default class="accordion product__accordion" data-hide-multiple>
-              <details class="accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
+            {%- liquid
+              assign sa_curators_take = product.metafields.custom.curators_take
+              assign sa_artifact_details = product.metafields.custom.artifact_details
+              assign sa_configuration = product.metafields.custom.configuration
+              assign sa_whats_included = product.metafields.custom.whats_included
+              assign sa_has_structured_notes = false
+              if sa_curators_take != blank or sa_artifact_details != blank or sa_configuration != blank or sa_whats_included != blank
+                assign sa_has_structured_notes = true
+              endif
+            -%}
+            <accordion-default class="accordion product__accordion sa-archive-accordion" data-hide-multiple>
+              <details class="accordion__section sa-archive-accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
                 <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
-                  <span>
-                    {% liquid
-                      assign icon_alt = block.settings.heading
-                      if block.settings.custom_icon
-                        echo block.settings.custom_icon | image_url: width: 24 | image_tag: alt: icon_alt
-                      elsif block.settings.icon != blank
-                        render 'icon', icon_name: block.settings.icon
-                      endif
-                    %}
-                    {% if block.settings.heading != blank %}
-                      <span>{{- block.settings.heading -}}</span>
-                    {% else %}
-                      <span>{{ 'product.description' | t }}</span>
-                    {% endif %}
+                  <span class="sa-archive-accordion__heading">
+                    <span class="sa-archive-accordion__number" aria-hidden="true">01</span>
+                    <span class="sa-archive-accordion__copy">
+                      <span class="sa-archive-accordion__title">
+                        {%- if block.settings.heading != blank -%}
+                          {{- block.settings.heading -}}
+                        {%- else -%}
+                          {{- 'product.description' | t -}}
+                        {%- endif -%}
+                      </span>
+                      <span class="sa-archive-accordion__support">Story, specifications, and what is included.</span>
+                    </span>
                   </span>
                   <div class="accordion__icon">
                     {%- render 'icon', icon_name: 'theme-minus' -%}
@@ -315,9 +329,39 @@
 
                 <div class="accordion__body" id="Details-Content-{{- block.id -}}">
                   <div class="accordion__body-inner">
-                    {%- if product_description != blank -%}
-                      <div class="rte">
-                        {{- product_description -}}
+                    {%- if product_description != blank or sa_has_structured_notes -%}
+                      <div class="rte sa-archive-accordion__content">
+                        {%- if sa_has_structured_notes -%}
+                          {%- if sa_curators_take != blank -%}
+                            <section class="sa-archive-accordion__subsection">
+                              <h3>Curator's Take</h3>
+                              {{- sa_curators_take | metafield_tag -}}
+                            </section>
+                          {%- endif -%}
+                          {%- if sa_artifact_details != blank -%}
+                            <section class="sa-archive-accordion__subsection">
+                              <h3>Artifact Details</h3>
+                              {{- sa_artifact_details | metafield_tag -}}
+                            </section>
+                          {%- endif -%}
+                          {%- if sa_configuration != blank -%}
+                            <section class="sa-archive-accordion__subsection">
+                              <h3>Configuration</h3>
+                              {{- sa_configuration | metafield_tag -}}
+                            </section>
+                          {%- endif -%}
+                          {%- if sa_whats_included != blank -%}
+                            <section class="sa-archive-accordion__subsection">
+                              <h3>What's Included</h3>
+                              {{- sa_whats_included | metafield_tag -}}
+                            </section>
+                          {%- endif -%}
+                        {%- else -%}
+                          <section class="sa-archive-accordion__subsection">
+                            <h3>Curator's Take</h3>
+                            {{- product_description -}}
+                          </section>
+                        {%- endif -%}
                       </div>
                     {%- endif -%}
                   </div>
@@ -386,29 +430,71 @@
         {%- endif -%}
         {%- assign current_variant = product.selected_or_first_available_variant -%}
         {%- assign product_block_class = 'product__inventory-notice' | append: ' ' | append: product_block_class -%}
-        <div
-          class="{{ product_block_class }} product__text product__text--body caption {% unless current_variant.inventory_quantity <= block.settings.inventory_threshold and current_variant.available and current_variant.inventory_management == 'shopify' %}hidden{% endunless %}"
-          id="Inventory-{{ section.id }}"
-          role="status"
-          data-inventory-notice
-          data-inventory-quantity="{{ current_variant.inventory_quantity }}"
-          data-inventory-threshold="{{ block.settings.inventory_threshold }}"
-          {{ block.shopify_attributes }}
-        >
-          {%- if product.metafields.theme.preorder.value -%}
-            {% assign product_preorder_date = product.metafields.theme.preorder_shipping_date.value | date: '%b %d, %Y' %}
-            <div class="product__preorder-notice">
-              <span class="product__preorder-dot">&nbsp;</span>
-              <span>{{- 'product.preorder_notice' | t: date: product_preorder_date -}}</span>
-            </div>
-          {%- else -%}
+        <div class="sa-order-details" role="group" aria-label="Order details">
+          <p class="sa-order-details__label">Order details</p>
+
+          <div class="sa-order-details__item">
             {%- render 'icon', icon_name: 'theme-timer' -%}
-            {%- if block.settings.notice_just_text -%}
-              {{- 'product.inventory_low_stock' | t -}}
+            <span>Ships in 3 - 7 business days</span>
+          </div>
+
+          <div
+            class="{{ product_block_class }} product__text product__text--body caption sa-order-details__item {% unless current_variant.inventory_quantity <= block.settings.inventory_threshold and current_variant.available and current_variant.inventory_management == 'shopify' %}hidden{% endunless %}"
+            id="Inventory-{{ section.id }}"
+            role="status"
+            data-inventory-notice
+            data-inventory-quantity="{{ current_variant.inventory_quantity }}"
+            data-inventory-threshold="{{ block.settings.inventory_threshold }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if product.metafields.theme.preorder.value -%}
+              {% assign product_preorder_date = product.metafields.theme.preorder_shipping_date.value | date: '%b %d, %Y' %}
+              <div class="product__preorder-notice">
+                <span class="product__preorder-dot">&nbsp;</span>
+                <span>{{- 'product.preorder_notice' | t: date: product_preorder_date -}}</span>
+              </div>
             {%- else -%}
-              {{- 'product.inventory_low_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}
+              {%- render 'icon', icon_name: 'theme-timer' -%}
+              {%- if block.settings.notice_just_text -%}
+                {{- 'product.inventory_low_stock' | t -}}
+              {%- else -%}
+                {{- 'product.inventory_low_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}
+              {%- endif -%}
             {%- endif -%}
-          {%- endif -%}
+          </div>
+
+          {%- for trust_block in sa_trust_blocks -%}
+            {%- assign sa_trust_heading = trust_block.settings.heading | downcase -%}
+            {%- assign sa_is_returns = false -%}
+            {%- assign sa_is_secure = false -%}
+            {%- assign sa_is_shipping = false -%}
+            {%- if sa_trust_heading contains 'free and easy returns' -%}
+              {%- assign sa_is_returns = true -%}
+            {%- elsif sa_trust_heading contains 'secure payments' -%}
+              {%- assign sa_is_secure = true -%}
+            {%- elsif sa_trust_heading contains 'free delivery' or sa_trust_heading contains 'free shipping' -%}
+              {%- if sa_show_free_shipping -%}
+                {%- assign sa_is_shipping = true -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if sa_is_returns or sa_is_secure or sa_is_shipping -%}
+              <div class="sa-order-details__item" {{ trust_block.shopify_attributes }}>
+                {%- if trust_block.settings.icon != blank -%}
+                  {%- render 'icon', icon_name: trust_block.settings.icon -%}
+                {%- endif -%}
+                <span>
+                  {%- if sa_is_shipping -%}
+                    Free US shipping on orders over {{ sa_shipping_threshold_money }}
+                  {%- elsif sa_is_returns and shop.refund_policy.body != blank -%}
+                    <a href="{{ shop.refund_policy.url }}">{{ trust_block.settings.heading }}</a>
+                  {%- else -%}
+                    {{ trust_block.settings.heading }}
+                  {%- endif -%}
+                </span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
         {%- if product.metafields.theme.preorder.value -%}
           <div class="{{ product_block_class }} product__preorder-warning">
@@ -459,29 +545,36 @@
       {%- when 'content_block' -%}
         {{- 'section-accordions.css' | asset_url | stylesheet_tag -}}
         {%- assign product_block_class = 'product__accordion' | append: ' ' | append: product_block_class -%}
-        <accordion-default class="accordion {{ product_block_class }}" data-hide-multiple>
+        {%- assign sa_content_heading = block.settings.heading | downcase -%}
+        {%- assign sa_is_delivery = false -%}
+        {%- if sa_content_heading == 'delivery & returns' -%}
+          {%- assign sa_is_delivery = true -%}
+        {%- endif -%}
+        <accordion-default class="accordion {{ product_block_class }}{% if sa_is_delivery %} sa-archive-accordion{% endif %}" data-hide-multiple>
           <details
-            class="accordion__section"
+            class="accordion__section{% if sa_is_delivery %} sa-archive-accordion__section{% endif %}"
             id="Details-{{- block.id -}}"
             {{- block.shopify_attributes -}}
           >
             <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
-              <span>
-                {% if block.settings.custom_icon != blank %}
-                  {{ block.settings.custom_icon | image_url: width: 24 | image_tag: alt: block.settings.custom_icon.alt }}
-                {% elsif block.settings.custom_icon == blank and block.settings.icon != blank %}
-                  {% render 'icon', icon_name: block.settings.icon %}
-                {% endif %}
-                {% unless block.type == 'description' %}
-                  {{- block.settings.heading | escape -}}
-                {% else %}
-                  {% if block.settings.heading != blank %}
-                    <span>{{- block.settings.heading -}}</span>
-                  {% else %}
-                    <span>{{ 'product.description' | t }}</span>
+              {%- if sa_is_delivery -%}
+                <span class="sa-archive-accordion__heading">
+                  <span class="sa-archive-accordion__number" aria-hidden="true">02</span>
+                  <span class="sa-archive-accordion__copy">
+                    <span class="sa-archive-accordion__title">{{- block.settings.heading | escape -}}</span>
+                    <span class="sa-archive-accordion__support">Processing, shipping, and return details.</span>
+                  </span>
+                </span>
+              {%- else -%}
+                <span>
+                  {% if block.settings.custom_icon != blank %}
+                    {{ block.settings.custom_icon | image_url: width: 24 | image_tag: alt: block.settings.custom_icon.alt }}
+                  {% elsif block.settings.custom_icon == blank and block.settings.icon != blank %}
+                    {% render 'icon', icon_name: block.settings.icon %}
                   {% endif %}
-                {% endunless %}
-              </span>
+                  {{- block.settings.heading | escape -}}
+                </span>
+              {%- endif -%}
               <div class="accordion__icon">
                 {%- render 'icon', icon_name: 'theme-minus' -%}
                 {%- render 'icon', icon_name: 'theme-minus' -%}
@@ -513,26 +606,73 @@
                 {% endcapture %}
                 {%- liquid
                   assign show_block_content = false
-                  if metafield_for_product_variant != blank
-                    echo metafield_for_product_variant
-                  endif
                   if block.settings.show_block_content and metafield_for_product_variant != blank
                     assign show_block_content = true
                   elsif metafield_for_product_variant == blank
                     assign show_block_content = true
                   endif
-                  if show_block_content
-                    unless block.type == 'description'
+                -%}
+
+                {%- if sa_is_delivery -%}
+                  {%- capture sa_returns_copy -%}
+                    {%- for trust_block in sa_trust_blocks -%}
+                      {%- assign sa_trust_heading = trust_block.settings.heading | downcase -%}
+                      {%- if sa_trust_heading contains 'free and easy returns' -%}
+                        {{- trust_block.settings.heading -}}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endcapture -%}
+                  <div class="rte sa-archive-accordion__content sa-policy-sections">
+                    <section class="sa-archive-accordion__subsection">
+                      <h3>Processing</h3>
+                      <p>Ships in 3 - 7 business days.</p>
+                    </section>
+
+                    <section class="sa-archive-accordion__subsection">
+                      <h3>Delivery</h3>
+                      {%- if sa_show_free_shipping -%}
+                        <p>Free US shipping on orders over {{ sa_shipping_threshold_money }}.</p>
+                      {%- endif -%}
+                      {%- if metafield_for_product_variant != blank -%}
+                        {{- metafield_for_product_variant -}}
+                      {%- endif -%}
+                      {%- if show_block_content -%}
+                        {%- if block.settings.page != blank -%}
+                          {{- block.settings.page.content -}}
+                        {%- elsif block.settings.row_content != blank -%}
+                          {{- block.settings.row_content -}}
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- if shop.shipping_policy.body != blank -%}
+                        <p><a href="{{ shop.shipping_policy.url }}">Review the store shipping policy.</a></p>
+                      {%- endif -%}
+                    </section>
+
+                    {%- if shop.refund_policy.body != blank or sa_returns_copy != blank -%}
+                      <section class="sa-archive-accordion__subsection">
+                        <h3>Returns</h3>
+                        {%- if shop.refund_policy.body != blank -%}
+                          <p><a href="{{ shop.refund_policy.url }}">Review the store returns policy.</a></p>
+                        {%- else -%}
+                          <p>{{- sa_returns_copy | strip -}}</p>
+                        {%- endif -%}
+                      </section>
+                    {%- endif -%}
+                  </div>
+                {%- else -%}
+                  {%- liquid
+                    if metafield_for_product_variant != blank
+                      echo metafield_for_product_variant
+                    endif
+                    if show_block_content
                       if block.settings.page != blank
                         echo block.settings.page.content
-                      elsif block.settings.page == blank and block.settings.row_content != blank
+                      elsif block.settings.row_content != blank
                         echo block.settings.row_content
                       endif
-                    else
-                      echo product.description
-                    endunless
-                  endif
-                -%}
+                    endif
+                  -%}
+                {%- endif -%}
               </div>
             </div>
           </details>

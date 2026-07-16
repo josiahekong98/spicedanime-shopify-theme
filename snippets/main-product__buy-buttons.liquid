@@ -38,12 +38,12 @@
   <style>
     #ProductSubmitButton-{{ section_id }}.sa-atc-btn {
       width: 100%;
-      min-height: 56px;
-      border-radius: 0 !important;
+      min-height: 64px;
+      border-radius: 16px !important;
       background: var(--sa-relic-red, #b3362d) !important;
       border: 1px solid var(--sa-relic-red, #b3362d) !important;
       color: var(--sa-museum-ivory, #f4f0e8) !important;
-      box-shadow: none !important;
+      box-shadow: 0 12px 28px rgba(179, 54, 45, 0.2) !important;
       padding: 0 18px !important;
       display: flex !important;
       align-items: center !important;
@@ -52,13 +52,23 @@
       text-transform: uppercase !important;
     }
 
-    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:hover,
-    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:focus,
-    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:active {
+    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:hover {
       background: #9f3028 !important;
       border-color: #9f3028 !important;
       color: var(--sa-museum-ivory, #f4f0e8) !important;
-      box-shadow: none !important;
+      box-shadow: 0 14px 32px rgba(179, 54, 45, 0.28) !important;
+    }
+
+    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:focus-visible {
+      outline: 2px solid var(--sa-museum-ivory, #f4f0e8);
+      outline-offset: 3px;
+    }
+
+    #ProductSubmitButton-{{ section_id }}.sa-atc-btn:active {
+      background: #8c2a24 !important;
+      border-color: #8c2a24 !important;
+      box-shadow: 0 6px 16px rgba(179, 54, 45, 0.2) !important;
+      transform: translateY(1px);
     }
 
     #ProductSubmitButton-{{ section_id }} .sa-atc-icon-wrap {

@@ -120,7 +120,7 @@
           "type": "text",
           "settings": {
             "spacing_bottom": "1",
-            "heading": "Free delivery on orders over $150",
+            "heading": "Free shipping on qualifying US orders",
             "icon": "theme-check",
             "link_to_resource": "none",
             "text_before_link": false,
@@ -146,7 +146,7 @@
           "settings": {
             "spacing_bottom": "1",
             "heading": "Delivery & Returns",
-            "row_content": "<ul><li>Free shipping on US orders over $150</li><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All packaging is plastic-free and recyclable.</li><li>Tracking is sent automatically once your order ships.</li></ul>",
+            "row_content": "<ul><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All packaging is plastic-free and recyclable.</li><li>Tracking is sent automatically once your order ships.</li></ul>",
             "icon": "",
             "page": "",
             "metafield_for_product_variant": "",
@@ -159,7 +159,7 @@
           "settings": {
             "spacing_bottom": "1",
             "heading": "Shipping",
-            "row_content": "<ul><li>Free shipping on US orders over $150</li><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All of our packaging is plastic-free and recyclable. </li><li>Yes we offer international shipping to most countries</li><li>You'll automatically recieve a tracking link once your order has shipped.<br/></li></ul>",
+            "row_content": "<ul><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All of our packaging is plastic-free and recyclable. </li><li>Yes we offer international shipping to most countries</li><li>You'll automatically recieve a tracking link once your order has shipped.<br/></li></ul>",
             "icon": "",
             "page": "",
             "metafield_for_product_variant": "",

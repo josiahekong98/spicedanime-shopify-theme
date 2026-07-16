@@ -27,6 +27,32 @@
   if section.settings.content_type == 'none'
     assign grid_has_columns = false
   endif
+
+  assign complete_the_set_heading = section.settings.content_heading | default: 'Complete the Set'
+  assign current_series = product.metafields.custom.series.value | default: product.metafields.custom.series | strip
+  assign current_series_key = current_series | handleize
+  assign fallback_collection = blank
+
+  if current_series_key != blank
+    assign series_collection_candidates = current_series_key | append: '|' | append: current_series_key | append: '-anime-accessories|' | append: current_series_key | append: '-accessories|' | append: current_series_key | append: '-collection|' | append: current_series_key | append: '-products|' | append: current_series_key | append: '-smoking-accessories' | split: '|'
+
+    for candidate_handle in series_collection_candidates
+      if fallback_collection == blank and collections[candidate_handle] != blank
+        assign fallback_collection = collections[candidate_handle]
+      endif
+    endfor
+
+    if fallback_collection == blank
+      for product_collection in product.collections
+        assign product_collection_handle = product_collection.handle | handleize
+        assign product_collection_title = product_collection.title | handleize
+        if product_collection_handle == current_series_key or product_collection_title == current_series_key or product_collection_handle contains current_series_key or current_series_key contains product_collection_handle or product_collection_title contains current_series_key or current_series_key contains product_collection_title
+          assign fallback_collection = product_collection
+          break
+        endif
+      endfor
+    endif
+  endif
 -%}
 
 {{- 'section-complete-the-set.css' | asset_url | stylesheet_tag -}}
@@ -54,17 +80,19 @@
 {%- unless show_products == false and section.blocks.size == 0 -%}
   <div class="color-{{ section.settings.color_scheme }} gradient">
     <div
-      class="section-complete-the-set js-animation-fade-in {{ section_style_classes }}"
+      class="section-complete-the-set sa-product-recommendation-row js-animation-fade-in {{ section_style_classes }}"
       data-section-id="{{- section.id -}}"
     >
       <div class="container {{ section.settings.section_width }}">
         <div class="grid section__grid {% if grid_has_columns %} grid--2{% else %} section__grid--centered{% endif %}">
           {%- unless section.settings.content_type == 'none' -%}
-            <div class="grid__item section-complete-the-set__content overflow-hidden {% if show_products and recommendations.performed == blank and recommendations.products_count == 0 %} hidden{% endif %}">
+            <div class="grid__item section-complete-the-set__content overflow-hidden {% if show_products and recommendations.performed == blank and recommendations.products_count == 0 and fallback_collection == blank %} hidden{% endif %}">
               {%- if section.settings.content_heading != blank -%}
-                <header class="section__head">
-                  <h2 class="{{ section.settings.heading_size }}">
-                    {{- section.settings.content_heading -}}
+                <header class="sa-recommendation-section__header">
+                  <p class="sa-recommendation-section__eyebrow">{{- complete_the_set_heading -}}</p>
+                  <div class="sa-recommendation-section__divider" aria-hidden="true"></div>
+                  <h2 class="visually-hidden" id="CompleteTheSet-{{ section.id }}">
+                    {{- complete_the_set_heading -}}
                   </h2>
                 </header>
               {%- endif -%}
@@ -87,6 +115,29 @@
                         <div class="swiper-slide card-product-slider__slide">
                           {%- render 'card-product', product_ref: recommendation, section_id: section.id -%}
                         </div>
+                      {%- endfor -%}
+                    {%- elsif recommendations.performed and fallback_collection != blank -%}
+                      {%- liquid
+                        assign fallback_rendered = 0
+                        assign fallback_seen_products = '|'
+                      -%}
+                      {%- for recommendation in fallback_collection.products limit: 48 -%}
+                        {%- liquid
+                          assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+                          assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+                          assign recommendation_series_key = recommendation_series | handleize
+                        -%}
+                        {%- unless fallback_seen_products contains recommendation_token -%}
+                          {%- if fallback_rendered < 10 and recommendation.id != product.id and recommendation.available and recommendation_series_key == current_series_key -%}
+                            {%- liquid
+                              assign fallback_seen_products = fallback_seen_products | append: recommendation.id | append: '|'
+                              assign fallback_rendered = fallback_rendered | plus: 1
+                            -%}
+                            <div class="swiper-slide card-product-slider__slide">
+                              {%- render 'card-product', product_ref: recommendation, section_id: section.id -%}
+                            </div>
+                          {%- endif -%}
+                        {%- endunless -%}
                       {%- endfor -%}
                     {%- endif -%}
                   </div>

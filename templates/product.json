@@ -179,15 +179,6 @@
             "display_goback_mobile": "on-media",
             "show_on": "mobile"
           }
-        },
-        "complementary_products_HQH74T": {
-          "type": "complementary_products",
-          "settings": {
-            "spacing_bottom": "1",
-            "heading": "Complete your routine",
-            "icon": "option-plant",
-            "limit": 4
-          }
         }
       },
       "block_order": [
@@ -206,8 +197,7 @@
         "content_block_aXjKBq",
         "content_block_JXcJef",
         "breadcrumbs_UGFmBV",
-        "goback_Hz9gef",
-        "complementary_products_HQH74T"
+        "goback_Hz9gef"
       ],
       "custom_css": [],
       "settings": {

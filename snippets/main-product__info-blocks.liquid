@@ -527,10 +527,11 @@
         {% endif %}
 
       {%- when 'complementary_products' -%}
-        {%- assign product_block_class = 'product__complementaries' | append: ' ' | append: product_block_class -%}
-        <div class="{{ product_block_class }}" {{ block.shopify_attributes }}>
-          {%- render 'product-recommendations', area: 'product', title: block.settings.heading, icon: block.settings.icon, limit: block.settings.limit -%}
-        </div>
+        {%- comment -%}
+          SpicedAnime renders Shopify Search & Discovery complementary products
+          through sections/complete-the-set.liquid so the generic product-info
+          block does not duplicate the custom recommendation row.
+        {%- endcomment -%}
 
       {%- when 'content_block' -%}
         {{- 'section-accordions.css' | asset_url | stylesheet_tag -}}

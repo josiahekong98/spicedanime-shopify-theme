@@ -25,42 +25,42 @@
   data-tote-threshold="{{ tote_threshold }}"
   data-tapestry-threshold="{{ tapestry_threshold }}"
 >
-    <div class="progress-bar__top">
-    <span class="gift-icon">🎁</span>
+  <div class="progress-bar__top">
+    <div class="progress-bar__copy">
+      <p class="progress-bar__eyebrow" data-upsell-eyebrow>
+        GIFT ARCHIVE
+      </p>
 
-    {%- comment -%}
-      JS will overwrite this text, but this is a better default one-liner.
-    {%- endcomment -%}
-    <p class="progress-bar__text" data-upsell-main>
-      A Free SpicedAnime Gift Is Waiting
-    </p>
+      {%- comment -%}
+        JS will overwrite this text, but this is a better default one-liner.
+      {%- endcomment -%}
+      <p class="progress-bar__text" data-upsell-main>
+        A Free SpicedAnime Gift Is Waiting
+      </p>
+    </div>
   </div>
 
-
   <div class="progress-bar__progress">
+    <span
+      data-progress-line
+      class="progress-bar__progress-inner"
+      style="width: 0%;"
+    ></span>
 
-  <span
-    data-progress-line
-    class="progress-bar__progress-inner"
-    style="width: 0%;"
-  ></span>
+    {%- assign max_threshold = tapestry_threshold -%}
 
-  {%- assign max_threshold = tapestry_threshold -%}
+    <!-- $75 milestone -->
+    <span class="progress-marker" style="left: {{ lighter_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
 
-  <!-- $75 milestone -->
-  <span class="progress-marker" style="left: {{ lighter_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+    <!-- $100 milestone -->
+    <span class="progress-marker" style="left: {{ shipping_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
 
-  <!-- $100 milestone -->
-  <span class="progress-marker" style="left: {{ shipping_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+    <!-- $120 milestone -->
+    <span class="progress-marker" style="left: {{ tote_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
 
-  <!-- $120 milestone -->
-  <span class="progress-marker" style="left: {{ tote_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
-
-  <!-- $200 milestone -->
-  <span class="progress-marker" style="left: {{ tapestry_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
-
-</div>
-
+    <!-- $200 milestone -->
+    <span class="progress-marker" style="left: {{ tapestry_threshold | times: 100 | divided_by: max_threshold }}%;"></span>
+  </div>
 
   <p class="progress-bar__subtext" data-upsell-sub>
     Add more to unlock free SpicedAnime products

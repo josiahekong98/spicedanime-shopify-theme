@@ -23,10 +23,23 @@
     endfor
 
     if source_collection == blank
+      assign candidate_handles = current_series_key | append: '|' | append: current_series_key | append: '-anime-accessories|' | append: current_series_key | append: '-accessories|' | append: current_series_key | append: '-collection|' | append: current_series_key | append: '-products|' | append: current_series_key | append: '-smoking-accessories' | split: '|'
+      for candidate_handle in candidate_handles
+        if collections[candidate_handle] != blank
+          assign source_collection = collections[candidate_handle]
+          assign using_fallback = true
+          break
+        endif
+      endfor
+    endif
+
+    if source_collection == blank
       for product_collection in product.collections
         assign collection_handle = product_collection.handle
-        if collection_handle == current_series_key or collection_handle contains current_series_key
+        assign collection_title_key = product_collection.title | handleize
+        if collection_handle == current_series_key or collection_title_key == current_series_key or collection_handle contains current_series_key or collection_title_key contains current_series_key or current_series_key contains collection_handle or current_series_key contains collection_title_key
           assign source_collection = product_collection
+          assign using_fallback = true
           break
         endif
       endfor
@@ -348,26 +361,6 @@
           </a>
         </div>
       {% endif %}
-    {% else %}
-      <div class="sa-more-series__empty" role="status">
-        <p class="sa-more-series__empty-title">
-          {% if current_series != blank %}
-            Request more {{ current_series | escape }}
-          {% else %}
-            Request a custom piece
-          {% endif %}
-        </p>
-        <p class="sa-more-series__empty-copy">
-          {% if current_series != blank %}
-            This series does not have a mapped product pool yet. You can still request a custom item from this series.
-          {% else %}
-            Tell us the series, character, and product type you want us to make.
-          {% endif %}
-        </p>
-        <a class="sa-button sa-button--secondary sa-more-series__empty-action" href="{{ custom_request_href }}">
-          {{ custom_request_label | escape }}
-        </a>
-      </div>
     {% endif %}
   </div>
 </section>

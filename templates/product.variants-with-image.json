@@ -163,15 +163,6 @@
             "display_goback_mobile": "on-media",
             "show_on": "desktop"
           }
-        },
-        "complementary_products_y7Nt4D": {
-          "type": "complementary_products",
-          "settings": {
-            "spacing_bottom": "1",
-            "heading": "You may also like",
-            "icon": "theme-box",
-            "limit": 4
-          }
         }
       },
       "block_order": [
@@ -191,8 +182,7 @@
         "content_block_aXjKBq",
         "content_block_NYGCJc",
         "breadcrumbs_UGFmBV",
-        "goback_Hz9gef",
-        "complementary_products_y7Nt4D"
+        "goback_Hz9gef"
       ],
       "settings": {
         "product_media_layout": "product__media-layout--full",

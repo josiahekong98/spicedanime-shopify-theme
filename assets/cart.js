@@ -320,6 +320,9 @@ function applyCartStateToDrawer(cartState) {
 
   updateFreeShipping();
   sortFreeItemsToTop();
+  document.dispatchEvent(new CustomEvent('sa:cart:refreshed', {
+    detail: { cart: cartState }
+  }));
 }
 
 function syncCartAfterMutation(cartState) {
@@ -365,9 +368,10 @@ function updateFreeShipping() {
     const toteThreshold     = parseInt(bar.dataset.toteThreshold     || '0', 10);
     const tapestryThreshold = parseInt(bar.dataset.tapestryThreshold || '0', 10);
 
-    const topTextEl    = bar.querySelector('[data-upsell-main]');
-    const bottomTextEl = bar.querySelector('[data-upsell-sub]');
-    const progressLine = bar.querySelector('[data-progress-line]');
+    const eyebrowTextEl = bar.querySelector('[data-upsell-eyebrow]');
+    const topTextEl     = bar.querySelector('[data-upsell-main]');
+    const bottomTextEl  = bar.querySelector('[data-upsell-sub]');
+    const progressLine  = bar.querySelector('[data-progress-line]');
 
     if (!topTextEl || !bottomTextEl || !progressLine) return;
 
@@ -378,8 +382,9 @@ function updateFreeShipping() {
 
     progressLine.style.width = `calc(${progress.toFixed(2)}% + 2px)`;
 
-    let topText   = '';
-    let bottomText = '';
+    let eyebrowText = 'GIFT ARCHIVE';
+    let topText     = '';
+    let bottomText  = '';
 
     if (subtotal < lighterThreshold) {
       const diff = Math.max(lighterThreshold - subtotal, 0);
@@ -387,22 +392,24 @@ function updateFreeShipping() {
       bottomText = `Add more to unlock free SpicedAnime products`;
     } else if (subtotal < shippingThreshold) {
       const diff = Math.max(shippingThreshold - subtotal, 0);
-      topText    = `Spend ${formatMoney(diff)} more for a free tote bag and shipping`;
-      bottomText = `Congrats! Add your free lighter to your cart!`;
+      topText    = `Spend ${formatMoney(diff)} more for free shipping`;
+      bottomText = `Your free lighter is unlocked`;
     } else if (subtotal < toteThreshold) {
       const diff = Math.max(toteThreshold - subtotal, 0);
       topText    = `Spend ${formatMoney(diff)} more for a free tote bag`;
-      bottomText = `Congrats! Free shipping is applied!`;
+      bottomText = `Free lighter and shipping are unlocked`;
     } else if (subtotal < tapestryThreshold) {
       const diff = Math.max(tapestryThreshold - subtotal, 0);
       topText    = `Spend ${formatMoney(diff)} more for a free tapestry`;
-      bottomText = `Congrats! Add your free tote bag to your cart!`;
+      bottomText = `Free tote bag is unlocked`;
     } else {
-      topText    = `Enjoy the free additional SpicedAnime Merch!`;
-      bottomText = `Congrats! Add your free tapestry to your cart!`;
+      eyebrowText = 'GIFT UNLOCKED';
+      topText    = `Free SpicedAnime merch unlocked`;
+      bottomText = `Add your free tapestry to your cart`;
     }
 
-        topTextEl.textContent    = topText;
+    if (eyebrowTextEl) eyebrowTextEl.textContent = eyebrowText;
+    topTextEl.textContent    = topText;
     bottomTextEl.textContent = bottomText;
   });
 }

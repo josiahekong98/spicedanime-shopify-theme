@@ -120,6 +120,11 @@
                   title: section.settings.upsell_heading,
                   limit: 4
                 -%}
+                {%- render 'sa-cart-transfer-fallback',
+                  class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer sa-cart-transfer-fallback',
+                  title: section.settings.upsell_heading,
+                  limit: 4
+                -%}
               {%- endif -%}
               {%- if section.settings.show_rewards_teaser and section.settings.rewards_link != blank -%}
                 {%- render 'sa-cart-rewards',

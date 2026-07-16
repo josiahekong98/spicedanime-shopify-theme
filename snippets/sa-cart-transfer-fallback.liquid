@@ -1,0 +1,123 @@
+{%- comment -%}
+  Same-series fallback for cart drawer Complete This Transfer. It stays hidden
+  unless the Shopify recommendation endpoint returns no complementary products.
+{%- endcomment -%}
+
+{%- liquid
+  assign transfer_title = title | default: settings.cart_upsell_title | default: 'Complete This Transfer'
+  assign transfer_limit = limit | default: 4
+  assign transfer_class = class | default: ''
+  assign anchor_item = blank
+  assign anchor_product = blank
+  assign cart_product_tokens = '|'
+
+  for line_item in cart.items
+    assign cart_product_tokens = cart_product_tokens | append: line_item.product.id | append: '|'
+    if anchor_item == blank and line_item.final_line_price > 0 and line_item.product.available
+      assign anchor_item = line_item
+      assign anchor_product = line_item.product
+    endif
+  endfor
+
+  assign anchor_series = ''
+  assign anchor_series_key = ''
+  assign transfer_collection = blank
+
+  if anchor_product != blank
+    assign anchor_series = anchor_product.metafields.custom.series.value | default: anchor_product.metafields.custom.series | strip
+    assign anchor_series_key = anchor_series | handleize
+  endif
+
+  if anchor_series_key != blank
+    assign series_collection_candidates = anchor_series_key | append: '|' | append: anchor_series_key | append: '-anime-accessories|' | append: anchor_series_key | append: '-accessories|' | append: anchor_series_key | append: '-collection|' | append: anchor_series_key | append: '-products|' | append: anchor_series_key | append: '-smoking-accessories' | split: '|'
+
+    for candidate_handle in series_collection_candidates
+      if transfer_collection == blank and collections[candidate_handle] != blank
+        assign transfer_collection = collections[candidate_handle]
+      endif
+    endfor
+
+    if transfer_collection == blank
+      for product_collection in anchor_product.collections
+        assign product_collection_handle = product_collection.handle | handleize
+        assign product_collection_title = product_collection.title | handleize
+        if product_collection_handle == anchor_series_key or product_collection_title == anchor_series_key or product_collection_handle contains anchor_series_key or anchor_series_key contains product_collection_handle or product_collection_title contains anchor_series_key or anchor_series_key contains product_collection_title
+          assign transfer_collection = product_collection
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign rendered_count = 0
+  assign seen_products = '|'
+-%}
+
+{%- if transfer_collection != blank -%}
+  <div
+    class="product-recommendations hidden {{ transfer_class }} color-{{ settings.color_scheme_for_upsell }}"
+    data-sa-cart-series-transfer-fallback
+    hidden
+  >
+    {%- if transfer_title != blank -%}
+      <h5 class="product-recommendations__title">{{- transfer_title | escape -}}</h5>
+    {%- endif -%}
+
+    <div class="swiper product-recommendations__body">
+      <div class="product-recommendations__items swiper-wrapper" data-recommendations>
+        {%- for recommendation in transfer_collection.products limit: 48 -%}
+          {%- liquid
+            assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+            assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+            assign recommendation_series_key = recommendation_series | handleize
+          -%}
+          {%- unless cart_product_tokens contains recommendation_token -%}
+            {%- unless seen_products contains recommendation_token -%}
+              {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id and recommendation_series_key == anchor_series_key -%}
+                {%- liquid
+                  assign rendered_count = rendered_count | plus: 1
+                  assign seen_products = seen_products | append: recommendation.id | append: '|'
+                -%}
+                <a href="{{- recommendation.url -}}" class="product-recommendations__item swiper-slide">
+                  <div class="product-recommendations__media">
+                    {%- if recommendation.featured_media -%}
+                      {%- render 'image',
+                        image: recommendation.featured_media,
+                        alt: recommendation.featured_media.alt | default: recommendation.title | escape,
+                        widths: '120, 160, 240',
+                        sizes: '(max-width: 749px) 38vw, 150px'
+                      -%}
+                    {%- endif -%}
+                  </div>
+                  <div class="product-recommendations__content">
+                    <span class="product-recommendations__name">{{- recommendation.title -}}</span>
+                    <p class="product-recommendations__price">
+                      {%- liquid
+                        assign recommendation_price = recommendation.price_min | money
+                        if recommendation.price_varies
+                          echo recommendation_price | append: '+'
+                        else
+                          echo recommendation_price
+                        endif
+                      -%}
+                    </p>
+                    {%- if recommendation.variants.size == 1 and recommendation.available -%}
+                      <button
+                        type="button"
+                        class="button product-recommendations__quick-add quick-cart-drawer__trigger"
+                        data-id="{{ recommendation.selected_or_first_available_variant.id }}"
+                        aria-label="{{ 'theme.actions.add_to_cart' | t }} {{ recommendation.title | escape }}"
+                      >
+                        {%- render 'icon', icon_name: 'theme-plus' -%}
+                      </button>
+                    {%- endif -%}
+                  </div>
+                </a>
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

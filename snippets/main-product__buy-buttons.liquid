@@ -72,15 +72,19 @@
     }
 
     #ProductSubmitButton-{{ section_id }} .sa-atc-icon-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
-  color: #fff !important;
-  order: 1;
-}
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      color: #fff !important;
+      order: 1;
+    }
+
+    #ProductSubmitButton-{{ section_id }} .sa-atc-icon-wrap[hidden] {
+      display: none;
+    }
 
     #ProductSubmitButton-{{ section_id }} .sa-atc-icon-wrap svg,
     #ProductSubmitButton-{{ section_id }} .sa-atc-icon-wrap .icon {
@@ -240,6 +244,8 @@
           type="submit"
           name="add"
           class="product-form__submit button button--filled uppercase button--full sa-atc-btn"
+          data-atc-available-label="{% if product_preorder %}{{ 'product.preorder' | t | escape }}{% else %}Add to Cart{% endif %}"
+          aria-label="{% if product.selected_or_first_available_variant == nil %}{{ 'product.unavailable' | t | escape }}{% elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}{{ 'product.sold_out' | t | escape }}{% elsif product_preorder %}{{ 'product.preorder' | t | escape }} - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% else %}Add to Cart - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% endif %}"
           {% if product.selected_or_first_available_variant.available == false
             or quantity_rule_soldout
             or product.selected_or_first_available_variant == nil
@@ -248,19 +254,37 @@
           {% endif %}
         >
           {%- if product_preorder -%}
-            <span class="sa-atc-text">{{ 'product.preorder' | t }}</span>
+            <span class="sa-atc-text" data-atc-text>{{ 'product.preorder' | t }}</span>
           {%- elsif product.selected_or_first_available_variant == nil -%}
-            <span class="sa-atc-text">{{ 'product.unavailable' | t }}</span>
+            <span class="sa-atc-text" data-atc-text>{{ 'product.unavailable' | t }}</span>
           {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-            <span class="sa-atc-text">{{ 'product.sold_out' | t }}</span>
+            <span class="sa-atc-text" data-atc-text>{{ 'product.sold_out' | t }}</span>
           {%- else -%}
-          <span class="sa-atc-text" data-atc-text>
-  Add to Cart
-</span>
-<span class="sa-atc-icon-wrap" data-atc-icon>
-  {% render 'icon', icon_name: 'theme-bag-add' %}
-</span>
+            <span class="sa-atc-text" data-atc-text>Add to Cart</span>
           {%- endif -%}
+
+          <span
+            class="sa-atc-price-wrap"
+            data-atc-price-wrap
+            {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}hidden{% endif %}
+            aria-hidden="true"
+          >
+            <span class="sa-atc-price-separator">&mdash;</span>
+            <s
+              class="sa-atc-compare-price"
+              data-atc-compare-price
+              {% unless product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}hidden{% endunless %}
+            >
+              {{ product.selected_or_first_available_variant.compare_at_price | money_without_trailing_zeros }}
+            </s>
+            <span class="sa-atc-current-price" data-atc-current-price>
+              {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+            </span>
+          </span>
+
+          <span class="sa-atc-icon-wrap" data-atc-icon {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}hidden{% endif %}>
+            {% render 'icon', icon_name: 'theme-bag-add' %}
+          </span>
 
           <div class="loading__spinner hidden">
             {%- render 'loading-spinner' -%}
@@ -281,10 +305,19 @@
 <script type="application/json" data-atc-variants-{{ section_id }}>
 [
   {%- for variant in product.variants -%}
+    {%- liquid
+      assign variant_quantity_rule_soldout = false
+      if variant.inventory_management == 'shopify' and variant.inventory_policy != 'continue' and variant.quantity_rule.min > variant.inventory_quantity
+        assign variant_quantity_rule_soldout = true
+      endif
+    -%}
     {
       "id": {{ variant.id | json }},
       "available": {{ variant.available | json }},
-      "price": {{ variant.price | money_without_trailing_zeros | strip_html | json }}
+      "purchasable": {% if variant.available and variant_quantity_rule_soldout == false %}true{% else %}false{% endif %},
+      "price": {{ variant.price | money_without_trailing_zeros | strip_html | json }},
+      "compareAtPrice": {{ variant.compare_at_price | money_without_trailing_zeros | strip_html | json }},
+      "onSale": {% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %}
     }{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}
 ]
@@ -308,23 +341,46 @@
     function updateAtcButton() {
       const variantInput = formRoot.querySelector('.product-variant-id');
       const textEl = formRoot.querySelector('[data-atc-text]');
-const iconEl = formRoot.querySelector('[data-atc-icon]');
-if (!variantInput || !textEl || !iconEl) return;
+      const iconEl = formRoot.querySelector('[data-atc-icon]');
+      const button = formRoot.querySelector('#ProductSubmitButton-{{ section_id }}');
+      const priceWrap = formRoot.querySelector('[data-atc-price-wrap]');
+      const currentPrice = formRoot.querySelector('[data-atc-current-price]');
+      const comparePrice = formRoot.querySelector('[data-atc-compare-price]');
+      if (!variantInput || !textEl || !iconEl || !button) return;
 
       const currentId = String(variantInput.value || '');
       const match = variants.find(function (variant) {
         return String(variant.id) === currentId;
       });
 
-      if (!match) return;
+      if (!match) {
+        textEl.textContent = 'UNAVAILABLE';
+        if (priceWrap) priceWrap.hidden = true;
+        iconEl.hidden = true;
+        iconEl.style.display = 'none';
+        button.setAttribute('aria-label', 'Unavailable');
+        return;
+      }
 
-      if (match.available) {
-  textEl.textContent = 'Add to Cart';
-  iconEl.style.display = 'inline-flex';
-} else {
-  textEl.textContent = 'SOLD OUT';
-  iconEl.style.display = 'none';
-}
+      if (match.purchasable) {
+        const availableLabel = button.dataset.atcAvailableLabel || 'Add to Cart';
+        textEl.textContent = availableLabel;
+        if (currentPrice) currentPrice.textContent = match.price;
+        if (comparePrice) {
+          comparePrice.textContent = match.compareAtPrice;
+          comparePrice.hidden = !match.onSale;
+        }
+        if (priceWrap) priceWrap.hidden = false;
+        iconEl.hidden = false;
+        iconEl.style.display = 'inline-flex';
+        button.setAttribute('aria-label', availableLabel + ' - ' + match.price);
+      } else {
+        textEl.textContent = 'SOLD OUT';
+        if (priceWrap) priceWrap.hidden = true;
+        iconEl.hidden = true;
+        iconEl.style.display = 'none';
+        button.setAttribute('aria-label', 'Sold out');
+      }
     }
 
     updateAtcButton();

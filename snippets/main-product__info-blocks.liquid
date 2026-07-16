@@ -1,5 +1,7 @@
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign sa_inventory_block = section.blocks | where: 'type', 'inventory_notice' | first -%}
+{%- assign sa_inventory_threshold = sa_inventory_block.settings.inventory_threshold | default: 15 -%}
 {%- assign sa_trust_blocks = section.blocks | where: 'type', 'text' -%}
 {%- assign sa_shipping_threshold = settings.shipping_notification_threshold -%}
 {%- assign sa_shipping_threshold_cents = sa_shipping_threshold | times: 100 -%}
@@ -30,16 +32,6 @@
 {%- assign sa_series_value = product.metafields.custom.series.value | default: product.metafields.custom.series | default: '' -%}
 
 <div class="sa-product-heading-block" {{ block.shopify_attributes }}>
-
-  <div class="sa-product-meta" aria-label="Product archive metadata">
-    {%- if sa_series_value != blank -%}
-      <span class="sa-product-meta__item">{{ sa_series_value }}</span>
-    {%- endif -%}
-    {%- if product.type != blank -%}
-      <span class="sa-product-meta__item">{{ product.type }}</span>
-    {%- endif -%}
-  </div>
-
   <div
     class="sa-review-inline"
     aria-label="Product reviews"
@@ -55,6 +47,34 @@
   <h1 class="{{ product_block_class }} sa-product-title">
         {{- product.title | escape -}}
   </h1>
+
+  <div class="sa-product-meta" aria-label="Product archive metadata">
+    {%- if sa_series_value != blank -%}
+      <span class="sa-product-meta__item">{{ sa_series_value }}</span>
+    {%- endif -%}
+    {%- if product.type != blank -%}
+      <span class="sa-product-meta__item">{{ product.type }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="sa-product-status-line" role="status">
+    <span class="sa-product-status-line__marker" aria-hidden="true"></span>
+    <span
+      id="Inventory-{{ section.id }}"
+      class="sa-product-status-line__stock{% unless current_variant.inventory_quantity <= sa_inventory_threshold and current_variant.available and current_variant.inventory_management == 'shopify' %} hidden{% endunless %}"
+      data-inventory-notice
+      data-inventory-quantity="{{ current_variant.inventory_quantity }}"
+      data-inventory-threshold="{{ sa_inventory_threshold }}"
+    >
+      {%- if sa_inventory_block.settings.notice_just_text -%}
+        {{- 'product.inventory_low_stock' | t -}}
+      {%- else -%}
+        {{- 'product.inventory_low_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}
+      {%- endif -%}
+    </span>
+    <span class="sa-product-status-line__separator" aria-hidden="true">&middot;</span>
+    <span>Ships in 3 - 7 business days</span>
+  </div>
 
 </div>
       {%- when 'badge' -%}
@@ -176,7 +196,7 @@
           endunless
         -%}
         {%- assign product_block_class = 'product__price' | append: ' ' | append: product_block_class -%}
-        <div id="price-{{- section.id -}}" role="status" {{ block.shopify_attributes }} class="{{ product_block_class }}">
+        <div id="price-{{- section.id -}}" role="status" {{ block.shopify_attributes }} class="{{ product_block_class }} sa-product-price-source">
           {%- unless is_gift_card -%}
               {%- render 'price', product: product, use_variant: true -%}
               {% if block.settings.show_price_custom_info != blank or block.settings.show_price_tax_info or block.settings.show_price_shipping_info -%}
@@ -432,36 +452,6 @@
         {%- assign product_block_class = 'product__inventory-notice' | append: ' ' | append: product_block_class -%}
         <div class="sa-order-details" role="group" aria-label="Order details">
           <p class="sa-order-details__label">Order details</p>
-
-          <div class="sa-order-details__item">
-            {%- render 'icon', icon_name: 'theme-timer' -%}
-            <span>Ships in 3 - 7 business days</span>
-          </div>
-
-          <div
-            class="{{ product_block_class }} product__text product__text--body caption sa-order-details__item {% unless current_variant.inventory_quantity <= block.settings.inventory_threshold and current_variant.available and current_variant.inventory_management == 'shopify' %}hidden{% endunless %}"
-            id="Inventory-{{ section.id }}"
-            role="status"
-            data-inventory-notice
-            data-inventory-quantity="{{ current_variant.inventory_quantity }}"
-            data-inventory-threshold="{{ block.settings.inventory_threshold }}"
-            {{ block.shopify_attributes }}
-          >
-            {%- if product.metafields.theme.preorder.value -%}
-              {% assign product_preorder_date = product.metafields.theme.preorder_shipping_date.value | date: '%b %d, %Y' %}
-              <div class="product__preorder-notice">
-                <span class="product__preorder-dot">&nbsp;</span>
-                <span>{{- 'product.preorder_notice' | t: date: product_preorder_date -}}</span>
-              </div>
-            {%- else -%}
-              {%- render 'icon', icon_name: 'theme-timer' -%}
-              {%- if block.settings.notice_just_text -%}
-                {{- 'product.inventory_low_stock' | t -}}
-              {%- else -%}
-                {{- 'product.inventory_low_stock_show_count' | t: quantity: current_variant.inventory_quantity -}}
-              {%- endif -%}
-            {%- endif -%}
-          </div>
 
           {%- for trust_block in sa_trust_blocks -%}
             {%- assign sa_trust_heading = trust_block.settings.heading | downcase -%}

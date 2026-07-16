@@ -57,11 +57,13 @@
           <div class="product-grid__item product-grid__item--media product-grid__item-media--{{ section.settings.media_grid_position }} sa-product-gallery">
             <div class="product-grid__item--media-wrapper{% if section.settings.enable_sticky_info %} product-grid__sticky{% endif %} sa-product-gallery__frame">
               {%- render 'main-product__media-gallery', section: section, product_has_single_media: product_has_single_media, topbar_mobile: block_goback.settings.display_goback_mobile -%}
-              <div class="fumi-dots" id="FumiDots-{{ section.id }}">
-  {% for media in product.media %}
-    <button class="fumi-dot" data-index="{{ forloop.index0 }}" aria-label="View product media {{ forloop.index }}"></button>
-  {% endfor %}
-</div>
+              {% if product.media.size > 1 %}
+                <div class="fumi-dots" id="FumiDots-{{ section.id }}">
+                  {% for media in product.media %}
+                    <button class="fumi-dot" data-index="{{ forloop.index0 }}" aria-label="View product media {{ forloop.index }}"></button>
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
           </div>
         {% endif %}
@@ -180,6 +182,7 @@
       {% endif %}
     </div>
 
+{% if product.media.size > 1 %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const dotsContainer = document.querySelector("#FumiDots-{{ section.id }}");
@@ -256,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
   syncDotWithCurrentSlide();
 });
 </script>
+{% endif %}
 
 
   </product-info>

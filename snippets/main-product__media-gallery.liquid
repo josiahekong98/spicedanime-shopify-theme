@@ -34,7 +34,7 @@
   {%- if section.settings.media_transparent_background -%}
     #shopify-section-{{ section.id }} .main-product__media .swiper--product-gallery .media img,
     #shopify-section-{{ section.id }} .main-product__media--thumbs-wrapper .media img,
-    #shopify-section-{{ section.id }} .main-product__media--grid-item .media img {
+    #shopify-section-{{ section.id }} .main-product__media:not([data-single-media]) .main-product__media--grid-item .media img {
       mix-blend-mode: multiply;
     }
   {%- endif -%}
@@ -610,7 +610,7 @@
           {% if forloop.index0 == 1 %}{{- metafield_media_info -}}{% endif %}
         </div>
       {% endif %}
-      {%- render 'product-media-card', media: media, card_type: 'grid', zoom_modal: zoom_modal, media_index: forloop.index0, section_index: section.index, data_group_array: data_group_array -%}
+      {%- render 'product-media-card', media: media, card_type: 'grid', zoom_modal: zoom_modal, media_index: 0, section_index: section.index, data_group_array: data_group_array -%}
     </div>
   {% endunless %}
 
@@ -621,7 +621,7 @@
  Out and after grid is relatively right place
  and it's been bind by specific class name , works exactly fine (:
 {% endcomment %}
-{% if pagination %}
+{% if pagination and product_has_single_media == false %}
   <div class="swiper--product-gallery__pagination swiper-pagination{% if section.settings.display_media_gallery_pagination == 'dynamic' or section.settings.display_media_gallery_pagination == 'lines' %} swiper-pagination--{{ section.settings.display_media_gallery_pagination }}{% endif %} small-up-hide{% if section.settings.product_media_layout_mobile == 'product__media-layout--partial--sm' %} swiper-pagination--carousel{% endif %}"></div>
 {% endif %}
 

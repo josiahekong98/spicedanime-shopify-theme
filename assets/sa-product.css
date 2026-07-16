@@ -111,12 +111,12 @@
 .sa-product-heading-block {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
 }
 
 .sa-product-meta {
-  order: 1;
+  order: 3;
   display: flex;
   flex-wrap: wrap;
   gap: 8px 14px;
@@ -161,7 +161,7 @@
 }
 
 .sa-review-inline {
-  order: 3;
+  order: 1;
   min-height: 22px;
   line-height: 1;
   color: var(--sa-gallery-stone);
@@ -184,6 +184,81 @@
 .sa-review-inline .star {
   color: #f4b21a;
   fill: #f4b21a;
+}
+
+.sa-product-status-line {
+  order: 4;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--sa-gallery-stone);
+  font-family: var(--sa-font-archive);
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sa-product-status-line__marker {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sa-relic-red);
+}
+
+.sa-product-status-line__stock,
+.sa-product-status-line__separator {
+  flex: 0 0 auto;
+}
+
+.sa-product-status-line__stock.hidden + .sa-product-status-line__separator {
+  display: none;
+}
+
+.sa-product-price-source {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sa-product-price-source + .product__divider {
+  display: none;
+}
+
+.sa-atc-price-wrap {
+  order: 3;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--sa-museum-ivory);
+  font-family: var(--sa-font-ui);
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sa-atc-price-wrap[hidden],
+.sa-atc-compare-price[hidden],
+.sa-atc-icon-wrap[hidden] {
+  display: none;
+}
+
+.sa-atc-compare-price {
+  color: rgb(255 255 255 / 68%);
+  font-size: 0.9em;
+}
+
+.sa-atc-current-price {
+  color: var(--sa-museum-ivory);
+  font-weight: 700;
 }
 
 .sa-product-main .product__price,
@@ -1062,17 +1137,85 @@
     border: 0;
     border-block: 1px solid var(--sa-border-subtle);
     border-inline: 0;
-    padding: 18px 20px 16px;
+    padding: 14px 20px;
     box-shadow: none;
   }
 
   .sa-product-title {
-    font-size: clamp(30px, 8.8vw, 42px);
-    line-height: 1.1;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.04;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .sa-product-meta {
     font-size: 11px;
+    letter-spacing: 0.15em;
+  }
+
+  .sa-review-inline {
+    min-height: 20px;
+  }
+
+  .sa-product-status-line {
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .sa-product-main .product__variant-picker {
+    margin-block: 0;
+  }
+
+  .sa-product-main .product-form__input {
+    margin-block-end: 0;
+  }
+
+  .sa-product-main .sa-color-fieldset {
+    margin-block-end: 12px;
+  }
+
+  .sa-product-main .sa-color-options {
+    gap: 6px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .sa-product-main .sa-color-option-label {
+    width: 44px;
+    height: 44px;
+  }
+
+  .sa-product-main .sa-dropdown-field {
+    margin-block: 16px 0;
+  }
+
+  .sa-product-main .sa-dropdown-field .form__label,
+  .sa-product-main .sa-bundle-fieldset .form__label {
+    margin-block-end: 8px;
+  }
+
+  .sa-product-main .sa-dropdown-field .select {
+    margin-block-start: 0;
+  }
+
+  .sa-product-main .sa-dropdown-field .dropdown__button {
+    min-height: 56px;
+  }
+
+  .sa-product-main .sa-bundle-fieldset {
+    margin-block: 20px 0;
+  }
+
+  .sa-product-main .sa-bundle-option-image-wrap {
+    aspect-ratio: 1.12 / 1;
+  }
+
+  .sa-product-main .product-form__buttons {
+    margin-block-start: 20px;
   }
 
   .sa-product-main .sa-bundle-cards {
@@ -1094,7 +1237,13 @@
   }
 
   .sa-order-details {
-    padding-inline: 12px;
+    margin-block-start: 16px;
+    padding: 6px 12px;
+  }
+
+  .sa-order-details__item {
+    min-height: 40px;
+    padding-block: 8px;
   }
 
   .sa-product-main .product__accordion.sa-archive-accordion .accordion__button {

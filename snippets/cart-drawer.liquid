@@ -7,6 +7,7 @@
 
 {{- 'component-cart-drawer.css' | asset_url | stylesheet_tag -}}
 {{- 'component-cart.css' | asset_url | stylesheet_tag -}}
+{{- 'sa-cart.css' | asset_url | stylesheet_tag -}}
 
 {% if template.name != 'cart' %}
   <script src="{{- 'cart.js' | asset_url -}}" defer="defer"></script>
@@ -19,7 +20,7 @@
   }
 {%- endstyle -%}
 
-<cart-drawer>
+<cart-drawer class="sa-cart-drawer">
   <div class="color-{{ settings.color_scheme_for_drawers }} gradient">
     <div class="cart-drawer" id="{{- section.id -}}">
 
@@ -112,7 +113,23 @@
                 </form>
               </cart-drawer-items>
               {%- if settings.enable_cart_upsell -%}
-                {%- render 'product-recommendations', area: 'cart-drawer', class: 'cart-drawer__recommendations', product_id: cart.items[0].product_id -%}
+                {%- render 'product-recommendations',
+                  area: 'cart-drawer',
+                  class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer',
+                  product_id: cart.items[0].product_id,
+                  title: section.settings.upsell_heading,
+                  limit: 4
+                -%}
+              {%- endif -%}
+              {%- if section.settings.show_rewards_teaser -%}
+                {%- render 'sa-cart-rewards',
+                  eyebrow: section.settings.rewards_eyebrow,
+                  heading: section.settings.rewards_heading,
+                  text: section.settings.rewards_text,
+                  link_label: section.settings.rewards_link_label,
+                  link: section.settings.rewards_link,
+                  class: 'sa-cart-rewards--drawer'
+                -%}
               {%- endif -%}
             </div>
 
@@ -162,6 +179,12 @@
                         {%- endfor -%}
                       </ul>
                     {%- endif -%}
+                    {%- if cart.total_discount > 0 -%}
+                      <p class="sa-cart-savings">
+                        <span>Archive savings</span>
+                        <strong>-{{ cart.total_discount | money }}</strong>
+                      </p>
+                    {%- endif -%}
                     <div class="cart-drawer__summary-actions">
                       {%- if settings.show_cart_terms == 'both' or settings.show_cart_terms == 'cart_drawer' -%}
                         {%- assign terms_text = settings.cart_terms | replace: '<p>', '' | replace: '</p>', '' -%}
@@ -177,9 +200,9 @@
                       <div class="cart-drawer__action-buttons">
                         {%- liquid
                           assign value = 'cart.view_cart' | t
-                          render 'button', type: 'link', button_style: 'button--outlined',value: value, href: routes.cart_url, fullwidth: true, class: 'button'
+                          render 'button', type: 'link', button_style: 'button--outlined',value: value, href: routes.cart_url, fullwidth: true, class: 'button sa-cart-view-cart'
                           assign value = 'cart.checkout' | t
-                          render 'button', type: 'submit', name: 'checkout', value: value, style: 'solid', fullwidth: true, class: 'button'
+                          render 'button', type: 'submit', name: 'checkout', value: value, style: 'solid', fullwidth: true, class: 'button sa-cart-checkout'
                           assign value = nil
                         -%}
                       </div>

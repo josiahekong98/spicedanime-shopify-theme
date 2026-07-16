@@ -1,4 +1,5 @@
 {{- 'component-cart.css' | asset_url | stylesheet_tag -}}
+{{- 'sa-cart.css' | asset_url | stylesheet_tag -}}
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
@@ -8,8 +9,8 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <cart-items class="cart" id="{{- section.id -}}">
+<div class="color-{{ section.settings.color_scheme }} gradient sa-cart-page">
+  <cart-items class="cart sa-cart-page__cart" id="{{- section.id -}}">
     <div class="container {{ section.settings.section_width }}">
       <div class="cart__head center">
         {%- if settings.enable_breadcrumbs_on_other_pages -%}
@@ -117,6 +118,24 @@
                 </ul>
               {%- endif -%}
 
+              {%- if cart.total_discount > 0 -%}
+                <p class="sa-cart-savings">
+                  <span>Archive savings</span>
+                  <strong>-{{ cart.total_discount | money }}</strong>
+                </p>
+              {%- endif -%}
+
+              {%- if section.settings.show_rewards_teaser -%}
+                {%- render 'sa-cart-rewards',
+                  eyebrow: section.settings.rewards_eyebrow,
+                  heading: section.settings.rewards_heading,
+                  text: section.settings.rewards_text,
+                  link_label: section.settings.rewards_link_label,
+                  link: section.settings.rewards_link,
+                  class: 'sa-cart-rewards--page'
+                -%}
+              {%- endif -%}
+
               {%- if settings.enable_cart_note -%}
                 <div class="cart__summary-note">
                   <accordion-default class="accordion" data-hide-multiple>
@@ -155,7 +174,7 @@
 
                 {%- liquid
                   assign value = 'cart.checkout' | t
-                  render 'button', type: 'submit', name: 'checkout', value: value, class: 'button cart__summary-button', fullwidth: true, style: 'solid'
+                  render 'button', type: 'submit', name: 'checkout', value: value, class: 'button cart__summary-button sa-cart-checkout', fullwidth: true, style: 'solid'
                   assign value = nil
                 -%}
                 {%- if settings.enable_dynamic_checkout and additional_checkout_buttons -%}
@@ -168,10 +187,34 @@
                   </a>
               </div>
               {%- if settings.enable_cart_upsell -%}
-                {%- render 'product-recommendations', area: 'cart', class: 'cart__recommendations', product_id: cart.items[0].product_id -%}
+                {%- render 'product-recommendations',
+                  area: 'cart',
+                  class: 'cart__recommendations sa-cart-upsell sa-cart-upsell--page',
+                  product_id: cart.items[0].product_id,
+                  title: section.settings.complete_set_heading,
+                  limit: 4
+                -%}
               {%- endif -%}
             </div>
           </form>
+
+          {%- if section.settings.show_shopping_paths -%}
+            {%- liquid
+              assign series_path = section.settings.series_link | default: '/pages/all-anime-collections'
+              assign product_path = section.settings.product_link | default: routes.collections_url
+              assign lifestyle_path = section.settings.lifestyle_link | default: routes.collections_url
+            -%}
+            <nav class="sa-cart-paths" aria-label="Continue shopping">
+              {%- if section.settings.paths_eyebrow != blank -%}
+                <p class="sa-cart-paths__eyebrow">{{ section.settings.paths_eyebrow | escape }}</p>
+              {%- endif -%}
+              <div class="sa-cart-paths__links">
+                <a class="sa-cart-paths__link" href="{{ series_path }}">{{ section.settings.series_label | escape }}</a>
+                <a class="sa-cart-paths__link" href="{{ product_path }}">{{ section.settings.product_label | escape }}</a>
+                <a class="sa-cart-paths__link" href="{{ lifestyle_path }}">{{ section.settings.lifestyle_label | escape }}</a>
+              </div>
+            </nav>
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -284,6 +327,103 @@
         }
       ],
       "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "SpicedAnime cart upsells"
+    },
+    {
+      "type": "text",
+      "id": "complete_set_heading",
+      "label": "Complete the Set heading",
+      "default": "Complete the Set"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rewards_teaser",
+      "label": "Show rewards teaser",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rewards_eyebrow",
+      "label": "Rewards label",
+      "default": "REWARDS ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "rewards_heading",
+      "label": "Rewards heading",
+      "default": "Spice Rewards"
+    },
+    {
+      "type": "textarea",
+      "id": "rewards_text",
+      "label": "Rewards text",
+      "default": "Earn Spice Points on eligible purchases and unlock future collector rewards."
+    },
+    {
+      "type": "text",
+      "id": "rewards_link_label",
+      "label": "Rewards link label",
+      "default": "View Rewards"
+    },
+    {
+      "type": "url",
+      "id": "rewards_link",
+      "label": "Rewards link"
+    },
+    {
+      "type": "header",
+      "content": "Return to shopping"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shopping_paths",
+      "label": "Show shopping paths",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "paths_eyebrow",
+      "label": "Shopping paths label",
+      "default": "CONTINUE THE ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "series_label",
+      "label": "Series link label",
+      "default": "Shop by Series"
+    },
+    {
+      "type": "url",
+      "id": "series_link",
+      "label": "Series link",
+      "default": "/pages/all-anime-collections"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Product link label",
+      "default": "Shop by Product"
+    },
+    {
+      "type": "url",
+      "id": "product_link",
+      "label": "Product link",
+      "default": "/collections"
+    },
+    {
+      "type": "text",
+      "id": "lifestyle_label",
+      "label": "Lifestyle link label",
+      "default": "Shop by Lifestyle"
+    },
+    {
+      "type": "url",
+      "id": "lifestyle_link",
+      "label": "Lifestyle link",
+      "default": "/collections"
     }
   ]
 }

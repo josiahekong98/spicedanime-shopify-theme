@@ -8,6 +8,9 @@
       "type": "product-recommendations",
       "settings": {
         "layout": "layout-1",
+        "heading": "You May Also Like",
+        "heading_size": "h4",
+        "button_label": "",
         "max_products": 8,
         "show_unavailable_products": false
       }

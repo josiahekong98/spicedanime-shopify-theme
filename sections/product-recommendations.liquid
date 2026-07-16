@@ -2,7 +2,11 @@
   liquid
   assign product_id = product.id | default: cart.items[0].product_id
   assign url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product_id | append: '&limit=10'
-  render 'products-feed', section: section, url: url, section_classes: 'sa-product-recommendation-row'
+  assign section_classes = 'sa-product-recommendation-row'
+  if template.name == 'cart'
+    assign section_classes = section_classes | append: ' sa-cart-page-recommendations'
+  endif
+  render 'products-feed', section: section, url: url, section_classes: section_classes
 -%}
 
 {% schema %}

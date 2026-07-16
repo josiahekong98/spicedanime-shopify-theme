@@ -1,0 +1,30 @@
+{%- comment -%}
+  Renders an editable rewards teaser without assuming a live points balance.
+
+  Accepts:
+  - eyebrow: {String}
+  - heading: {String}
+  - text: {String}
+  - link_label: {String}
+  - link: {String}
+  - class: {String}
+{%- endcomment -%}
+
+<aside class="sa-cart-rewards {{ class }}" aria-label="{{ heading | default: eyebrow | escape }}">
+  {%- if eyebrow != blank -%}
+    <p class="sa-cart-rewards__eyebrow">{{ eyebrow | escape }}</p>
+  {%- endif -%}
+  <div class="sa-cart-rewards__content">
+    <div>
+      {%- if heading != blank -%}
+        <h3 class="sa-cart-rewards__heading">{{ heading | escape }}</h3>
+      {%- endif -%}
+      {%- if text != blank -%}
+        <p class="sa-cart-rewards__text">{{ text | escape }}</p>
+      {%- endif -%}
+    </div>
+    {%- if link != blank and link_label != blank -%}
+      <a class="sa-cart-rewards__link" href="{{ link }}">{{ link_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</aside>

@@ -125,16 +125,7 @@ class CartItems extends HTMLElement {
         if (lineItem && lineItem.querySelector(`[name="${name}"]`))
           lineItem.querySelector(`[name="${name}"]`).focus();
 
-        // update bar subtotal first
-if (parsedState && parsedState.total_price !== undefined) {
-  refreshShippingBarSubtotal(parsedState.total_price);
-}
-
-updateCartCounters();
-updateFreeShipping();
-sortFreeItemsToTop();
-
-
+        syncCartAfterMutation(parsedState);
 
       })
       .finally(() => this.classList.remove('is-loading'));
@@ -256,9 +247,8 @@ class CartDrawer extends HTMLElement {
         response.sections[section.section],
         section.selector
       );
-
-      updateCartCounters();
     });
+    syncCartAfterMutation(response);
     if (!open) {
       return;
     }
@@ -294,6 +284,68 @@ function refreshShippingBarSubtotal(newSubtotal) {
   bars.forEach(bar => {
     bar.dataset.cartSubtotal = newSubtotal;
   });
+}
+
+let cartSyncRequestId = 0;
+
+function updateCartCountersFromState(cartState) {
+  if (!cartState || cartState.item_count === undefined) return false;
+
+  const headerCartCounters = document.querySelectorAll('.cart-count-badge');
+  const drawerCartCounters = document.querySelectorAll('.cart-drawer__title-counter');
+  const cartCounters = [...headerCartCounters, ...drawerCartCounters].filter(counter => counter !== null);
+
+  cartCounters.forEach(counter => {
+    counter.textContent = cartState.item_count;
+  });
+
+  headerCartCounters.forEach(counter => {
+    counter.classList.toggle("hidden", cartState.item_count === 0);
+  });
+
+  return true;
+}
+
+function applyCartStateToDrawer(cartState) {
+  if (!cartState) return;
+
+  const subtotal = cartState.items_subtotal_price ?? cartState.total_price;
+  if (subtotal !== undefined) {
+    refreshShippingBarSubtotal(subtotal);
+  }
+
+  if (!updateCartCountersFromState(cartState)) {
+    updateCartCounters();
+  }
+
+  updateFreeShipping();
+  sortFreeItemsToTop();
+}
+
+function syncCartAfterMutation(cartState) {
+  if (cartState && (cartState.items_subtotal_price !== undefined || cartState.total_price !== undefined)) {
+    applyCartStateToDrawer(cartState);
+    return;
+  }
+
+  const requestId = ++cartSyncRequestId;
+
+  fetch(`${routes.cart_url}.js`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.ok ? response.json() : null)
+    .then(freshCart => {
+      if (requestId !== cartSyncRequestId) return;
+      applyCartStateToDrawer(freshCart);
+    })
+    .catch(error => {
+      console.error("Cart drawer state could not be refreshed:", error);
+      updateCartCounters();
+      updateFreeShipping();
+    });
 }
 
 function updateFreeShipping() {
@@ -332,7 +384,7 @@ function updateFreeShipping() {
     if (subtotal < lighterThreshold) {
       const diff = Math.max(lighterThreshold - subtotal, 0);
       topText    = `Spend ${formatMoney(diff)} more for a free lighter`;
-      bottomText = `Add more to your cart for free SpicedAnime products`;
+      bottomText = `Add more to unlock free SpicedAnime products`;
     } else if (subtotal < shippingThreshold) {
       const diff = Math.max(shippingThreshold - subtotal, 0);
       topText    = `Spend ${formatMoney(diff)} more for a free tote bag and shipping`;
@@ -363,8 +415,8 @@ function updateFreeShipping() {
 function sortFreeItemsToTop() {
   // Look for the cart drawer first, then cart page
   const container =
-    document.querySelector('.cart-drawer-items') ||
-    document.querySelector('cart-items');
+    document.querySelector('.cart-drawer__items') ||
+    document.querySelector('.cart__items-grid');
 
   if (!container) return;
 
@@ -404,4 +456,3 @@ function sortFreeItemsToTop() {
 // Make sure it runs on first load
 document.addEventListener('DOMContentLoaded', updateFreeShipping);
 document.addEventListener('DOMContentLoaded', sortFreeItemsToTop);
-

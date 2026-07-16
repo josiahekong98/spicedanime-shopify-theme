@@ -121,7 +121,7 @@
                   limit: 4
                 -%}
               {%- endif -%}
-              {%- if section.settings.show_rewards_teaser -%}
+              {%- if section.settings.show_rewards_teaser and section.settings.rewards_link != blank -%}
                 {%- render 'sa-cart-rewards',
                   eyebrow: section.settings.rewards_eyebrow,
                   heading: section.settings.rewards_heading,
@@ -181,7 +181,7 @@
                     {%- endif -%}
                     {%- if cart.total_discount > 0 -%}
                       <p class="sa-cart-savings">
-                        <span>Archive savings</span>
+                        <span>Discounts applied</span>
                         <strong>-{{ cart.total_discount | money }}</strong>
                       </p>
                     {%- endif -%}

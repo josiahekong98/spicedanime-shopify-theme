@@ -100,6 +100,25 @@
   {%- endunless -%}
 {% endcapture %}
 
+{% comment %} CAPTURE: Compact drawer options {% endcomment %}
+{% capture product_options_compact %}
+  {%- unless line_item.product.has_only_default_variant -%}
+    {%- assign option_values = '' -%}
+    {%- for option in line_item.options_with_values -%}
+      {%- assign option_value = option.value | strip -%}
+      {%- if option_value != blank and option_value != 'Default Title' -%}
+        {%- if option_values != blank -%}
+          {%- assign option_values = option_values | append: ' · ' -%}
+        {%- endif -%}
+        {%- assign option_values = option_values | append: option_value -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if option_values != blank -%}
+      <p class="cart-item__options-compact">{{ option_values }}</p>
+    {%- endif -%}
+  {%- endunless -%}
+{% endcapture %}
+
 {% comment %} CAPTURE: Product Properties {% endcomment %}
 {% capture product_properties %}
   {%- if line_item.properties.size != 0 -%}
@@ -239,7 +258,7 @@
 
 {% endif %}
         {{ discounts_list }}
-        {{ product_options }}
+        {{ product_options_compact }}
         {{ product_properties }}
 
         {%- if line_item.selling_plan_allocation != nil -%}

@@ -225,7 +225,8 @@
           "type": "series",
           "settings": {
             "series_name": "Jojo",
-            "collection_link": "",
+            "image": "shopify://shop_images/site-steals-jj-premium-heavyweight-t-shirt-shadow.jpg",
+            "collection_link": "shopify://collections/jojo",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",
@@ -236,7 +237,8 @@
           "type": "series",
           "settings": {
             "series_name": "Evangelion",
-            "collection_link": "",
+            "image": "shopify://shop_images/msato-premium-heavyweight-t-shirt-white.jpg",
+            "collection_link": "shopify://collections/neon-gensis-evangelion-series",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",
@@ -246,8 +248,9 @@
         "series_fDNxam": {
           "type": "series",
           "settings": {
-            "series_name": "Samurai Champloo",
-            "collection_link": "",
+            "series_name": "Berserk",
+            "image": "shopify://shop_images/brsrk-v3-premium-heavyweight-t-shirt-black.jpg",
+            "collection_link": "shopify://collections/berserk",
             "product_count_text": "",
             "badge": "none",
             "accessibility_label": "",

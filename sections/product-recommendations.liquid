@@ -2,7 +2,7 @@
   liquid
   assign product_id = product.id | default: cart.items[0].product_id
   assign url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product_id | append: '&limit=10'
-  render 'products-feed', section: section, url: url
+  render 'products-feed', section: section, url: url, section_classes: 'sa-product-recommendation-row'
 -%}
 
 {% schema %}

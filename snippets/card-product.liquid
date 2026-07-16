@@ -4,6 +4,7 @@
   - product_ref: {Object} Product Liquid object
   - section_id: {String} Section id
   - block_index: {Number} Block index for unique id
+  - sa_recommendation: {Boolean} Use compact SpicedAnime recommendation-card presentation
   Usage:
   {%- render 'card-product', product_ref: product_ref, section_id: section.id, block_index: block_index  -%}
 {% endcomment %}
@@ -13,6 +14,7 @@
 {%- liquid
   assign image_per_view = image_per_view | default: 3
   assign is_small = is_small | default: false
+  assign sa_recommendation = sa_recommendation | default: false
 
   assign search_product = search_product | default: false
   assign is_in_drawer = is_in_drawer | default: false
@@ -30,7 +32,7 @@
 
 {%- capture media -%}
   <div
-    class="media product-card__media{% if settings.product_card_media_hover and product_ref.gift_card? == false %} product-card__media--hoverable{% endif %}"
+    class="media product-card__media{% if sa_recommendation %} sa-product-recommendation-card__media{% endif %}{% if settings.product_card_media_hover and product_ref.gift_card? == false %} product-card__media--hoverable{% endif %}"
     data-update-media="{% if product_ref.first_available_variant == product_ref.selected_variant %}true{% else %}false{% endif %}"
   >
     {% if product_ref.tags contains 'preorder' %}
@@ -373,7 +375,7 @@
   {%- assign product_link_with_variant = product_ref.url -%}
 {%- endif -%}
 
-<product-card class="product-card{% if is_small %} product-card--small{% endif %}{% unless product_ref.available %} product-card__sold-out{% endunless %}">
+<product-card class="product-card{% if sa_recommendation %} sa-product-recommendation-card{% endif %}{% if is_small %} product-card--small{% endif %}{% unless product_ref.available %} product-card__sold-out{% endunless %}">
   <div class="product-card__actions">
     <a href="{{ product_link_with_variant }}" tabindex="-1" class="product-card__link" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
       {{ media }}
@@ -382,7 +384,7 @@
       {{ add_to_cart }}
     {% endif %}
   </div>
-  <div class="product-card__content">
+  <div class="product-card__content{% if sa_recommendation %} sa-product-recommendation-card__content{% endif %}">
     {%- liquid
       assign product_card_info_classes = 'product-card__info'
       if settings.product_card_badge_position == 'start'
@@ -398,13 +400,16 @@
           {{ product_ref.vendor | link_to_vendor }}
         </span>
       {%- endif -%}
-      <h3 class="product-card__title">
+      {% if sa_recommendation and product_ref.type != blank %}
+        <span class="sa-archive-label sa-product-recommendation-card__type">{{ product_ref.type | escape }}</span>
+      {% endif %}
+      <h3 class="product-card__title{% if sa_recommendation %} sa-product-recommendation-card__title{% endif %}">
         <a href="{{ product_link_with_variant }}" class="product-card__link" tabindex="{% if is_in_drawer == true %}-1{% else %}0{% endif %}" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
           <span>{{ product_ref.title | default: product_title_placeholder }}</span>
         </a>
         {% render 'product-badges', product: product_ref %}
       </h3>
-      <span class="product-card__price">
+      <span class="product-card__price{% if sa_recommendation %} sa-product-recommendation-card__price{% endif %}">
         {%- render 'price', product: product_ref -%}
       </span>
     </div>

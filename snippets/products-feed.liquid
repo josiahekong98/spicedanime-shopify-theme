@@ -21,6 +21,15 @@
   assign products_limit = section.settings.max_products | default: 50
   assign section_name = section_name | default: 'products-feed'
   assign section_blocks = section_blocks | default: nil
+  assign section_classes = section_classes | default: ''
+  assign sa_recommendation = false
+  assign feed_space_between_desktop = settings.spacing_desktop | times: 10 | round: 0
+  assign feed_space_between_mobile = settings.spacing_mobile | times: 10 | round: 0
+  if section_classes contains 'sa-product-recommendation-row'
+    assign sa_recommendation = true
+    assign feed_space_between_desktop = 10
+    assign feed_space_between_mobile = 10
+  endif
 -%}
 
 {%- if products_array != nil or url -%}
@@ -64,7 +73,7 @@
   {%- endif -%}
 
   <div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="section product-feed overflow-hidden js-animation-fade-in {{ section.settings.layout }} {{ section_additional_classes | strip }}" data-section-id="{{- section.id -}}">
+  <div class="section product-feed overflow-hidden js-animation-fade-in {{ section.settings.layout }} {{ section_classes }} {{ section_additional_classes | strip }}" data-section-id="{{- section.id -}}">
     <div class="container {{ section.settings.section_width }}">
 
         {%- if section.settings.heading != blank or section_button != blank -%}
@@ -84,9 +93,11 @@
 
           {%- capture data_swiper_options -%}
             {
-              "spaceBetweenDesktop": {{ settings.spacing_desktop | times: 10 | round: 0 }},
-              "spaceBetweenMobile": {{ settings.spacing_mobile | times: 10 | round: 0 }},
-              "slidesPerViewMobile": 1.3,
+              "spaceBetweenDesktop": {{ feed_space_between_desktop }},
+              "spaceBetweenMobile": {{ feed_space_between_mobile }},
+              "slidesPerViewMobile": {% if sa_recommendation %}"auto"{% else %}1.3{% endif %},
+              "slidesPerViewTablet": {% if sa_recommendation %}"auto"{% else %}3{% endif %},
+              "slidesPerViewDesktop": {% if sa_recommendation %}"auto"{% else %}4{% endif %},
               {% if section.settings.show_navigation_arrows %}
                 "navigation": {
                   "prevEl": ".swiper-button--prev-{{ section.id }}",
@@ -119,7 +130,7 @@
 
                 {%- for product in products_array limit: products_limit -%}
                   <div class="swiper-slide card-product-slider__slide">
-                    {% render 'card-product', product_ref: product, section_id: section.id, image_per_view: 4  %}
+                    {% render 'card-product', product_ref: product, section_id: section.id, image_per_view: 4, sa_recommendation: sa_recommendation %}
                   </div>
                 {%- endfor -%}
               {%- endif -%}

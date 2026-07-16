@@ -5,6 +5,8 @@ if (!customElements.get('card-product-slider')) {
 
       const swiperOptions =
         JSON.parse(this.getAttribute('data-swiper-options')) || {};
+      const slidesPerViewTablet = swiperOptions.slidesPerViewTablet || 3;
+      const slidesPerViewDesktop = swiperOptions.slidesPerViewDesktop || 4;
 
       this.sliderWrapper = this.querySelector('.swiper-wrapper');
       this.requiresFetch = this.hasAttribute('data-url');
@@ -17,11 +19,11 @@ if (!customElements.get('card-product-slider')) {
         resistanceRatio: 0.72,
         breakpoints: {
           750: {
-            slidesPerView: 3,
+            slidesPerView: slidesPerViewTablet,
             spaceBetween: swiperOptions.spaceBetweenDesktop || 2
           },
           1100: {
-            slidesPerView: 4,
+            slidesPerView: slidesPerViewDesktop,
             spaceBetween: swiperOptions.spaceBetweenDesktop || 2
           }
         }

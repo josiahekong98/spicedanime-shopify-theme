@@ -45,7 +45,7 @@
 <script src="{{ 'sa-product-recommendations.js' | asset_url }}" defer="defer"></script>
 
 <section
-  class="sa-section sa-section--archive-black sa-more-series"
+  class="sa-section sa-section--archive-black sa-more-series sa-product-recommendation-row"
   aria-labelledby="sa-more-series-title-{{ section.id }}"
   data-sa-recommendations
   data-sa-max-products="{{ max_products }}"
@@ -58,8 +58,8 @@
 
     #shopify-section-{{ section.id }} .sa-more-series__header {
       display: grid;
-      gap: 8px;
-      margin-block-end: 14px;
+      gap: 0;
+      margin-block-end: 12px;
     }
 
     #shopify-section-{{ section.id }} .sa-more-series__heading {
@@ -69,10 +69,6 @@
       overflow: hidden;
       clip: rect(0 0 0 0);
       white-space: nowrap;
-    }
-
-    #shopify-section-{{ section.id }} .sa-more-series__intro {
-      color: var(--sa-gallery-stone);
     }
 
     #shopify-section-{{ section.id }} .sa-more-series__grid {
@@ -93,7 +89,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-more-series-card {
-      flex: 0 0 clamp(168px, 16vw, 218px);
+      flex: 0 0 var(--sa-product-recommendation-card-width, clamp(168px, 16vw, 218px));
       display: grid;
       grid-template-rows: auto 1fr;
       min-width: 0;
@@ -175,8 +171,9 @@
       font-size: clamp(15px, 1.2vw, 18px);
       font-weight: 400;
       line-height: var(--sa-line-heading);
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     #shopify-section-{{ section.id }} .sa-more-series-card__price {
@@ -230,7 +227,7 @@
       }
 
       #shopify-section-{{ section.id }} .sa-more-series-card {
-        flex-basis: min(46vw, 178px);
+        flex-basis: var(--sa-product-recommendation-card-width, min(46vw, 178px));
       }
 
       #shopify-section-{{ section.id }} .sa-more-series-card__content {
@@ -257,8 +254,6 @@
       </h2>
       {% if section_intro != blank %}
         <p class="sa-copy sa-more-series__intro">{{ section_intro | escape }}</p>
-      {% elsif current_series != blank and using_fallback == false %}
-        <p class="sa-copy sa-more-series__intro">More {{ current_series | escape }} pieces across different product types.</p>
       {% endif %}
     </header>
 
@@ -297,14 +292,14 @@
             %}
 
             <a
-              class="sa-card sa-more-series-card"
+              class="sa-card sa-more-series-card sa-product-recommendation-card"
               href="{{ recommendation.url }}"
               role="listitem"
               aria-label="View {{ product_title | escape }}"
               data-sa-product-card
               data-sa-product-type="{{ candidate_type_key | escape }}"
             >
-              <span class="sa-more-series-card__media">
+              <span class="sa-more-series-card__media sa-product-recommendation-card__media">
                 {% if recommendation.featured_image != blank %}
                   {{ recommendation.featured_image | image_url: width: 700 | image_tag: class: 'sa-more-series-card__image', loading: 'lazy', sizes: '(min-width: 1200px) 18vw, (min-width: 768px) 28vw, 48vw', widths: '320, 480, 600, 700', alt: image_alt | escape }}
                 {% else %}
@@ -312,12 +307,12 @@
                 {% endif %}
               </span>
 
-              <span class="sa-more-series-card__content">
+              <span class="sa-more-series-card__content sa-product-recommendation-card__content">
                 {% if recommendation.type != blank %}
-                  <span class="sa-archive-label sa-more-series-card__type">{{ recommendation.type | escape }}</span>
+                  <span class="sa-archive-label sa-more-series-card__type sa-product-recommendation-card__type">{{ recommendation.type | escape }}</span>
                 {% endif %}
-                <span class="sa-more-series-card__title">{{ product_title | escape }}</span>
-                <span class="sa-more-series-card__price">
+                <span class="sa-more-series-card__title sa-product-recommendation-card__title">{{ product_title | escape }}</span>
+                <span class="sa-more-series-card__price sa-product-recommendation-card__price">
                   {% if recommendation.price_varies %}
                     {{ recommendation.price_min | money }}+
                   {% elsif compare_price > current_price %}
@@ -398,8 +393,7 @@
     {
       "type": "textarea",
       "id": "intro",
-      "label": "Intro text",
-      "default": "More pieces from the same series, mixed across product types."
+      "label": "Optional intro text"
     },
     {
       "type": "range",

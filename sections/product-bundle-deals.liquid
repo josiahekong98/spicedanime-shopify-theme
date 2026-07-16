@@ -2,7 +2,6 @@
   assign show_bundle_section = false
   assign bundle_heading = 'Save When You Build a Set'
   assign bundle_type_label = ''
-  assign bundle_link_text = ''
   assign shop_now_url = ''
   assign deal_2 = ''
   assign deal_3 = ''
@@ -23,7 +22,6 @@
   if product.type == 'Flip Lighter'
     assign show_bundle_section = true
     assign bundle_type_label = 'Lighters'
-    assign bundle_link_text = 'PICK MORE LIGHTERS'
     assign shop_now_url = lighter_collection_url
     assign deal_2 = '$45'
     assign deal_3 = '$60'
@@ -32,7 +30,6 @@
   elsif product.type == 'Rolling Tray'
     assign show_bundle_section = true
     assign bundle_type_label = 'Rolling Trays'
-    assign bundle_link_text = 'PICK MORE ROLLING TRAYS'
     assign shop_now_url = rolling_tray_collection_url
     assign deal_2 = '$25'
     assign deal_3 = '$30'
@@ -41,7 +38,6 @@
   elsif product.type == 'Grinder Sets'
     assign show_bundle_section = true
     assign bundle_type_label = 'Grinder Sets'
-    assign bundle_link_text = 'PICK MORE GRINDER SETS'
     assign shop_now_url = grinder_set_collection_url
     assign deal_2 = 'Save $15'
     assign deal_3 = 'Save $25'
@@ -50,7 +46,6 @@
   elsif product.type == 'Tapestry'
     assign show_bundle_section = true
     assign bundle_type_label = 'Tapestries'
-    assign bundle_link_text = 'PICK MORE TAPESTRIES'
     assign shop_now_url = tapestry_collection_url
     assign deal_2 = 'Save $20'
     assign deal_3 = 'Save $35'
@@ -59,7 +54,6 @@
   elsif product.type == 'Wallet'
     assign show_bundle_section = true
     assign bundle_type_label = 'Wallets'
-    assign bundle_link_text = 'PICK MORE WALLETS'
     assign shop_now_url = wallet_collection_url
     assign deal_2 = '$60'
     assign deal_3 = '$85'
@@ -68,7 +62,6 @@
   elsif product.type == 'Pillow Covers'
     assign show_bundle_section = true
     assign bundle_type_label = 'Pillow Cases'
-    assign bundle_link_text = 'PICK MORE PILLOW CASES'
     assign shop_now_url = pillow_collection_url
     assign deal_2 = '$30'
     assign deal_3 = '$40'
@@ -77,7 +70,6 @@
   elsif product.type == 'Stash Jar'
     assign show_bundle_section = true
     assign bundle_type_label = 'Stash Jars'
-    assign bundle_link_text = 'PICK MORE STASH JARS'
     assign shop_now_url = stash_jar_collection_url
     assign deal_2 = '$15'
     assign deal_3 = '$20'
@@ -86,7 +78,6 @@
   elsif product.type == 'Ashtray'
     assign show_bundle_section = true
     assign bundle_type_label = 'Ashtrays'
-    assign bundle_link_text = 'PICK MORE ASHTRAYS'
     assign shop_now_url = ashtray_collection_url
     assign deal_2 = '$30'
     assign deal_3 = '$40'
@@ -95,7 +86,6 @@
   elsif product.type == 'Hoodies'
     assign show_bundle_section = true
     assign bundle_type_label = 'Hoodies'
-    assign bundle_link_text = 'PICK MORE HOODIES'
     assign shop_now_url = hoodie_collection_url
     assign deal_2 = 'Save $20'
     assign deal_3 = 'Save $35'
@@ -104,7 +94,6 @@
   elsif product.type == 'Stash Box'
     assign show_bundle_section = true
     assign bundle_type_label = 'Stash Boxes'
-    assign bundle_link_text = 'PICK MORE STASH BOXES'
     assign shop_now_url = stash_box_collection_url
     assign deal_2 = 'Save $10'
     assign deal_3 = 'Save $20'
@@ -113,7 +102,6 @@
   elsif product.type == 'Tote Bags'
     assign show_bundle_section = true
     assign bundle_type_label = 'Tote Bags'
-    assign bundle_link_text = 'PICK MORE TOTE BAGS'
     assign shop_now_url = tote_bag_collection_url
     assign deal_2 = 'Save $10'
     assign deal_3 = 'Save $20'
@@ -129,28 +117,46 @@
       <h2 class="product-bundle-deals__title">{{ bundle_heading }}</h2>
     </div>
 
-    <div class="product-bundle-deals__top-link-row">
-      <a href="{{ shop_now_url }}" class="product-bundle-deals__top-link">
-        {{ bundle_link_text }}
-      </a>
-    </div>
-
     <div class="product-bundle-deals__box">
       <div class="product-bundle-deals__grid">
-        <div class="product-bundle-deals__card">
+        {% if shop_now_url != blank %}
+          <a
+            class="product-bundle-deals__card product-bundle-deals__card--link"
+            href="{{ shop_now_url }}"
+            aria-label="Pick 2 {{ bundle_type_label | escape }} &mdash; {{ deal_2 | escape }}"
+          >
+        {% else %}
+          <div class="product-bundle-deals__card">
+        {% endif %}
           <div class="product-bundle-deals__label">Pick 2 {{ bundle_type_label }}</div>
           <div class="product-bundle-deals__price">{{ deal_2 }}</div>
-        </div>
+        {% if shop_now_url != blank %}</a>{% else %}</div>{% endif %}
 
-        <div class="product-bundle-deals__card">
+        {% if shop_now_url != blank %}
+          <a
+            class="product-bundle-deals__card product-bundle-deals__card--link"
+            href="{{ shop_now_url }}"
+            aria-label="Pick 3 {{ bundle_type_label | escape }} &mdash; {{ deal_3 | escape }}"
+          >
+        {% else %}
+          <div class="product-bundle-deals__card">
+        {% endif %}
           <div class="product-bundle-deals__label">Pick 3 {{ bundle_type_label }}</div>
           <div class="product-bundle-deals__price">{{ deal_3 }}</div>
-        </div>
+        {% if shop_now_url != blank %}</a>{% else %}</div>{% endif %}
 
-        <div class="product-bundle-deals__card">
+        {% if shop_now_url != blank %}
+          <a
+            class="product-bundle-deals__card product-bundle-deals__card--link"
+            href="{{ shop_now_url }}"
+            aria-label="Pick 4 {{ bundle_type_label | escape }} &mdash; {{ deal_4 | escape }}"
+          >
+        {% else %}
+          <div class="product-bundle-deals__card">
+        {% endif %}
           <div class="product-bundle-deals__label">Pick 4 {{ bundle_type_label }}</div>
           <div class="product-bundle-deals__price">{{ deal_4 }}</div>
-        </div>
+        {% if shop_now_url != blank %}</a>{% else %}</div>{% endif %}
       </div>
     </div>
   </div>
@@ -187,39 +193,13 @@
 
   #shopify-section-{{ section.id }} .product-bundle-deals__title{
     margin:0;
-    margin:0;
     color:var(--sa-museum-ivory, #f4f0e8);
     font-family:var(--sa-font-display, Georgia, "Times New Roman", serif);
     font-size:clamp(24px, 4vw, 38px);
     line-height:1.05;
     font-weight:500;
     letter-spacing:0;
-    text-align:left;
-  }
-
-  #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
-    display:flex;
-    justify-content:flex-start;
-    margin-bottom:10px;
-    padding-right:2px;
-  }
-
-  #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
-    color:var(--sa-relic-red, #b3362d);
-    font-family:var(--sa-font-archive, "Courier New", monospace);
-    font-size:11px;
-    line-height:1;
-    font-weight:500;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    text-decoration:underline;
-      text-underline-offset: 2px;
-    opacity:.95;
-    transition:color .18s ease, opacity .18s ease;
-  }
-
-  #shopify-section-{{ section.id }} .product-bundle-deals__top-link:hover{
-    color:var(--sa-museum-ivory, #f4f0e8);
+    text-align:center;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__box{
@@ -258,13 +238,35 @@
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__card{
+    display:grid;
+    align-content:center;
+    min-height:52px;
     text-align:center;
     padding:2px 4px;
     border-left:1px solid var(--sa-border-subtle, rgba(216,210,199,.18));
+    color:inherit;
+    text-decoration:none;
+    transition:background-color .18s ease, box-shadow .18s ease, transform .18s ease;
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__card:first-child{
     border-left:none;
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__card--link:hover{
+    background:rgba(179,54,45,.08);
+    box-shadow:inset 0 0 0 1px rgba(179,54,45,.48);
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__card--link:focus-visible{
+    outline:2px solid var(--sa-relic-red, #b3362d);
+    outline-offset:-2px;
+    background:rgba(179,54,45,.1);
+  }
+
+  #shopify-section-{{ section.id }} .product-bundle-deals__card--link:active{
+    background:rgba(179,54,45,.14);
+    transform:translateY(1px);
   }
 
   #shopify-section-{{ section.id }} .product-bundle-deals__label{
@@ -296,22 +298,13 @@
       font-size:26px;
     }
 
-    #shopify-section-{{ section.id }} .product-bundle-deals__top-link-row{
-      margin-bottom:10px;
-      padding-right:0;
-    }
-
-    #shopify-section-{{ section.id }} .product-bundle-deals__top-link{
-      font-size:8px;
-      letter-spacing:.14em;
-    }
-
     #shopify-section-{{ section.id }} .product-bundle-deals__box{
       padding:8px 8px 8px;
       border-radius:8px;
     }
 
     #shopify-section-{{ section.id }} .product-bundle-deals__card{
+      min-height:56px;
       padding:4px 4px;
     }
 

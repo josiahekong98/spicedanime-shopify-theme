@@ -262,7 +262,7 @@
       "settings": {
         "eyebrow": "More From This Series",
         "heading": "More From This Series",
-        "intro": "More pieces from the same series, mixed across product types.",
+        "intro": "",
         "max_products": 8,
         "pool_limit": 36
       }
@@ -298,7 +298,7 @@
         "enable_slideshow_overflow": false,
         "heading": "Nearby Exhibits",
         "heading_size": "h3",
-        "subheading": "Similar pieces selected by Shopify recommendations.",
+        "subheading": "",
         "button_label": "View all",
         "button_link": "",
         "button_style": "button--text",
@@ -320,7 +320,7 @@
         "enable_slideshow_overflow": false,
         "heading": "Recently Viewed",
         "heading_size": "h3",
-        "subheading": "Pieces you inspected earlier.",
+        "subheading": "",
         "button_label": "",
         "button_link": "",
         "button_style": "button--text",

@@ -79,49 +79,59 @@
             overscroll-behavior: none;
           }
         {%- endstyle -%}
-        <div id="ProductStickyCart-{{ section.id }}" class="product__sticky-cart is-hidden">
+        <div
+          id="ProductStickyCart-{{ section.id }}"
+          class="product__sticky-cart sa-sticky-cart is-hidden"
+          role="region"
+          aria-label="Quick add {{ product.title | escape }}"
+        >
           <div class="product__sticky-cart-wrapper">
               {%- assign product_sticky = product.selected_or_first_available_variant -%}
-              <div class="product__sticky-cart--info">
-                <div class="media">
-                  {%- if product.featured_image -%}
-                    {% render 'image', image: product.featured_image, alt: product.featured_image.alt, image_url_width: 240 -%}
+              {%- assign product_sticky_image = product_sticky.featured_image | default: product.featured_image -%}
+              {%- assign product_sticky_image_alt = product_sticky_image.alt | default: product.title -%}
+              <div class="product__sticky-cart--info sa-sticky-cart__info">
+                <div class="media sa-sticky-cart__thumbnail">
+                  {%- if product_sticky_image -%}
+                    {% render 'image', image: product_sticky_image, alt: product_sticky_image_alt, image_url_width: 160 -%}
                   {%- else -%}
                     {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
                 </div>
-                <div class="product__sticky-cart--info-text">
-                                    <h5 class="product__title">{{- product.title -}}</h5>
-<div data-shop-id="{{shop.id}}" product-id="{{product.id }}" data-page="{{request.page_type}}" class="ddreview-star"></div>
-                  <div>
+                <div class="product__sticky-cart--info-text sa-sticky-cart__content">
+                  <h5 class="product__title sa-sticky-cart__title">{{- product.title -}}</h5>
+                  <div class="sa-sticky-cart__summary">
                     {%- if product_sticky.options.size > 0 -%}
-                      <span class="product__sticky-cart--price">
+                      <span class="product__sticky-cart--price sa-sticky-cart__price">
                         {%- render 'price', product: product_sticky -%}
                       </span>
                       {%- for option in product_sticky.options -%}
                         {% assign option_handle = option | handleize %}
                         {% unless option_handle contains 'default' %}
-                          <span class="product__sticky-cart--separator"></span>
-                          <span class="product__sticky-cart--opt-label">{{- option -}}</span>
+                          <span class="product__sticky-cart--separator sa-sticky-cart__separator" aria-hidden="true"></span>
+                          <span class="product__sticky-cart--opt-label sa-sticky-cart__option">{{- option -}}</span>
                         {% endunless %}
                       {%- endfor -%}
                     {%- endif -%}
                   </div>
                 </div>
               </div>
-              <div class="product__sticky-cart--action">
-                {%- assign button_attr = 'form="' | append: 'product-form-' | append: section.id | append: '"' -%}
+              <div class="product__sticky-cart--action sa-sticky-cart__action">
+                {%- assign sticky_action_label = 'Add ' | append: product.title | append: ' to cart' -%}
                 {%- assign value = 'product.sold_out' | t -%}
                 {%- assign disabled = true -%}
                 {%- if product_sticky.available -%}
                   {%- assign value = 'theme.actions.add_to_cart' | t -%}
                   {%- assign disabled = false -%}
+                {%- else -%}
+                  {%- assign sticky_action_label = product.title | append: ' is sold out' -%}
                 {%- endif -%}
+                {%- assign escaped_sticky_action_label = sticky_action_label | escape -%}
+                {%- assign button_attr = ' form="product-form-' | append: section.id | append: '" aria-label="' | append: escaped_sticky_action_label | append: '" ' -%}
                 {%- capture value -%}
                   {% render 'icon', icon_name: 'theme-bag-add' %}
                   <span>{{- value -}}</span>
                 {%- endcapture -%}
-                {%- render 'button', type: 'submit', name: 'add', style: 'solid', value: value, class: 'button product-bar__submit', disabled: disabled, attr: button_attr %}
+                {%- render 'button', type: 'submit', name: 'add', style: 'solid', value: value, class: 'button product-bar__submit sa-sticky-cart__submit', disabled: disabled, attr: button_attr %}
               </div>
           </div>
           <script type="text/javascript">

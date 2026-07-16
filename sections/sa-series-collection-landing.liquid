@@ -255,6 +255,7 @@
 <section class="sa-series-page" style="--sa-series-accent: {{ accent_color }};" aria-labelledby="sa-series-title-{{ section.id }}">
   <style>
     #shopify-section-{{ section.id }} .sa-series-page {
+      --sa-series-structural: var(--sa-relic-red, #B3362D);
       width: 100vw;
       max-width: 100%;
       position: relative;
@@ -289,7 +290,8 @@
       display: grid;
       align-items: end;
       background:
-        linear-gradient(90deg, rgba(11, 11, 11, 0.92), rgba(11, 11, 11, 0.46)),
+        linear-gradient(90deg, rgba(11, 11, 11, 0.95), rgba(11, 11, 11, 0.62)),
+        linear-gradient(180deg, rgba(11, 11, 11, 0.18), rgba(11, 11, 11, 0.68)),
         {% if hero_image %}
           url({{ hero_image | image_url: width: 1800 }})
         {% else %}
@@ -317,7 +319,7 @@
     #shopify-section-{{ section.id }} .sa-series-meta,
     #shopify-section-{{ section.id }} .sa-series-eyebrow {
       margin: 0;
-      color: var(--sa-series-accent);
+      color: var(--sa-series-structural);
       font-family: var(--sa-font-archive, monospace);
       font-size: var(--sa-type-label, 11px);
       line-height: 1.2;
@@ -337,7 +339,7 @@
 
     #shopify-section-{{ section.id }} .sa-series-hero__title span {
       display: block;
-      color: var(--sa-series-accent);
+      color: var(--sa-series-structural);
       font-size: 0.42em;
       font-style: italic;
       letter-spacing: 0.04em;
@@ -363,6 +365,7 @@
     #shopify-section-{{ section.id }} .sa-series-hero__actions .sa-button {
       min-height: 42px;
       padding-inline: 22px;
+      border-radius: 16px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__primary {
@@ -374,7 +377,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-hero__primary:hover {
       background: rgba(16, 16, 16, 0.48);
-      border-color: var(--sa-series-accent);
+      border-color: var(--sa-series-structural);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--sa-series-structural) 28%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-meta {
@@ -382,7 +386,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border: 1px solid color-mix(in srgb, var(--sa-series-accent) 62%, transparent);
+      border: 1px solid color-mix(in srgb, var(--sa-series-structural) 62%, transparent);
+      border-radius: 12px;
       background: rgba(16, 16, 16, 0.58);
       padding: 8px 12px;
       color: var(--sa-gallery-stone, #D8D2C7);
@@ -409,7 +414,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-hero__monogram {
-      color: var(--sa-series-accent);
+      color: var(--sa-series-structural);
       font-family: var(--sa-font-display, serif);
       font-size: clamp(40px, 5vw, 78px);
       line-height: 0.9;
@@ -419,7 +424,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-section {
-      padding-block-start: clamp(16px, 2.4vw, 26px);
+      padding-block-start: clamp(20px, 2.6vw, 30px);
     }
 
     #shopify-section-{{ section.id }} .sa-series-head {
@@ -427,9 +432,9 @@
       align-items: end;
       justify-content: space-between;
       gap: 8px;
-      margin-block-end: 8px;
-      border-block-end: 1px solid color-mix(in srgb, var(--sa-series-accent) 72%, transparent);
-      padding-block-end: 7px;
+      margin-block-end: 12px;
+      border-block-end: 1px solid color-mix(in srgb, var(--sa-series-structural) 72%, transparent);
+      padding-block-end: 9px;
     }
 
     #shopify-section-{{ section.id }} .sa-series-head__copy {
@@ -457,15 +462,8 @@
       white-space: nowrap;
     }
 
-    #shopify-section-{{ section.id }} .sa-series-copy {
-      margin: 0;
-      color: rgba(216, 210, 199, 0.76);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
     #shopify-section-{{ section.id }} .sa-series-view {
-      color: var(--sa-series-accent);
+      color: var(--sa-series-structural);
       font-family: var(--sa-font-archive, monospace);
       font-size: var(--sa-type-label, 11px);
       font-weight: 700;
@@ -487,8 +485,8 @@
       grid-template-rows: 1fr auto;
       overflow: hidden;
       border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.16));
-      border-radius: var(--sa-radius-md, 8px);
-      background: var(--sa-surface-panel, #181818);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(28, 27, 25, 0.96), rgba(16, 16, 16, 0.98));
       color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
       box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
@@ -497,8 +495,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-family-card:hover {
       transform: translateY(-2px);
-      border-color: var(--sa-series-accent);
-      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 34%, transparent);
+      border-color: var(--sa-series-structural);
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-structural) 34%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card[aria-disabled="true"] {
@@ -512,7 +510,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-family-card__media {
       position: relative;
-      min-height: 124px;
+      min-height: 0;
+      aspect-ratio: 1 / 1;
       display: grid;
       place-items: center;
       background: radial-gradient(circle, rgba(244, 240, 232, 0.1), transparent 58%), var(--sa-texture-concrete), #101010;
@@ -531,7 +530,7 @@
     #shopify-section-{{ section.id }} .sa-series-family-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 124px;
+      min-height: 0;
       object-fit: cover;
       display: block;
       opacity: 0.9;
@@ -557,7 +556,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__label {
-      min-height: 58px;
+      min-height: 62px;
       display: flex;
       align-items: start;
       justify-content: space-between;
@@ -573,22 +572,33 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__count {
-      max-width: 44%;
-      color: var(--sa-series-accent);
+      flex: 0 0 auto;
+      color: var(--sa-series-structural);
       font-family: var(--sa-font-archive, monospace);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.12em;
       line-height: 1.25;
       text-align: right;
-      overflow-wrap: anywhere;
+      white-space: nowrap;
     }
 
-    #shopify-section-{{ section.id }} .sa-series-family-card__label::after {
+    #shopify-section-{{ section.id }} .sa-series-family-card__count::after {
+      content: " \2192";
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card--quiet .sa-series-family-card__label {
+      display: grid;
+      gap: 6px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card--quiet .sa-series-family-card__count {
+      white-space: normal;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-family-card--quiet .sa-series-family-card__count::after {
       content: none;
-      color: var(--sa-series-accent);
-      font-size: 18px;
-      line-height: 1;
     }
 
     #shopify-section-{{ section.id }} .sa-series-family-card__title {
@@ -611,7 +621,7 @@
       grid-template-rows: auto 1fr;
       background: var(--sa-surface-panel, #181818);
       border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.14));
-      border-radius: var(--sa-radius-md, 8px);
+      border-radius: 8px;
       color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
       overflow: hidden;
@@ -633,8 +643,8 @@
 
     #shopify-section-{{ section.id }} .sa-series-product:hover {
       transform: translateY(-2px);
-      border-color: color-mix(in srgb, var(--sa-series-accent) 72%, rgba(244, 240, 232, 0.14));
-      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 26%, transparent);
+      border-color: color-mix(in srgb, var(--sa-series-structural) 72%, rgba(244, 240, 232, 0.14));
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-structural) 26%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__media {
@@ -683,6 +693,8 @@
     #shopify-section-{{ section.id }} .sa-series-product__content {
       display: grid;
       gap: 6px;
+      align-content: start;
+      min-height: 108px;
       padding: 10px;
       background: color-mix(in srgb, var(--sa-concrete-charcoal, #1C1B19) 88%, black);
     }
@@ -708,7 +720,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__type {
-      color: var(--sa-series-accent);
+      color: var(--sa-bamboo-amber, #B8892D);
       font-family: var(--sa-font-archive, monospace);
       font-size: 10px;
       letter-spacing: 0.12em;
@@ -718,10 +730,12 @@
     #shopify-section-{{ section.id }} .sa-series-product__title {
       margin: 0;
       min-width: 0;
-      display: block;
+      display: -webkit-box;
+      min-height: 2.1em;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      white-space: normal;
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-display, serif);
       font-size: clamp(15px, 1.2vw, 18px);
@@ -730,12 +744,11 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__price {
       margin: 0;
-      color: rgba(244, 240, 232, 0.74);
-      font-family: var(--sa-font-archive, monospace);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      line-height: 1.3;
-      text-transform: uppercase;
+      color: var(--sa-gallery-stone, #D8D2C7);
+      font-family: var(--sa-font-ui, sans-serif);
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 1.35;
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__quick-add {
@@ -749,12 +762,12 @@
 
     #shopify-section-{{ section.id }} .sa-series-product__quick-add-button {
       width: 100%;
-      min-height: 34px;
+      min-height: 44px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(244, 240, 232, 0.32);
-      border-radius: 4px;
+      border-radius: 12px;
       background: rgba(16, 16, 16, 0.62);
       color: var(--sa-museum-ivory, #F4F0E8);
       font-family: var(--sa-font-ui, sans-serif);
@@ -767,8 +780,20 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-product__quick-add-button:hover {
-      border-color: var(--sa-series-accent);
-      background: color-mix(in srgb, var(--sa-series-accent) 22%, rgba(16, 16, 16, 0.72));
+      border-color: var(--sa-series-structural);
+      background: color-mix(in srgb, var(--sa-series-structural) 22%, rgba(16, 16, 16, 0.72));
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-product__link:focus-visible,
+    #shopify-section-{{ section.id }} .sa-series-view:focus-visible {
+      outline: 2px solid var(--sa-series-structural);
+      outline-offset: 3px;
+    }
+
+    #shopify-section-{{ section.id }} .sa-series-browse-all {
+      min-height: 48px;
+      border-radius: 16px;
+      background: rgba(16, 16, 16, 0.68);
     }
 
     #shopify-section-{{ section.id }} .sa-series-empty {
@@ -792,8 +817,8 @@
       align-content: stretch;
       overflow: hidden;
       border: var(--sa-border-hairline, 1px solid rgba(244, 240, 232, 0.14));
-      border-radius: var(--sa-radius-md, 8px);
-      background: var(--sa-surface-panel, #181818);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(28, 27, 25, 0.96), rgba(16, 16, 16, 0.98));
       color: var(--sa-museum-ivory, #F4F0E8);
       text-decoration: none;
       box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28));
@@ -802,13 +827,14 @@
 
     #shopify-section-{{ section.id }} .sa-series-related-card:hover {
       transform: translateY(-2px);
-      border-color: var(--sa-series-accent);
-      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-accent) 34%, transparent);
+      border-color: var(--sa-series-structural);
+      box-shadow: var(--sa-shadow-card, 0 18px 34px rgba(0, 0, 0, 0.28)), 0 0 0 1px color-mix(in srgb, var(--sa-series-structural) 34%, transparent);
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card__media {
       position: relative;
-      min-height: 124px;
+      min-height: 0;
+      aspect-ratio: 1 / 1;
       display: grid;
       place-items: center;
       background: var(--sa-archive-black, #101010);
@@ -827,7 +853,7 @@
     #shopify-section-{{ section.id }} .sa-series-related-card__media img {
       width: 100%;
       height: 100%;
-      min-height: 124px;
+      min-height: 0;
       display: block;
       object-fit: cover;
       opacity: 0.86;
@@ -841,7 +867,8 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card__fallback {
-      min-height: 124px;
+      min-height: 0;
+      aspect-ratio: 1 / 1;
       display: grid;
       gap: 8px;
       place-items: center;
@@ -854,7 +881,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card__fallback-label {
-      color: color-mix(in srgb, var(--sa-series-accent) 78%, var(--sa-gallery-stone, #D8D2C7));
+      color: color-mix(in srgb, var(--sa-series-structural) 78%, var(--sa-gallery-stone, #D8D2C7));
       font-size: 10px;
       letter-spacing: 0.14em;
     }
@@ -889,7 +916,7 @@
     }
 
     #shopify-section-{{ section.id }} .sa-series-related-card__index {
-      color: var(--sa-series-accent);
+      color: var(--sa-series-structural);
       font-family: var(--sa-font-archive, monospace);
       font-size: 11px;
       letter-spacing: 0.12em;
@@ -913,7 +940,7 @@
       content: "";
       width: 8px;
       height: 8px;
-      border: 1px solid var(--sa-series-accent);
+      border: 1px solid var(--sa-series-structural);
     }
 
     #shopify-section-{{ section.id }} .sa-series-seo {
@@ -992,7 +1019,7 @@
       }
 
       #shopify-section-{{ section.id }} .sa-series-section {
-        padding-block-start: 24px;
+        padding-block-start: 22px;
       }
 
       #shopify-section-{{ section.id }} .sa-series-hero__layout,
@@ -1008,7 +1035,7 @@
         align-items: start;
         flex-direction: column;
         gap: 8px;
-        margin-block-end: 10px;
+        margin-block-end: 12px;
         padding-block-end: 9px;
       }
 
@@ -1055,7 +1082,7 @@
       #shopify-section-{{ section.id }} .sa-series-related-card__media,
       #shopify-section-{{ section.id }} .sa-series-related-card__media img,
       #shopify-section-{{ section.id }} .sa-series-related-card__fallback {
-        min-height: 98px;
+        min-height: 0;
       }
 
       #shopify-section-{{ section.id }} .sa-series-related-card__content {
@@ -1077,6 +1104,10 @@
       #shopify-section-{{ section.id }} .sa-series-hero__actions .sa-button {
         width: 100%;
         min-height: 48px;
+      }
+
+      #shopify-section-{{ section.id }} .sa-series-browse-all {
+        width: 100%;
       }
     }
   </style>
@@ -1131,7 +1162,6 @@
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">Best Sellers</p>
           <h2 class="sa-series-title" id="sa-series-best-title-{{ section.id }}">Top {{ series_title | escape }} Picks</h2>
-          <p class="sa-series-copy">Fan-favorite pieces from this series.</p>
         </div>
         <a class="sa-series-view" href="{{ collection.url }}?sort_by=best-selling#ProductGridContainer">Sort Best Selling -></a>
       </div>
@@ -1157,7 +1187,6 @@
           <div class="sa-series-head__copy">
             <p class="sa-series-eyebrow">Complete A Smoking Set</p>
             <h2 class="sa-series-title" id="sa-series-set-title-{{ section.id }}">Complete Your {{ series_title | escape }} Collection</h2>
-            <p class="sa-series-copy">Mix product types to build your setup and unlock bundle savings.</p>
           </div>
         </div>
 
@@ -1284,7 +1313,6 @@
         <div class="sa-series-head__copy">
           <p class="sa-series-eyebrow">Best Selling Lighters</p>
           <h2 class="sa-series-title" id="sa-series-more-title-{{ section.id }}">Best Selling {{ series_title | escape }} Lighters</h2>
-          <p class="sa-series-copy">Pocket-sized fan favorites from this series.</p>
         </div>
       </div>
 
@@ -1318,7 +1346,7 @@
       {% endif %}
 
       <div class="sa-series-row__actions" style="margin-block-start: 12px;">
-        <a class="sa-button sa-button--secondary" href="#ProductGridContainer">Browse All {{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</a>
+        <a class="sa-button sa-button--secondary sa-series-browse-all" href="#ProductGridContainer">Browse All {{ product_count }} {% if product_count == 1 %}Product{% else %}Products{% endif %}</a>
       </div>
     </section>
 
@@ -1338,7 +1366,7 @@
               {% assign related_title = block.settings.title | default: related_collection.title | replace: '(Series)', '' | strip %}
               {% assign related_image = block.settings.image | default: related_collection.image | default: related_collection.products.first.featured_image %}
               {% if related_collection != blank %}
-                <a class="sa-series-related-card" href="{{ related_collection.url }}" aria-label="Explore {{ related_title | escape }}" role="listitem" {{ block.shopify_attributes }}>
+                <a class="sa-series-related-card sa-card" href="{{ related_collection.url }}" aria-label="Explore {{ related_title | escape }}" role="listitem" {{ block.shopify_attributes }}>
                   <span class="sa-series-related-card__media" aria-hidden="true">
                     {% if related_image != blank %}
                       <img src="{{ related_image | image_url: width: 700 }}" alt="" loading="lazy">

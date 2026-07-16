@@ -43,7 +43,7 @@
 {% endcapture %}
 
 {% if quick_add_enabled %}
-  <product-card class="sa-series-product sa-series-product--quick" role="listitem">
+  <product-card class="sa-series-product sa-series-product--quick sa-card" role="listitem">
     <a class="sa-series-product__link" href="{{ product.url }}" aria-label="View {{ product_title | escape }}">
       {{ sa_series_product_media }}
       {{ sa_series_product_content }}
@@ -77,7 +77,7 @@
     </div>
   </product-card>
 {% else %}
-  <a class="sa-series-product" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
+  <a class="sa-series-product sa-card" href="{{ product.url }}" role="listitem" aria-label="View {{ product_title | escape }}">
     {{ sa_series_product_media }}
     {{ sa_series_product_content }}
   </a>

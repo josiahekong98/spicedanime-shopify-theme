@@ -32,11 +32,11 @@
 {% endcapture %}
 
 {% if family_available %}
-  <a class="sa-series-family-card" href="{{ family_href }}" role="listitem" aria-label="Shop {{ title | escape }}">
+  <a class="sa-series-family-card sa-card" href="{{ family_href }}" role="listitem" aria-label="Shop {{ title | escape }}">
     {{ family_card_content }}
   </a>
 {% else %}
-  <a class="sa-series-family-card sa-series-family-card--quiet" href="{{ request_href }}" role="listitem" aria-label="Make a custom {{ title | escape }} request">
+  <a class="sa-series-family-card sa-series-family-card--quiet sa-card" href="{{ request_href }}" role="listitem" aria-label="Make a custom {{ title | escape }} request">
     {{ family_card_content }}
   </a>
 {% endif %}

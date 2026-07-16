@@ -48,7 +48,22 @@
   assign stash_box_count = 0
   assign tote_count = 0
   assign pillow_count = 0
+  assign lighter_img_handle = blank
+  assign wallet_img_handle = blank
+  assign grinder_set_img_handle = blank
+  assign tapestry_img_handle = blank
+  assign tray_img_handle = blank
+  assign jar_img_handle = blank
+  assign ashtray_img_handle = blank
+  assign stash_box_img_handle = blank
+  assign tote_img_handle = blank
+  assign pillow_img_handle = blank
+  assign series_best_count = 0
+  assign lighter_wall_count = 0
+%}
 
+{% paginate collection.products by 250 %}
+{% liquid
   for product in collection.products
     assign ptitle = product.title | downcase
     assign ptype = product.type | downcase
@@ -192,51 +207,114 @@
     endif
 
     if product.featured_image
-      if lighter_img == blank and is_lighter
+      if is_lighter and lighter_img_handle == blank or is_lighter and phandle < lighter_img_handle
         assign lighter_img = product.featured_image
+        assign lighter_img_handle = phandle
       endif
 
-      if wallet_img == blank and is_wallet
+      if is_wallet and wallet_img_handle == blank or is_wallet and phandle < wallet_img_handle
         assign wallet_img = product.featured_image
+        assign wallet_img_handle = phandle
       endif
 
-      if grinder_set_img == blank and is_grinder_set
+      if is_grinder_set and grinder_set_img_handle == blank or is_grinder_set and phandle < grinder_set_img_handle
         assign grinder_set_img = product.featured_image
+        assign grinder_set_img_handle = phandle
       endif
 
-      if tapestry_img == blank and is_tapestry
+      if is_tapestry and tapestry_img_handle == blank or is_tapestry and phandle < tapestry_img_handle
         assign tapestry_img = product.featured_image
+        assign tapestry_img_handle = phandle
       endif
 
-      if tray_img == blank and is_rolling_tray
+      if is_rolling_tray and tray_img_handle == blank or is_rolling_tray and phandle < tray_img_handle
         assign tray_img = product.featured_image
+        assign tray_img_handle = phandle
       endif
 
-      if jar_img == blank and is_stash_jar
+      if is_stash_jar and jar_img_handle == blank or is_stash_jar and phandle < jar_img_handle
         assign jar_img = product.featured_image
+        assign jar_img_handle = phandle
       endif
 
-      if ashtray_img == blank and is_ashtray
+      if is_ashtray and ashtray_img_handle == blank or is_ashtray and phandle < ashtray_img_handle
         assign ashtray_img = product.featured_image
+        assign ashtray_img_handle = phandle
       endif
 
-      if stash_box_img == blank and is_stash_box
+      if is_stash_box and stash_box_img_handle == blank or is_stash_box and phandle < stash_box_img_handle
         assign stash_box_img = product.featured_image
+        assign stash_box_img_handle = phandle
       endif
 
-      if tote_img == blank and is_tote
+      if is_tote and tote_img_handle == blank or is_tote and phandle < tote_img_handle
         assign tote_img = product.featured_image
+        assign tote_img_handle = phandle
       endif
 
-      if pillow_img == blank and is_pillow
+      if is_pillow and pillow_img_handle == blank or is_pillow and phandle < pillow_img_handle
         assign pillow_img = product.featured_image
+        assign pillow_img_handle = phandle
       endif
 
     endif
   endfor
+%}
+
+{% capture series_best_products %}
+  {% for product in collection.products limit: section.settings.best_seller_limit %}
+    {% assign series_best_count = series_best_count | plus: 1 %}
+    {% if forloop.first %}
+      {% render 'sa-series-product-card', product: product, badge: '#1 Pick' %}
+    {% else %}
+      {% render 'sa-series-product-card', product: product %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
+{% capture lighter_wall_products %}
+  {% for product in collection.products %}
+    {% liquid
+      assign lighter_wall_title = product.title | downcase
+      assign lighter_wall_type = product.type | downcase
+      assign lighter_wall_handle = product.handle | downcase
+      assign lighter_wall_text = lighter_wall_title | append: ' ' | append: lighter_wall_type | append: ' ' | append: lighter_wall_handle
+    %}
+    {% if lighter_wall_text contains 'lighter' %}
+      {% if lighter_wall_count < section.settings.more_from_limit %}
+        {% render 'sa-series-product-card', product: product %}
+        {% assign lighter_wall_count = lighter_wall_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
+{% endpaginate %}
+
+{% liquid
+  assign series_best_products_rendered = series_best_products | strip
+  assign lighter_wall_products_rendered = lighter_wall_products | strip
 
   for collection_product_type in collection.all_types
     assign collection_product_type_down = collection_product_type | downcase
+    if collection_product_type_down contains 'lighter'
+      assign lighter_available = true
+    endif
+    if collection_product_type_down contains 'wallet' or collection_product_type_down contains 'bifold'
+      assign wallet_available = true
+    endif
+    if collection_product_type_down contains 'grinder set'
+      assign grinder_set_available = true
+    endif
+    if collection_product_type_down contains 'tapestry'
+      assign tapestry_available = true
+    endif
+    if collection_product_type_down contains 'rolling tray'
+      assign tray_available = true
+    endif
+    if collection_product_type_down contains 'stash jar'
+      assign jar_available = true
+    endif
     if collection_product_type_down contains 'ashtray'
       assign ashtray_available = true
     endif
@@ -1166,15 +1244,9 @@
         <a class="sa-series-view" href="{{ collection.url }}?sort_by=best-selling#ProductGridContainer">Sort Best Selling -></a>
       </div>
 
-      {% if collection.products_count > 0 %}
+      {% if series_best_products_rendered != blank %}
         <div class="sa-series-products" role="list" aria-label="Best selling {{ series_title | escape }} products">
-          {% for product in collection.products limit: section.settings.best_seller_limit %}
-            {% if forloop.first %}
-              {% render 'sa-series-product-card', product: product, badge: '#1 Pick' %}
-            {% else %}
-              {% render 'sa-series-product-card', product: product %}
-            {% endif %}
-          {% endfor %}
+          {{ series_best_products_rendered }}
         </div>
       {% else %}
         <div class="sa-series-empty" role="status">Best sellers will appear here when this series collection has products.</div>
@@ -1316,30 +1388,9 @@
         </div>
       </div>
 
-      {% liquid
-        assign lighter_wall_count = 0
-      %}
-
-      {% capture lighter_wall_products %}
-        {% for product in collection.products %}
-          {% liquid
-            assign lighter_wall_title = product.title | downcase
-            assign lighter_wall_type = product.type | downcase
-            assign lighter_wall_handle = product.handle | downcase
-            assign lighter_wall_text = lighter_wall_title | append: ' ' | append: lighter_wall_type | append: ' ' | append: lighter_wall_handle
-          %}
-          {% if lighter_wall_text contains 'lighter' %}
-            {% if lighter_wall_count < section.settings.more_from_limit %}
-              {% render 'sa-series-product-card', product: product %}
-              {% assign lighter_wall_count = lighter_wall_count | plus: 1 %}
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-      {% endcapture %}
-
-      {% if lighter_wall_count > 0 %}
+      {% if lighter_wall_products_rendered != blank %}
         <div class="sa-series-products sa-series-products--compact" role="list" aria-label="Best selling {{ series_title | escape }} lighters">
-          {{ lighter_wall_products }}
+          {{ lighter_wall_products_rendered }}
         </div>
       {% else %}
         <div class="sa-series-empty" role="status">Lighters will appear here when this series has lighter products available.</div>

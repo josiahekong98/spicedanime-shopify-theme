@@ -11,10 +11,60 @@
   "sections": {
     "main": {
       "type": "sa-build-the-set",
+      "blocks": {
+        "series_JWf8U4": {
+          "type": "series",
+          "settings": {
+            "series_title": "",
+            "series_collection": "",
+            "description": "",
+            "accent": "#b3362d",
+            "accessibility_label": "",
+            "lighter_tin_products": [],
+            "lighter_tin_link": "",
+            "grinder_jar_tray_products": [],
+            "grinder_jar_tray_link": "",
+            "full_smoke_products": [],
+            "full_smoke_link": "",
+            "room_decor_products": [],
+            "room_decor_link": "",
+            "edc_products": [],
+            "edc_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "series_JWf8U4"
+      ],
       "settings": {
         "eyebrow": "SET BUILDER",
         "heading": "Build the Set",
-        "intro": "<p>Choose a series, select a setup, and assemble matching pieces from the archive.</p>"
+        "intro": "<p>Choose a series, select a setup, and assemble matching pieces from the archive.</p>",
+        "series_step_label": "STEP 01",
+        "series_heading": "CHOOSE A SERIES",
+        "setup_step_label": "STEP 02",
+        "setup_heading": "PICK A SETUP",
+        "products_step_label": "STEP 03",
+        "products_heading": "COMPLETE YOUR SET",
+        "series_context_label": "CURRENT ARCHIVE",
+        "series_collection_label": "Explore the Series",
+        "lighter_tin_label": "Lighter + Tin",
+        "lighter_tin_description": "Pair a collectible lighter with a matching case or companion piece.",
+        "grinder_jar_tray_label": "Grinder + Jar + Tray",
+        "grinder_jar_tray_description": "Build the core three-piece smoke setup.",
+        "full_smoke_label": "Full Smoke Setup",
+        "full_smoke_description": "Explore a broader selection of coordinated smoke accessories.",
+        "room_decor_label": "Room Decor Setup",
+        "room_decor_description": "Coordinate tapestries, pillows, and display pieces.",
+        "edc_label": "EDC Setup",
+        "edc_description": "Choose compact pieces for everyday carry.",
+        "shop_setup_label": "Shop This Setup",
+        "setup_empty_text": "This setup is ready to explore in its dedicated archive.",
+        "archive_empty_text": "This archive is still being curated.",
+        "add_selected_label": "Add Selected Items",
+        "adding_selected_label": "Adding selected pieces...",
+        "sold_individually_text": "Sold individually",
+        "no_selectable_text": "Products with options can still be added using Choose Options."
       }
     },
     "faq": {
@@ -25,7 +75,8 @@
           "settings": {
             "is_open": true,
             "title": "Are these sold as one bundle?",
-            "text": "<p>Each item remains an individual Shopify product unless its product page explicitly states otherwise.</p>"
+            "text": "<p>Each item remains an individual Shopify product unless its product page explicitly states otherwise.</p>",
+            "page": ""
           }
         },
         "options": {
@@ -33,7 +84,8 @@
           "settings": {
             "is_open": false,
             "title": "Can I choose different options?",
-            "text": "<p>Yes. Products with multiple variants use Choose Options so you can select an available option before adding it to your cart.</p>"
+            "text": "<p>Yes. Products with multiple variants use Choose Options so you can select an available option before adding it to your cart.</p>",
+            "page": ""
           }
         },
         "discounts": {
@@ -41,7 +93,8 @@
           "settings": {
             "is_open": false,
             "title": "Will a discount apply automatically?",
-            "text": "<p>A discount applies only when Shopify displays or applies it in the cart or at checkout.</p>"
+            "text": "<p>A discount applies only when Shopify displays or applies it in the cart or at checkout.</p>",
+            "page": ""
           }
         },
         "sold_out": {
@@ -49,7 +102,8 @@
           "settings": {
             "is_open": false,
             "title": "What happens if an item is sold out?",
-            "text": "<p>Sold-out products remain unavailable and cannot be added until inventory returns.</p>"
+            "text": "<p>Sold-out products remain unavailable and cannot be added until inventory returns.</p>",
+            "page": ""
           }
         },
         "partial": {
@@ -57,7 +111,8 @@
           "settings": {
             "is_open": false,
             "title": "Can I add only part of a setup?",
-            "text": "<p>Yes. Every available product can be shopped individually.</p>"
+            "text": "<p>Yes. Every available product can be shopped individually.</p>",
+            "page": ""
           }
         },
         "curation": {
@@ -65,7 +120,8 @@
           "settings": {
             "is_open": false,
             "title": "How are matching products selected?",
-            "text": "<p>SpicedAnime curates each series and setup using products selected by the merchant.</p>"
+            "text": "<p>SpicedAnime curates each series and setup using products selected by the merchant.</p>",
+            "page": ""
           }
         }
       },

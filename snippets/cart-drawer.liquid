@@ -113,18 +113,29 @@
                 </form>
               </cart-drawer-items>
               {%- if settings.enable_cart_upsell -%}
-                {%- render 'product-recommendations',
-                  area: 'cart-drawer',
-                  class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer',
-                  product_id: cart.items[0].product_id,
-                  title: section.settings.upsell_heading,
-                  limit: 4
+                {%- liquid
+                  assign sa_transfer_anchor_product = blank
+                  for line_item in cart.items
+                    if sa_transfer_anchor_product == blank and line_item.final_line_price > 0 and line_item.product.available
+                      assign sa_transfer_anchor_product = line_item.product
+                    endif
+                  endfor
                 -%}
-                {%- render 'sa-cart-transfer-fallback',
-                  class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer sa-cart-transfer-fallback',
-                  title: section.settings.upsell_heading,
-                  limit: 4
-                -%}
+                {%- if sa_transfer_anchor_product != blank -%}
+                  {%- render 'product-recommendations',
+                    area: 'cart-drawer',
+                    class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer',
+                    product_id: sa_transfer_anchor_product.id,
+                    title: section.settings.upsell_heading,
+                    limit: 4
+                  -%}
+                  {%- render 'sa-cart-transfer-fallback',
+                    class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer sa-cart-transfer-fallback',
+                    title: section.settings.upsell_heading,
+                    anchor_product: sa_transfer_anchor_product,
+                    limit: 4
+                  -%}
+                {%- endif -%}
               {%- endif -%}
               {%- if section.settings.show_rewards_teaser and section.settings.rewards_link != blank -%}
                 {%- render 'sa-cart-rewards',

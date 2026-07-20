@@ -8,12 +8,12 @@
   assign transfer_limit = limit | default: 4
   assign transfer_class = class | default: ''
   assign anchor_item = blank
-  assign anchor_product = blank
+  assign anchor_product = anchor_product | default: blank
   assign cart_product_tokens = '|'
 
   for line_item in cart.items
     assign cart_product_tokens = cart_product_tokens | append: line_item.product.id | append: '|'
-    if anchor_item == blank and line_item.final_line_price > 0 and line_item.product.available
+    if anchor_product == blank and anchor_item == blank and line_item.final_line_price > 0 and line_item.product.available
       assign anchor_item = line_item
       assign anchor_product = line_item.product
     endif
@@ -78,41 +78,7 @@
                   assign rendered_count = rendered_count | plus: 1
                   assign seen_products = seen_products | append: recommendation.id | append: '|'
                 -%}
-                <a href="{{- recommendation.url -}}" class="product-recommendations__item swiper-slide">
-                  <div class="product-recommendations__media">
-                    {%- if recommendation.featured_media -%}
-                      {%- render 'image',
-                        image: recommendation.featured_media,
-                        alt: recommendation.featured_media.alt | default: recommendation.title | escape,
-                        widths: '120, 160, 240',
-                        sizes: '(max-width: 749px) 38vw, 150px'
-                      -%}
-                    {%- endif -%}
-                  </div>
-                  <div class="product-recommendations__content">
-                    <span class="product-recommendations__name">{{- recommendation.title -}}</span>
-                    <p class="product-recommendations__price">
-                      {%- liquid
-                        assign recommendation_price = recommendation.price_min | money
-                        if recommendation.price_varies
-                          echo recommendation_price | append: '+'
-                        else
-                          echo recommendation_price
-                        endif
-                      -%}
-                    </p>
-                    {%- if recommendation.variants.size == 1 and recommendation.available -%}
-                      <button
-                        type="button"
-                        class="button product-recommendations__quick-add quick-cart-drawer__trigger"
-                        data-id="{{ recommendation.selected_or_first_available_variant.id }}"
-                        aria-label="{{ 'theme.actions.add_to_cart' | t }} {{ recommendation.title | escape }}"
-                      >
-                        {%- render 'icon', icon_name: 'theme-plus' -%}
-                      </button>
-                    {%- endif -%}
-                  </div>
-                </a>
+                {%- render 'sa-cart-transfer-card', product: recommendation -%}
               {%- endif -%}
             {%- endunless -%}
           {%- endunless -%}

@@ -1,0 +1,79 @@
+{%- liquid
+  assign card_product = product
+  assign card_image = card_product.featured_image | default: card_product.featured_media.preview_image
+  assign card_alt = card_image.alt | default: card_product.title
+  assign action_label = 'cart.quick_add' | t
+  if card_product.variants.size > 1
+    assign action_label = 'product.choose_options' | t
+  endif
+-%}
+
+{%- if card_product != blank -%}
+  <article class="product-recommendations__item swiper-slide sa-cart-transfer-card">
+    <a
+      class="media product-recommendations__item-media sa-cart-transfer-card__media"
+      href="{{ card_product.url }}"
+      aria-label="{{ card_product.title | escape }}"
+    >
+      {%- if card_image != blank -%}
+        {%- render 'image',
+          image: card_image,
+          class: 'sa-cart-transfer-card__image',
+          loading: 'lazy',
+          widths: '96, 144, 192, 288',
+          sizes: '96px',
+          alt: card_alt | escape
+        -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'sa-cart-transfer-card__image sa-cart-transfer-card__placeholder' }}
+      {%- endif -%}
+    </a>
+
+    <div class="product-recommendations__item-details sa-cart-transfer-card__body">
+      <div>
+        <h6 class="product-recommendations__item-title sa-cart-transfer-card__title">
+          <a href="{{ card_product.url }}">{{- card_product.title | escape -}}</a>
+        </h6>
+
+        <p class="product-recommendations__item-price sa-cart-transfer-card__price">
+          {%- if card_product.compare_at_price_min > card_product.price_min -%}
+            <span class="visually-hidden">{{- 'product.price_regular' | t -}}</span>
+            <del>{{- card_product.compare_at_price_min | money -}}</del>
+            <span class="visually-hidden">{{- 'product.price_sale' | t -}}</span>
+            <ins>{{- card_product.price_min | money -}}</ins>
+          {%- else -%}
+            <span class="visually-hidden">{{- 'product.price_regular' | t -}}</span>
+            {{- card_product.price_min | money -}}{% if card_product.price_varies %}+{% endif %}
+          {%- endif -%}
+        </p>
+      </div>
+
+      {%- if settings.product_card_enable_quick_add_to_cart_button -%}
+        {%- if card_product.available -%}
+          <button
+            type="button"
+            class="quick-cart-drawer__trigger quick-cart-drawer__trigger--recommendations button button--text sa-cart-transfer-card__action"
+            aria-label="{{ action_label | escape }}: {{ card_product.title | escape }}"
+            aria-expanded="false"
+            aria-controls="quick-cart-drawer"
+            data-product-url="{{ card_product.url }}"
+          >
+            {{- action_label -}}
+            <div class="quick-cart-drawer__trigger--loading" aria-hidden="true">
+              {%- render 'loading-spinner' -%}
+            </div>
+          </button>
+        {%- else -%}
+          <button
+            type="button"
+            class="button button--text sa-cart-transfer-card__action"
+            aria-label="{{ 'product.sold_out' | t | escape }}: {{ card_product.title | escape }}"
+            disabled
+          >
+            {{- 'product.sold_out' | t -}}
+          </button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </article>
+{%- endif -%}

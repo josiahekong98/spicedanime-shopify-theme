@@ -4981,6 +4981,10 @@ back-to-top.hide {
                                          transform-origin: center;
                                         }
 /* ===== FULLSCREEN LOADER WRAPPER ===== */
+html.no-js #loading-screen {
+  display: none;
+}
+
 #loading-screen {
   position: fixed;
   inset: 0;
@@ -4991,25 +4995,26 @@ back-to-top.hide {
   align-items: center;
   opacity: 1;
   pointer-events: none;
+  visibility: visible;
+  transition: opacity 200ms ease;
 }
 
 /* Fade OUT smoothly */
 #loading-screen.fade-out {
-  animation: loaderFadeOut 0.5s cubic-bezier(1.6, -0.2, 0.2, 1) forwards;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading-screen.is-dismissed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* Fade in */
 @keyframes loaderFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
-}
-
-/* Fade out */
-@keyframes loaderFadeOut {
-  0% { opacity: 1; }
-  40% { opacity: 0.85; }  /* prevents abrupt drop */
-  70% { opacity: 0.55; }
-  100% { opacity: 0; }
 }
 
 /* ---- CENTERED LOGO ---- */
@@ -5072,6 +5077,21 @@ back-to-top.hide {
   .loader-character {
     width: 42vw;
     bottom: 0vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #loading-screen,
+  #loading-screen.fade-out {
+    animation: none;
+    transition: none;
+  }
+
+  .loader-logo {
+    animation: none;
+    filter: brightness(1);
+    mask: none;
+    -webkit-mask: none;
   }
 }
 

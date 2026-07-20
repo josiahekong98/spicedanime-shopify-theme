@@ -78,6 +78,94 @@
 
     {% render 'spicedanime-loader' %}
 
+    <script data-spicedanime-loader-controller>
+      (() => {
+        if (window.__spicedAnimeLoaderInitialized) return;
+        window.__spicedAnimeLoaderInitialized = true;
+
+        const loader = document.getElementById('loading-screen');
+        if (!loader) return;
+
+        const sessionKey = 'spicedanime_loader_seen';
+        const minimumDuration = 300;
+        const maximumDuration = 1500;
+        const fadeDuration = 200;
+        const initializedAt = performance.now();
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let dismissalStarted = false;
+        let minimumTimer = null;
+
+        const maximumTimer = window.setTimeout(() => dismiss(), maximumDuration);
+
+        function dismiss({ immediate = false } = {}) {
+          if (dismissalStarted) {
+            if (immediate && loader.isConnected) {
+              loader.classList.add('is-dismissed');
+              loader.remove();
+            }
+            return;
+          }
+          dismissalStarted = true;
+
+          window.clearTimeout(maximumTimer);
+          if (minimumTimer) window.clearTimeout(minimumTimer);
+
+          loader.style.pointerEvents = 'none';
+          loader.setAttribute('aria-hidden', 'true');
+
+          if (immediate || prefersReducedMotion) {
+            loader.classList.add('is-dismissed');
+            loader.remove();
+            return;
+          }
+
+          loader.classList.add('fade-out');
+          window.setTimeout(() => {
+            loader.classList.add('is-dismissed');
+            loader.remove();
+          }, fadeDuration);
+        }
+
+        function dismissWhenReady() {
+          const remainingDuration = Math.max(0, minimumDuration - (performance.now() - initializedAt));
+          if (remainingDuration === 0) {
+            dismiss();
+            return;
+          }
+
+          minimumTimer = window.setTimeout(() => dismiss(), remainingDuration);
+        }
+
+        window.addEventListener('pageshow', event => {
+          if (event.persisted) dismiss({ immediate: true });
+        });
+
+        if (window.Shopify?.designMode) {
+          dismiss({ immediate: true });
+          return;
+        }
+
+        let loaderSeen = false;
+        try {
+          loaderSeen = window.sessionStorage.getItem(sessionKey) === 'true';
+          if (!loaderSeen) window.sessionStorage.setItem(sessionKey, 'true');
+        } catch (error) {
+          loaderSeen = false;
+        }
+
+        if (loaderSeen) {
+          dismiss({ immediate: true });
+          return;
+        }
+
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+          dismissWhenReady();
+        } else {
+          document.addEventListener('DOMContentLoaded', dismissWhenReady, { once: true });
+        }
+      })();
+    </script>
+
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{- 'theme.accessibility.skip_to_content' | t -}}
     </a>
@@ -244,55 +332,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const loader = document.getElementById("loading-screen");
-  if (!loader) return;
-
-  const isDesktop = window.innerWidth > 768;
-
-  /* ⬅ DESKTOP: FORCE REMOVE FAST */
-  if (isDesktop) {
-    setTimeout(() => {
-      if (document.body.contains(loader)) {
-        loader.classList.add("fade-out");
-        setTimeout(() => loader.remove(), 350); // fade faster
-      }
-    }, 250); // HARD CAP ~0.45s after DOM starts
-  }
-
-  /* ⬅ MOBILE + NORMAL BEHAVIOR */
-  window.addEventListener("load", () => {
-    // If desktop already removed, ignore
-    if (!document.body.contains(loader)) return;
-
-    loader.classList.add("fade-out");
-    setTimeout(() => loader.remove(), 400);
-  });
-});
-</script>
-
-
-
-<script>
-/* Show loader again when clicking internal links */
-document.addEventListener("click", e => {
-  const link = e.target.closest("a");
-
-  // Ignore new tab or non-navigation clicks
-  if (!link || link.target === "_blank" || link.href.includes("#")) return;
-
-  const loader = document.getElementById("loading-screen");
-  if (loader) {
-    loader.classList.remove("fade-out");  // SAME
-    loader.style.opacity = "1";           // SAME
-  }
-});
-</script>
-
-
-
 
 </body>
 </html>

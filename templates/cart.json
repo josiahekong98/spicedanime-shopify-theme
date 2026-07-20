@@ -2,7 +2,9 @@
   "sections": {
     "main": {
       "type": "main-cart",
-      "settings": {}
+      "settings": {
+        "show_rewards_teaser": false
+      }
     },
     "13608375-b086-4634-863b-df6b4d0bc7ca": {
       "type": "product-recommendations",

@@ -41,7 +41,7 @@
         "standard_wallet_collection": "wallets-category",
         "standard_tote_collection": "all-tote-bags",
         "upsell_fallback_products": [],
-        "show_rewards_teaser": true,
+        "show_rewards_teaser": false,
         "rewards_eyebrow": "REWARDS ARCHIVE",
         "rewards_heading": "Spice Rewards",
         "rewards_text": "Earn Spice Points on eligible purchases and unlock future collector rewards.",

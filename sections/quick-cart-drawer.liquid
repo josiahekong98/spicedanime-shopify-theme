@@ -9,13 +9,22 @@
     }
   {%- endstyle -%}
 
-  <quick-cart-drawer>
-    <div class='quick-cart-drawer__blocks slim-scrollbar color-{{ section.settings.color_scheme }}' tabindex="-1">
-      <div class="quick-cart-drawer__header">
-        <h5>{{ 'product.choose_options' | t }}</h5>
+  <quick-cart-drawer
+    id="quick-cart-drawer"
+    class="sa-quick-cart"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="QuickCartDrawer-Title-{{ section.id }}"
+  >
+    <div class='quick-cart-drawer__blocks sa-quick-cart__panel slim-scrollbar color-{{ section.settings.color_scheme }}' tabindex="-1">
+      <div class="quick-cart-drawer__header sa-quick-cart__header">
+        <div class="sa-quick-cart__heading-group">
+          <p class="sa-quick-cart__eyebrow">QUICK EXHIBIT</p>
+          <h5 id="QuickCartDrawer-Title-{{ section.id }}">{{ 'product.choose_options' | t }}</h5>
+        </div>
         <button
           type='button'
-          class='button--close'
+          class='button--close sa-quick-cart__close'
           aria-expanded='false'
           aria-controls='quick-cart-drawer'
           aria-label='Close drawer for selected item'
@@ -24,7 +33,7 @@
           {%- render 'icon', icon_name: 'theme-close' -%}
         </button>
       </div>
-      <div class="quick-cart-drawer__main">
+      <div class="quick-cart-drawer__main sa-quick-cart__main">
         {%- comment -%}dynamically product content will load via js{%- endcomment -%}
         <div class="quick-cart-drawer__main--empty">
           <p class="h2">{{ 'product.quick_cart_empty' | t }}</p>
@@ -33,7 +42,7 @@
       </div>
     </div>
 
-    <div class='quick-cart-drawer__backdrop'></div>
+    <div class='quick-cart-drawer__backdrop sa-quick-cart__backdrop'></div>
   </quick-cart-drawer>
 {% endif %}
 {% schema %}

@@ -121,6 +121,7 @@ if (!customElements.get("quick-cart-drawer")) {
       }
 
       const trigger = event.target.closest("[data-product-url]");
+      this.openingTrigger = trigger;
       trigger.classList.toggle("is--loading");
       try {
         // if root contains locale, add locale to productUrl as prefix
@@ -264,6 +265,9 @@ if (!customElements.get("quick-cart-drawer")) {
 
     open() {
       this.toggleState = true;
+      if (this.openingTrigger?.isConnected) {
+        this.openingTrigger.setAttribute("aria-expanded", "true");
+      }
       document.querySelector("body").classList.add("overflow-hidden");
       const quickCartDrawer = document.querySelector(".quick-cart-drawer__blocks");
       const closeButton = quickCartDrawer.querySelector(".button--close");
@@ -282,6 +286,7 @@ if (!customElements.get("quick-cart-drawer")) {
 
     close() {
       this.toggleState = false;
+      const openingTrigger = this.openingTrigger;
 
       const shopTheLookDrawer = document.querySelector("shop-the-look-drawer");
 
@@ -298,6 +303,11 @@ if (!customElements.get("quick-cart-drawer")) {
       this.classList.remove("is--open");
       this.closed();
       this.toggleAriaExpanded();
+
+      if (openingTrigger?.isConnected) {
+        openingTrigger.focus();
+      }
+      this.openingTrigger = null;
 
       /** start autoplay on quick cart drawe close */
       if (document.querySelector("card-product-slider.product--open-on-quick-cart")) {

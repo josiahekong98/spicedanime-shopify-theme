@@ -1,0 +1,57 @@
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign card_block_id = block_id | append: '-' | append: setup_key | append: '-' | append: product_index
+  assign is_single_variant = false
+  assign is_selectable = false
+  if product.variants.size == 1 and selected_variant != blank
+    assign is_single_variant = true
+    if product.available and selected_variant.available and is_duplicate_variant != true
+      assign is_selectable = true
+    endif
+  endif
+  assign selection_id = 'sa-build-set-select-' | append: section_id | append: '-' | append: card_block_id | append: '-' | append: product.id
+-%}
+
+<div
+  class="sa-build-the-set__product"
+  role="listitem"
+  data-sa-build-set-product
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-single-variant="{{ is_single_variant }}"
+  data-available="{{ product.available }}"
+  data-variant-available="{% if selected_variant != blank %}{{ selected_variant.available }}{% else %}false{% endif %}"
+  data-series-key="{{ series_key | escape }}"
+  data-setup-key="{{ setup_key | escape }}"
+  {% if is_selectable %}
+    data-variant-id="{{ selected_variant.id }}"
+    data-price-cents="{{ selected_variant.price }}"
+  {% endif %}
+>
+  {%- if is_selectable -%}
+    <div class="sa-build-the-set__selection" data-sa-build-set-selection>
+      <input
+        class="sa-build-the-set__selection-input"
+        type="checkbox"
+        id="{{ selection_id }}"
+        value="{{ selected_variant.id }}"
+        data-sa-build-set-select
+        data-variant-id="{{ selected_variant.id }}"
+        data-price-cents="{{ selected_variant.price }}"
+        {% unless selection_enabled %}disabled{% endunless %}
+      >
+      <label class="sa-build-the-set__selection-label" for="{{ selection_id }}">
+        <span class="sa-build-the-set__selection-marker" aria-hidden="true"></span>
+        <span class="sa-build-the-set__selection-copy sa-build-the-set__selection-copy--default">Select piece</span>
+        <span class="sa-build-the-set__selection-copy sa-build-the-set__selection-copy--selected">Piece selected</span>
+        <span class="visually-hidden">: {{ product.title | escape }}</span>
+      </label>
+    </div>
+  {%- endif -%}
+
+  {% render 'card-product',
+    product_ref: product,
+    section_id: section_id,
+    block_id: card_block_id
+  %}
+</div>

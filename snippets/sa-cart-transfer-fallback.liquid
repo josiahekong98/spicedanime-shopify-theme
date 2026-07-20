@@ -7,6 +7,7 @@
   assign transfer_title = title | default: settings.cart_upsell_title | default: 'Complete This Transfer'
   assign transfer_limit = limit | default: 4
   assign transfer_class = class | default: ''
+  assign merchant_products = merchant_products | default: blank
   assign anchor_item = blank
   assign anchor_product = anchor_product | default: blank
   assign cart_product_tokens = '|'
@@ -53,37 +54,64 @@
   assign seen_products = '|'
 -%}
 
-{%- if transfer_collection != blank -%}
+{%- if transfer_collection != blank or merchant_products != blank -%}
   <div
     class="product-recommendations hidden {{ transfer_class }} color-{{ settings.color_scheme_for_upsell }}"
     data-sa-cart-series-transfer-fallback
+    data-sa-cart-complete-set
+    data-sa-cart-recommendation-source="fallback"
     hidden
   >
-    {%- if transfer_title != blank -%}
-      <h5 class="product-recommendations__title">{{- transfer_title | escape -}}</h5>
-    {%- endif -%}
+    {%- render 'sa-cart-complete-set',
+      source: 'fallback',
+      title: transfer_title,
+      supporting_message: supporting_message
+    -%}
 
     <div class="swiper product-recommendations__body">
       <div class="product-recommendations__items swiper-wrapper" data-recommendations>
-        {%- for recommendation in transfer_collection.products limit: 48 -%}
-          {%- liquid
-            assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
-            assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
-            assign recommendation_series_key = recommendation_series | handleize
-          -%}
-          {%- unless cart_product_tokens contains recommendation_token -%}
-            {%- unless seen_products contains recommendation_token -%}
-              {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id and recommendation_series_key == anchor_series_key -%}
-                {%- liquid
-                  assign rendered_count = rendered_count | plus: 1
-                  assign seen_products = seen_products | append: recommendation.id | append: '|'
-                -%}
-                {%- render 'sa-cart-transfer-card', product: recommendation -%}
-              {%- endif -%}
+        {%- if transfer_collection != blank -%}
+          {%- for recommendation in transfer_collection.products limit: 48 -%}
+            {%- liquid
+              assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+              assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+              assign recommendation_series_key = recommendation_series | handleize
+            -%}
+            {%- unless cart_product_tokens contains recommendation_token -%}
+              {%- unless seen_products contains recommendation_token -%}
+                {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id and recommendation_series_key == anchor_series_key -%}
+                  {%- liquid
+                    assign rendered_count = rendered_count | plus: 1
+                    assign seen_products = seen_products | append: recommendation.id | append: '|'
+                  -%}
+                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'fallback' -%}
+                {%- endif -%}
+              {%- endunless -%}
             {%- endunless -%}
-          {%- endunless -%}
-        {%- endfor -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if merchant_products != blank and rendered_count == 0 -%}
+          {%- for recommendation in merchant_products -%}
+            {%- assign recommendation_token = recommendation.id | prepend: '|' | append: '|' -%}
+            {%- unless cart_product_tokens contains recommendation_token -%}
+              {%- unless seen_products contains recommendation_token -%}
+                {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id -%}
+                  {%- liquid
+                    assign rendered_count = rendered_count | plus: 1
+                    assign seen_products = seen_products | append: recommendation.id | append: '|'
+                  -%}
+                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'fallback' -%}
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
       </div>
+    </div>
+
+    <div data-sa-cart-complete-set-actions hidden>
+      <button type="button" data-sa-cart-add-selected disabled>Add Selected Items</button>
     </div>
   </div>
 {%- endif -%}

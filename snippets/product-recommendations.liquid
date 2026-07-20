@@ -3,17 +3,31 @@
   assign product_recommendations_icon = icon | default: 'theme-package'
   assign product_recommendations_title = title | default: settings.cart_upsell_title | default: ''
   assign product_recommendations_limit = limit | default: 8
+  assign product_recommendations_request_limit = product_recommendations_limit
+  if area == 'cart-drawer'
+    assign product_recommendations_limit = 3
+    assign product_recommendations_request_limit = 10
+  endif
 -%}
 
 {{- 'component-product-recommendations.css' | asset_url | stylesheet_tag -}}
-<script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
+{%- unless area == 'cart-drawer' -%}
+  <script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
 
 <product-recommendations
   class="product-recommendations hidden {{ class }} color-{{ settings.color_scheme_for_upsell }}"
-  data-url="{{- routes.product_recommendations_url -}}?section_id={{- section.id -}}&product_id={{- product_id -}}&limit={{- product_recommendations_limit -}}&intent=complementary"
+  data-url="{{- routes.product_recommendations_url -}}?section_id={{- section.id -}}&product_id={{- product_id -}}&limit={{- product_recommendations_request_limit -}}&intent=complementary"
   data-recommendation-area="{{- area -}}"
+  {% if area == 'cart-drawer' %}data-sa-cart-complete-set data-sa-cart-recommendation-source="complementary"{% endif %}
 >
-  {%- if product_recommendations_title != blank -%}
+  {%- if area == 'cart-drawer' -%}
+    {%- render 'sa-cart-complete-set',
+      source: 'complementary',
+      title: product_recommendations_title,
+      supporting_message: supporting_message
+    -%}
+  {%- elsif product_recommendations_title != blank -%}
     <h5 class="product-recommendations__title{% if template.name == 'cart' %} heading-static{% endif %}">
       {%- if icon -%}
         {% render 'icon', icon_name: product_recommendations_icon %}
@@ -25,10 +39,35 @@
   <div class="swiper product-recommendations__body">
     <div class="product-recommendations__items swiper-wrapper" data-recommendations>
       {%- if recommendations.performed and recommendations.products_count > 0 -%}
-        {%- for recommendation in recommendations.products limit: product_recommendations_limit -%}
-          {%- if area == 'cart-drawer' -%}
-            {%- render 'sa-cart-transfer-card', product: recommendation -%}
-          {%- else -%}
+        {%- if area == 'cart-drawer' -%}
+          {%- liquid
+            assign cart_product_tokens = '|'
+            assign seen_product_tokens = '|'
+            assign rendered_recommendations = 0
+            for line_item in cart.items
+              assign cart_product_tokens = cart_product_tokens | append: line_item.product.id | append: '|'
+            endfor
+          -%}
+          {%- for recommendation in recommendations.products -%}
+            {%- liquid
+              assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+              assign recommendation_is_eligible = true
+              if recommendation.available == false or recommendation.id == product_id
+                assign recommendation_is_eligible = false
+              elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+                assign recommendation_is_eligible = false
+              endif
+            -%}
+            {%- if recommendation_is_eligible and rendered_recommendations < product_recommendations_limit -%}
+              {%- liquid
+                assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+                assign rendered_recommendations = rendered_recommendations | plus: 1
+              -%}
+              {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'complementary' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for recommendation in recommendations.products limit: product_recommendations_limit -%}
             <a href="{{- recommendation.url -}}" class="product-recommendations__item swiper-slide">
               {%- if recommendation.featured_image -%}
                 <div class="media product-recommendations__item-media">
@@ -72,9 +111,15 @@
                 {%- endif -%}
               </div>
             </a>
-          {%- endif -%}
-        {%- endfor -%}
+          {%- endfor -%}
+        {%- endif -%}
       {%- endif -%}
     </div>
   </div>
+
+  {%- if area == 'cart-drawer' -%}
+    <div data-sa-cart-complete-set-actions hidden>
+      <button type="button" data-sa-cart-add-selected disabled>Add Selected Items</button>
+    </div>
+  {%- endif -%}
 </product-recommendations>

@@ -2,6 +2,8 @@ if (!customElements.get("quick-cart-drawer")) {
   class QuickCartDrawer extends HTMLElement {
     constructor() {
       super();
+      this.initialized = false;
+      this.triggerObserver = null;
       if (Shopify.designMode) {
         window.addEventListener("shopify:section:load", this.init.bind(this));
         this.parentElement.addEventListener("shopify:section:select", () => this.open());
@@ -14,6 +16,9 @@ if (!customElements.get("quick-cart-drawer")) {
     }
 
     init() {
+      if (this.initialized) return;
+      this.initialized = true;
+
       this.toggleState = false;
 
       if (!this.classList.contains("is--open")) {
@@ -67,6 +72,8 @@ if (!customElements.get("quick-cart-drawer")) {
     }
 
     initTriggers() {
+      if (this.triggerObserver) return;
+
       const observer = new MutationObserver(() => {
         document
           .querySelectorAll(".quick-cart-drawer__trigger")
@@ -80,7 +87,8 @@ if (!customElements.get("quick-cart-drawer")) {
           });
       });
 
-      observer.observe(document.body, {
+      this.triggerObserver = observer;
+      this.triggerObserver.observe(document.body, {
         childList: true,
         subtree: true
       });

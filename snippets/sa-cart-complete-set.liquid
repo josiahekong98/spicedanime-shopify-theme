@@ -1,0 +1,82 @@
+{%- comment -%}
+  Server-rendered shell for a cart drawer Complete This Set recommendation source.
+  Selection and status behavior are intentionally deferred to its future controller.
+
+  Accepts:
+  - source: Unique source key for section-scoped IDs
+  - title: Module heading
+  - supporting_message: Optional non-numeric supporting copy
+{%- endcomment -%}
+
+{%- liquid
+  assign source_key = source | default: 'recommendations' | handleize
+  assign module_id = 'SaCartCompleteSet-' | append: section.id | append: '-' | append: source_key
+  assign module_title = title | default: 'Complete This Set'
+  assign has_lighter = false
+  assign has_rolling_tray = false
+  assign has_stash_jar = false
+  assign has_grinder = false
+
+  for line_item in cart.items
+    case line_item.product.type
+      when 'Flip Lighter'
+        assign has_lighter = true
+      when 'Rolling Tray'
+        assign has_rolling_tray = true
+      when 'Stash Jar'
+        assign has_stash_jar = true
+      when 'Grinder Sets'
+        assign has_grinder = true
+    endcase
+  endfor
+-%}
+
+<p
+  id="{{ module_id }}-Status"
+  class="visually-hidden"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+  data-sa-cart-complete-set-status
+  hidden
+></p>
+
+<div class="sa-cart-complete-set__header">
+  <h5 id="{{ module_id }}-Title" class="product-recommendations__title sa-cart-complete-set__title">
+    {{- module_title | escape -}}
+  </h5>
+  {%- if supporting_message != blank -%}
+    <p class="sa-cart-complete-set__message">{{- supporting_message | escape -}}</p>
+  {%- endif -%}
+</div>
+
+<ul
+  class="sa-cart-complete-set__checklist list-unstyled"
+  aria-label="Products currently represented in this set"
+  data-sa-cart-complete-set-checklist
+>
+  <li class="sa-cart-complete-set__checklist-item" data-product-family="Flip Lighter">
+    <span role="checkbox" aria-checked="{{ has_lighter }}" aria-readonly="true">
+      <span aria-hidden="true">{% if has_lighter %}[x]{% else %}[ ]{% endif %}</span>
+      <span>Lighter</span>
+    </span>
+  </li>
+  <li class="sa-cart-complete-set__checklist-item" data-product-family="Rolling Tray">
+    <span role="checkbox" aria-checked="{{ has_rolling_tray }}" aria-readonly="true">
+      <span aria-hidden="true">{% if has_rolling_tray %}[x]{% else %}[ ]{% endif %}</span>
+      <span>Rolling Tray</span>
+    </span>
+  </li>
+  <li class="sa-cart-complete-set__checklist-item" data-product-family="Stash Jar">
+    <span role="checkbox" aria-checked="{{ has_stash_jar }}" aria-readonly="true">
+      <span aria-hidden="true">{% if has_stash_jar %}[x]{% else %}[ ]{% endif %}</span>
+      <span>Stash Jar</span>
+    </span>
+  </li>
+  <li class="sa-cart-complete-set__checklist-item" data-product-family="Grinder Sets">
+    <span role="checkbox" aria-checked="{{ has_grinder }}" aria-readonly="true">
+      <span aria-hidden="true">{% if has_grinder %}[x]{% else %}[ ]{% endif %}</span>
+      <span>Grinder</span>
+    </span>
+  </li>
+</ul>

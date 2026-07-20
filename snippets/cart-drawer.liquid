@@ -13,6 +13,13 @@
   <script src="{{- 'cart.js' | asset_url -}}" defer="defer"></script>
 {% endif %}
 <script src="{{- 'cart-info-bar-slider.js' | asset_url -}}" defer="defer"></script>
+<script src="{{- 'product-recommendations.js' | asset_url -}}" defer="defer"></script>
+<script src="{{- 'sa-cart-complete-set.js' | asset_url -}}" defer="defer"></script>
+
+{%- comment -%}
+  Keep future Complete This Set controller loading beside the recommendation
+  asset above so it is available even when the initial cart is empty.
+{%- endcomment -%}
 
 {%- style -%}
   cart-drawer .cart-item .media {
@@ -20,7 +27,7 @@
   }
 {%- endstyle -%}
 
-<cart-drawer class="sa-cart-drawer">
+<cart-drawer class="sa-cart-drawer" data-sa-cart-complete-set-host>
   <div class="color-{{ settings.color_scheme_for_drawers }} gradient">
     <div class="cart-drawer" id="{{- section.id -}}">
 
@@ -127,13 +134,16 @@
                     class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer',
                     product_id: sa_transfer_anchor_product.id,
                     title: section.settings.upsell_heading,
-                    limit: 4
+                    supporting_message: section.settings.upsell_supporting_message,
+                    limit: 3
                   -%}
                   {%- render 'sa-cart-transfer-fallback',
                     class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer sa-cart-transfer-fallback',
                     title: section.settings.upsell_heading,
+                    supporting_message: section.settings.upsell_supporting_message,
                     anchor_product: sa_transfer_anchor_product,
-                    limit: 4
+                    merchant_products: section.settings.upsell_fallback_products,
+                    limit: 3
                   -%}
                 {%- endif -%}
               {%- endif -%}

@@ -2,6 +2,13 @@
   assign card_product = product
   assign card_image = card_product.featured_image | default: card_product.featured_media.preview_image
   assign card_alt = card_image.alt | default: card_product.title
+  assign card_source = source | default: 'transfer' | handleize
+  assign selectable = selectable | default: false
+  assign selectable_product = false
+  if selectable and card_product.available and card_product.variants.size == 1
+    assign selectable_product = true
+  endif
+  assign selection_id = 'SaCartSetItem-' | append: section.id | append: '-' | append: card_source | append: '-' | append: card_product.id
   assign action_label = 'cart.quick_add' | t
   if card_product.variants.size > 1
     assign action_label = 'product.choose_options' | t
@@ -9,7 +16,21 @@
 -%}
 
 {%- if card_product != blank -%}
-  <article class="product-recommendations__item swiper-slide sa-cart-transfer-card">
+  <article
+    class="product-recommendations__item swiper-slide sa-cart-transfer-card"
+    {% if selectable %}
+      data-sa-cart-set-product
+      data-product-id="{{ card_product.id }}"
+      data-product-url="{{ card_product.url }}"
+      data-product-title="{{ card_product.title | escape }}"
+      data-product-type="{{ card_product.type | escape }}"
+      data-product-price="{{ card_product.price_min }}"
+      data-product-available="{{ card_product.available }}"
+      data-product-selectable="{{ selectable_product }}"
+      {% if card_product.compare_at_price_min > card_product.price_min %}data-product-compare-at-price="{{ card_product.compare_at_price_min }}"{% endif %}
+      {% if selectable_product %}data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"{% endif %}
+    {% endif %}
+  >
     <a
       class="media product-recommendations__item-media sa-cart-transfer-card__media"
       href="{{ card_product.url }}"
@@ -30,10 +51,28 @@
     </a>
 
     <div class="product-recommendations__item-details sa-cart-transfer-card__body">
+      {%- if selectable_product -%}
+        <div class="sa-cart-transfer-card__selection">
+          <input
+            id="{{ selection_id }}"
+            type="checkbox"
+            value="{{ card_product.selected_or_first_available_variant.id }}"
+            data-sa-cart-set-select
+            data-product-id="{{ card_product.id }}"
+            data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+            aria-label="Select {{ card_product.title | escape }} to add to cart"
+            aria-disabled="true"
+            disabled
+          >
+          <label for="{{ selection_id }}">
+            <span class="visually-hidden">Select {{ card_product.title | escape }}</span>
+          </label>
+        </div>
+      {%- endif -%}
       <div>
         <h6 class="product-recommendations__item-title sa-cart-transfer-card__title">
-                    <a href="{{ card_product.url }}">{{- card_product.title | escape -}}</a>
-<div data-shop-id="{{shop.id}}" product-id="{{card_product.id }}" data-page="cart" class="ddreview-star"></div>
+          <a href="{{ card_product.url }}">{{- card_product.title | escape -}}</a>
+          <div data-shop-id="{{ shop.id }}" product-id="{{ card_product.id }}" data-page="cart" class="ddreview-star"></div>
         </h6>
 
         <p class="product-recommendations__item-price sa-cart-transfer-card__price">

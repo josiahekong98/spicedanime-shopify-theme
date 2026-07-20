@@ -1,0 +1,90 @@
+{%- comment -%}
+  Renders a Series Archive card.
+
+  Accepts:
+  - title: Card title
+  - url: Optional collection or destination URL
+  - image: Optional card image
+  - badge: "top_seller", "trending", or "none"
+  - accent: Card accent color
+  - index: Card position, formatted as two digits
+  - meta_text: Optional supporting text
+  - accessibility_label: Optional card aria-label
+  - shopify_attributes: Optional block.shopify_attributes
+  - filter_name: Optional normalized search value
+  - filter_letter: Optional alphabet-filter value
+{%- endcomment -%}
+
+{%- liquid
+  assign card_title = title | default: 'Series Archive'
+  assign card_accent = accent | default: '#B3362D'
+  assign card_initials = card_title | remove: ' ' | slice: 0, 2 | upcase
+  assign card_label = accessibility_label
+  if card_label == blank
+    assign card_label = 'Shop ' | append: card_title
+  endif
+
+  assign card_index = blank
+  if index != blank
+    assign card_index = index | prepend: '0' | slice: -2, 2
+  endif
+-%}
+
+{%- capture card_content -%}
+  <span class="sa-top-series__image-wrap" aria-hidden="true">
+    {% if image != blank %}
+      {{ image | image_url: width: 900 | image_tag: class: 'sa-top-series__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 78vw', widths: '320, 480, 640, 760, 900', alt: image.alt | default: card_title | escape }}
+    {% else %}
+      <span class="sa-top-series__fallback">
+        <span class="sa-top-series__fallback-label">Series File</span>
+        <span class="sa-top-series__fallback-initials">{{ card_initials | escape }}</span>
+      </span>
+    {% endif %}
+
+    {% if badge == 'top_seller' or badge == 'trending' %}
+      <span class="sa-top-series__badge sa-badge{% if badge == 'trending' %} sa-badge--outline{% endif %}">
+        {% if badge == 'top_seller' %}Top Seller{% else %}Trending{% endif %}
+      </span>
+    {% endif %}
+  </span>
+
+  <span class="sa-top-series__content">
+    <span class="sa-top-series__name-row">
+      <span class="sa-top-series__name">{{ card_title | escape }}</span>
+      {% if card_index != blank %}
+        <span class="sa-top-series__index">{{ card_index }}</span>
+      {% endif %}
+    </span>
+
+    {% if meta_text != blank %}
+      <span class="sa-top-series__meta">{{ meta_text | escape }}</span>
+    {% endif %}
+  </span>
+{%- endcapture -%}
+
+{%- if url != blank -%}
+  <a
+    class="sa-top-series__card sa-card"
+    href="{{ url }}"
+    aria-label="{{ card_label | escape }}"
+    style="--sa-series-accent: {{ card_accent }};"
+    role="listitem"
+    {% if filter_name != blank %}data-name="{{ filter_name | escape }}"{% endif %}
+    {% if filter_letter != blank %}data-letter="{{ filter_letter | escape }}"{% endif %}
+    {{ shopify_attributes }}
+  >
+    {{ card_content }}
+  </a>
+{%- else -%}
+  <div
+    class="sa-top-series__card sa-card"
+    aria-label="{{ card_label | escape }}"
+    style="--sa-series-accent: {{ card_accent }};"
+    role="listitem"
+    {% if filter_name != blank %}data-name="{{ filter_name | escape }}"{% endif %}
+    {% if filter_letter != blank %}data-letter="{{ filter_letter | escape }}"{% endif %}
+    {{ shopify_attributes }}
+  >
+    {{ card_content }}
+  </div>
+{%- endif -%}

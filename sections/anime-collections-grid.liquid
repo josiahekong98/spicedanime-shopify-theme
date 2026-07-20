@@ -1,224 +1,458 @@
+{{- 'sa-series-archive-card.css' | asset_url | stylesheet_tag -}}
+<script src="{{- 'sa-anime-collections-directory.js' | asset_url -}}" defer="defer"></script>
+
+{%- liquid
+  assign letters = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ','
+  assign quick_series_requests = "One Piece::onepiece|Rick and Morty::rickandmorty,rickmorty|Pokemon::pokemon|Evangelion::evangelion,neongenesisevangelion|Cowboy Bebop::cowboybebop|Soul Eater::souleater|Bleach::bleach|JoJo’s Bizarre Adventure::jojosbizarreadventure|Berserk::berserk|Naruto::naruto|Frieren::frieren|Dragon Ball Z::dragonballz,dragonball|Jujutsu Kaisen::jujutsukaisen" | split: '|'
+  assign anime_collection_count = 0
+-%}
+
+{%- capture anime_collection_cards -%}
+  {%- for collection in collections -%}
+    {%- if collection.title contains '(Series)' -%}
+      {%- liquid
+        assign anime_collection_count = anime_collection_count | plus: 1
+        assign clean_title = collection.title | replace: '(Series)', '' | strip
+        assign searchable_name = clean_title | downcase
+        assign first_letter = clean_title | slice: 0, 1 | upcase
+        assign card_image = collection.image
+        if card_image == blank
+          assign card_image = collection.products.first.featured_image
+        endif
+        assign card_accessibility_label = 'Shop ' | append: clean_title | append: ' collection'
+      -%}
+      <div
+        class="all-anime-card"
+        data-name="{{ searchable_name | escape }}"
+        data-letter="{{ first_letter | escape }}"
+        data-anime-card
+        role="none"
+      >
+        {%- render 'sa-series-archive-card',
+          title: clean_title,
+          url: collection.url,
+          image: card_image,
+          badge: 'none',
+          accent: 'var(--sa-relic-red)',
+          index: anime_collection_count,
+          accessibility_label: card_accessibility_label,
+          filter_name: searchable_name,
+          filter_letter: first_letter
+        -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture anime_quick_filters -%}
+  {%- for quick_request in quick_series_requests -%}
+    {%- liquid
+      assign quick_parts = quick_request | split: '::'
+      assign quick_label = quick_parts.first
+      assign quick_aliases = quick_parts.last | split: ','
+      assign quick_match_count = 0
+      assign quick_match_name = ''
+    -%}
+    {%- for collection in collections -%}
+      {%- if collection.title contains '(Series)' -%}
+        {%- liquid
+          assign quick_candidate_name = collection.title | replace: '(Series)', '' | strip | downcase
+          assign quick_candidate_key = quick_candidate_name | replace: 'é', 'e'
+          assign quick_candidate_key = quick_candidate_key | replace: '&', 'and'
+          assign quick_candidate_key = quick_candidate_key | replace: '’', '' | replace: "'", ''
+          assign quick_candidate_key = quick_candidate_key | replace: '.', '' | replace: ',', '' | replace: ':', ''
+          assign quick_candidate_key = quick_candidate_key | replace: ';', '' | replace: '!', '' | replace: '?', ''
+          assign quick_candidate_key = quick_candidate_key | replace: '-', '' | replace: '–', '' | replace: '—', ''
+          assign quick_candidate_key = quick_candidate_key | replace: '/', '' | replace: ' ', ''
+          assign quick_candidate_matches = false
+
+          for quick_alias in quick_aliases
+            if quick_candidate_key == quick_alias
+              assign quick_candidate_matches = true
+              break
+            endif
+          endfor
+
+          if quick_candidate_matches
+            assign quick_match_count = quick_match_count | plus: 1
+            assign quick_match_name = quick_candidate_name
+          endif
+        -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if quick_match_count == 1 -%}
+      <button
+        class="all-anime-quick-filter"
+        type="button"
+        data-anime-quick-filter
+        data-series-name="{{ quick_match_name | escape }}"
+        aria-pressed="false"
+        aria-label="Filter by {{ quick_label | escape }}"
+      >
+        {{- quick_label -}}
+      </button>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
 <style>
-/* FULL WIDTH DARK BACKGROUND */
-.all-anime-grid-wrap {
-  background:#1F1F1F;
-  width:100vw;
-  position:relative;
-  left:50%;
-  right:50%;
-  margin-left:-50vw;
-  margin-right:-50vw;
-  padding:40px 0 60px;
-}
+  #shopify-section-{{ section.id }} .all-anime-grid-wrap {
+    width: 100%;
+    overflow: hidden;
+    padding-block: clamp(36px, 7vw, 84px);
+    color: var(--sa-museum-ivory);
+    background-color: var(--sa-archive-black);
+    background-image: var(--sa-texture-concrete);
+  }
 
-/* HEADER (CLICK = RESET FILTERS) */
-.all-anime-header {
-  text-align:center;
-  font-weight:300;
-  letter-spacing:.18em;
-  font-size:18px;
-  text-transform:uppercase;
-  color:#ededed;
-  margin-bottom:20px;
-  cursor:pointer;
-}
+  #shopify-section-{{ section.id }} .all-anime-container {
+    width: min(1180px, calc(100% - (2 * var(--sa-page-gutter))));
+    margin-inline: auto;
+  }
 
-/* SEARCH ON ITS OWN ROW */
-.all-anime-search-wrap {
-  width:100%;
-  display:flex;
-  justify-content:center;
-  margin-bottom:20px;
-}
+  #shopify-section-{{ section.id }} .all-anime-intro {
+    max-width: 760px;
+    margin-block-end: clamp(28px, 5vw, 48px);
+  }
 
-.all-anime-search {
-  padding:12px 14px;
-  border:none;
-  background:#2b2b2b;
-  color:white;
-  border-radius:6px;
-  font-size:14px;
-  width:85%;
-}
+  #shopify-section-{{ section.id }} .all-anime-eyebrow,
+  #shopify-section-{{ section.id }} .all-anime-count {
+    margin: 0;
+    color: var(--sa-relic-red);
+    font-family: var(--sa-font-archive);
+    font-size: var(--sa-type-label);
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
 
-/* LETTER FILTER BELOW */
-.all-anime-controls {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:10px;
-  margin-bottom:24px;
-}
+  #shopify-section-{{ section.id }} .all-anime-title {
+    margin: var(--sa-space-2) 0 0;
+    color: var(--sa-museum-ivory);
+    font-family: var(--sa-font-display);
+    font-size: clamp(34px, 6vw, 64px);
+    line-height: var(--sa-line-heading);
+    letter-spacing: 0;
+  }
 
-.all-anime-filter-btn {
-  padding:8px 14px;
-  background:#2b2b2b;
-  border-radius:20px;
-  text-transform:uppercase;
-  color:#ededed;
-  font-size:10px;
-  letter-spacing:.14em;
-  border:1px solid #3a3a3a;
-  cursor:pointer;
-}
+  #shopify-section-{{ section.id }} .all-anime-description {
+    max-width: 620px;
+    margin: var(--sa-space-3) 0 0;
+    color: var(--sa-gallery-stone);
+    font-size: var(--sa-type-body);
+    line-height: var(--sa-line-body);
+  }
 
-.all-anime-filter-btn.active {
-  background:#ededed;
-  color:#1F1F1F;
-}
+  #shopify-section-{{ section.id }} .all-anime-count {
+    margin-block-start: var(--sa-space-3);
+    color: var(--sa-gallery-stone);
+  }
 
-/* CARD GRID — PADDED */
-.all-anime-grid {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
-  padding:0 14px;
-}
+  #shopify-section-{{ section.id }} .all-anime-search-wrap {
+    max-width: 720px;
+    margin-block-end: var(--sa-space-5);
+  }
 
-/* MOBILE: 2 ACROSS */
-.all-anime-card {
-  width:calc(50% - 12px);
-  max-width:none;
-  margin:0;
-  text-align:center;
-  text-decoration:none;
-  position:relative;
-  overflow:hidden;
-}
+  #shopify-section-{{ section.id }} .all-anime-search {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 16px;
+    color: var(--sa-museum-ivory);
+    border: 1px solid var(--sa-border-subtle);
+    border-radius: var(--sa-radius-md);
+    background: var(--sa-concrete-charcoal);
+    font: inherit;
+    letter-spacing: 0;
+  }
 
-/* IMAGES */
-.all-anime-card img {
-  width:100%;
-  display:block;
-  border-radius:0;
-  object-fit:cover;
-  transition:transform .25s ease;
-}
+  #shopify-section-{{ section.id }} .all-anime-search::placeholder {
+    color: var(--sa-gallery-stone);
+    opacity: 0.78;
+  }
 
-/* LIGHT HOVER ZOOM */
-.all-anime-card:hover img {
-  transform:scale(1.03);
-}
+  #shopify-section-{{ section.id }} .all-anime-search:focus {
+    outline: 2px solid var(--sa-relic-red);
+    outline-offset: 2px;
+    border-color: var(--sa-relic-red);
+  }
 
-/* DARK HOVER OVERLAY — NO TEXT */
-.all-anime-overlay {
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.25);
-  opacity:0;
-  transition:.25s ease;
-}
+  #shopify-section-{{ section.id }} .all-anime-quick-series {
+    width: 100%;
+    min-width: 0;
+    margin-block-end: var(--sa-space-5);
+  }
 
-.all-anime-card:hover .all-anime-overlay {
-  opacity:1;
-}
+  #shopify-section-{{ section.id }} .all-anime-quick-label {
+    margin: 0 0 var(--sa-space-3);
+    color: var(--sa-gallery-stone);
+    font-family: var(--sa-font-archive);
+    font-size: var(--sa-type-label);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
 
-/* TITLE UNDER IMAGE */
-.all-anime-card-title {
-  font-size:10px;
-  font-weight:400;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  margin-top:6px;
-  margin-bottom:14px;
-  color:#ededed;
-  opacity:0.9;
-}
+  #shopify-section-{{ section.id }} .all-anime-quick-filters {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 6px;
+    scroll-padding-inline: 2px;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
 
-/* BREAKPOINTS */
-@media(min-width: 600px) { .all-anime-card { width:calc(33.33% - 14px); } }
-@media(min-width: 900px) { .all-anime-card { width:calc(25% - 14px); } }
-@media(min-width: 1200px) { .all-anime-card { width:calc(20% - 14px); } }
+  #shopify-section-{{ section.id }} .all-anime-quick-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-quick-filter {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 10px 16px;
+    color: var(--sa-gallery-stone);
+    border: 1px solid var(--sa-border-subtle);
+    border-radius: 999px;
+    background: var(--sa-concrete-charcoal);
+    font-family: var(--sa-font-archive);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-quick-filter:hover,
+  #shopify-section-{{ section.id }} .all-anime-quick-filter:focus-visible,
+  #shopify-section-{{ section.id }} .all-anime-quick-filter.active {
+    color: var(--sa-museum-ivory);
+    border-color: var(--sa-relic-red);
+    background: color-mix(in srgb, var(--sa-relic-red) 16%, var(--sa-concrete-charcoal));
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-quick-filter:focus-visible {
+    outline: 2px solid var(--sa-relic-red);
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-index-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-space-4);
+    margin-block-end: var(--sa-space-3);
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-index-label {
+    margin: 0;
+    color: var(--sa-gallery-stone);
+    font-family: var(--sa-font-archive);
+    font-size: var(--sa-type-label);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-reset {
+    min-height: 36px;
+    padding: 6px 10px;
+    color: var(--sa-gallery-stone);
+    border: 1px solid var(--sa-border-subtle);
+    border-radius: var(--sa-radius-xs);
+    background: transparent;
+    font-family: var(--sa-font-archive);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-reset:hover,
+  #shopify-section-{{ section.id }} .all-anime-reset:focus-visible {
+    color: var(--sa-museum-ivory);
+    border-color: var(--sa-relic-red);
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-reset:focus-visible {
+    outline: 2px solid var(--sa-relic-red);
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-block-end: clamp(28px, 5vw, 48px);
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-filter-btn {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    padding: 0;
+    color: var(--sa-gallery-stone);
+    border: 1px solid var(--sa-border-subtle);
+    border-radius: 999px;
+    background: var(--sa-concrete-charcoal);
+    font-family: var(--sa-font-archive);
+    font-size: 11px;
+    letter-spacing: 0;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-filter-btn:hover,
+  #shopify-section-{{ section.id }} .all-anime-filter-btn:focus-visible,
+  #shopify-section-{{ section.id }} .all-anime-filter-btn.active {
+    color: var(--sa-museum-ivory);
+    border-color: var(--sa-relic-red);
+    background: color-mix(in srgb, var(--sa-relic-red) 22%, var(--sa-concrete-charcoal));
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-filter-btn:focus-visible {
+    outline: 2px solid var(--sa-relic-red);
+    outline-offset: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-filter-btn:disabled {
+    color: var(--sa-gallery-stone);
+    border-color: var(--sa-border-subtle);
+    background: var(--sa-concrete-charcoal);
+    cursor: not-allowed;
+    opacity: 0.36;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-card {
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-card[hidden] {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-card > .sa-top-series__card {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-card .sa-top-series__image-wrap {
+    display: block;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-card .sa-top-series__image,
+  #shopify-section-{{ section.id }} .all-anime-card .sa-top-series__fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-empty {
+    margin: var(--sa-space-6) 0 0;
+    padding: var(--sa-space-5);
+    color: var(--sa-gallery-stone);
+    border: var(--sa-border-hairline);
+    border-radius: var(--sa-radius-md);
+    background: var(--sa-concrete-charcoal);
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .all-anime-empty[hidden] {
+    display: none;
+  }
+
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .all-anime-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media screen and (min-width: 1050px) {
+    #shopify-section-{{ section.id }} .all-anime-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+  }
 </style>
 
+<section
+  class="all-anime-grid-wrap"
+  aria-labelledby="all-anime-title-{{ section.id }}"
+  data-anime-directory
+>
+  <div class="all-anime-container">
+    <header class="all-anime-intro">
+      <p class="all-anime-eyebrow">Series Archive</p>
+      <h1 class="all-anime-title" id="all-anime-title-{{ section.id }}">All Anime Collections</h1>
+      <p class="all-anime-description">Browse every series currently represented in the SpicedAnime collection.</p>
+      <p class="all-anime-count" data-anime-count aria-live="polite">{{ anime_collection_count }} collections indexed</p>
+    </header>
 
-<div class="all-anime-grid-wrap">
+    <div class="all-anime-search-wrap">
+      <label class="visually-hidden" for="anime-search-{{ section.id }}">Search anime collections</label>
+      <input
+        type="search"
+        placeholder="Search anime..."
+        class="all-anime-search"
+        id="anime-search-{{ section.id }}"
+        autocomplete="off"
+        spellcheck="false"
+        data-anime-search
+      >
+    </div>
 
-  <!-- HEADER (Click to Reset Filters) -->
-  <div class="all-anime-header" id="resetAnimeGrid">ALL ANIME COLLECTIONS</div>
+    {%- if anime_quick_filters != blank -%}
+      <div class="all-anime-quick-series">
+        <p class="all-anime-quick-label">Popular Series</p>
+        <div
+          class="all-anime-quick-filters"
+          role="group"
+          aria-label="Filter by popular series"
+          data-anime-quick-filters
+        >
+          {{- anime_quick_filters -}}
+        </div>
+      </div>
+    {%- endif -%}
 
-  <!-- SEARCH BAR -->
-  <div class="all-anime-search-wrap">
-    <input type="text" placeholder="Search anime..." class="all-anime-search" id="animeSearch">
+    <div class="all-anime-index-header">
+      <p class="all-anime-index-label">A-Z Archive Index</p>
+      <button class="all-anime-reset" type="button" data-anime-reset>Reset filters</button>
+    </div>
+    <div class="all-anime-controls" role="group" aria-label="Filter collections by first letter">
+      {% for l in letters %}
+        <button
+          class="all-anime-filter-btn"
+          type="button"
+          data-letter="{{ l }}"
+          data-anime-filter
+          aria-pressed="false"
+        >
+          {{- l -}}
+        </button>
+      {% endfor %}
+    </div>
+
+    <div class="all-anime-grid" role="list" data-anime-grid>
+      {{ anime_collection_cards }}
+    </div>
+    <p class="all-anime-empty" role="status" data-anime-empty hidden aria-hidden="true">
+      No series files match this archive filter.
+    </p>
   </div>
-
-  <!-- LETTER FILTERS -->
-  <div class="all-anime-controls">
-    {% assign letters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
-    {% for l in letters %}
-      <button class="all-anime-filter-btn" data-letter="{{ l }}">{{ l }}</button>
-    {% endfor %}
-  </div>
-
-  <!-- COLLECTION GRID -->
-  <div class="all-anime-grid" id="animeGrid">
-
-    {% for collection in collections %}
-      {% if collection.title contains "(Series)" %}
-        {% assign clean_title = collection.title | replace: "(Series)", "" | strip %}
-        {% assign first_letter = clean_title | slice: 0, 1 | upcase %}
-
-        <a href="{{ collection.url }}"
-           class="all-anime-card"
-           data-name="{{ clean_title | downcase }}"
-           data-letter="{{ first_letter }}">
-
-          {% if collection.image %}
-            <img src="{{ collection.image | image_url: width:540 }}" alt="{{ clean_title }}">
-          {% elsif collection.products.first.featured_image %}
-            <img src="{{ collection.products.first.featured_image | image_url: width:540 }}" alt="{{ clean_title }}">
-          {% endif %}
-
-          <!-- DARK OVERLAY NO TEXT -->
-          <div class="all-anime-overlay"></div>
-
-          <div class="all-anime-card-title">{{ clean_title }}</div>
-        </a>
-
-      {% endif %}
-    {% endfor %}
-
-  </div>
-
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = document.querySelectorAll(".all-anime-card");
-  const search = document.getElementById("animeSearch");
-  const filterBtns = document.querySelectorAll(".all-anime-filter-btn");
-
-  /* SEARCH FILTER */
-  search.addEventListener("input", () => {
-    const val = search.value.toLowerCase();
-    cards.forEach(card => {
-      card.style.display = card.dataset.name.includes(val) ? "block" : "none";
-    });
-  });
-
-  /* LETTER FILTER */
-  filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      let target = btn.dataset.letter;
-
-      filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      cards.forEach(card => {
-        card.style.display = card.dataset.letter === target ? "block" : "none";
-      });
-    });
-  });
-
-  /* RESET FILTERS WHEN CLICKING TITLE */
-  document.getElementById("resetAnimeGrid").addEventListener("click", () => {
-    search.value = "";
-    filterBtns.forEach(b => b.classList.remove("active"));
-    cards.forEach(card => card.style.display = "block");
-  });
-});
-</script>
+</section>
 
 {% schema %}
 {

@@ -1,0 +1,96 @@
+{
+  "sections": {
+    "main": {
+      "type": "sa-lifestyle-archive",
+      "blocks": {
+        "room_decor": {
+          "type": "lifestyle_path",
+          "settings": {
+            "collection": "all-tapestries",
+            "page": "",
+            "products": [],
+            "image": "",
+            "title": "Room Decor",
+            "description": "Tapestries and accents that bring your space to life.",
+            "cta": "SHOP ROOM DECOR",
+            "accent": "#4F536F",
+            "accessibility_label": "Shop Room Decor"
+          }
+        }
+      },
+      "block_order": [
+        "room_decor"
+      ],
+      "settings": {
+        "eyebrow": "LIFESTYLE ARCHIVE",
+        "heading": "Explore by Lifestyle",
+        "intro": "Build your world by how you use it: setups, spaces, and everyday carry.",
+        "vibe_eyebrow": "START WITH A VIBE",
+        "vibe_heading": "Find Your Starting Point",
+        "curated_eyebrow": "CURATED SETUPS",
+        "curated_heading": "Objects for the Setup",
+        "curated_intro": "Individually shoppable pieces selected for a coordinated use or space.",
+        "curated_products": [],
+        "curated_collection": "",
+        "curated_limit": 8
+      }
+    },
+    "trust": {
+      "type": "trust-indicators",
+      "blocks": {
+        "trust_individual": {
+          "type": "indicator",
+          "settings": {
+            "title": "Shop at Your Pace",
+            "subheading": "Each object remains individually purchasable.",
+            "link_label": "",
+            "link": "",
+            "icon": "theme-star"
+          }
+        },
+        "trust_current": {
+          "type": "indicator",
+          "settings": {
+            "title": "Current Product Details",
+            "subheading": "Pricing and availability come directly from each product.",
+            "link_label": "",
+            "link": "",
+            "icon": "theme-box"
+          }
+        },
+        "trust_paths": {
+          "type": "indicator",
+          "settings": {
+            "title": "Curated Paths",
+            "subheading": "Browse by use, space, and everyday routine.",
+            "link_label": "",
+            "link": "",
+            "icon": "theme-heart"
+          }
+        }
+      },
+      "block_order": [
+        "trust_individual",
+        "trust_current",
+        "trust_paths"
+      ],
+      "settings": {
+        "swipe_on_mobile": true,
+        "slideshow_autoplay_interval": 0,
+        "content_direction": "horizontal",
+        "content_alignment": "text-center",
+        "content_size": "h6",
+        "icon_size": 4.8,
+        "color_scheme_for_blocks": "scheme-1",
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-1",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "trust"
+  ]
+}

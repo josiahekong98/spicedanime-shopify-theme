@@ -326,7 +326,7 @@
             "text": "Find lighters, grinder sets, tapestries, wallets, rolling trays, stash jars and more.",
             "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_01_36_15_AM.png",
             "icon_label": "P",
-            "link": "shopify://collections",
+            "link": "/pages/explore-by-product",
             "link_label": "Shop Product Types",
             "accessibility_label": "",
             "accent_color": "#C45A2A"

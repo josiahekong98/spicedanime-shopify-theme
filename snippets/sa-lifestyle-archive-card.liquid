@@ -1,0 +1,103 @@
+{% comment %}
+  Renders a Lifestyle Archive editorial card.
+
+  Accepts:
+  - title: Visible path title
+  - url: Optional page or collection URL
+  - image: Preferred editorial image
+  - description: Editorial path description
+  - cta: Destination action text
+  - accent: Card accent color
+  - index: One-based path index
+  - accessibility_label: Optional destination label
+  - shopify_attributes: Theme Editor block attributes
+  - products: Optional products used when no destination exists
+  - variant: main or vibe
+{% endcomment %}
+
+{%- liquid
+  assign card_title = title | default: 'Lifestyle Path'
+  assign card_accent = accent | default: '#B3362D'
+  assign card_variant = variant | default: 'main'
+  assign card_accessibility_label = accessibility_label
+  if card_accessibility_label == blank
+    assign card_accessibility_label = cta | default: 'Explore' | append: ': ' | append: card_title
+  endif
+  assign fallback_initial = card_title | strip | slice: 0, 1 | upcase
+  assign card_index = index | default: 1
+-%}
+
+{%- capture card_index_label -%}
+  {%- if card_index < 10 -%}0{%- endif -%}{{- card_index -}}
+{%- endcapture -%}
+
+{%- capture card_inner -%}
+  <span class="sa-lifestyle-archive-card__media">
+    {%- if image != blank -%}
+      {{- image
+        | image_url: width: 1600
+        | image_tag:
+          class: 'sa-lifestyle-archive-card__image',
+          loading: 'lazy',
+          widths: '480, 720, 960, 1200, 1600',
+          sizes: '(min-width: 1100px) 58vw, (min-width: 750px) 48vw, 100vw',
+          alt: card_title
+      -}}
+    {%- else -%}
+      <span
+        class="sa-lifestyle-archive-card__placeholder"
+        role="img"
+        aria-label="No editorial image available for {{ card_title | escape }}"
+      >
+        <span aria-hidden="true">{{ fallback_initial }}</span>
+      </span>
+    {%- endif -%}
+  </span>
+
+  <span class="sa-lifestyle-archive-card__body">
+    <span class="sa-lifestyle-archive-card__index">Path {{ card_index_label }}</span>
+    <span class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</span>
+    {%- if description != blank -%}
+      <span class="sa-lifestyle-archive-card__description">{{ description | escape }}</span>
+    {%- endif -%}
+    {%- if url != blank and cta != blank -%}
+      <span class="sa-lifestyle-archive-card__cta">{{ cta | escape }}</span>
+    {%- endif -%}
+  </span>
+{%- endcapture -%}
+
+{%- if url != blank -%}
+  <a
+    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }}"
+    href="{{ url }}"
+    aria-label="{{ card_accessibility_label | escape }}"
+    style="--sa-lifestyle-accent: {{ card_accent }};"
+    role="listitem"
+    {{ shopify_attributes }}
+  >
+    {{- card_inner -}}
+  </a>
+{%- else -%}
+  <article
+    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }}"
+    style="--sa-lifestyle-accent: {{ card_accent }};"
+    role="listitem"
+    {{ shopify_attributes }}
+  >
+    {{- card_inner -}}
+    {%- if products != blank -%}
+      <nav class="sa-lifestyle-archive-card__products" aria-label="Products selected for {{ card_title | escape }}">
+        <span class="sa-lifestyle-archive-card__products-label">Selected objects</span>
+        <ul class="sa-lifestyle-archive-card__product-list" role="list">
+          {%- for product in products limit: 4 -%}
+            {%- if product != blank -%}
+              <li>
+                <a href="{{ product.url }}">{{ product.title | escape }}</a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </article>
+{%- endif -%}

@@ -14,12 +14,15 @@
     </summary>
 
     <div class="drawer__content drawer__content--nav js-drawer color-{{ section.settings.color_scheme_for_drawer }} gradient" id="Navigation-menu-drawer-{{- append_id -}}" tabindex="-1">
-      <button
-        class="drawer__button-close header-drawer__button-close button-reset no-js-hidden js-btn-close-drawer"
-        aria-label="{{- 'theme.actions.close' | t -}}"
-      >
-        {%- render 'icon', icon_name: 'theme-arrow' -%}
-      </button>
+      <div class="header-drawer__shell-header">
+        <button
+          class="drawer__button-close header-drawer__button-close button-reset no-js-hidden js-btn-close-drawer"
+          aria-label="{{- 'theme.actions.close' | t -}}"
+        >
+          {%- render 'icon', icon_name: 'theme-arrow', class: 'header-drawer__close-icon header-drawer__close-icon--desktop' -%}
+          {%- render 'icon', icon_name: 'theme-close-small', class: 'header-drawer__close-icon header-drawer__close-icon--mobile' -%}
+        </button>
+      </div>
 
       <nav class="slide-out-menu" aria-label="Main menu">
         <div class="menu-panels">
@@ -30,7 +33,8 @@
             data-menu-panel-key="root"
             aria-hidden="false"
           >
-            <ul>
+            <div class="menu-panel__body" data-menu-panel-scroll>
+            <ul class="menu-panel__list">
               {% for link in menu.links %}
                 {% liquid
                   assign link_item_index = forloop.index
@@ -125,6 +129,7 @@
                 </ul>
               </div>
             </div>
+            </div>
           </div>
           {% for link in menu.links %}
             {% liquid
@@ -156,17 +161,20 @@
               data-menu-panel-key="menu-{{ link_item_index }}"
               aria-hidden="true"
             >
-              <button
-                type="button"
-                class="menu-link menu-header menu-panel__back"
-                data-menu-panel-back
-                aria-label="{{- 'product.go_back' | t -}}"
-              >
-                {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
-                {{- 'product.go_back' | t -}}
-              </button>
-              <h2 class="menu-panel__title h4">{{ link.title | escape }}</h2>
-              <ul>
+              <div class="menu-panel__header">
+                <button
+                  type="button"
+                  class="menu-link menu-header menu-panel__back"
+                  data-menu-panel-back
+                  aria-label="{{- 'product.go_back' | t -}}"
+                >
+                  {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
+                  {{- 'product.go_back' | t -}}
+                </button>
+                <h2 class="menu-panel__title h4">{{ link.title | escape }}</h2>
+              </div>
+              <div class="menu-panel__body" data-menu-panel-scroll>
+              <ul class="menu-panel__list">
                 {%- if link.url != blank and link.url != '#' -%}
                   <li class="menu-panel__view-all">
                     <a href="{{ link.url }}" class="h4" {% if link.current %}aria-current="page"{% endif %}>
@@ -269,9 +277,8 @@
                     {% endfor %}
                   </li>
                 {% endif %}
-
-
               </ul>
+              </div>
             </div>
             {% for child_link in link.links %}
               {% if child_link.links.size == 0 %}
@@ -287,18 +294,21 @@
                 data-menu-panel-key="menu-{{ link_item_index }}-{{ child_link_index }}"
                 aria-hidden="true"
               >
-                <button
-                  type="button"
-                  class="menu-link menu-header menu-panel__back"
-                  data-ref="{{ link_handle }}"
-                  data-menu-panel-back
-                  aria-label="{{- 'product.go_back' | t -}}"
-                >
-                  {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
-                  {{- 'product.go_back' | t -}}
-                </button>
-                <h2 class="menu-panel__title h4">{{ child_link.title | escape }}</h2>
-                <ul>
+                <div class="menu-panel__header">
+                  <button
+                    type="button"
+                    class="menu-link menu-header menu-panel__back"
+                    data-ref="{{ link_handle }}"
+                    data-menu-panel-back
+                    aria-label="{{- 'product.go_back' | t -}}"
+                  >
+                    {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
+                    {{- 'product.go_back' | t -}}
+                  </button>
+                  <h2 class="menu-panel__title h4">{{ child_link.title | escape }}</h2>
+                </div>
+                <div class="menu-panel__body" data-menu-panel-scroll>
+                <ul class="menu-panel__list">
                   {%- if child_link.url != blank and child_link.url != '#' -%}
                     <li class="menu-panel__view-all">
                       <a href="{{ child_link.url }}" class="h4" {% if child_link.current %}aria-current="page"{% endif %}>
@@ -314,6 +324,7 @@
                     </li>
                   {% endfor %}
                 </ul>
+                </div>
               </div>
             {% endfor %}
           {% endfor %}

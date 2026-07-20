@@ -880,6 +880,10 @@ class HeaderDrawer extends MenuDrawer {
     );
   }
 
+  getMenuPanelScrollContainer(panel) {
+    return panel.querySelector("[data-menu-panel-scroll]") || panel;
+  }
+
   setMenuPanelAccessibility(panel, isActive) {
     panel.setAttribute("aria-hidden", isActive ? "false" : "true");
     panel.toggleAttribute("inert", !isActive);
@@ -941,6 +945,7 @@ class HeaderDrawer extends MenuDrawer {
     targetPanel.classList.remove("is-previous", "non-active", "was-active");
     targetPanel.classList.add("is-active");
     targetPanel.scrollTop = 0;
+    this.getMenuPanelScrollContainer(targetPanel).scrollTop = 0;
     this.setMenuPanelAccessibility(targetPanel, true);
 
     trigger.setAttribute("aria-expanded", "true");
@@ -992,8 +997,10 @@ class HeaderDrawer extends MenuDrawer {
       );
       this.setMenuPanelAccessibility(panel, isRootPanel);
       panel.scrollTop = 0;
+      this.getMenuPanelScrollContainer(panel).scrollTop = 0;
     });
 
+    this.drawer.scrollTop = 0;
     this.menuPanelPath = [{ panel: this.menuRootPanel, trigger: null }];
     this.drawer.classList.remove("has-active-menu-panel");
   }
@@ -3272,5 +3279,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", autoLoad);
 });
-
 

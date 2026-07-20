@@ -5,7 +5,7 @@
       "settings": {
         "eyebrow": "SET BUILDER",
         "heading": "Build the Set",
-        "intro": "Choose a series, select a setup, and assemble matching pieces from the archive."
+        "intro": "<p>Choose a series, select a setup, and assemble matching pieces from the archive.</p>"
       }
     },
     "faq": {

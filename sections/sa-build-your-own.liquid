@@ -1,0 +1,324 @@
+{{- 'sa-build-your-own.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'sa-build-your-own.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign selected_product = section.settings.product
+  assign form_id = 'sa-build-your-own-form-' | append: section.id
+  assign dialog_id = 'sa-build-your-own-dialog-' | append: section.id
+  assign dialog_title_id = 'sa-build-your-own-dialog-title-' | append: section.id
+  assign upload_id = 'sa-build-your-own-upload-' | append: section.id
+  assign notes_id = 'sa-build-your-own-notes-' | append: section.id
+  assign max_file_bytes = section.settings.max_file_size_mb | times: 1048576
+-%}
+
+<section
+  class="sa-build-your-own color-{{ section.settings.color_scheme }} gradient"
+  data-sa-build-your-own
+  data-cart-add-url="{{ routes.cart_add_url }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-max-files="{{ section.settings.max_files }}"
+  data-max-file-bytes="{{ max_file_bytes }}"
+  data-initial-helper="{{ section.settings.status_copy | escape }}"
+  data-default-price="{% if selected_product != blank %}{{ selected_product.price_min | money | escape }}{% endif %}"
+  style="--sa-byo-spacing-top: {{ section.settings.spacing_top }}rem; --sa-byo-spacing-bottom: {{ section.settings.spacing_bottom }}rem;"
+>
+  <div class="container {{ section.settings.section_width }}">
+    {%- if selected_product == blank -%}
+      <div class="sa-build-your-own__card sa-build-your-own__empty-state">
+        <h2 class="sa-build-your-own__title">{{ section.settings.heading | escape }}</h2>
+        <p>Select the custom-order product in this section's Theme Editor settings.</p>
+      </div>
+    {%- else -%}
+      {%- form 'product',
+        selected_product,
+        id: form_id,
+        class: 'sa-build-your-own__form',
+        enctype: 'multipart/form-data',
+        novalidate: 'novalidate'
+      -%}
+        <input type="hidden" name="id" value="" data-sa-variant-input>
+        <input type="hidden" name="quantity" value="1">
+
+        <div class="sa-build-your-own__card">
+          <div class="sa-build-your-own__header-line">
+            <div class="sa-build-your-own__heading-wrap">
+              <h2 class="sa-build-your-own__title">{{ section.settings.heading | escape }}</h2>
+              <p class="sa-build-your-own__tagline">{{ section.settings.subtitle | escape }}</p>
+            </div>
+            <p class="sa-build-your-own__price" data-sa-price>{{ selected_product.price_min | money }}</p>
+          </div>
+
+          <div class="sa-build-your-own__actions">
+            <button
+              type="button"
+              class="sa-build-your-own__button sa-build-your-own__button--customize"
+              data-sa-open
+              aria-haspopup="dialog"
+              aria-controls="{{ dialog_id }}"
+            >
+              {{- section.settings.customize_label | escape -}}
+            </button>
+            <button
+              type="submit"
+              class="sa-build-your-own__button sa-build-your-own__button--add"
+              data-sa-submit
+              data-label="{{ section.settings.add_to_cart_label | escape }}"
+              disabled
+              aria-disabled="true"
+            >
+              <span data-sa-submit-label>{{ section.settings.add_to_cart_label | escape }}</span>
+            </button>
+          </div>
+
+          <div class="sa-build-your-own__small-row">
+            <span data-sa-option-status aria-live="polite">Option: not selected</span>
+            <span data-sa-helper>{{ section.settings.status_copy | escape }}</span>
+          </div>
+
+          <div class="sa-build-your-own__homepage-preview" data-sa-home-preview hidden>
+            <img src="" alt="" width="40" height="40" data-sa-home-preview-image>
+            <span data-sa-home-preview-count></span>
+          </div>
+
+          <p class="sa-build-your-own__message" data-sa-status role="status" aria-live="polite" hidden></p>
+        </div>
+
+        <div
+          id="{{ dialog_id }}"
+          class="sa-build-your-own__modal"
+          data-sa-modal
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="{{ dialog_title_id }}"
+          aria-hidden="true"
+          hidden
+        >
+          <div class="sa-build-your-own__modal-inner" data-sa-modal-panel tabindex="-1">
+            <div class="sa-build-your-own__modal-top">
+              <h3 id="{{ dialog_title_id }}" class="sa-build-your-own__modal-title">Build your kit</h3>
+              <button type="button" class="sa-build-your-own__close" data-sa-close aria-label="Close customizer">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="sa-build-your-own__steps" aria-label="Customization progress">
+              <span class="sa-build-your-own__step is-active" data-sa-step-indicator="1" aria-current="step">1. Choose combo</span>
+              <span class="sa-build-your-own__step" data-sa-step-indicator="2">2. Upload art</span>
+              <span class="sa-build-your-own__step" data-sa-step-indicator="3">3. Review</span>
+            </div>
+
+            <div class="sa-build-your-own__step-panel is-active" data-sa-step-panel="1">
+              <p class="sa-build-your-own__prompt">Pick the combo you want to build:</p>
+              <div class="sa-build-your-own__variant-row" data-sa-variant-row>
+                {%- for variant in selected_product.variants -%}
+                  <button
+                    type="button"
+                    class="sa-build-your-own__variant-button"
+                    data-sa-variant
+                    data-variant-id="{{ variant.id }}"
+                    data-variant-title="{{ variant.title | escape }}"
+                    data-variant-price="{{ variant.price | money | escape }}"
+                    data-variant-available="{{ variant.available }}"
+                    aria-pressed="false"
+                    {% unless variant.available %}
+                      disabled aria-disabled="true"
+                    {% endunless %}
+                  >
+                    {{- variant.title | escape -}}
+                    {%- unless variant.available %} - Sold out{% endunless -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+              <p class="sa-build-your-own__popular-help">
+                <strong>Popular:</strong> Grinder + Jar &bull; Full Grinder Set (Grinder + Jar + Tray) &bull; Full Box Set (Stashbox + Jar + Grinder + Lighter)
+              </p>
+            </div>
+
+            <div class="sa-build-your-own__step-panel" data-sa-step-panel="2" hidden>
+              <div class="sa-build-your-own__upload-section">
+                <label class="sa-build-your-own__upload-label" for="{{ upload_id }}">Upload your artwork</label>
+                <label class="sa-build-your-own__upload-box" for="{{ upload_id }}">
+                  <input
+                    id="{{ upload_id }}"
+                    class="sa-build-your-own__upload-input"
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    multiple
+                    data-sa-file-input
+                  >
+                  <span class="sa-build-your-own__upload-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="36" height="36" focusable="false">
+                      <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="sa-build-your-own__upload-main-text">Tap to upload</span>
+                </label>
+
+                <p class="sa-build-your-own__upload-error" data-sa-file-error role="alert" hidden></p>
+                <div class="sa-build-your-own__preview-list" data-sa-preview-list></div>
+                <button type="button" class="sa-build-your-own__clear-uploads" data-sa-clear-files hidden>Clear uploads</button>
+                <p class="sa-build-your-own__upload-note">{{ section.settings.upload_help_text | escape }}</p>
+              </div>
+            </div>
+
+            <div class="sa-build-your-own__step-panel" data-sa-step-panel="3" hidden>
+              <div class="sa-build-your-own__summary">
+                <p><strong>Selected combo:</strong> <span data-sa-summary-variant>None</span></p>
+                <p><strong>Price:</strong> <span data-sa-summary-price>{{ selected_product.price_min | money }}</span></p>
+                <div class="sa-build-your-own__summary-images" data-sa-summary-images hidden>
+                  <strong>Custom images: <span data-sa-summary-count></span></strong>
+                  <div class="sa-build-your-own__summary-thumbs" data-sa-summary-thumbs></div>
+                </div>
+              </div>
+
+              <div class="sa-build-your-own__notes">
+                <label class="sa-build-your-own__notes-label" for="{{ notes_id }}">{{ section.settings.notes_label | escape }}</label>
+                <textarea
+                  id="{{ notes_id }}"
+                  class="sa-build-your-own__notes-textarea"
+                  name="properties[Image placement notes]"
+                  placeholder="Example: Image 1 - Grinder, Image 2 - Jar, Image 3 - Tray."
+                  data-sa-notes
+                ></textarea>
+              </div>
+
+              {%- if section.settings.consent_help != blank -%}
+                <p class="sa-build-your-own__consent-help">{{ section.settings.consent_help | escape }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="sa-build-your-own__modal-nav">
+              <button type="button" class="sa-build-your-own__nav-button" data-sa-back>Back</button>
+              <button type="button" class="sa-build-your-own__nav-button sa-build-your-own__nav-button--primary" data-sa-next>Next</button>
+            </div>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Build your own",
+  "tag": "section",
+  "class": "shopify-section--sa-build-your-own",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Custom-order product",
+      "info": "Required for variant selection and cart submission."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Build your Own Smoking Accessories"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Build your own smoking setup"
+    },
+    {
+      "type": "text",
+      "id": "customize_label",
+      "label": "Customize button label",
+      "default": "Customize"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to Cart button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "status_copy",
+      "label": "Supporting status copy",
+      "default": "Step 1: Tap 'Customize'"
+    },
+    {
+      "type": "textarea",
+      "id": "upload_help_text",
+      "label": "Image upload help text",
+      "default": "You can upload multiple images. Or click next and tell us your theme - anime, games, pop culture, anything."
+    },
+    {
+      "type": "text",
+      "id": "notes_label",
+      "label": "Customization notes label",
+      "default": "Tell us which image goes on which item"
+    },
+    {
+      "type": "textarea",
+      "id": "consent_help",
+      "label": "Optional consent or help copy",
+      "default": "Only upload artwork you have permission to use."
+    },
+    {
+      "type": "range",
+      "id": "max_files",
+      "label": "Maximum reference images",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "max_file_size_mb",
+      "label": "Maximum size per image",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "unit": "MB",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "max-w-page", "label": "Page" },
+        { "value": "max-w-narrower", "label": "Narrow" },
+        { "value": "max-w-fluid", "label": "Full width" }
+      ],
+      "default": "max-w-page"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-6"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "rem",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "rem",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Build your own"
+    }
+  ]
+}
+{% endschema %}

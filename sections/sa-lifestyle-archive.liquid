@@ -150,7 +150,7 @@
     </header>
 
     {%- if main_path_count > 0 -%}
-      <div class="sa-lifestyle-archive__main-grid" role="list">
+      <div class="sa-lifestyle-archive__main-grid">
         {{- main_path_cards -}}
       </div>
     {%- endif -%}
@@ -163,7 +163,7 @@
           {%- endif -%}
           <h2 id="sa-lifestyle-vibes-title-{{ section.id }}">{{ section.settings.vibe_heading | escape }}</h2>
         </header>
-        <div class="sa-lifestyle-archive__vibe-grid" role="list">
+        <div class="sa-lifestyle-archive__vibe-grid">
           {{- vibe_path_cards -}}
         </div>
       </section>

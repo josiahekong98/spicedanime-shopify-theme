@@ -177,10 +177,11 @@ a.sa-lifestyle-archive-card:hover .sa-lifestyle-archive-card__image {
 .sa-lifestyle-archive-card__title {
   display: block;
   min-width: 0;
-  margin-block-start: 10px;
+  margin: 10px 0 0;
   color: var(--sa-museum-ivory, #f4f0e8);
   font-family: var(--sa-font-display, Georgia, serif);
   font-size: 32px;
+  font-weight: 400;
   line-height: 1.08;
   overflow-wrap: anywhere;
 }
@@ -204,6 +205,7 @@ a.sa-lifestyle-archive-card:hover .sa-lifestyle-archive-card__image {
   align-items: center;
   align-self: flex-start;
   min-height: 44px;
+  max-width: 100%;
   margin-block-start: 22px;
   padding-block: 10px;
   color: var(--sa-museum-ivory, #f4f0e8);
@@ -212,6 +214,8 @@ a.sa-lifestyle-archive-card:hover .sa-lifestyle-archive-card__image {
   font-size: 12px;
   line-height: 1.2;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
   text-transform: uppercase;
 }
 

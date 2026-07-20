@@ -21,7 +21,11 @@
   assign card_variant = variant | default: 'main'
   assign card_accessibility_label = accessibility_label
   if card_accessibility_label == blank
-    assign card_accessibility_label = cta | default: 'Explore' | append: ': ' | append: card_title
+    if url != blank
+      assign card_accessibility_label = cta | default: 'Explore' | append: ': ' | append: card_title
+    else
+      assign card_accessibility_label = card_title | append: ' product grouping'
+    endif
   endif
   assign fallback_initial = card_title | strip | slice: 0, 1 | upcase
   assign card_index = index | default: 1
@@ -54,16 +58,20 @@
     {%- endif -%}
   </span>
 
-  <span class="sa-lifestyle-archive-card__body">
+  <div class="sa-lifestyle-archive-card__body">
     <span class="sa-lifestyle-archive-card__index">Path {{ card_index_label }}</span>
-    <span class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</span>
+    {%- if card_variant == 'vibe' -%}
+      <h3 class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</h3>
+    {%- else -%}
+      <h2 class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</h2>
+    {%- endif -%}
     {%- if description != blank -%}
       <span class="sa-lifestyle-archive-card__description">{{ description | escape }}</span>
     {%- endif -%}
     {%- if url != blank and cta != blank -%}
       <span class="sa-lifestyle-archive-card__cta">{{ cta | escape }}</span>
     {%- endif -%}
-  </span>
+  </div>
 {%- endcapture -%}
 
 {%- if url != blank -%}
@@ -72,7 +80,6 @@
     href="{{ url }}"
     aria-label="{{ card_accessibility_label | escape }}"
     style="--sa-lifestyle-accent: {{ card_accent }};"
-    role="listitem"
     {{ shopify_attributes }}
   >
     {{- card_inner -}}
@@ -80,8 +87,8 @@
 {%- else -%}
   <article
     class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }}"
+    aria-label="{{ card_accessibility_label | escape }}"
     style="--sa-lifestyle-accent: {{ card_accent }};"
-    role="listitem"
     {{ shopify_attributes }}
   >
     {{- card_inner -}}

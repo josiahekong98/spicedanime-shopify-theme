@@ -340,7 +340,7 @@
             "text": "Build your setup by how you use it: everyday carry, room decor, smoke setup, or convention favorites.",
             "image": "shopify://shop_images/F48DCB1F-806D-4CA2-A719-50DCE01E43E2.webp",
             "icon_label": "L",
-            "link": "shopify://collections",
+            "link": "/pages/explore-by-lifestyle",
             "link_label": "Shop Lifestyle",
             "accessibility_label": "",
             "accent_color": "#2F5138"

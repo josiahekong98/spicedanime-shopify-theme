@@ -1,0 +1,77 @@
+{%- comment -%}
+  Renders a Product Archive family card.
+
+  Accepts:
+  - title: Visible product-family title
+  - url: Collection URL
+  - image: Preferred card image
+  - fallback_image: First-product image fallback
+  - description: Short product-family description
+  - cta: Link action text
+  - accent: Card accent color
+  - index: One-based archive index
+  - product_count: Collection product count
+  - accessibility_label: Optional link label
+  - shopify_attributes: Theme Editor block attributes
+{%- endcomment -%}
+
+{%- liquid
+  assign card_title = title | default: 'Product Family'
+  assign card_cta = cta | default: 'Shop Collection'
+  assign card_accent = accent | default: 'var(--sa-relic-red)'
+  assign card_image = image | default: fallback_image
+  assign card_index = index | default: 1 | prepend: '0'
+  if card_index.size > 2
+    assign card_index = card_index | slice: -2, 2
+  endif
+  assign card_accessibility_label = accessibility_label
+  if card_accessibility_label == blank
+    assign card_accessibility_label = card_cta | append: ': ' | append: card_title
+  endif
+  assign fallback_initial = card_title | strip | slice: 0, 1 | upcase
+-%}
+
+<a
+  class="sa-product-archive-card"
+  href="{{ url }}"
+  aria-label="{{ card_accessibility_label | escape }}"
+  style="--sa-product-archive-accent: {{ card_accent }};"
+  {{ shopify_attributes }}
+>
+  <span class="sa-product-archive-card__media">
+    {%- if card_image != blank -%}
+      {{- card_image
+        | image_url: width: 1200
+        | image_tag:
+          class: 'sa-product-archive-card__image',
+          loading: 'lazy',
+          widths: '360, 540, 720, 900, 1200',
+          sizes: '(min-width: 990px) 40vw, (min-width: 600px) 46vw, 92vw',
+          alt: card_title
+      -}}
+    {%- else -%}
+      <span
+        class="sa-product-archive-card__placeholder"
+        role="img"
+        aria-label="No collection image available for {{ card_title | escape }}"
+      >
+        <span aria-hidden="true">{{ fallback_initial }}</span>
+      </span>
+    {%- endif -%}
+    <span class="sa-product-archive-card__overlay" aria-hidden="true"></span>
+  </span>
+
+  <span class="sa-product-archive-card__body">
+    <span class="sa-product-archive-card__meta">
+      <span>Object {{ card_index }}</span>
+      {%- if product_count > 0 -%}
+        <span>{{ product_count }} {% if product_count == 1 %}item{% else %}items{% endif %}</span>
+      {%- endif -%}
+    </span>
+    <span class="sa-product-archive-card__title">{{ card_title | escape }}</span>
+    {%- if description != blank -%}
+      <span class="sa-product-archive-card__description">{{ description | escape }}</span>
+    {%- endif -%}
+    <span class="sa-product-archive-card__cta">{{ card_cta | escape }}</span>
+  </span>
+</a>

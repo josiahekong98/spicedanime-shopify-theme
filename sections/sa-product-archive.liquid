@@ -1,0 +1,351 @@
+{{- 'component-card-product.css' | asset_url | stylesheet_tag -}}
+{{- 'sa-product-archive.css' | asset_url | stylesheet_tag -}}
+
+{%- liquid
+  assign family_index = 0
+  assign recommendation_count = 0
+-%}
+
+{%- capture family_cards -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'product_family' and block.settings.collection != blank -%}
+      {%- liquid
+        assign family_collection = block.settings.collection
+        assign family_index = family_index | plus: 1
+        assign family_title = block.settings.title | default: family_collection.title | replace: '(category)', '' | strip
+        assign family_image = block.settings.image | default: family_collection.image
+        assign family_available_products = family_collection.products | where: 'available'
+        assign family_fallback_product = family_available_products.first | default: family_collection.products.first
+        assign family_fallback_image = family_fallback_product.featured_image
+        assign family_product_count = family_collection.all_products_count
+      -%}
+      {%- render 'sa-product-archive-card',
+        title: family_title,
+        url: family_collection.url,
+        image: family_image,
+        fallback_image: family_fallback_image,
+        description: block.settings.description,
+        cta: block.settings.cta,
+        accent: block.settings.accent,
+        index: family_index,
+        product_count: family_product_count,
+        accessibility_label: block.settings.accessibility_label,
+        shopify_attributes: block.shopify_attributes
+      -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture recommendation_cards -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'recommendation' and block.settings.collection != blank -%}
+      {%- liquid
+        assign recommendation_collection = block.settings.collection
+        assign recommendation_count = recommendation_count | plus: 1
+        assign recommendation_title = block.settings.title | default: recommendation_collection.title
+        assign recommendation_cta = block.settings.cta | default: 'Shop Collection'
+        assign recommendation_aria = block.settings.accessibility_label
+        if recommendation_aria == blank
+          assign recommendation_aria = recommendation_cta | append: ': ' | append: recommendation_title
+        endif
+        assign recommendation_image = block.settings.image | default: recommendation_collection.image
+        if recommendation_image == blank
+          assign recommendation_available_products = recommendation_collection.products | where: 'available'
+          assign recommendation_fallback_product = recommendation_available_products.first | default: recommendation_collection.products.first
+          assign recommendation_image = recommendation_fallback_product.featured_image
+        endif
+      -%}
+      <a
+        class="sa-product-archive__recommendation"
+        href="{{ recommendation_collection.url }}"
+        aria-label="{{ recommendation_aria | escape }}"
+        {{ block.shopify_attributes }}
+      >
+        <span class="sa-product-archive__recommendation-media" aria-hidden="true">
+          {%- if recommendation_image != blank -%}
+            {{- recommendation_image
+              | image_url: width: 800
+              | image_tag:
+                class: 'sa-product-archive__recommendation-image',
+                loading: 'lazy',
+                widths: '320, 480, 640, 800',
+                sizes: '(min-width: 990px) 30vw, (min-width: 600px) 46vw, 92vw',
+                alt: ''
+            -}}
+          {%- else -%}
+            <span class="sa-product-archive__recommendation-placeholder">Archive Pick</span>
+          {%- endif -%}
+        </span>
+        <span class="sa-product-archive__recommendation-body">
+          <span class="sa-product-archive__recommendation-index">Path {{ recommendation_count | prepend: '0' }}</span>
+          <span class="sa-product-archive__recommendation-title">{{ recommendation_title | escape }}</span>
+          {%- if block.settings.text != blank -%}
+            <span class="sa-product-archive__recommendation-text">{{ block.settings.text | escape }}</span>
+          {%- endif -%}
+          <span class="sa-product-archive__recommendation-cta">{{ recommendation_cta | escape }}</span>
+        </span>
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign most_collected_products = section.settings.most_collected_products
+  if most_collected_products == blank and section.settings.most_collected_collection != blank
+    assign most_collected_products = section.settings.most_collected_collection.products
+  endif
+  assign most_collected_limit = section.settings.most_collected_limit
+  assign most_collected_count = 0
+-%}
+
+{%- capture most_collected_cards -%}
+  {%- for product in most_collected_products limit: most_collected_limit -%}
+    {%- if product != blank -%}
+      {%- assign most_collected_count = most_collected_count | plus: 1 -%}
+      <div class="sa-product-archive__product" role="listitem">
+        {%- render 'card-product',
+          product_ref: product,
+          section_id: section.id,
+          block_index: forloop.index
+        -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<section
+  class="sa-product-archive"
+  aria-labelledby="sa-product-archive-title-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="sa-product-archive__container">
+    <header class="sa-product-archive__header">
+      <p class="sa-product-archive__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h1 class="sa-product-archive__heading" id="sa-product-archive-title-{{ section.id }}">
+        {{ section.settings.heading | escape }}
+      </h1>
+      {%- if section.settings.description != blank -%}
+        <p class="sa-product-archive__intro">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <form class="sa-product-archive__search" method="get" action="{{ routes.search_url }}" role="search">
+      <label class="visually-hidden" for="sa-product-archive-search-{{ section.id }}">
+        Search products or categories
+      </label>
+      <input
+        class="sa-product-archive__search-input"
+        id="sa-product-archive-search-{{ section.id }}"
+        type="search"
+        name="q"
+        placeholder="{{ section.settings.search_placeholder | escape }}"
+        autocomplete="off"
+      >
+      <input type="hidden" name="type" value="product">
+      <button class="sa-product-archive__search-submit" type="submit">
+        {{ section.settings.search_button_label | escape }}
+      </button>
+    </form>
+
+    {%- if family_cards != blank -%}
+      <section class="sa-product-archive__families" aria-labelledby="sa-product-families-title-{{ section.id }}">
+        <h2 class="visually-hidden" id="sa-product-families-title-{{ section.id }}">Product families</h2>
+        <div class="sa-product-archive__family-grid">
+          {{- family_cards -}}
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if most_collected_count > 0 -%}
+      <section class="sa-product-archive__section" aria-labelledby="sa-most-collected-title-{{ section.id }}">
+        <div class="sa-product-archive__section-head">
+          <p class="sa-product-archive__section-label">Curated Selection</p>
+          <h2 class="sa-product-archive__section-title" id="sa-most-collected-title-{{ section.id }}">
+            {{ section.settings.most_collected_heading | escape }}
+          </h2>
+        </div>
+        <div class="sa-product-archive__product-row" role="list" aria-label="{{ section.settings.most_collected_heading | escape }}">
+          {{- most_collected_cards -}}
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if recommendation_cards != blank -%}
+      <section class="sa-product-archive__section" aria-labelledby="sa-product-guidance-title-{{ section.id }}">
+        <div class="sa-product-archive__section-head">
+          <p class="sa-product-archive__section-label">Guided Entry</p>
+          <h2 class="sa-product-archive__section-title" id="sa-product-guidance-title-{{ section.id }}">
+            {{ section.settings.recommendation_heading | escape }}
+          </h2>
+        </div>
+        <div class="sa-product-archive__recommendations">
+          {{- recommendation_cards -}}
+        </div>
+      </section>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SA Product Archive",
+  "tag": "section",
+  "class": "section-sa-product-archive",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Archive label",
+      "default": "Product Archive"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore by Product"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Browse the collection by object, function, or product family."
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search products or categories…"
+    },
+    {
+      "type": "text",
+      "id": "search_button_label",
+      "label": "Search button label",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "most_collected_heading",
+      "label": "Most collected heading",
+      "default": "Most Collected Objects"
+    },
+    {
+      "type": "product_list",
+      "id": "most_collected_products",
+      "label": "Most collected products",
+      "limit": 12
+    },
+    {
+      "type": "collection",
+      "id": "most_collected_collection",
+      "label": "Fallback collection",
+      "info": "Used only when no products are selected above."
+    },
+    {
+      "type": "range",
+      "id": "most_collected_limit",
+      "label": "Maximum products",
+      "min": 4,
+      "max": 10,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "recommendation_heading",
+      "label": "Recommendation heading",
+      "default": "Not Sure Where to Start?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_family",
+      "name": "Product family",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Visible title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "CTA text",
+          "default": "Shop Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "color",
+          "id": "accent",
+          "label": "Accent color",
+          "default": "#B3362D"
+        },
+        {
+          "type": "text",
+          "id": "accessibility_label",
+          "label": "Accessibility label",
+          "info": "Optional. Used as the card link label."
+        }
+      ]
+    },
+    {
+      "type": "recommendation",
+      "name": "Starting recommendation",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Supporting text"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "CTA text",
+          "default": "Shop Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "text",
+          "id": "accessibility_label",
+          "label": "Accessibility label",
+          "info": "Optional. Used as the recommendation link label."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "SA Product Archive"
+    }
+  ]
+}
+{% endschema %}

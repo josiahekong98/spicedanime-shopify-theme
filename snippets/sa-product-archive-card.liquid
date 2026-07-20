@@ -32,7 +32,7 @@
 -%}
 
 <a
-  class="sa-product-archive-card"
+  class="sa-product-archive-card sa-card sa-card--exhibit"
   href="{{ url }}"
   aria-label="{{ card_accessibility_label | escape }}"
   style="--sa-product-archive-accent: {{ card_accent }};"
@@ -63,12 +63,12 @@
 
   <span class="sa-product-archive-card__body">
     <span class="sa-product-archive-card__meta">
-      <span>Object {{ card_index }}</span>
+      <span class="sa-product-archive-card__index sa-archive-label">Object {{ card_index }}</span>
       {%- if product_count > 0 -%}
-        <span>{{ product_count }} {% if product_count == 1 %}item{% else %}items{% endif %}</span>
+        <span class="sa-product-archive-card__count">{{ product_count }} {% if product_count == 1 %}item{% else %}items{% endif %}</span>
       {%- endif -%}
     </span>
-    <span class="sa-product-archive-card__title">{{ card_title | escape }}</span>
+    <span class="sa-product-archive-card__title sa-heading">{{ card_title | escape }}</span>
     {%- if description != blank -%}
       <span class="sa-product-archive-card__description">{{ description | escape }}</span>
     {%- endif -%}

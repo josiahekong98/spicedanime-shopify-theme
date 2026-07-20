@@ -59,11 +59,11 @@
   </span>
 
   <div class="sa-lifestyle-archive-card__body">
-    <span class="sa-lifestyle-archive-card__index">Path {{ card_index_label }}</span>
+    <span class="sa-lifestyle-archive-card__index sa-archive-label">Path {{ card_index_label }}</span>
     {%- if card_variant == 'vibe' -%}
-      <h3 class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</h3>
+      <h3 class="sa-lifestyle-archive-card__title sa-heading">{{ card_title | escape }}</h3>
     {%- else -%}
-      <h2 class="sa-lifestyle-archive-card__title">{{ card_title | escape }}</h2>
+      <h2 class="sa-lifestyle-archive-card__title sa-heading">{{ card_title | escape }}</h2>
     {%- endif -%}
     {%- if description != blank -%}
       <span class="sa-lifestyle-archive-card__description">{{ description | escape }}</span>
@@ -76,7 +76,7 @@
 
 {%- if url != blank -%}
   <a
-    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }}"
+    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }} sa-card sa-card--exhibit"
     href="{{ url }}"
     aria-label="{{ card_accessibility_label | escape }}"
     style="--sa-lifestyle-accent: {{ card_accent }};"
@@ -86,7 +86,7 @@
   </a>
 {%- else -%}
   <article
-    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }}"
+    class="sa-lifestyle-archive-card sa-lifestyle-archive-card--{{ card_variant }} sa-card sa-card--exhibit"
     aria-label="{{ card_accessibility_label | escape }}"
     style="--sa-lifestyle-accent: {{ card_accent }};"
     {{ shopify_attributes }}

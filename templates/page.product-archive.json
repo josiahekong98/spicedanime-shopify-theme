@@ -175,7 +175,15 @@
         "search_placeholder": "Search products or categories…",
         "search_button_label": "Search",
         "most_collected_heading": "Most Collected Objects",
-        "most_collected_products": [],
+        "most_collected_products": [
+          "mobile-suit-lighter-windproof-flip-top-lighter-aesthetic-lighter-unique-smoker-gift-anime-lighter",
+          "ace-rolling-tray",
+          "mera-mera-fruit-flame-fruit-grinder-set",
+          "chrollo-woven-tapestry-blanket-rug",
+          "choso-tapestry-tote-bag",
+          "akira-spice-jar",
+          "gengar-wallet"
+        ],
         "most_collected_collection": "best-selling",
         "most_collected_limit": 8,
         "recommendation_heading": "Not Sure Where to Start?"

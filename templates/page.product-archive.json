@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -10,7 +19,7 @@
             "title": "Lighters",
             "description": "Collectible lighters with iconic style.",
             "cta": "Shop Lighters",
-            "accent": "#C45A2A",
+            "accent": "#c45a2a",
             "accessibility_label": "Shop the Lighters collection"
           }
         },
@@ -21,7 +30,7 @@
             "title": "Grinder Sets",
             "description": "Grinders, jars, and rolling trays.",
             "cta": "Shop Grinder Sets",
-            "accent": "#2F5138",
+            "accent": "#2f5138",
             "accessibility_label": "Shop the Grinder Sets collection"
           }
         },
@@ -32,7 +41,7 @@
             "title": "Tapestries",
             "description": "Premium wall art for any space.",
             "cta": "Shop Tapestries",
-            "accent": "#464B73",
+            "accent": "#464b73",
             "accessibility_label": "Shop the Tapestries collection"
           }
         },
@@ -54,7 +63,7 @@
             "title": "Rolling Trays",
             "description": "Trays built for clean sessions.",
             "cta": "Shop Rolling Trays",
-            "accent": "#55585C",
+            "accent": "#55585c",
             "accessibility_label": "Shop the Rolling Trays collection"
           }
         },
@@ -65,7 +74,7 @@
             "title": "Stash Jars",
             "description": "Airtight storage with attitude.",
             "cta": "Shop Stash Jars",
-            "accent": "#B07A3A",
+            "accent": "#b07a3a",
             "accessibility_label": "Shop the Stash Jars collection"
           }
         },
@@ -76,7 +85,7 @@
             "title": "Ashtrays",
             "description": "Functional pieces with collectible design.",
             "cta": "Shop Ashtrays",
-            "accent": "#8A8A86",
+            "accent": "#8a8a86",
             "accessibility_label": "Shop the Ashtrays collection"
           }
         },
@@ -87,7 +96,7 @@
             "title": "Stash Boxes",
             "description": "Organized storage for complete setups.",
             "cta": "Shop Stash Boxes",
-            "accent": "#6B2D35",
+            "accent": "#6b2d35",
             "accessibility_label": "Shop the Stash Boxes collection"
           }
         },
@@ -98,7 +107,7 @@
             "title": "Tote Bags",
             "description": "Carry your collection everywhere.",
             "cta": "Shop Tote Bags",
-            "accent": "#8A8175",
+            "accent": "#8a8175",
             "accessibility_label": "Shop the Tote Bags collection"
           }
         },
@@ -109,7 +118,7 @@
             "title": "Hoodies",
             "description": "Anime-inspired layers built for everyday wear.",
             "cta": "Shop Hoodies",
-            "accent": "#B3362D",
+            "accent": "#b3362d",
             "accessibility_label": "Shop the Hoodies collection"
           }
         },
@@ -166,7 +175,15 @@
         "search_placeholder": "Search products or categories…",
         "search_button_label": "Search",
         "most_collected_heading": "Most Collected Objects",
-        "most_collected_products": [],
+        "most_collected_products": [
+          "mobile-suit-lighter-windproof-flip-top-lighter-aesthetic-lighter-unique-smoker-gift-anime-lighter",
+          "ace-rolling-tray",
+          "mera-mera-fruit-flame-fruit-grinder-set",
+          "chrollo-woven-tapestry-blanket-rug",
+          "choso-tapestry-tote-bag",
+          "akira-spice-jar",
+          "gengar-wallet"
+        ],
         "most_collected_collection": "best-selling",
         "most_collected_limit": 8,
         "recommendation_heading": "Not Sure Where to Start?"
@@ -211,6 +228,7 @@
         "trust_curated",
         "trust_collectors"
       ],
+      "disabled": true,
       "settings": {
         "swipe_on_mobile": true,
         "slideshow_autoplay_interval": 0,

@@ -1,4 +1,6 @@
 if (!customElements.get('product-recommendations')) {
+  const automaticSelectionCache = new WeakMap();
+
   class ProductRecommendations extends HTMLElement {
     constructor() {
       super();
@@ -63,6 +65,15 @@ if (!customElements.get('product-recommendations')) {
           }
 
           recommendations.innerHTML = recommendationsHTML;
+          this.materializeAutomaticCandidates(this);
+
+          if (!this.hasRecommendationItems(this)) {
+            this.hideRecommendations();
+            this.showFallback();
+            this.notifyModuleUpdate();
+            return;
+          }
+
           this.hideFallback();
           this.classList.remove('hidden');
           this.removeAttribute('hidden');
@@ -93,7 +104,141 @@ if (!customElements.get('product-recommendations')) {
     }
 
     hasFallbackItems(fallback) {
-      return Boolean(fallback?.querySelector('[data-recommendations]')?.children.length);
+      if (!fallback) return false;
+
+      this.materializeAutomaticCandidates(fallback);
+      return this.hasRecommendationItems(fallback);
+    }
+
+    hasRecommendationItems(scope) {
+      return Boolean(scope?.querySelector('.product-recommendations__item'));
+    }
+
+    shuffle(items) {
+      const shuffled = [...items];
+
+      for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+      }
+
+      return shuffled;
+    }
+
+    materializeAutomaticCandidates(scope) {
+      const context = scope?.querySelector('template[data-sa-cart-automatic-context]');
+      if (!context || !this.isConnected || !scope.isConnected) return;
+
+      const track = context.parentElement;
+      const candidateTemplates = [...track.querySelectorAll('template[data-sa-cart-automatic-candidate]')];
+      const maxCards = Number.parseInt(context.dataset.maxCards, 10) || 4;
+      const renderedCards = [...track.children].filter(element => element.matches('.product-recommendations__item'));
+      const availableSlots = Math.max(0, maxCards - renderedCards.length);
+      const candidateSignature = [
+        maxCards,
+        renderedCards.length,
+        ...candidateTemplates.map(candidate => [
+          candidate.dataset.source,
+          candidate.dataset.slotIndex,
+          candidate.dataset.productId,
+        ].join(':')),
+      ].join('|');
+      const cacheKey = [
+        context.dataset.anchorProductId || '',
+        context.dataset.cartProductSignature || '',
+        candidateSignature,
+      ].join('::');
+      const cartDrawer = this.closest('cart-drawer');
+      let drawerCache = cartDrawer ? automaticSelectionCache.get(cartDrawer) : null;
+
+      if (cartDrawer && !drawerCache) {
+        drawerCache = new Map();
+        automaticSelectionCache.set(cartDrawer, drawerCache);
+      }
+
+      let selectedCandidates = drawerCache?.get(cacheKey) || null;
+      const candidatesByIdentity = new Map(candidateTemplates.map(candidate => [
+        this.getCandidateIdentity(candidate),
+        candidate,
+      ]));
+
+      if (!selectedCandidates || selectedCandidates.some(identity => !candidatesByIdentity.has(identity))) {
+        selectedCandidates = this.selectAutomaticCandidates(candidateTemplates, availableSlots)
+          .map(candidate => this.getCandidateIdentity(candidate));
+
+        if (drawerCache) {
+          drawerCache.set(cacheKey, selectedCandidates);
+          if (drawerCache.size > 24) {
+            drawerCache.delete(drawerCache.keys().next().value);
+          }
+        }
+      }
+
+      selectedCandidates
+        .slice(0, availableSlots)
+        .forEach(identity => this.insertAutomaticCandidate(track, candidatesByIdentity.get(identity)));
+
+      candidateTemplates.forEach(candidate => candidate.remove());
+      context.remove();
+    }
+
+    getCandidateIdentity(candidate) {
+      return [
+        candidate.dataset.source || '',
+        candidate.dataset.slotIndex || '',
+        candidate.dataset.productId || '',
+      ].join(':');
+    }
+
+    selectAutomaticCandidates(candidateTemplates, availableSlots) {
+      const selected = [];
+      const selectedProductIds = new Set();
+      const familyPools = new Map();
+      const merchantCandidates = [];
+
+      candidateTemplates.forEach(candidate => {
+        if (candidate.dataset.source === 'family') {
+          const slotIndex = candidate.dataset.slotIndex || '';
+          if (!familyPools.has(slotIndex)) familyPools.set(slotIndex, []);
+          familyPools.get(slotIndex).push(candidate);
+        } else if (candidate.dataset.source === 'merchant') {
+          merchantCandidates.push(candidate);
+        }
+      });
+
+      for (const candidates of familyPools.values()) {
+        if (selected.length >= availableSlots) break;
+
+        const candidate = this.shuffle(candidates)
+          .find(item => !selectedProductIds.has(item.dataset.productId));
+        if (!candidate) continue;
+
+        selected.push(candidate);
+        selectedProductIds.add(candidate.dataset.productId);
+      }
+
+      for (const candidate of this.shuffle(merchantCandidates)) {
+        if (selected.length >= availableSlots) break;
+        if (selectedProductIds.has(candidate.dataset.productId)) continue;
+
+        selected.push(candidate);
+        selectedProductIds.add(candidate.dataset.productId);
+      }
+
+      return selected;
+    }
+
+    insertAutomaticCandidate(track, candidate) {
+      if (!candidate) return;
+
+      const card = candidate.content
+        .cloneNode(true)
+        .querySelector('.product-recommendations__item');
+      if (!card) return;
+
+      card.dataset.saCartAutomaticSource = candidate.dataset.source || '';
+      card.dataset.saCartAutomaticProductId = candidate.dataset.productId || '';
+      track.append(card);
     }
 
     showFallback() {

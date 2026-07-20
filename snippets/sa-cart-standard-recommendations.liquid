@@ -19,6 +19,7 @@
   if standard_limit > 4
     assign standard_limit = 4
   endif
+  assign automatic_candidate_limit = 12
 
   assign recipe_string = ''
   if standard_anchor != blank
@@ -41,9 +42,12 @@
   endfor
 
   assign cart_product_tokens = '|'
+  assign cart_product_signature_values = ''
   for line_item in cart.items
     assign cart_product_tokens = cart_product_tokens | append: line_item.product.id | append: '|'
+    assign cart_product_signature_values = cart_product_signature_values | append: line_item.product.id | append: '|'
   endfor
+  assign cart_product_signature = cart_product_signature_values | split: '|' | sort | uniq | join: '-'
 
   assign seen_product_tokens = '|'
   assign satisfied_slot_tokens = '|'
@@ -80,6 +84,13 @@
 -%}
 
 {%- if standard_anchor != blank -%}
+  <template
+    data-sa-cart-automatic-context
+    data-anchor-product-id="{{ standard_anchor.id }}"
+    data-cart-product-signature="{{ cart_product_signature }}"
+    data-max-cards="{{ standard_limit }}"
+  ></template>
+
   {%- for recommendation in complementary_products -%}
     {%- liquid
       assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
@@ -187,13 +198,14 @@
       {%- endfor -%}
     {%- endif -%}
 
-    {%- comment -%}Use configured family collections for any recipe slots still open.{%- endcomment -%}
+    {%- comment -%}Expose bounded eligible family candidates for each open recipe slot.{%- endcomment -%}
     {%- for recipe_slot in recipe_slots -%}
       {%- liquid
         assign slot_token = forloop.index0 | prepend: '|' | append: '|'
-        assign slot_candidate = blank
+        assign recipe_slot_index = forloop.index0
         assign family_collection = blank
         assign slot_is_open = true
+        assign slot_candidate_count = 0
         if satisfied_slot_tokens contains slot_token or rendered_count >= standard_limit
           assign slot_is_open = false
         endif
@@ -217,45 +229,57 @@
           {%- liquid
             assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
             assign recommendation_is_eligible = true
-            if recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id or recommendation.type != recipe_slot
+            if recommendation == blank or recommendation.available == false or recommendation.selected_or_first_available_variant == blank or recommendation.id == standard_anchor.id or recommendation.type != recipe_slot
               assign recommendation_is_eligible = false
             elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
               assign recommendation_is_eligible = false
             endif
           -%}
-          {%- if recommendation_is_eligible -%}
-            {%- assign slot_candidate = recommendation -%}
+          {%- if recommendation_is_eligible and slot_candidate_count < automatic_candidate_limit -%}
+            <template
+              data-sa-cart-automatic-candidate
+              data-source="family"
+              data-slot-index="{{ recipe_slot_index }}"
+              data-slot-type="{{ recipe_slot | escape }}"
+              data-product-id="{{ recommendation.id }}"
+            >
+              {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'family-collection' -%}
+            </template>
+            {%- assign slot_candidate_count = slot_candidate_count | plus: 1 -%}
+          {%- endif -%}
+          {%- if slot_candidate_count >= automatic_candidate_limit -%}
             {%- break -%}
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
-      {%- if slot_candidate != blank -%}
-        {%- render 'sa-cart-transfer-card', product: slot_candidate, selectable: false, source: 'family-collection' -%}
-        {%- liquid
-          assign seen_product_tokens = seen_product_tokens | append: slot_candidate.id | append: '|'
-          assign rendered_count = rendered_count | plus: 1
-          assign satisfied_slot_tokens = satisfied_slot_tokens | append: forloop.index0 | append: '|'
-        -%}
-      {%- endif -%}
     {%- endfor -%}
 
     {%- if merchant_products != blank and rendered_count < standard_limit -%}
+      {%- assign merchant_candidate_count = 0 -%}
       {%- for recommendation in merchant_products -%}
         {%- liquid
           assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
           assign recommendation_is_eligible = true
-          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id
+          if recommendation == blank or recommendation.available == false or recommendation.selected_or_first_available_variant == blank or recommendation.id == standard_anchor.id
             assign recommendation_is_eligible = false
           elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
             assign recommendation_is_eligible = false
           endif
         -%}
-        {%- if recommendation_is_eligible -%}
-          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
-          {%- liquid
-            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
-            assign rendered_count = rendered_count | plus: 1
-          -%}
+        {%- if recommendation_is_eligible and merchant_candidate_count < automatic_candidate_limit -%}
+          <template
+            data-sa-cart-automatic-candidate
+            data-source="merchant"
+            data-slot-index="merchant"
+            data-slot-type="generic"
+            data-product-id="{{ recommendation.id }}"
+          >
+            {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
+          </template>
+          {%- assign merchant_candidate_count = merchant_candidate_count | plus: 1 -%}
+        {%- endif -%}
+        {%- if merchant_candidate_count >= automatic_candidate_limit -%}
+          {%- break -%}
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
@@ -285,22 +309,31 @@
     {%- endif -%}
 
     {%- if merchant_products != blank and rendered_count == 0 -%}
+      {%- assign merchant_candidate_count = 0 -%}
       {%- for recommendation in merchant_products -%}
         {%- liquid
           assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
           assign recommendation_is_eligible = true
-          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id
+          if recommendation == blank or recommendation.available == false or recommendation.selected_or_first_available_variant == blank or recommendation.id == standard_anchor.id
             assign recommendation_is_eligible = false
           elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
             assign recommendation_is_eligible = false
           endif
         -%}
-        {%- if recommendation_is_eligible -%}
-          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
-          {%- liquid
-            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
-            assign rendered_count = rendered_count | plus: 1
-          -%}
+        {%- if recommendation_is_eligible and merchant_candidate_count < automatic_candidate_limit -%}
+          <template
+            data-sa-cart-automatic-candidate
+            data-source="merchant"
+            data-slot-index="merchant"
+            data-slot-type="generic"
+            data-product-id="{{ recommendation.id }}"
+          >
+            {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
+          </template>
+          {%- assign merchant_candidate_count = merchant_candidate_count | plus: 1 -%}
+        {%- endif -%}
+        {%- if merchant_candidate_count >= automatic_candidate_limit -%}
+          {%- break -%}
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}

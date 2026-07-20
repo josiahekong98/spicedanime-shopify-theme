@@ -1,6 +1,22 @@
 // Function to generate section data
 const getSectionData = (id, section, selector) => ({ id, section, selector });
 
+const getCartDrawerSectionData = cartDrawerElement => {
+  const fallbackSectionId = 'cart-drawer';
+  const sectionWrapper = cartDrawerElement?.closest('[id^="shopify-section-"]');
+  const wrapperId = sectionWrapper?.id || '';
+  const sectionPrefix = 'shopify-section-';
+  const sectionId = wrapperId.startsWith(sectionPrefix)
+    ? wrapperId.slice(sectionPrefix.length)
+    : fallbackSectionId;
+
+  return getSectionData(
+    '#CartDrawer-Body',
+    sectionId || fallbackSectionId,
+    `#shopify-section-${sectionId || fallbackSectionId} #CartDrawer-Body`
+  );
+};
+
 // Check cart drawer and set sections to render
 const cartDrawer = document.querySelector('cart-drawer');
 let sectionsToRender = [];
@@ -11,11 +27,11 @@ if (cartDrawer) {
     sectionsToRender = [
       getSectionData(`#shopify-section-${mainCartId}`, mainCartId, `#shopify-section-${mainCartId} cart-items`),
       getSectionData("#cart-counter", "cart-counter", "#shopify-section-cart-counter"),
-      getSectionData("#CartDrawer-Body", "cart-drawer", "#shopify-section-cart-drawer #CartDrawer-Body")
+      getCartDrawerSectionData(cartDrawer)
     ];
   } else {
     sectionsToRender = [
-      getSectionData("#CartDrawer-Body", "cart-drawer", "#shopify-section-cart-drawer #CartDrawer-Body")
+      getCartDrawerSectionData(cartDrawer)
     ];
   }
 } else {

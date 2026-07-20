@@ -49,6 +49,18 @@
   padding-bottom: 12px;
 }
 
+.sa-cart-drawer .cart-drawer__body[data-sa-recommendations-empty="true"] {
+  justify-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sa-cart-drawer .cart-drawer__body[data-sa-recommendations-empty="true"] .cart-drawer__main {
+  flex: 0 0 auto;
+  height: auto;
+  overflow: visible;
+}
+
 .sa-cart-drawer .cart-drawer__bottom {
   padding-bottom: max(16px, env(safe-area-inset-bottom));
 }

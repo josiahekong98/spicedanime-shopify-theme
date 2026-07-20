@@ -9,6 +9,7 @@ if (!customElements.get('product-recommendations')) {
     }
 
     connectedCallback() {
+      this.updateDrawerRecommendationState();
       this.performRecommendations();
     }
 
@@ -65,7 +66,7 @@ if (!customElements.get('product-recommendations')) {
           this.hideFallback();
           this.classList.remove('hidden');
           this.removeAttribute('hidden');
-          this.setDrawerItemsFull(false);
+          this.updateDrawerRecommendationState();
           this.initSlider(this);
           this.initQuickCart(this);
           this.notifyModuleUpdate();
@@ -87,7 +88,8 @@ if (!customElements.get('product-recommendations')) {
     }
 
     getFallback() {
-      return this.parentElement?.querySelector('[data-sa-cart-series-transfer-fallback]');
+      const cartDrawer = this.closest('cart-drawer');
+      return cartDrawer?.querySelector('[data-sa-cart-series-transfer-fallback]') || null;
     }
 
     hasFallbackItems(fallback) {
@@ -98,13 +100,13 @@ if (!customElements.get('product-recommendations')) {
       const fallback = this.getFallback();
 
       if (!this.hasFallbackItems(fallback)) {
-        this.setDrawerItemsFull(true);
+        this.updateDrawerRecommendationState();
         return;
       }
 
       fallback.classList.remove('hidden');
       fallback.removeAttribute('hidden');
-      this.setDrawerItemsFull(false);
+      this.updateDrawerRecommendationState();
       this.initSlider(fallback);
       this.initQuickCart(fallback);
     }
@@ -130,11 +132,30 @@ if (!customElements.get('product-recommendations')) {
       }));
     }
 
-    setDrawerItemsFull(isFull) {
-      const cartDrawerItems = document.querySelector('.cart-drawer-items');
-      if (!cartDrawerItems) return;
+    hasVisibleRecommendationCards(host) {
+      return Boolean(
+        host
+        && host.isConnected
+        && !host.hidden
+        && !host.classList.contains('hidden')
+        && host.querySelector('.product-recommendations__item')
+      );
+    }
 
-      cartDrawerItems.classList.toggle('cart-drawer-items__full', isFull);
+    updateDrawerRecommendationState() {
+      const cartDrawer = this.closest('cart-drawer');
+      const cartDrawerBody = this.closest('[data-cart-body]');
+      if (!cartDrawer || !cartDrawerBody || !this.isConnected) return;
+
+      const fallback = this.getFallback();
+      const hasVisibleRecommendations = this.hasVisibleRecommendationCards(this)
+        || this.hasVisibleRecommendationCards(fallback);
+
+      if (hasVisibleRecommendations) {
+        cartDrawerBody.removeAttribute('data-sa-recommendations-empty');
+      } else {
+        cartDrawerBody.setAttribute('data-sa-recommendations-empty', 'true');
+      }
     }
 
     initSlider(scope = this) {

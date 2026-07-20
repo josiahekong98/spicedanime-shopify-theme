@@ -12,6 +12,19 @@
     "main": {
       "type": "sa-lifestyle-archive",
       "blocks": {
+        "vibe_path_CCkeKF": {
+          "type": "vibe_path",
+          "settings": {
+            "collection": "black-art-tapestry",
+            "page": "",
+            "products": [],
+            "title": "Vibe Path",
+            "description": "Art for us.",
+            "cta": "SHOP THE VIBE",
+            "accent": "#b3362d",
+            "accessibility_label": ""
+          }
+        },
         "room_decor": {
           "type": "lifestyle_path",
           "settings": {
@@ -27,6 +40,7 @@
         }
       },
       "block_order": [
+        "vibe_path_CCkeKF",
         "room_decor"
       ],
       "settings": {

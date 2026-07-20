@@ -8,6 +8,12 @@
   assign transfer_limit = limit | default: 4
   assign transfer_class = class | default: ''
   assign merchant_products = merchant_products | default: blank
+  assign transfer_mode = presentation_mode | default: 'complete-set'
+  assign transfer_standard_title = standard_title | default: 'You May Also Like'
+  assign transfer_is_complete_set = false
+  if transfer_mode == 'complete-set'
+    assign transfer_is_complete_set = true
+  endif
   assign anchor_item = blank
   assign anchor_product = anchor_product | default: blank
   assign cart_product_tokens = '|'
@@ -56,17 +62,22 @@
 
 {%- if transfer_collection != blank or merchant_products != blank -%}
   <div
-    class="product-recommendations hidden {{ transfer_class }} color-{{ settings.color_scheme_for_upsell }}"
+    class="product-recommendations hidden {{ transfer_class }} sa-cart-upsell--{{ transfer_mode }} color-{{ settings.color_scheme_for_upsell }}"
     data-sa-cart-series-transfer-fallback
-    data-sa-cart-complete-set
+    data-sa-cart-mode="{{ transfer_mode }}"
     data-sa-cart-recommendation-source="fallback"
+    {% if transfer_is_complete_set %}data-sa-cart-complete-set{% endif %}
     hidden
   >
-    {%- render 'sa-cart-complete-set',
-      source: 'fallback',
-      title: transfer_title,
-      supporting_message: supporting_message
-    -%}
+    {%- if transfer_is_complete_set -%}
+      {%- render 'sa-cart-complete-set',
+        source: 'fallback',
+        title: transfer_title,
+        supporting_message: supporting_message
+      -%}
+    {%- elsif transfer_standard_title != blank -%}
+      <h5 class="product-recommendations__title">{{- transfer_standard_title | escape -}}</h5>
+    {%- endif -%}
 
     <div class="swiper product-recommendations__body">
       <div class="product-recommendations__items swiper-wrapper" data-recommendations>
@@ -84,7 +95,7 @@
                     assign rendered_count = rendered_count | plus: 1
                     assign seen_products = seen_products | append: recommendation.id | append: '|'
                   -%}
-                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'fallback' -%}
+                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
                 {%- endif -%}
               {%- endunless -%}
             {%- endunless -%}
@@ -101,7 +112,7 @@
                     assign rendered_count = rendered_count | plus: 1
                     assign seen_products = seen_products | append: recommendation.id | append: '|'
                   -%}
-                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'fallback' -%}
+                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
                 {%- endif -%}
               {%- endunless -%}
             {%- endunless -%}
@@ -110,8 +121,10 @@
       </div>
     </div>
 
-    <div data-sa-cart-complete-set-actions hidden>
-      <button type="button" data-sa-cart-add-selected disabled>Add Selected Items</button>
-    </div>
+    {%- if transfer_is_complete_set -%}
+      <div data-sa-cart-complete-set-actions hidden>
+        <button type="button" data-sa-cart-add-selected disabled>Add Selected Items</button>
+      </div>
+    {%- endif -%}
   </div>
 {%- endif -%}

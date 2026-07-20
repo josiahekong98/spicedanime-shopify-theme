@@ -4,6 +4,12 @@
   assign product_recommendations_title = title | default: settings.cart_upsell_title | default: ''
   assign product_recommendations_limit = limit | default: 8
   assign product_recommendations_request_limit = product_recommendations_limit
+  assign product_recommendations_mode = presentation_mode | default: 'complete-set'
+  assign product_recommendations_standard_title = standard_title | default: 'You May Also Like'
+  assign product_recommendations_is_complete_set = false
+  if product_recommendations_mode == 'complete-set'
+    assign product_recommendations_is_complete_set = true
+  endif
   if area == 'cart-drawer'
     assign product_recommendations_limit = 3
     assign product_recommendations_request_limit = 10
@@ -16,17 +22,23 @@
 {%- endunless -%}
 
 <product-recommendations
-  class="product-recommendations hidden {{ class }} color-{{ settings.color_scheme_for_upsell }}"
+  class="product-recommendations hidden {{ class }}{% if area == 'cart-drawer' %} sa-cart-upsell--{{ product_recommendations_mode }}{% endif %} color-{{ settings.color_scheme_for_upsell }}"
   data-url="{{- routes.product_recommendations_url -}}?section_id={{- section.id -}}&product_id={{- product_id -}}&limit={{- product_recommendations_request_limit -}}&intent=complementary"
   data-recommendation-area="{{- area -}}"
-  {% if area == 'cart-drawer' %}data-sa-cart-complete-set data-sa-cart-recommendation-source="complementary"{% endif %}
+  {% if area == 'cart-drawer' %}
+    data-sa-cart-mode="{{ product_recommendations_mode }}"
+    data-sa-cart-recommendation-source="complementary"
+    {% if product_recommendations_is_complete_set %}data-sa-cart-complete-set{% endif %}
+  {% endif %}
 >
-  {%- if area == 'cart-drawer' -%}
+  {%- if area == 'cart-drawer' and product_recommendations_is_complete_set -%}
     {%- render 'sa-cart-complete-set',
       source: 'complementary',
       title: product_recommendations_title,
       supporting_message: supporting_message
     -%}
+  {%- elsif area == 'cart-drawer' and product_recommendations_standard_title != blank -%}
+    <h5 class="product-recommendations__title">{{- product_recommendations_standard_title | escape -}}</h5>
   {%- elsif product_recommendations_title != blank -%}
     <h5 class="product-recommendations__title{% if template.name == 'cart' %} heading-static{% endif %}">
       {%- if icon -%}
@@ -63,7 +75,7 @@
                 assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
                 assign rendered_recommendations = rendered_recommendations | plus: 1
               -%}
-              {%- render 'sa-cart-transfer-card', product: recommendation, selectable: true, source: 'complementary' -%}
+              {%- render 'sa-cart-transfer-card', product: recommendation, selectable: product_recommendations_is_complete_set, source: 'complementary' -%}
             {%- endif -%}
           {%- endfor -%}
         {%- else -%}
@@ -117,7 +129,7 @@
     </div>
   </div>
 
-  {%- if area == 'cart-drawer' -%}
+  {%- if area == 'cart-drawer' and product_recommendations_is_complete_set -%}
     <div data-sa-cart-complete-set-actions hidden>
       <button type="button" data-sa-cart-add-selected disabled>Add Selected Items</button>
     </div>

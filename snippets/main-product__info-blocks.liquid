@@ -45,8 +45,9 @@
   </div>
 
   <h1 class="{{ product_block_class }} sa-product-title">
-        {{- product.title | escape -}}
+                {{- product.title | escape -}}
   </h1>
+<div data-shop-id="{{shop.id}}" product-id="{{product.id }}" data-page="{{request.page_type}}" class="ddreview-star"></div>
 
   <div class="sa-product-meta" aria-label="Product archive metadata">
     {%- if sa_series_value != blank -%}

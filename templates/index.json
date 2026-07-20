@@ -283,6 +283,24 @@
         "view_all_link": ""
       }
     },
+    "sa_product_row_8jJbPF": {
+      "type": "sa-product-row",
+      "name": "SA Row Best Sellers",
+      "settings": {
+        "eyebrow": "Best Sellers Lighters",
+        "heading": "Shop the Current Favorites",
+        "intro": "A fast path into the pieces shoppers are already choosing.",
+        "collection": "best-sellers-copy-3",
+        "max_products": 8,
+        "sort_label": "Performance archive",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row"
+      }
+    },
     "sa_explore_paths_LCD4k8": {
       "type": "sa-explore-paths",
       "blocks": {
@@ -339,24 +357,6 @@
         "label": "START HERE",
         "heading": "Choose how you want to explore",
         "text": ""
-      }
-    },
-    "sa_product_row_8jJbPF": {
-      "type": "sa-product-row",
-      "name": "SA Row Best Sellers",
-      "settings": {
-        "eyebrow": "Best Sellers Lighters",
-        "heading": "Shop the Current Favorites",
-        "intro": "A fast path into the pieces shoppers are already choosing.",
-        "collection": "best-sellers-copy-3",
-        "max_products": 8,
-        "sort_label": "Performance archive",
-        "show_quick_add": false,
-        "show_badges": true,
-        "show_variant_indicators": true,
-        "cta_label": "View Full Collection",
-        "cta_link": "",
-        "layout_style": "row"
       }
     },
     "sa_product_row_yxTULQ": {
@@ -717,9 +717,9 @@
     "1658995208ad05f95f",
     "announcement_bar_hNziXA",
     "sa_top_series_WngH7B",
-    "sa_explore_paths_LCD4k8",
     "sa_product_row_8jJbPF",
     "sa_product_row_yxTULQ",
+    "sa_explore_paths_LCD4k8",
     "sa_product_row_NHap6p",
     "sa_product_row_pCMm6U",
     "custom_liquid_L7PtK9",

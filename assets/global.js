@@ -817,6 +817,10 @@ class HeaderDrawer extends MenuDrawer {
   constructor() {
     super();
 
+    this.handleMenuPanelClick = this.handleMenuPanelClick.bind(this);
+    this.menuPanelListenerAttached = false;
+    this.menuPanelPath = [];
+
     window.addEventListener("resize", e => {
       const isMobileDrawer = this.classList.contains("mobile-drawer");
 
@@ -836,14 +840,191 @@ class HeaderDrawer extends MenuDrawer {
     });
   }
 
+  connectedCallback() {
+    if (!this.drawer || this.menuPanelListenerAttached) return;
+
+    this.drawer.addEventListener("click", this.handleMenuPanelClick);
+    this.menuPanelListenerAttached = true;
+
+    if (this.shouldUseMenuPanels()) {
+      this.initializeMenuPanels();
+    }
+  }
+
+  disconnectedCallback() {
+    if (!this.drawer || !this.menuPanelListenerAttached) return;
+
+    this.drawer.removeEventListener("click", this.handleMenuPanelClick);
+    this.menuPanelListenerAttached = false;
+  }
+
+  initializeMenuPanels() {
+    this.menuRootPanel = this.querySelector('[data-menu-panel-key="root"]');
+    this.menuPanels = Array.from(this.querySelectorAll("[data-menu-panel]"));
+    this.menuPanelTriggers = Array.from(
+      this.querySelectorAll("[data-menu-panel-trigger]")
+    );
+
+    if (!this.menuRootPanel || this.menuPanels.length === 0) return;
+
+    this.menuPanelMap = new Map(
+      this.menuPanels.map(panel => [panel.dataset.menuPanelKey, panel])
+    );
+    this.resetMenuPanels();
+  }
+
+  shouldUseMenuPanels() {
+    return (
+      window.innerWidth < tabletWidth ||
+      !this.classList.contains("mobile-drawer")
+    );
+  }
+
+  setMenuPanelAccessibility(panel, isActive) {
+    panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+    panel.toggleAttribute("inert", !isActive);
+
+    panel
+      .querySelectorAll('a[href], button, input, select, textarea, [tabindex]')
+      .forEach(element => {
+        if (!isActive) {
+          if (!element.hasAttribute("data-menu-panel-tabindex")) {
+            const tabindex = element.getAttribute("tabindex");
+            element.setAttribute(
+              "data-menu-panel-tabindex",
+              tabindex === null ? "none" : tabindex
+            );
+          }
+          element.setAttribute("tabindex", "-1");
+          return;
+        }
+
+        if (!element.hasAttribute("data-menu-panel-tabindex")) return;
+
+        const tabindex = element.getAttribute("data-menu-panel-tabindex");
+        if (tabindex === "none") {
+          element.removeAttribute("tabindex");
+        } else {
+          element.setAttribute("tabindex", tabindex);
+        }
+        element.removeAttribute("data-menu-panel-tabindex");
+      });
+  }
+
+  handleMenuPanelClick(event) {
+    if (!this.shouldUseMenuPanels()) return;
+
+    const trigger = event.target.closest("[data-menu-panel-trigger]");
+    if (trigger && this.drawer.contains(trigger)) {
+      event.preventDefault();
+      this.openMenuPanel(trigger);
+      return;
+    }
+
+    const backButton = event.target.closest("[data-menu-panel-back]");
+    if (backButton && this.drawer.contains(backButton)) {
+      event.preventDefault();
+      this.closeMenuPanel();
+    }
+  }
+
+  openMenuPanel(trigger) {
+    const targetPanel = this.menuPanelMap?.get(trigger.dataset.menuPanelTarget);
+    const currentPanel = this.menuPanelPath[this.menuPanelPath.length - 1]?.panel;
+
+    if (!targetPanel || !currentPanel || targetPanel === currentPanel) return;
+
+    currentPanel.classList.remove("is-active");
+    currentPanel.classList.add("is-previous");
+    this.setMenuPanelAccessibility(currentPanel, false);
+
+    targetPanel.classList.remove("is-previous", "non-active", "was-active");
+    targetPanel.classList.add("is-active");
+    targetPanel.scrollTop = 0;
+    this.setMenuPanelAccessibility(targetPanel, true);
+
+    trigger.setAttribute("aria-expanded", "true");
+    this.menuPanelPath.push({ panel: targetPanel, trigger });
+    this.drawer.classList.add("has-active-menu-panel");
+
+    targetPanel.querySelector("[data-menu-panel-back]")?.focus({
+      preventScroll: true
+    });
+  }
+
+  closeMenuPanel() {
+    if (this.menuPanelPath.length <= 1) return;
+
+    const currentEntry = this.menuPanelPath.pop();
+    const previousPanel = this.menuPanelPath[this.menuPanelPath.length - 1].panel;
+
+    currentEntry.panel.classList.remove("is-active", "is-previous");
+    this.setMenuPanelAccessibility(currentEntry.panel, false);
+
+    previousPanel.classList.remove("is-previous");
+    previousPanel.classList.add("is-active");
+    this.setMenuPanelAccessibility(previousPanel, true);
+
+    currentEntry.trigger.setAttribute("aria-expanded", "false");
+    this.drawer.classList.toggle(
+      "has-active-menu-panel",
+      this.menuPanelPath.length > 1
+    );
+    currentEntry.trigger.focus({ preventScroll: true });
+  }
+
+  resetMenuPanels() {
+    if (!this.menuRootPanel || !this.menuPanels) return;
+
+    this.menuPanelTriggers.forEach(trigger => {
+      trigger.setAttribute("aria-expanded", "false");
+    });
+
+    this.menuPanels.forEach(panel => {
+      const isRootPanel = panel === this.menuRootPanel;
+      panel.classList.toggle("is-active", isRootPanel);
+      panel.classList.remove(
+        "is-previous",
+        "is-back",
+        "is-instant",
+        "non-active",
+        "was-active"
+      );
+      this.setMenuPanelAccessibility(panel, isRootPanel);
+      panel.scrollTop = 0;
+    });
+
+    this.menuPanelPath = [{ panel: this.menuRootPanel, trigger: null }];
+    this.drawer.classList.remove("has-active-menu-panel");
+  }
+
   instantlyHideDrawer() {
+    this.resetMenuPanels();
+    this.toggleButtons.forEach(toggleButton => {
+      toggleButton.classList.remove("menu-is-open");
+    });
+    this.details.classList.remove("drawer-transitioning");
+    header.classList.remove("menu-open");
     super.instantlyHideDrawer();
+    body.style.removeProperty("position");
+    body.style.removeProperty("top");
+    body.style.removeProperty("width");
+    body.classList.remove("drawer--is-open");
+
+    if (Number.isFinite(this.scrollTopValue)) {
+      window.scrollTo(0, this.scrollTopValue);
+    }
   }
 
   toggleDrawer() {
     const isDrawerTransitioning = this.details.classList.contains(
       "drawer-transitioning"
     );
+
+    if (this.shouldUseMenuPanels()) {
+      if (!this.menuRootPanel) this.initializeMenuPanels();
+      this.resetMenuPanels();
+    }
 
     const drawerButton = this.querySelector(".drawer__button");
     // if drawerButton has .menu-is-open class and if header has .menu-open class, drawer is open
@@ -2064,84 +2245,6 @@ const PUB_SUB_EVENTS = {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  var menuLinks = document.querySelectorAll("button.menu-link");
-
-  // Handle menu link click
-  menuLinks.forEach(function (menuLink) {
-    menuLink.addEventListener("click", function () {
-      var activeMenuLink = document.querySelector(".menu-panel.is-active");
-      var isNested = activeMenuLink?.hasAttribute("data-menu-nested");
-      var targetRef = menuLink.dataset.ref;
-      var targetPanel = document.querySelector(
-        'div.menu-panel[data-menu="' + targetRef + '"]'
-      );
-
-      // Remove "is-active" class from all menu panels
-      var allPanels = document.querySelectorAll(".menu-panel");
-      const primaryMenuPanel = document.querySelector(".primary-menu-panel");
-      let hasActive = false;
-
-      if (targetPanel) {
-        allPanels.forEach(function (panel) {
-          if (panel.classList.contains("is-active")) {
-            hasActive = true;
-            if (panel.hasAttribute("data-menu-nested")) {
-              panel.classList.add("was-active");
-              primaryMenuPanel.style.opacity = "0";
-              panel.classList.remove("is-active");
-            } else {
-              setTimeout(() => {
-                panel.style.opacity = "0";
-              }, 300);
-              setTimeout(() => {
-                panel.classList.remove("is-active");
-              }, 500);
-            }
-            if (panel.classList.contains("is-back")) {
-              panel.classList.remove("is-back");
-            }
-            primaryMenuPanel.style.opacity = "0";
-          }
-        });
-        if (hasActive) {
-          primaryMenuPanel.style.opacity = "0";
-        } else {
-          primaryMenuPanel.style.opacity = "1";
-        }
-
-        // Add "is-active" class to the target menu panel
-        targetPanel.classList.add("is-active");
-        targetPanel.style.opacity = "1";
-        if (targetPanel.classList.contains("is-back")) {
-          targetPanel.classList.remove("is-back");
-        }
-        if (isNested) {
-          targetPanel.classList.add("is-instant");
-        }
-        setTimeout(() => {
-          allPanels.forEach(function (panel) {
-            if (panel.classList.contains("was-active")) {
-              panel.classList.remove("was-active");
-            }
-            targetPanel.classList.remove("is-instant");
-          });
-        }, 300);
-      } else {
-        primaryMenuPanel.style.opacity = "1";
-        allPanels.forEach(function (panel) {
-          if (panel.classList.contains("is-active")) {
-            panel.classList.remove("is-active");
-            panel.classList.add("is-back");
-            panel.classList.add("non-active");
-            setTimeout(() => {
-              panel.classList.remove("non-active");
-            }, 300);
-          }
-        })
-      }
-    });
-  });
-
   var faqPage = document.querySelector('.template--faq');
 
   if(faqPage) {
@@ -3169,8 +3272,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", autoLoad);
 });
-
-
-
 
 

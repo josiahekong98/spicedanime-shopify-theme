@@ -15,15 +15,21 @@
 
     <div class="drawer__content drawer__content--nav js-drawer color-{{ section.settings.color_scheme_for_drawer }} gradient" id="Navigation-menu-drawer-{{- append_id -}}" tabindex="-1">
       <button
-        class="drawer__button-close header-drawer__button-close button-reset small-hide medium-hide no-js-hidden js-btn-close-drawer"
+        class="drawer__button-close header-drawer__button-close button-reset no-js-hidden js-btn-close-drawer"
         aria-label="{{- 'theme.actions.close' | t -}}"
       >
         {%- render 'icon', icon_name: 'theme-arrow' -%}
       </button>
 
-      <nav class="slide-out-menu">
+      <nav class="slide-out-menu" aria-label="Main menu">
         <div class="menu-panels">
-          <div class="primary-menu-panel">
+          <div
+            id="Navigation-menu-panel-{{- append_id -}}-root"
+            class="primary-menu-panel is-active"
+            data-menu-panel
+            data-menu-panel-key="root"
+            aria-hidden="false"
+          >
             <ul>
               {% for link in menu.links %}
                 {% liquid
@@ -47,7 +53,15 @@
                 %}
                 <li>
                   {%- if count_of_items > 0 -%}
-                    <button type="button" class="menu-link h4" data-ref="{{ link_handle }}">
+                    <button
+                      type="button"
+                      class="menu-link h4"
+                      data-ref="{{ link_handle }}"
+                      data-menu-panel-trigger
+                      data-menu-panel-target="menu-{{ link_item_index }}"
+                      aria-controls="Navigation-menu-panel-{{- append_id -}}-{{ link_item_index }}"
+                      aria-expanded="false"
+                    >
                       {{ link.title }}
                       {% render 'icon', icon_name: 'theme-chevron', class: 'icon' %}
                     </button>
@@ -59,6 +73,58 @@
                 </li>
               {% endfor %}
             </ul>
+
+            {%- if submenu != blank -%}
+              <div class="drawer__row">
+                <div class="drawer__subnav">
+                  <ul class="list-unstyled">
+                    {%- for link in submenu.links -%}
+                      <li class="drawer__subnav-item">
+                        <a
+                          href="{{- link.url -}}"
+                          class="drawer__subnav-link h6{% if link.current %} is-current{% endif %}"
+                          {% if link.current %}aria-current="page"{% endif %}
+                        >
+                          {{- link.title | escape -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+            {%- endif -%}
+
+            <div class="drawer__row drawer__row--bottom">
+              <div class="drawer__subs">
+                <ul class="drawer__subs-items list-unstyled">
+                  <li class="drawer__subs-item">
+                    <a
+                      href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+                      class="drawer__subs-link"
+                      title="{%- if customer -%}{{ 'customer.account.label' | t }}{%- else -%}{{ 'theme.actions.log_in' | t }}{%- endif -%}"
+                    >
+                      {{- 'customer.account.label' | t -}}
+                    </a>
+                  </li>
+                  {%- if section.settings.country_drawer_navigation_menu -%}
+                    <li class="drawer__subs-item">
+                      <menu-drawer class="drawer">
+                        {%- render 'country-drawer',
+                          button_class: ' drawer__subs-link',
+                          section: section,
+                          append_id: 'header-drawer-' | append: section.id
+                        -%}
+                      </menu-drawer>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              </div>
+              <div class="drawer__social">
+                <ul class="drawer__social-list list-unstyled">
+                  {% render 'social-media', item_tag: 'li', in_new_tab: true, item_icon: true %}
+                </ul>
+              </div>
+            </div>
           </div>
           {% for link in menu.links %}
             {% liquid
@@ -82,16 +148,45 @@
             {% if count_of_items == 0 %}
               {% continue %}
             {% endif %}
-            <div class="menu-panel" data-menu="{{ link_handle }}">
-              <button type="button" class="menu-link menu-header">
+            <div
+              id="Navigation-menu-panel-{{- append_id -}}-{{ link_item_index }}"
+              class="menu-panel"
+              data-menu="{{ link_handle }}"
+              data-menu-panel
+              data-menu-panel-key="menu-{{ link_item_index }}"
+              aria-hidden="true"
+            >
+              <button
+                type="button"
+                class="menu-link menu-header menu-panel__back"
+                data-menu-panel-back
+                aria-label="{{- 'product.go_back' | t -}}"
+              >
                 {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
-                {{ link.title }}
+                {{- 'product.go_back' | t -}}
               </button>
+              <h2 class="menu-panel__title h4">{{ link.title | escape }}</h2>
               <ul>
+                {%- if link.url != blank and link.url != '#' -%}
+                  <li class="menu-panel__view-all">
+                    <a href="{{ link.url }}" class="h4" {% if link.current %}aria-current="page"{% endif %}>
+                      View all {{ link.title | escape }}
+                    </a>
+                  </li>
+                {%- endif -%}
                 {% for child_link in link.links %}
+                  {%- assign child_link_index = forloop.index -%}
                   <li class="menu-link-group">
                     {%- if child_link.links.size > 0 -%}
-                      <button type="button" class="menu-link h4" data-ref="{{ link_handle | append: '-' | append: child_link.title | handle }}">
+                      <button
+                        type="button"
+                        class="menu-link h4"
+                        data-ref="{{ link_handle | append: '-' | append: child_link.title | handle }}"
+                        data-menu-panel-trigger
+                        data-menu-panel-target="menu-{{ link_item_index }}-{{ child_link_index }}"
+                        aria-controls="Navigation-menu-panel-{{- append_id -}}-{{ link_item_index }}-{{ child_link_index }}"
+                        aria-expanded="false"
+                      >
                         {{ child_link.title }}
                         {% render 'icon', icon_name: 'theme-chevron', class: 'icon' %}
                       </button>
@@ -182,12 +277,35 @@
               {% if child_link.links.size == 0 %}
                 {% continue %}
               {% endif %}
-              <div class="menu-panel" data-menu="{{ link_handle | append: '-' | append: child_link.title | handle }}" data-menu-nested>
-                <button type="button" class="menu-link menu-header" data-ref="{{ link_handle }}">
+              {%- assign child_link_index = forloop.index -%}
+              <div
+                id="Navigation-menu-panel-{{- append_id -}}-{{ link_item_index }}-{{ child_link_index }}"
+                class="menu-panel"
+                data-menu="{{ link_handle | append: '-' | append: child_link.title | handle }}"
+                data-menu-nested
+                data-menu-panel
+                data-menu-panel-key="menu-{{ link_item_index }}-{{ child_link_index }}"
+                aria-hidden="true"
+              >
+                <button
+                  type="button"
+                  class="menu-link menu-header menu-panel__back"
+                  data-ref="{{ link_handle }}"
+                  data-menu-panel-back
+                  aria-label="{{- 'product.go_back' | t -}}"
+                >
                   {% render 'icon', icon_name: 'theme-chevron', class: 'icon icon--rotate-180' %}
-                  {{ child_link.title }}
+                  {{- 'product.go_back' | t -}}
                 </button>
+                <h2 class="menu-panel__title h4">{{ child_link.title | escape }}</h2>
                 <ul>
+                  {%- if child_link.url != blank and child_link.url != '#' -%}
+                    <li class="menu-panel__view-all">
+                      <a href="{{ child_link.url }}" class="h4" {% if child_link.current %}aria-current="page"{% endif %}>
+                        View all {{ child_link.title | escape }}
+                      </a>
+                    </li>
+                  {%- endif -%}
                   {% for grand_child_link in child_link.links %}
                     <li>
                       <a href="{{ grand_child_link.url }}" class="h4" {% if grand_child_link.current %}aria-current="page"{% endif %}>
@@ -202,57 +320,6 @@
         </div>
       </nav>
 
-      {%- if submenu != blank -%}
-        <div class="drawer__row">
-          <nav class="drawer__subnav">
-            <ul class="list-unstyled">
-              {%- for link in submenu.links -%}
-                <li class="drawer__subnav-item">
-                  <a
-                    href="{{- link.url -}}"
-                    class="drawer__subnav-link h6{% if link.current %} is-current{% endif %}"
-                    {% if link.current %}aria-current="page"{% endif %}
-                  >
-                    {{- link.title | escape -}}
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        </div>
-      {%- endif -%}
-
-      <div class="drawer__row drawer__row--bottom">
-        <nav class="drawer__subs">
-          <ul class="drawer__subs-items list-unstyled">
-            <li class="drawer__subs-item">
-              <a
-                href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-                class="drawer__subs-link"
-                title="{%- if customer -%}{{ 'customer.account.label' | t }}{%- else -%}{{ 'theme.actions.log_in' | t }}{%- endif -%}"
-              >
-                {{- 'customer.account.label' | t -}}
-              </a>
-            </li>
-            {%- if section.settings.country_drawer_navigation_menu -%}
-              <li class="drawer__subs-item">
-                <menu-drawer class="drawer">
-                  {%- render 'country-drawer',
-                    button_class: ' drawer__subs-link',
-                    section: section,
-                    append_id: 'header-drawer-' | append: section.id
-                  -%}
-                </menu-drawer>
-              </li>
-            {%- endif -%}
-          </ul>
-        </nav>
-        <div class="drawer__social">
-          <ul class="drawer__social-list list-unstyled">
-            {% render 'social-media', item_tag: 'li', in_new_tab: true, item_icon: true %}
-          </ul>
-        </div>
-      </div>
     </div>
   </details>
 </header-drawer>

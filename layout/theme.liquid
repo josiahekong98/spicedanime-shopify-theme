@@ -87,19 +87,39 @@
         if (!loader) return;
 
         const sessionKey = 'spicedanime_loader_seen';
-        const minimumDuration = 300;
-        const maximumDuration = 1500;
-        const fadeDuration = 200;
-        const initializedAt = performance.now();
+        const firstViewTiming = { minimum: 400, maximum: 1500, fade: 200 };
+        const repeatViewTiming = { minimum: 140, maximum: 500, fade: 180 };
+        const editorTiming = { minimum: 120, maximum: 500, fade: 160 };
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const designMode = Boolean(window.Shopify?.designMode);
         let dismissalStarted = false;
         let minimumTimer = null;
+        let removalTimer = null;
+        let domReady = document.readyState === 'interactive' || document.readyState === 'complete';
+        let paintReady = false;
+        let minimumElapsed = false;
+        let loaderSeen = false;
 
-        const maximumTimer = window.setTimeout(() => dismiss(), maximumDuration);
+        if (!designMode) {
+          try {
+            loaderSeen = window.sessionStorage.getItem(sessionKey) === 'true';
+          } catch (error) {
+            loaderSeen = false;
+          }
+        }
+
+        const timing = designMode ? editorTiming : loaderSeen ? repeatViewTiming : firstViewTiming;
+
+        loader.classList.remove('fade-out', 'is-dismissed');
+        loader.classList.add('is-active');
+        loader.style.setProperty('--sa-loader-fade-duration', `${timing.fade}ms`);
+
+        const maximumTimer = window.setTimeout(() => dismiss({ immediate: true }), timing.maximum);
 
         function dismiss({ immediate = false } = {}) {
           if (dismissalStarted) {
             if (immediate && loader.isConnected) {
+              if (removalTimer) window.clearTimeout(removalTimer);
               loader.classList.add('is-dismissed');
               loader.remove();
             }
@@ -119,50 +139,49 @@
             return;
           }
 
+          loader.classList.remove('is-active');
           loader.classList.add('fade-out');
-          window.setTimeout(() => {
+          removalTimer = window.setTimeout(() => {
             loader.classList.add('is-dismissed');
             loader.remove();
-          }, fadeDuration);
+          }, timing.fade);
         }
 
         function dismissWhenReady() {
-          const remainingDuration = Math.max(0, minimumDuration - (performance.now() - initializedAt));
-          if (remainingDuration === 0) {
-            dismiss();
-            return;
-          }
-
-          minimumTimer = window.setTimeout(() => dismiss(), remainingDuration);
+          if (domReady && paintReady && minimumElapsed) dismiss();
         }
 
         window.addEventListener('pageshow', event => {
           if (event.persisted) dismiss({ immediate: true });
         });
 
-        if (window.Shopify?.designMode) {
-          dismiss({ immediate: true });
-          return;
+        if (!domReady) {
+          document.addEventListener('DOMContentLoaded', () => {
+            domReady = true;
+            dismissWhenReady();
+          }, { once: true });
         }
 
-        let loaderSeen = false;
-        try {
-          loaderSeen = window.sessionStorage.getItem(sessionKey) === 'true';
-          if (!loaderSeen) window.sessionStorage.setItem(sessionKey, 'true');
-        } catch (error) {
-          loaderSeen = false;
-        }
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            if (!loader.isConnected || dismissalStarted) return;
 
-        if (loaderSeen) {
-          dismiss({ immediate: true });
-          return;
-        }
+            paintReady = true;
 
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-          dismissWhenReady();
-        } else {
-          document.addEventListener('DOMContentLoaded', dismissWhenReady, { once: true });
-        }
+            if (!designMode) {
+              try {
+                window.sessionStorage.setItem(sessionKey, 'true');
+              } catch (error) {
+                // Storage is optional; loader timing and dismissal remain independent.
+              }
+            }
+
+            minimumTimer = window.setTimeout(() => {
+              minimumElapsed = true;
+              dismissWhenReady();
+            }, timing.minimum);
+          });
+        });
       })();
     </script>
 

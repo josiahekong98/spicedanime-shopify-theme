@@ -131,10 +131,12 @@
                 {%- if sa_transfer_anchor_product != blank -%}
                   {%- liquid
                     assign sa_cart_presentation_mode = 'standard-slider'
+                    assign sa_cart_recommendation_limit = 4
                     case sa_transfer_anchor_product.type
                       when 'Flip Lighter', 'Rolling Tray', 'Stash Jar', 'Grinder Sets'
                         assign sa_cart_presentation_mode = 'complete-set'
-                      when 'Tapestry', 'Tapestries', 'Pillow Case', 'Pillow Cases', 'Wallet', 'Wallets', 'Tote Bag', 'Tote Bags', 'Hoodie', 'Hoodies'
+                        assign sa_cart_recommendation_limit = 3
+                      when 'Tapestry', 'Tapestries', 'Pillow Covers', 'Pillow Case', 'Pillow Cases', 'Wallet', 'Wallets', 'Tote Bag', 'Tote Bags', 'Hoodie', 'Hoodies'
                         assign sa_cart_presentation_mode = 'standard-slider'
                     endcase
                     assign sa_cart_standard_recommendations_title = 'You May Also Like'
@@ -147,7 +149,14 @@
                     standard_title: sa_cart_standard_recommendations_title,
                     supporting_message: section.settings.upsell_supporting_message,
                     presentation_mode: sa_cart_presentation_mode,
-                    limit: 3
+                    anchor_product: sa_transfer_anchor_product,
+                    merchant_products: section.settings.upsell_fallback_products,
+                    standard_lighter_collection: section.settings.standard_lighter_collection,
+                    standard_tapestry_collection: section.settings.standard_tapestry_collection,
+                    standard_pillow_collection: section.settings.standard_pillow_collection,
+                    standard_wallet_collection: section.settings.standard_wallet_collection,
+                    standard_tote_collection: section.settings.standard_tote_collection,
+                    limit: sa_cart_recommendation_limit
                   -%}
                   {%- render 'sa-cart-transfer-fallback',
                     class: 'cart-drawer__recommendations sa-cart-upsell sa-cart-upsell--drawer sa-cart-transfer-fallback',
@@ -156,8 +165,13 @@
                     supporting_message: section.settings.upsell_supporting_message,
                     anchor_product: sa_transfer_anchor_product,
                     merchant_products: section.settings.upsell_fallback_products,
+                    standard_lighter_collection: section.settings.standard_lighter_collection,
+                    standard_tapestry_collection: section.settings.standard_tapestry_collection,
+                    standard_pillow_collection: section.settings.standard_pillow_collection,
+                    standard_wallet_collection: section.settings.standard_wallet_collection,
+                    standard_tote_collection: section.settings.standard_tote_collection,
                     presentation_mode: sa_cart_presentation_mode,
-                    limit: 3
+                    limit: sa_cart_recommendation_limit
                   -%}
                 {%- endif -%}
               {%- endif -%}

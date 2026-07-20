@@ -11,7 +11,11 @@
     assign product_recommendations_is_complete_set = true
   endif
   if area == 'cart-drawer'
-    assign product_recommendations_limit = 3
+    if product_recommendations_is_complete_set
+      assign product_recommendations_limit = 3
+    elsif product_recommendations_limit > 4
+      assign product_recommendations_limit = 4
+    endif
     assign product_recommendations_request_limit = 10
   endif
 -%}
@@ -50,7 +54,19 @@
 
   <div class="swiper product-recommendations__body">
     <div class="product-recommendations__items swiper-wrapper" data-recommendations>
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      {%- if area == 'cart-drawer' and product_recommendations_is_complete_set == false -%}
+        {%- render 'sa-cart-standard-recommendations',
+          anchor_product: anchor_product,
+          complementary_products: recommendations.products,
+          merchant_products: merchant_products,
+          lighter_collection: standard_lighter_collection,
+          tapestry_collection: standard_tapestry_collection,
+          pillow_collection: standard_pillow_collection,
+          wallet_collection: standard_wallet_collection,
+          tote_collection: standard_tote_collection,
+          limit: product_recommendations_limit
+        -%}
+      {%- elsif recommendations.performed and recommendations.products_count > 0 -%}
         {%- if area == 'cart-drawer' -%}
           {%- liquid
             assign cart_product_tokens = '|'

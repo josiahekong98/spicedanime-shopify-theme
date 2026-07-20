@@ -1,0 +1,308 @@
+{%- comment -%}
+  Deterministic cart-drawer recommendations for standard-slider anchors.
+
+  Inputs:
+  - anchor_product
+  - complementary_products
+  - merchant_products
+  - lighter_collection
+  - tapestry_collection
+  - pillow_collection
+  - wallet_collection
+  - tote_collection
+  - limit
+{%- endcomment -%}
+
+{%- liquid
+  assign standard_anchor = anchor_product | default: blank
+  assign standard_limit = limit | default: 4
+  if standard_limit > 4
+    assign standard_limit = 4
+  endif
+
+  assign recipe_string = ''
+  if standard_anchor != blank
+    case standard_anchor.type
+      when 'Tapestry'
+        assign recipe_string = 'Tapestry|Flip Lighter|Tote Bags|Pillow Covers'
+      when 'Tote Bags'
+        assign recipe_string = 'Tapestry|Pillow Covers|Flip Lighter|Tote Bags'
+      when 'Pillow Covers'
+        assign recipe_string = 'Tapestry|Pillow Covers|Flip Lighter|Wallet'
+      when 'Wallet'
+        assign recipe_string = 'Flip Lighter|Flip Lighter|Tapestry|Tote Bags'
+    endcase
+  endif
+
+  assign recipe_slots = recipe_string | split: '|'
+  assign recipe_type_tokens = '|'
+  for recipe_slot in recipe_slots
+    assign recipe_type_tokens = recipe_type_tokens | append: recipe_slot | append: '|'
+  endfor
+
+  assign cart_product_tokens = '|'
+  for line_item in cart.items
+    assign cart_product_tokens = cart_product_tokens | append: line_item.product.id | append: '|'
+  endfor
+
+  assign seen_product_tokens = '|'
+  assign satisfied_slot_tokens = '|'
+  assign rendered_count = 0
+
+  assign anchor_series = ''
+  assign anchor_series_key = ''
+  assign same_series_collection = blank
+  if standard_anchor != blank
+    assign anchor_series = standard_anchor.metafields.custom.series.value | default: standard_anchor.metafields.custom.series | strip
+    assign anchor_series_key = anchor_series | handleize
+  endif
+
+  if anchor_series_key != blank
+    assign series_collection_candidates = anchor_series_key | append: '|' | append: anchor_series_key | append: '-anime-accessories|' | append: anchor_series_key | append: '-accessories|' | append: anchor_series_key | append: '-collection|' | append: anchor_series_key | append: '-products|' | append: anchor_series_key | append: '-smoking-accessories' | split: '|'
+
+    for candidate_handle in series_collection_candidates
+      if same_series_collection == blank and collections[candidate_handle] != blank
+        assign same_series_collection = collections[candidate_handle]
+      endif
+    endfor
+
+    if same_series_collection == blank
+      for product_collection in standard_anchor.collections
+        assign product_collection_handle = product_collection.handle | handleize
+        assign product_collection_title = product_collection.title | handleize
+        if product_collection_handle == anchor_series_key or product_collection_title == anchor_series_key or product_collection_handle contains anchor_series_key or anchor_series_key contains product_collection_handle or product_collection_title contains anchor_series_key or anchor_series_key contains product_collection_title
+          assign same_series_collection = product_collection
+          break
+        endif
+      endfor
+    endif
+  endif
+-%}
+
+{%- if standard_anchor != blank -%}
+  {%- for recommendation in complementary_products -%}
+    {%- liquid
+      assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+      assign recommendation_is_eligible = true
+      if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id
+        assign recommendation_is_eligible = false
+      elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+        assign recommendation_is_eligible = false
+      endif
+    -%}
+    {%- if recommendation_is_eligible -%}
+      {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'complementary' -%}
+      {%- liquid
+        assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+        assign rendered_count = rendered_count | plus: 1
+      -%}
+      {%- if recipe_string != blank -%}
+        {%- for recipe_slot in recipe_slots -%}
+          {%- liquid
+            assign slot_token = forloop.index0 | prepend: '|' | append: '|'
+            assign recommendation_satisfies_slot = false
+            unless satisfied_slot_tokens contains slot_token
+              if recommendation.type == recipe_slot
+                assign recommendation_satisfies_slot = true
+              endif
+            endunless
+          -%}
+          {%- if recommendation_satisfies_slot -%}
+            {%- assign satisfied_slot_tokens = satisfied_slot_tokens | append: forloop.index0 | append: '|' -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if recipe_string != blank -%}
+    {%- comment -%}Fill each open recipe slot from the anchor series first.{%- endcomment -%}
+    {%- for recipe_slot in recipe_slots -%}
+      {%- liquid
+        assign slot_token = forloop.index0 | prepend: '|' | append: '|'
+        assign slot_candidate = blank
+        assign slot_is_open = true
+        if satisfied_slot_tokens contains slot_token or rendered_count >= standard_limit
+          assign slot_is_open = false
+        endif
+      -%}
+      {%- if slot_is_open and same_series_collection != blank -%}
+        {%- for recommendation in same_series_collection.products limit: 50 -%}
+          {%- liquid
+            assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+            assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+            assign recommendation_series_key = recommendation_series | handleize
+            assign recommendation_is_eligible = true
+            if recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id or recommendation.type != recipe_slot or recommendation_series_key != anchor_series_key
+              assign recommendation_is_eligible = false
+            elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+              assign recommendation_is_eligible = false
+            endif
+          -%}
+          {%- if recommendation_is_eligible -%}
+            {%- assign slot_candidate = recommendation -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if slot_candidate != blank -%}
+        {%- render 'sa-cart-transfer-card', product: slot_candidate, selectable: false, source: 'same-series-recipe' -%}
+        {%- liquid
+          assign seen_product_tokens = seen_product_tokens | append: slot_candidate.id | append: '|'
+          assign rendered_count = rendered_count | plus: 1
+          assign satisfied_slot_tokens = satisfied_slot_tokens | append: forloop.index0 | append: '|'
+        -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%}Prefer other recipe-family products from the same series before crossing series.{%- endcomment -%}
+    {%- if same_series_collection != blank and rendered_count < standard_limit -%}
+      {%- for recommendation in same_series_collection.products limit: 50 -%}
+        {%- liquid
+          assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+          assign recommendation_type_token = recommendation.type | prepend: '|' | append: '|'
+          assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+          assign recommendation_series_key = recommendation_series | handleize
+          assign recommendation_is_eligible = true
+          assign recommendation_type_is_requested = false
+          if recipe_type_tokens contains recommendation_type_token
+            assign recommendation_type_is_requested = true
+          endif
+          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id or recommendation_series_key != anchor_series_key
+            assign recommendation_is_eligible = false
+          elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+            assign recommendation_is_eligible = false
+          elsif recommendation_type_is_requested == false
+            assign recommendation_is_eligible = false
+          endif
+        -%}
+        {%- if recommendation_is_eligible -%}
+          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'same-series-recipe-family' -%}
+          {%- liquid
+            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+            assign rendered_count = rendered_count | plus: 1
+          -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- comment -%}Use configured family collections for any recipe slots still open.{%- endcomment -%}
+    {%- for recipe_slot in recipe_slots -%}
+      {%- liquid
+        assign slot_token = forloop.index0 | prepend: '|' | append: '|'
+        assign slot_candidate = blank
+        assign family_collection = blank
+        assign slot_is_open = true
+        if satisfied_slot_tokens contains slot_token or rendered_count >= standard_limit
+          assign slot_is_open = false
+        endif
+        if slot_is_open
+          case recipe_slot
+            when 'Flip Lighter'
+              assign family_collection = lighter_collection
+            when 'Tapestry'
+              assign family_collection = tapestry_collection
+            when 'Pillow Covers'
+              assign family_collection = pillow_collection
+            when 'Wallet'
+              assign family_collection = wallet_collection
+            when 'Tote Bags'
+              assign family_collection = tote_collection
+          endcase
+        endif
+      -%}
+      {%- if slot_is_open and family_collection != blank -%}
+        {%- for recommendation in family_collection.products limit: 50 -%}
+          {%- liquid
+            assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+            assign recommendation_is_eligible = true
+            if recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id or recommendation.type != recipe_slot
+              assign recommendation_is_eligible = false
+            elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+              assign recommendation_is_eligible = false
+            endif
+          -%}
+          {%- if recommendation_is_eligible -%}
+            {%- assign slot_candidate = recommendation -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if slot_candidate != blank -%}
+        {%- render 'sa-cart-transfer-card', product: slot_candidate, selectable: false, source: 'family-collection' -%}
+        {%- liquid
+          assign seen_product_tokens = seen_product_tokens | append: slot_candidate.id | append: '|'
+          assign rendered_count = rendered_count | plus: 1
+          assign satisfied_slot_tokens = satisfied_slot_tokens | append: forloop.index0 | append: '|'
+        -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if merchant_products != blank and rendered_count < standard_limit -%}
+      {%- for recommendation in merchant_products -%}
+        {%- liquid
+          assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+          assign recommendation_is_eligible = true
+          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id
+            assign recommendation_is_eligible = false
+          elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+            assign recommendation_is_eligible = false
+          endif
+        -%}
+        {%- if recommendation_is_eligible -%}
+          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
+          {%- liquid
+            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+            assign rendered_count = rendered_count | plus: 1
+          -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- comment -%}Unknown standard types retain complementary-or-fallback behavior.{%- endcomment -%}
+    {%- if rendered_count == 0 and same_series_collection != blank -%}
+      {%- for recommendation in same_series_collection.products limit: 50 -%}
+        {%- liquid
+          assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+          assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+          assign recommendation_series_key = recommendation_series | handleize
+          assign recommendation_is_eligible = true
+          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id or recommendation_series_key != anchor_series_key
+            assign recommendation_is_eligible = false
+          elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+            assign recommendation_is_eligible = false
+          endif
+        -%}
+        {%- if recommendation_is_eligible -%}
+          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'same-series' -%}
+          {%- liquid
+            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+            assign rendered_count = rendered_count | plus: 1
+          -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if merchant_products != blank and rendered_count == 0 -%}
+      {%- for recommendation in merchant_products -%}
+        {%- liquid
+          assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+          assign recommendation_is_eligible = true
+          if rendered_count >= standard_limit or recommendation == blank or recommendation.available == false or recommendation.id == standard_anchor.id
+            assign recommendation_is_eligible = false
+          elsif cart_product_tokens contains recommendation_token or seen_product_tokens contains recommendation_token
+            assign recommendation_is_eligible = false
+          endif
+        -%}
+        {%- if recommendation_is_eligible -%}
+          {%- render 'sa-cart-transfer-card', product: recommendation, selectable: false, source: 'merchant-fallback' -%}
+          {%- liquid
+            assign seen_product_tokens = seen_product_tokens | append: recommendation.id | append: '|'
+            assign rendered_count = rendered_count | plus: 1
+          -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

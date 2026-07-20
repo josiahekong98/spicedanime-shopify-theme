@@ -58,9 +58,18 @@
 
   assign rendered_count = 0
   assign seen_products = '|'
+  assign transfer_has_source = false
+  if transfer_collection != blank or merchant_products != blank
+    assign transfer_has_source = true
+  endif
+  unless transfer_is_complete_set
+    if standard_lighter_collection != blank or standard_tapestry_collection != blank or standard_pillow_collection != blank or standard_wallet_collection != blank or standard_tote_collection != blank
+      assign transfer_has_source = true
+    endif
+  endunless
 -%}
 
-{%- if transfer_collection != blank or merchant_products != blank -%}
+{%- if transfer_has_source -%}
   <div
     class="product-recommendations hidden {{ transfer_class }} sa-cart-upsell--{{ transfer_mode }} color-{{ settings.color_scheme_for_upsell }}"
     data-sa-cart-series-transfer-fallback
@@ -81,42 +90,55 @@
 
     <div class="swiper product-recommendations__body">
       <div class="product-recommendations__items swiper-wrapper" data-recommendations>
-        {%- if transfer_collection != blank -%}
-          {%- for recommendation in transfer_collection.products limit: 48 -%}
-            {%- liquid
-              assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
-              assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
-              assign recommendation_series_key = recommendation_series | handleize
-            -%}
-            {%- unless cart_product_tokens contains recommendation_token -%}
-              {%- unless seen_products contains recommendation_token -%}
-                {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id and recommendation_series_key == anchor_series_key -%}
-                  {%- liquid
-                    assign rendered_count = rendered_count | plus: 1
-                    assign seen_products = seen_products | append: recommendation.id | append: '|'
-                  -%}
-                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
-                {%- endif -%}
+        {%- if transfer_is_complete_set -%}
+          {%- if transfer_collection != blank -%}
+            {%- for recommendation in transfer_collection.products limit: 48 -%}
+              {%- liquid
+                assign recommendation_token = recommendation.id | prepend: '|' | append: '|'
+                assign recommendation_series = recommendation.metafields.custom.series.value | default: recommendation.metafields.custom.series | strip
+                assign recommendation_series_key = recommendation_series | handleize
+              -%}
+              {%- unless cart_product_tokens contains recommendation_token -%}
+                {%- unless seen_products contains recommendation_token -%}
+                  {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id and recommendation_series_key == anchor_series_key -%}
+                    {%- liquid
+                      assign rendered_count = rendered_count | plus: 1
+                      assign seen_products = seen_products | append: recommendation.id | append: '|'
+                    -%}
+                    {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
+                  {%- endif -%}
+                {%- endunless -%}
               {%- endunless -%}
-            {%- endunless -%}
-          {%- endfor -%}
-        {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
 
-        {%- if merchant_products != blank and rendered_count == 0 -%}
-          {%- for recommendation in merchant_products -%}
-            {%- assign recommendation_token = recommendation.id | prepend: '|' | append: '|' -%}
-            {%- unless cart_product_tokens contains recommendation_token -%}
-              {%- unless seen_products contains recommendation_token -%}
-                {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id -%}
-                  {%- liquid
-                    assign rendered_count = rendered_count | plus: 1
-                    assign seen_products = seen_products | append: recommendation.id | append: '|'
-                  -%}
-                  {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
-                {%- endif -%}
+          {%- if merchant_products != blank and rendered_count == 0 -%}
+            {%- for recommendation in merchant_products -%}
+              {%- assign recommendation_token = recommendation.id | prepend: '|' | append: '|' -%}
+              {%- unless cart_product_tokens contains recommendation_token -%}
+                {%- unless seen_products contains recommendation_token -%}
+                  {%- if rendered_count < transfer_limit and recommendation.available and recommendation.id != anchor_product.id -%}
+                    {%- liquid
+                      assign rendered_count = rendered_count | plus: 1
+                      assign seen_products = seen_products | append: recommendation.id | append: '|'
+                    -%}
+                    {%- render 'sa-cart-transfer-card', product: recommendation, selectable: transfer_is_complete_set, source: 'fallback' -%}
+                  {%- endif -%}
+                {%- endunless -%}
               {%- endunless -%}
-            {%- endunless -%}
-          {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- render 'sa-cart-standard-recommendations',
+            anchor_product: anchor_product,
+            merchant_products: merchant_products,
+            lighter_collection: standard_lighter_collection,
+            tapestry_collection: standard_tapestry_collection,
+            pillow_collection: standard_pillow_collection,
+            wallet_collection: standard_wallet_collection,
+            tote_collection: standard_tote_collection,
+            limit: transfer_limit
+          -%}
         {%- endif -%}
       </div>
     </div>

@@ -32,7 +32,8 @@
     <div class="product-recommendations__item-details sa-cart-transfer-card__body">
       <div>
         <h6 class="product-recommendations__item-title sa-cart-transfer-card__title">
-          <a href="{{ card_product.url }}">{{- card_product.title | escape -}}</a>
+                    <a href="{{ card_product.url }}">{{- card_product.title | escape -}}</a>
+<div data-shop-id="{{shop.id}}" product-id="{{card_product.id }}" data-page="cart" class="ddreview-star"></div>
         </h6>
 
         <p class="product-recommendations__item-price sa-cart-transfer-card__price">

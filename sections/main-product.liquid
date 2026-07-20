@@ -100,7 +100,8 @@
                   {%- endif -%}
                 </div>
                 <div class="product__sticky-cart--info-text sa-sticky-cart__content">
-                  <h5 class="product__title sa-sticky-cart__title">{{- product.title -}}</h5>
+                                    <h5 class="product__title sa-sticky-cart__title">{{- product.title -}}</h5>
+<div data-shop-id="{{shop.id}}" product-id="{{product.id }}" data-page="{{request.page_type}}" class="ddreview-star"></div>
                   <div class="sa-sticky-cart__summary">
                     {%- if product_sticky.options.size > 0 -%}
                       <span class="product__sticky-cart--price sa-sticky-cart__price">

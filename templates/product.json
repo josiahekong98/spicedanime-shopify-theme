@@ -9,12 +9,101 @@
  */
 {
   "sections": {
+    "753757662477391814": {
+      "type": "apps",
+      "blocks": {
+        "0202d3b0-6742-4544-83be-1397136ef522": {
+          "type": "shopify://apps/dadao-product-reviews/blocks/product-reviews/3cc4253a-05eb-4164-8778-b76d83ce00cc",
+          "settings": {
+            "product": "{{product}}",
+            "show_sample_reviews": true
+          }
+        }
+      },
+      "block_order": [
+        "0202d3b0-6742-4544-83be-1397136ef522"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_layout": "normal",
+        "spacing_inner": "2",
+        "section_width": "max-w-page",
+        "color_scheme": "",
+        "spacing_top": "2",
+        "spacing_bottom": "2"
+      }
+    },
+    "complete_the_set_sa": {
+      "type": "complete-the-set",
+      "settings": {
+        "heading": "",
+        "content_heading": "Complete the Set",
+        "heading_size": "h3",
+        "content_type": "products",
+        "featured_image_aspect_ratio": "4/3",
+        "open_first_collapsible": true,
+        "flip_desktop": true,
+        "flip_mobile": true,
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-6",
+        "spacing_top": "1",
+        "spacing_bottom": "1"
+      }
+    },
     "product_bundle_deals_DFRebA": {
       "type": "product-bundle-deals",
       "custom_css": [
         ".product-bundle-deals {margin-bottom: 0;}"
       ],
       "name": "Product Bundle Deals",
+      "settings": {}
+    },
+    "recently_viewed_sa": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "layout": "layout-2",
+        "enable_slideshow_overflow": false,
+        "heading": "Recently Viewed",
+        "heading_size": "h3",
+        "subheading": "",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "button--text",
+        "show_navigation_arrows": true,
+        "slider_autoplay": 0,
+        "tabs_button_style": "tab-btn-filled",
+        "max_products": 8,
+        "show_unavailable_products": false,
+        "section_width": "max-w-fluid",
+        "color_scheme": "scheme-6",
+        "spacing_top": "1",
+        "spacing_bottom": "1"
+      }
+    },
+    "sa_more_from_series_eEk3ct": {
+      "type": "sa-more-from-series",
+      "name": "SA More From Series",
+      "settings": {
+        "eyebrow": "More From This Series",
+        "heading": "More From This Series",
+        "intro": "",
+        "max_products": 8,
+        "pool_limit": 36
+      }
+    },
+    "566708880632302806": {
+      "type": "apps",
+      "blocks": {
+        "d81b2359-4b1c-4e2a-84c8-fa5a60cb8fa9": {
+          "type": "shopify://apps/dadao-product-reviews/blocks/featured-reviews/3cc4253a-05eb-4164-8778-b76d83ce00cc",
+          "disabled": true,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "d81b2359-4b1c-4e2a-84c8-fa5a60cb8fa9"
+      ],
+      "disabled": true,
       "settings": {}
     },
     "main": {
@@ -27,42 +116,6 @@
             "spacing_bottom": "0"
           }
         },
-        "badge_hK7aJa": {
-          "type": "badge",
-          "settings": {
-            "spacing_bottom": "1",
-            "show_badges": true,
-            "show_badges_discount": true,
-            "show_badges_sold": true
-          }
-        },
-        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b": {
-          "type": "price",
-          "settings": {
-            "spacing_bottom": "0",
-            "show_price_tax_info": true,
-            "show_price_shipping_info": false,
-            "show_price_custom_info": ""
-          }
-        },
-        "divider_kJmP4b": {
-          "type": "divider",
-          "settings": {
-            "spacing_bottom": "1"
-          }
-        },
-        "1e939cd6-0958-4135-a9e5-c50faef01437": {
-          "type": "variant_picker",
-          "settings": {
-            "spacing_bottom": "1",
-            "title": "Variant picker",
-            "enable_back_in_stock": false,
-            "picker_type": "dropdown",
-            "variant_options_with_thumbnails": "Color",
-            "size_guide_page": "",
-            "sizes_option": "Size"
-          }
-        },
         "1e939cd6-0955-4135-a9e5-c50faef01437": {
           "type": "purchase_options",
           "settings": {
@@ -72,35 +125,19 @@
             "show_subscription_policy": true
           }
         },
-        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8": {
-          "type": "buy_buttons",
+        "goback_Hz9gef": {
+          "type": "goback",
           "settings": {
-            "spacing_bottom": "1",
-            "show_quantity": false,
-            "layout": "inline",
-            "show_dynamic_checkout": false,
-            "show_gift_card_recipient": false
+            "goback_style": "filled",
+            "goback_label": "",
+            "display_goback_mobile": "on-media",
+            "show_on": "mobile"
           }
         },
-        "e6d841d6-2f71-40b3-956a-912df13f9f6e": {
-          "type": "inventory_notice",
+        "divider_kJmP4b": {
+          "type": "divider",
           "settings": {
-            "spacing_bottom": "1",
-            "inventory_threshold": 15,
-            "notice_just_text": false
-          }
-        },
-        "b2dabe12-2158-4ba6-bc54-9baae453acf5": {
-          "type": "text",
-          "settings": {
-            "spacing_bottom": "1",
-            "heading": "Free and easy returns",
-            "icon": "theme-check",
-            "link_to_resource": "none",
-            "text_before_link": false,
-            "heading_secondary": "",
-            "metafield_for_product_variant": "",
-            "show_block_content": true
+            "spacing_bottom": "1"
           }
         },
         "1ad0121e-439d-45c0-b45d-4f080836ade5": {
@@ -108,19 +145,6 @@
           "settings": {
             "spacing_bottom": "1",
             "heading": "Secure payments",
-            "icon": "theme-check",
-            "link_to_resource": "none",
-            "text_before_link": false,
-            "heading_secondary": "",
-            "metafield_for_product_variant": "",
-            "show_block_content": true
-          }
-        },
-        "text_A7bV6x": {
-          "type": "text",
-          "settings": {
-            "spacing_bottom": "1",
-            "heading": "Free shipping on qualifying US orders",
             "icon": "theme-check",
             "link_to_resource": "none",
             "text_before_link": false,
@@ -153,6 +177,54 @@
             "show_block_content": true
           }
         },
+        "1e939cd6-0958-4135-a9e5-c50faef01437": {
+          "type": "variant_picker",
+          "settings": {
+            "spacing_bottom": "1",
+            "title": "Variant picker",
+            "enable_back_in_stock": false,
+            "picker_type": "dropdown",
+            "variant_options_with_thumbnails": "Color",
+            "size_guide_page": "",
+            "sizes_option": "Size"
+          }
+        },
+        "8604a6ff-ad0b-44dd-8068-1de4e062f8e8": {
+          "type": "buy_buttons",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_quantity": false,
+            "layout": "inline",
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "b2dabe12-2158-4ba6-bc54-9baae453acf5": {
+          "type": "text",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Free and easy returns",
+            "icon": "theme-check",
+            "link_to_resource": "none",
+            "text_before_link": false,
+            "heading_secondary": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
+        "text_A7bV6x": {
+          "type": "text",
+          "settings": {
+            "spacing_bottom": "1",
+            "heading": "Free shipping on qualifying US orders",
+            "icon": "theme-check",
+            "link_to_resource": "none",
+            "text_before_link": false,
+            "heading_secondary": "",
+            "metafield_for_product_variant": "",
+            "show_block_content": true
+          }
+        },
         "content_block_JXcJef": {
           "type": "content_block",
           "disabled": true,
@@ -166,18 +238,35 @@
             "show_block_content": true
           }
         },
+        "badge_hK7aJa": {
+          "type": "badge",
+          "settings": {
+            "spacing_bottom": "1",
+            "show_badges": true,
+            "show_badges_discount": true,
+            "show_badges_sold": true
+          }
+        },
+        "e6d841d6-2f71-40b3-956a-912df13f9f6e": {
+          "type": "inventory_notice",
+          "settings": {
+            "spacing_bottom": "1",
+            "inventory_threshold": 15,
+            "notice_just_text": false
+          }
+        },
         "breadcrumbs_UGFmBV": {
           "type": "breadcrumbs",
           "disabled": true,
           "settings": {}
         },
-        "goback_Hz9gef": {
-          "type": "goback",
+        "8effeb43-55b7-4ec4-ab9b-68bcd89b865b": {
+          "type": "price",
           "settings": {
-            "goback_style": "filled",
-            "goback_label": "",
-            "display_goback_mobile": "on-media",
-            "show_on": "mobile"
+            "spacing_bottom": "0",
+            "show_price_tax_info": true,
+            "show_price_shipping_info": false,
+            "show_price_custom_info": ""
           }
         }
       },
@@ -229,58 +318,6 @@
         "spacing_bottom": "1"
       }
     },
-    "complete_the_set_sa": {
-      "type": "complete-the-set",
-      "settings": {
-        "heading": "",
-        "content_heading": "Complete the Set",
-        "heading_size": "h3",
-        "content_type": "products",
-        "featured_image_aspect_ratio": "4/3",
-        "open_first_collapsible": true,
-        "flip_desktop": true,
-        "flip_mobile": true,
-        "section_width": "max-w-fluid",
-        "color_scheme": "scheme-6",
-        "spacing_top": "1",
-        "spacing_bottom": "1"
-      }
-    },
-    "sa_more_from_series_eEk3ct": {
-      "type": "sa-more-from-series",
-      "name": "SA More From Series",
-      "settings": {
-        "eyebrow": "More From This Series",
-        "heading": "More From This Series",
-        "intro": "",
-        "max_products": 8,
-        "pool_limit": 36
-      }
-    },
-    "753757662477391814": {
-      "type": "apps",
-      "blocks": {
-        "0202d3b0-6742-4544-83be-1397136ef522": {
-          "type": "shopify://apps/dadao-product-reviews/blocks/product-reviews/3cc4253a-05eb-4164-8778-b76d83ce00cc",
-          "settings": {
-            "product": "{{product}}",
-            "show_sample_reviews": true
-          }
-        }
-      },
-      "block_order": [
-        "0202d3b0-6742-4544-83be-1397136ef522"
-      ],
-      "disabled": true,
-      "settings": {
-        "section_layout": "normal",
-        "spacing_inner": "2",
-        "section_width": "max-w-page",
-        "color_scheme": "",
-        "spacing_top": "2",
-        "spacing_bottom": "2"
-      }
-    },
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
@@ -302,28 +339,6 @@
         "spacing_top": "1",
         "spacing_bottom": "1"
       }
-    },
-    "recently_viewed_sa": {
-      "type": "recently-viewed-products",
-      "settings": {
-        "layout": "layout-2",
-        "enable_slideshow_overflow": false,
-        "heading": "Recently Viewed",
-        "heading_size": "h3",
-        "subheading": "",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "button--text",
-        "show_navigation_arrows": true,
-        "slider_autoplay": 0,
-        "tabs_button_style": "tab-btn-filled",
-        "max_products": 8,
-        "show_unavailable_products": false,
-        "section_width": "max-w-fluid",
-        "color_scheme": "scheme-6",
-        "spacing_top": "1",
-        "spacing_bottom": "1"
-      }
     }
   },
   "order": [
@@ -333,6 +348,7 @@
     "sa_more_from_series_eEk3ct",
     "753757662477391814",
     "recommendations",
-    "recently_viewed_sa"
+    "recently_viewed_sa",
+    "566708880632302806"
   ]
 }

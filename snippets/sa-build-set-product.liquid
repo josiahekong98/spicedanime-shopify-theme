@@ -5,7 +5,7 @@
   assign is_selectable = false
   if product.variants.size == 1 and selected_variant != blank
     assign is_single_variant = true
-    if product.available and selected_variant.available and is_duplicate_variant != true
+    if product.available and selected_variant.available and is_duplicate_variant != true and product.requires_selling_plan != true
       assign is_selectable = true
     endif
   endif

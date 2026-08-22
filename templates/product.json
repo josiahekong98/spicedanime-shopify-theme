@@ -339,12 +339,35 @@
         "spacing_top": "1",
         "spacing_bottom": "1"
       }
+    },
+    "sa_curated_reviews_product": {
+      "type": "sa-curated-customer-reviews",
+      "name": "SA Curated Reviews",
+      "settings": {
+        "reviews": [],
+        "eyebrow": "CUSTOMER ARCHIVE",
+        "heading": "THEY JOINED US",
+        "homepage_display_limit": 6,
+        "product_display_limit": 0,
+        "image_ratio": "4 / 5",
+        "show_rating": true,
+        "show_date": true,
+        "show_social_handle": true,
+        "show_product_association": true,
+        "enable_product_links": true,
+        "show_arrows": true,
+        "show_indicators": true,
+        "section_width": "wide",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
     "main",
     "product_bundle_deals_DFRebA",
     "complete_the_set_sa",
+    "sa_curated_reviews_product",
     "sa_more_from_series_eEk3ct",
     "753757662477391814",
     "recommendations",

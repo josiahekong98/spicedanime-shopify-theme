@@ -721,6 +721,28 @@
         "spacing_top": "2",
         "spacing_bottom": "2"
       }
+    },
+    "sa_curated_reviews_home": {
+      "type": "sa-curated-customer-reviews",
+      "name": "SA Curated Reviews",
+      "settings": {
+        "reviews": [],
+        "eyebrow": "CUSTOMER ARCHIVE",
+        "heading": "THEY JOINED US",
+        "homepage_display_limit": 6,
+        "product_display_limit": 0,
+        "image_ratio": "4 / 5",
+        "show_rating": true,
+        "show_date": true,
+        "show_social_handle": true,
+        "show_product_association": true,
+        "enable_product_links": true,
+        "show_arrows": true,
+        "show_indicators": true,
+        "section_width": "wide",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
@@ -731,6 +753,7 @@
     "sa_explore_paths_LCD4k8",
     "sa_product_row_yxTULQ",
     "sa_product_row_NHap6p",
+    "sa_curated_reviews_home",
     "sa_product_row_pCMm6U",
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",

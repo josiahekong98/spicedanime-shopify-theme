@@ -395,6 +395,30 @@
         "layout_style": "row"
       }
     },
+    "sa_curated_reviews_home": {
+      "type": "sa-curated-customer-reviews",
+      "name": "SA Curated Reviews",
+      "settings": {
+        "reviews": [
+          "1"
+        ],
+        "eyebrow": "CUSTOMER ARCHIVE",
+        "heading": "",
+        "homepage_display_limit": 6,
+        "product_display_limit": 0,
+        "image_ratio": "4 / 5",
+        "show_rating": true,
+        "show_date": true,
+        "show_social_handle": true,
+        "show_product_association": true,
+        "enable_product_links": true,
+        "show_arrows": true,
+        "show_indicators": true,
+        "section_width": "full",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "sa_product_row_pCMm6U": {
       "type": "sa-product-row",
       "disabled": true,
@@ -720,28 +744,6 @@
         "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
         "spacing_top": "2",
         "spacing_bottom": "2"
-      }
-    },
-    "sa_curated_reviews_home": {
-      "type": "sa-curated-customer-reviews",
-      "name": "SA Curated Reviews",
-      "settings": {
-        "reviews": [],
-        "eyebrow": "CUSTOMER ARCHIVE",
-        "heading": "THEY JOINED US",
-        "homepage_display_limit": 6,
-        "product_display_limit": 0,
-        "image_ratio": "4 / 5",
-        "show_rating": true,
-        "show_date": true,
-        "show_social_handle": true,
-        "show_product_association": true,
-        "enable_product_links": true,
-        "show_arrows": true,
-        "show_indicators": true,
-        "section_width": "wide",
-        "padding_top": 64,
-        "padding_bottom": 64
       }
     }
   },

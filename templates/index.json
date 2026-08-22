@@ -283,6 +283,27 @@
         "view_all_link": ""
       }
     },
+    "custom_liquid_KdJBQ4": {
+      "type": "sa-build-your-own",
+      "name": "build your own",
+      "settings": {
+        "product": "custom-order",
+        "heading": "Build your Own Smoking Accessories",
+        "subtitle": "Build your own smoking setup",
+        "customize_label": "Customize",
+        "add_to_cart_label": "Add to cart",
+        "status_copy": "Step 1: Tap 'Customize'",
+        "upload_help_text": "You can upload multiple images. Or click next and tell us your theme - anime, games, pop culture, anything.",
+        "notes_label": "Tell us which image goes on which item",
+        "consent_help": "Only upload artwork you have permission to use.",
+        "max_files": 3,
+        "max_file_size_mb": 10,
+        "section_width": "max-w-page",
+        "color_scheme": "scheme-6",
+        "spacing_top": 0,
+        "spacing_bottom": 0
+      }
+    },
     "sa_product_row_8jJbPF": {
       "type": "sa-product-row",
       "name": "SA Row Best Sellers",
@@ -493,27 +514,6 @@
         "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c",
         "spacing_top": "2",
         "spacing_bottom": "0"
-      }
-    },
-    "custom_liquid_KdJBQ4": {
-      "type": "sa-build-your-own",
-      "name": "build your own",
-      "settings": {
-        "product": "custom-order",
-        "heading": "Build your Own Smoking Accessories",
-        "subtitle": "Build your own smoking setup",
-        "customize_label": "Customize",
-        "add_to_cart_label": "Add to cart",
-        "status_copy": "Step 1: Tap 'Customize'",
-        "upload_help_text": "You can upload multiple images. Or click next and tell us your theme - anime, games, pop culture, anything.",
-        "notes_label": "Tell us which image goes on which item",
-        "consent_help": "Only upload artwork you have permission to use.",
-        "max_files": 3,
-        "max_file_size_mb": 10,
-        "section_width": "max-w-page",
-        "color_scheme": "scheme-6",
-        "spacing_top": 0,
-        "spacing_bottom": 0
       }
     },
     "best_selling_grid_QdawFr": {
@@ -771,6 +771,7 @@
     "1658995208ad05f95f",
     "announcement_bar_hNziXA",
     "sa_top_series_WngH7B",
+    "custom_liquid_KdJBQ4",
     "sa_product_row_8jJbPF",
     "sa_explore_paths_LCD4k8",
     "sa_product_row_yxTULQ",
@@ -780,7 +781,6 @@
     "custom_liquid_L7PtK9",
     "custom_liquid_XHQ6pD",
     "custom_liquid_7rGzw4",
-    "custom_liquid_KdJBQ4",
     "best_selling_grid_QdawFr",
     "1763619462a3748a16",
     "marquees_8rd3da",

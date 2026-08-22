@@ -355,7 +355,7 @@
       "name": "SA Explore Paths",
       "settings": {
         "label": "START HERE",
-        "heading": "Choose how you want to explore",
+        "heading": "",
         "text": ""
       }
     },
@@ -364,11 +364,11 @@
       "name": "SA Row New Drops",
       "settings": {
         "eyebrow": "New Drops",
-        "heading": "Recently Added Exhibits",
+        "heading": "",
         "intro": "Fresh additions for collectors checking the latest product wall.",
         "collection": "best-sellers-copy",
         "max_products": 10,
-        "sort_label": "Newest arrivals",
+        "sort_label": "",
         "show_quick_add": false,
         "show_badges": true,
         "show_variant_indicators": true,

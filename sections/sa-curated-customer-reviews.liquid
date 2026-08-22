@@ -164,51 +164,53 @@
             {%- endif -%}
           </div>
 
+          {%- if rendered_count > 1 -%}
+            {%- if section.settings.show_arrows or section.settings.show_indicators -%}
+              <div class="sa-curated-reviews__navigation{% unless section.settings.show_arrows and section.settings.show_indicators %} sa-curated-reviews__navigation--single{% endunless %}" data-sa-review-navigation>
+                {%- if section.settings.show_arrows -%}
+                  <div class="sa-curated-reviews__arrows">
+                    <button
+                      class="sa-curated-reviews__arrow sa-curated-reviews__arrow--prev"
+                      type="button"
+                      data-sa-review-prev
+                      aria-label="Previous review"
+                    >
+                      <span aria-hidden="true">←</span>
+                    </button>
+                    <button
+                      class="sa-curated-reviews__arrow sa-curated-reviews__arrow--next"
+                      type="button"
+                      data-sa-review-next
+                      aria-label="Next review"
+                    >
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
+                {%- endif -%}
+
+                {%- if section.settings.show_indicators -%}
+                  <div class="sa-curated-reviews__indicators" data-sa-review-indicators aria-label="Choose a review">
+                    {%- for indicator_index in (1..rendered_count) -%}
+                      <button
+                        class="sa-curated-reviews__indicator{% if indicator_index == 1 %} is-active{% endif %}"
+                        type="button"
+                        data-sa-review-indicator="{{ forloop.index0 }}"
+                        aria-label="Go to review {{ indicator_index }}"
+                        {% if indicator_index == 1 %}aria-current="true"{% endif %}
+                      >
+                        <span aria-hidden="true"></span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
           <span class="sa-curated-reviews__blackout" data-sa-review-blackout aria-hidden="true"></span>
         </div>
 
         {%- if rendered_count > 1 -%}
-          {%- if section.settings.show_arrows or section.settings.show_indicators -%}
-            <div class="sa-curated-reviews__navigation{% unless section.settings.show_arrows and section.settings.show_indicators %} sa-curated-reviews__navigation--single{% endunless %}" data-sa-review-navigation>
-              {%- if section.settings.show_arrows -%}
-                <div class="sa-curated-reviews__arrows">
-                  <button
-                    class="sa-curated-reviews__arrow sa-curated-reviews__arrow--prev"
-                    type="button"
-                    data-sa-review-prev
-                    aria-label="Previous review"
-                  >
-                    <span aria-hidden="true">←</span>
-                  </button>
-                  <button
-                    class="sa-curated-reviews__arrow sa-curated-reviews__arrow--next"
-                    type="button"
-                    data-sa-review-next
-                    aria-label="Next review"
-                  >
-                    <span aria-hidden="true">→</span>
-                  </button>
-                </div>
-              {%- endif -%}
-
-              {%- if section.settings.show_indicators -%}
-                <div class="sa-curated-reviews__indicators" data-sa-review-indicators aria-label="Choose a review">
-                  {%- for indicator_index in (1..rendered_count) -%}
-                    <button
-                      class="sa-curated-reviews__indicator{% if indicator_index == 1 %} is-active{% endif %}"
-                      type="button"
-                      data-sa-review-indicator="{{ forloop.index0 }}"
-                      aria-label="Go to review {{ indicator_index }}"
-                      {% if indicator_index == 1 %}aria-current="true"{% endif %}
-                    >
-                      <span aria-hidden="true"></span>
-                    </button>
-                  {%- endfor -%}
-                </div>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-
           <p class="visually-hidden" data-sa-review-status aria-live="polite" aria-atomic="true">
             Review 1 of {{ rendered_count }}
           </p>

@@ -8,7 +8,6 @@
   assign review_date = review.review_date.value
   assign social_handle = review.social_handle.value
   assign associated_product = review.associated_product.value
-  assign product_type = review.product_type.value
   assign image_alt = review.image_alt.value | default: review_image.alt | default: ''
   assign image_loading = 'lazy'
   assign image_fetchpriority = 'auto'
@@ -34,10 +33,13 @@
   endif
 
   assign has_attribution = false
+  assign has_identity = false
   if customer_name != blank
     assign has_attribution = true
+    assign has_identity = true
   elsif show_date and review_date != blank
     assign has_attribution = true
+    assign has_identity = true
   elsif show_social_handle and social_handle != blank
     assign has_attribution = true
   endif
@@ -50,8 +52,8 @@
     role="listitem"
     aria-label="Review {{ render_index }}"
   >
-    {%- if has_image -%}
-      <div class="sa-curated-review__media">
+    <div class="sa-curated-review__media">
+      {%- if has_image -%}
         {{-
           review_image
           | image_url: width: 1800
@@ -63,39 +65,27 @@
             fetchpriority: image_fetchpriority,
             alt: image_alt
         -}}
-      </div>
-    {%- endif -%}
-
-    <div class="sa-curated-review__content">
-      {%- if show_product_association and product_type != blank -%}
-        <p class="sa-curated-review__product-type">{{ product_type | escape }}</p>
       {%- endif -%}
-
-      {%- if show_rating and rating_value != blank -%}
-        <div
-          class="sa-curated-review__rating"
-          role="img"
-          aria-label="{{ rating_value }} out of {{ rating_max }} stars"
-          style="--sa-rating-fill: {{ rating_percentage }}%;"
-        >
-          <span class="sa-curated-review__stars" aria-hidden="true">★★★★★</span>
-        </div>
-      {%- endif -%}
-
-      <blockquote class="sa-curated-review__quote">
-        {{- review.review_text | metafield_tag -}}
-      </blockquote>
 
       {%- if has_attribution -%}
         <footer class="sa-curated-review__attribution">
-          {%- if customer_name != blank -%}
-            <cite class="sa-curated-review__name">{{ customer_name | escape }}</cite>
-          {%- endif -%}
+          {%- if has_identity -%}
+            <span class="sa-curated-review__identity-line">
+              {%- if customer_name != blank -%}
+                <cite class="sa-curated-review__name">{{ customer_name | escape }}</cite>
+              {%- endif -%}
 
-          {%- if show_date and review_date != blank -%}
-            <time class="sa-curated-review__date" datetime="{{ review_date | date: '%Y-%m-%d' }}">
-              {{- review_date | date: '%b %d, %Y' -}}
-            </time>
+              {%- if show_date and review_date != blank -%}
+                <span class="sa-curated-review__identity-date">
+                  {%- if customer_name != blank -%}
+                    <span class="sa-curated-review__identity-separator" aria-hidden="true">•</span>
+                  {%- endif -%}
+                  <time class="sa-curated-review__date" datetime="{{ review_date | date: '%Y-%m-%d' }}">
+                    {{- review_date | date: '%b %d, %Y' -}}
+                  </time>
+                </span>
+              {%- endif -%}
+            </span>
           {%- endif -%}
 
           {%- if show_social_handle and social_handle != blank -%}
@@ -104,18 +94,35 @@
         </footer>
       {%- endif -%}
 
-      {%- if show_product_association and associated_product != blank -%}
-        <div class="sa-curated-review__product">
-          <span class="sa-curated-review__product-label">Featured exhibit</span>
-          {%- if should_link_product -%}
-            <a class="sa-curated-review__product-link" href="{{ associated_product.url }}">
-              {{- associated_product.title | escape -}}
-            </a>
-          {%- else -%}
-            <span class="sa-curated-review__product-title">{{ associated_product.title | escape }}</span>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
+      <div class="sa-curated-review__content">
+        {%- if show_rating and rating_value != blank -%}
+          <div
+            class="sa-curated-review__rating"
+            role="img"
+            aria-label="{{ rating_value }} out of {{ rating_max }} stars"
+            style="--sa-rating-fill: {{ rating_percentage }}%;"
+          >
+            <span class="sa-curated-review__stars" aria-hidden="true">★★★★★</span>
+          </div>
+        {%- endif -%}
+
+        <blockquote class="sa-curated-review__quote">
+          {{- review.review_text | metafield_tag -}}
+        </blockquote>
+
+        {%- if show_product_association and associated_product != blank -%}
+          <div class="sa-curated-review__product">
+            <span class="sa-curated-review__product-label">Featured exhibit</span>
+            {%- if should_link_product -%}
+              <a class="sa-curated-review__product-link" href="{{ associated_product.url }}">
+                {{- associated_product.title | escape -}}
+              </a>
+            {%- else -%}
+              <span class="sa-curated-review__product-title">{{ associated_product.title | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </article>
 {%- endif -%}

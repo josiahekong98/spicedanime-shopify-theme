@@ -283,8 +283,8 @@
         "show_social_handle": true,
         "show_product_association": true,
         "enable_product_links": true,
-        "show_arrows": true,
-        "show_indicators": false,
+        "show_arrows": false,
+        "show_indicators": true,
         "section_width": "full",
         "padding_top": 0,
         "padding_bottom": 0

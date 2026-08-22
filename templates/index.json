@@ -385,7 +385,7 @@
         "heading": "Shop the Current Favorites",
         "intro": "A fast path into the pieces shoppers are already choosing.",
         "collection": "best-sellers",
-        "max_products": 8,
+        "max_products": 10,
         "sort_label": "Performance archive",
         "show_quick_add": false,
         "show_badges": true,

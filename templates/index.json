@@ -424,7 +424,7 @@
         ],
         "eyebrow": "CUSTOMER ARCHIVE",
         "heading": "",
-        "homepage_display_limit": 6,
+        "homepage_display_limit": 12,
         "product_display_limit": 0,
         "image_ratio": "3 / 4",
         "show_rating": true,

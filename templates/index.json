@@ -292,10 +292,10 @@
         "intro": "A fast path into the pieces shoppers are already choosing.",
         "collection": "best-sellers-copy-3",
         "max_products": 8,
-        "sort_label": "Performance archive",
+        "sort_label": "",
         "show_quick_add": false,
         "show_badges": true,
-        "show_variant_indicators": true,
+        "show_variant_indicators": false,
         "cta_label": "View Full Collection",
         "cta_link": "",
         "layout_style": "row"

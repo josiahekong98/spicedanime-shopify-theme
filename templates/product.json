@@ -285,7 +285,7 @@
         "enable_product_links": true,
         "show_arrows": true,
         "show_indicators": true,
-        "section_width": "wide",
+        "section_width": "full",
         "padding_top": 64,
         "padding_bottom": 64
       }

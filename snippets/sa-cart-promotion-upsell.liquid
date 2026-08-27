@@ -71,7 +71,7 @@
     </div>
 
     <div class="sa-cart-promotion__intro">
-      <h2 id="{{ dialog_id }}-Title" class="sa-cart-promotion__title" data-sa-promotion-title></h2>
+      <h2 id="{{ dialog_id }}-Title" class="visually-hidden" data-sa-promotion-title></h2>
       <p id="{{ dialog_id }}-Message" class="sa-cart-promotion__message" data-sa-promotion-message></p>
       <p class="sa-cart-promotion__quantity" data-sa-promotion-quantity></p>
       <div class="sa-cart-promotion__progress" aria-hidden="true">
@@ -81,7 +81,9 @@
 
     <div data-sa-promotion-recommendations>
       <div class="sa-cart-promotion__recommendation-heading">
-        <h3>Continue the collection</h3>
+        <p class="sa-cart-promotion__swipe-hint" data-sa-promotion-swipe-hint hidden>
+          Swipe for more <span aria-hidden="true">&rarr;</span>
+        </p>
         <a class="sa-cart-promotion__view-more" href="/collections" data-sa-promotion-view-more>View more options</a>
       </div>
       <ul class="sa-cart-promotion__items list-unstyled" data-sa-promotion-items></ul>

@@ -215,8 +215,8 @@
       if (quantity >= group.finalThreshold) {
         return {
           complete: true,
-          title: 'Congrats!',
-          message: `You reached the free ${group.itemSingular} offer.`,
+          title: 'Congratulations',
+          message: `Congrats! Your free ${group.itemSingular} offer is ready.`,
           quantityLabel: `${quantity} of ${group.finalThreshold} ${group.itemPlural}`,
           progress: 100,
         };
@@ -227,19 +227,24 @@
         return {
           complete: false,
           title: 'Save $5',
-          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach the $5-off offer.`,
+          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} and save $5.`,
           quantityLabel: `${quantity} of ${group.firstThreshold} ${group.itemPlural}`,
           progress: Math.min(100, (quantity / group.firstThreshold) * 100),
         };
       }
 
       const remaining = group.finalThreshold - quantity;
+      const isOneAway = remaining === 1;
       return {
         complete: false,
         title: `Unlock a free ${group.itemSingular}`,
         message: group.tierType === 'two-tier'
-          ? `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach four total.`
-          : `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach three total.`,
+          ? (isOneAway
+            ? `Add a ${group.itemSingular} for free.`
+            : `Buy 3 ${group.itemPlural}, add a 4th ${group.itemSingular} for free.`)
+          : (isOneAway
+            ? `Add a ${group.itemSingular} for free.`
+            : `Buy 2 ${group.itemPlural}, add a 3rd ${group.itemSingular} for free.`),
         quantityLabel: `${quantity} of ${group.finalThreshold} ${group.itemPlural}`,
         progress: Math.min(100, (quantity / group.finalThreshold) * 100),
       };
@@ -275,6 +280,8 @@
       });
 
       this.emptyState.hidden = selected.length > 0;
+      const swipeHint = this.root.querySelector('[data-sa-promotion-swipe-hint]');
+      if (swipeHint) swipeHint.hidden = selected.length <= 2;
     }
 
     shuffle(candidates) {

@@ -30,7 +30,8 @@
 
 .sa-cart-promotion__dialog {
   position: absolute;
-  top: 50%;
+  top: auto;
+  bottom: max(1.2rem, env(safe-area-inset-bottom));
   left: 50%;
   width: min(64rem, calc(100vw - 2.4rem));
   max-height: min(76rem, calc(100dvh - 2.4rem));
@@ -44,7 +45,7 @@
     radial-gradient(circle at 82% 8%, rgba(211, 179, 106, 0.08), transparent 30%),
     var(--sa-promotion-panel);
   box-shadow: 0 2.4rem 8rem rgba(0, 0, 0, 0.58);
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 
 .sa-cart-promotion__topline,
@@ -92,25 +93,15 @@
   margin-block: 0.8rem 1.8rem;
 }
 
-.sa-cart-promotion__title {
-  margin: 0;
-  color: var(--sa-promotion-ink);
-  font-family: var(--sa-font-display, var(--font-heading-family));
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-
 .sa-cart-promotion__message {
   max-width: 52rem;
-  margin: 1rem 0 0;
-  color: var(--sa-promotion-muted);
+  margin: 0.6rem 0 0;
+  color: var(--sa-promotion-ink);
   font-family: var(--sa-font-archive, var(--font-body-family));
-  font-size: 1.15rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.55;
-  letter-spacing: 0.08em;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -140,14 +131,20 @@
   border-top: 0.1rem solid var(--sa-promotion-line);
 }
 
-.sa-cart-promotion__recommendation-heading h3 {
+.sa-cart-promotion__swipe-hint {
   margin: 0;
-  color: var(--sa-promotion-ink);
+  color: var(--sa-promotion-accent);
   font-family: var(--sa-font-archive, var(--font-heading-family));
   font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.sa-cart-promotion__swipe-hint span {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 1.5rem;
 }
 
 .sa-cart-promotion__view-more {
@@ -220,14 +217,12 @@
 .sa-cart-promotion__card-actions {
   display: flex;
   min-width: 0;
-  padding-top: 0.9rem;
-  flex: 1;
+  padding-top: 0.7rem;
   flex-direction: column;
   align-items: stretch;
 }
 
 .sa-cart-promotion__series {
-  min-height: 2.8rem;
   overflow-wrap: anywhere;
   font-size: 0.9rem;
 }
@@ -235,12 +230,15 @@
 .sa-cart-promotion__add.button {
   width: 100%;
   min-height: 4.4rem;
-  margin-top: auto;
-  padding-inline: 1.2rem;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.2rem;
   color: #161616;
   border-color: var(--sa-promotion-ink);
   border-radius: 5rem;
   background: var(--sa-promotion-ink);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .sa-cart-promotion__add.button:hover {
@@ -304,10 +302,6 @@
     max-height: calc(100dvh - 2.4rem);
     padding: 1.6rem;
     border-radius: 2rem;
-  }
-
-  .sa-cart-promotion__title {
-    font-size: clamp(2.2rem, 8vw, 2.8rem);
   }
 
   .sa-cart-promotion__recommendation-heading {

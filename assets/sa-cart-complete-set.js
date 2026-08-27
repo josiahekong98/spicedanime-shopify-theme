@@ -344,6 +344,13 @@
           variantIds.length === 1 ? 'Selected item added to cart.' : 'Selected items added to cart.',
           'success'
         );
+        if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: 'sa-cart-complete-set',
+            productVariantIds: variantIds,
+            cartData: responseData,
+          });
+        }
         this.host.renderContents(responseData);
         this.pending = false;
         this.operationModule = null;

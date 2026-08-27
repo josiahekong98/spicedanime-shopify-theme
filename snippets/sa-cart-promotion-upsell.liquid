@@ -1,0 +1,154 @@
+{%- comment -%}
+  Promotion-progress popup and inert eligible candidate library.
+  Discount enforcement remains owned by Shopify discounts or Functions.
+{%- endcomment -%}
+
+{%- liquid
+  assign lighter_collection = section.settings.promotion_lighter_collection
+  if lighter_collection == blank
+    assign lighter_collection = collections['all-products-lighters']
+  endif
+
+  assign stash_jar_collection = section.settings.promotion_stash_jar_collection
+  if stash_jar_collection == blank
+    assign stash_jar_collection = collections['all-products-stash-jars']
+  endif
+
+  assign grinder_collection = section.settings.promotion_grinder_collection
+  if grinder_collection == blank
+    assign grinder_collection = collections['herb-grinders']
+  endif
+
+  assign rolling_tray_collection = section.settings.promotion_rolling_tray_collection
+  if rolling_tray_collection == blank
+    assign rolling_tray_collection = collections['all-rolling-trays']
+  endif
+
+  assign ashtray_collection = section.settings.promotion_ashtray_collection
+  if ashtray_collection == blank
+    assign ashtray_collection = collections['all-products-ashtray']
+  endif
+
+  assign dialog_id = 'SaCartPromotion-' | append: section.id
+-%}
+
+<div
+  id="{{ dialog_id }}"
+  class="sa-cart-promotion"
+  data-sa-cart-promotion
+  data-max-recommendations="{{ section.settings.promotion_max_recommendations }}"
+  data-prefer-same-series="{{ section.settings.promotion_prefer_same_series }}"
+  data-random-fallback="{{ section.settings.promotion_random_fallback }}"
+  hidden
+>
+  <button
+    class="sa-cart-promotion__backdrop"
+    type="button"
+    data-sa-promotion-close
+    aria-label="Close promotion recommendations"
+    tabindex="-1"
+  ></button>
+
+  <section
+    class="sa-cart-promotion__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="{{ dialog_id }}-Title"
+    aria-describedby="{{ dialog_id }}-Message"
+    tabindex="-1"
+    data-sa-promotion-dialog
+  >
+    <div class="sa-cart-promotion__topline">
+      <p class="sa-cart-promotion__eyebrow">COLLECTOR OFFER</p>
+      <button
+        class="sa-cart-promotion__close"
+        type="button"
+        data-sa-promotion-close
+        aria-label="Close promotion recommendations"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="sa-cart-promotion__intro">
+      <h2 id="{{ dialog_id }}-Title" class="sa-cart-promotion__title" data-sa-promotion-title></h2>
+      <p id="{{ dialog_id }}-Message" class="sa-cart-promotion__message" data-sa-promotion-message></p>
+      <p class="sa-cart-promotion__quantity" data-sa-promotion-quantity></p>
+      <div class="sa-cart-promotion__progress" aria-hidden="true">
+        <span data-sa-promotion-progress></span>
+      </div>
+    </div>
+
+    <div data-sa-promotion-recommendations>
+      <div class="sa-cart-promotion__recommendation-heading">
+        <h3>Continue the collection</h3>
+        <a class="sa-cart-promotion__view-more" href="/collections" data-sa-promotion-view-more>View more options</a>
+      </div>
+      <ul class="sa-cart-promotion__items list-unstyled" data-sa-promotion-items></ul>
+      <p class="sa-cart-promotion__empty" data-sa-promotion-empty hidden>
+        No other eligible pieces are available here right now. View the full collection for more options.
+      </p>
+    </div>
+
+    <p
+      class="sa-cart-promotion__status"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      data-sa-promotion-status
+      hidden
+    ></p>
+
+    <button class="sa-cart-promotion__continue" type="button" data-sa-promotion-close>
+      Continue shopping
+    </button>
+  </section>
+
+  <div class="sa-cart-promotion__library" hidden aria-hidden="true" data-sa-promotion-library>
+    {%- for candidate_product in lighter_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'flip-lighter-tin',
+        expected_type: 'Flip Lighter',
+        option_name: 'Bundle',
+        option_value: 'Tin Case Only'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in stash_jar_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'stash-jar',
+        expected_type: 'Stash Jar'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in grinder_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'grinder-only',
+        expected_type: 'Grinder Sets',
+        option_name: 'Bundle',
+        option_value: 'Grinder'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in rolling_tray_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'rolling-tray',
+        expected_type: 'Rolling Tray'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in ashtray_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'ashtray-only',
+        expected_type: 'Ashtray',
+        option_name: 'Bundle',
+        option_value: 'Ashtray Only'
+      -%}
+    {%- endfor -%}
+  </div>
+</div>

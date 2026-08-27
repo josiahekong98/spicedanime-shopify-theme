@@ -2383,6 +2383,12 @@ if (!customElements.get("product-card")) {
             return;
           }
 
+          publish(PUB_SUB_EVENTS.cartUpdate, {
+            source: "product-card",
+            productVariantId: formData.get("id"),
+            cartData: response
+          });
+
           if (this.cart) {
             this.cart.renderContents(response);
           }
@@ -3279,4 +3285,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", autoLoad);
 });
-

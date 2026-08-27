@@ -8,6 +8,9 @@
 {{- 'component-cart-drawer.css' | asset_url | stylesheet_tag -}}
 {{- 'component-cart.css' | asset_url | stylesheet_tag -}}
 {{- 'sa-cart.css' | asset_url | stylesheet_tag -}}
+{%- if section.settings.promotion_upsell_enabled -%}
+  {{- 'sa-cart-promotion-upsell.css' | asset_url | stylesheet_tag -}}
+{%- endif -%}
 
 {% if template.name != 'cart' %}
   <script src="{{- 'cart.js' | asset_url -}}" defer="defer"></script>
@@ -15,6 +18,9 @@
 <script src="{{- 'cart-info-bar-slider.js' | asset_url -}}" defer="defer"></script>
 <script src="{{- 'product-recommendations.js' | asset_url -}}" defer="defer"></script>
 <script src="{{- 'sa-cart-complete-set.js' | asset_url -}}" defer="defer"></script>
+{%- if section.settings.promotion_upsell_enabled -%}
+  <script src="{{- 'sa-cart-promotion-upsell.js' | asset_url -}}" defer="defer"></script>
+{%- endif -%}
 
 {%- comment -%}
   Keep future Complete This Set controller loading beside the recommendation
@@ -37,6 +43,10 @@
         aria-label="{{- 'cart.title' | t -}}"
         tabindex="-1"
       >
+        {%- if section.settings.promotion_upsell_enabled -%}
+          {%- render 'sa-cart-promotion-upsell' -%}
+        {%- endif -%}
+
         {%- if section.blocks.size > 0 -%}
         <cart-drawer-info-slider class="cart-drawer__information-bar">
           <div class="swiper cart-drawer__swiper">

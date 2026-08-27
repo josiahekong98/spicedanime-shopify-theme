@@ -92,6 +92,69 @@
       "limit": 12
     },
     {
+      "type": "header",
+      "content": "Promotion progress popup"
+    },
+    {
+      "type": "checkbox",
+      "id": "promotion_upsell_enabled",
+      "label": "Enable promotion popup",
+      "info": "Promotion pricing must be configured separately in Shopify Discounts or a Shopify Function.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "promotion_max_recommendations",
+      "label": "Maximum product options",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "promotion_prefer_same_series",
+      "label": "Prefer products from the same series",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "promotion_random_fallback",
+      "label": "Use eligible fallback products",
+      "info": "When same-series options do not fill the popup, use other eligible products from the same promotion family.",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "promotion_lighter_collection",
+      "label": "Flip lighter promotion collection",
+      "info": "Defaults to all-products-lighters. Only exact Bundle: Tin Case Only variants qualify."
+    },
+    {
+      "type": "collection",
+      "id": "promotion_stash_jar_collection",
+      "label": "Stash jar promotion collection",
+      "info": "Defaults to all-products-stash-jars."
+    },
+    {
+      "type": "collection",
+      "id": "promotion_grinder_collection",
+      "label": "Grinder promotion collection",
+      "info": "Defaults to herb-grinders. Only exact Bundle: Grinder variants qualify."
+    },
+    {
+      "type": "collection",
+      "id": "promotion_rolling_tray_collection",
+      "label": "Rolling tray promotion collection",
+      "info": "Defaults to all-rolling-trays."
+    },
+    {
+      "type": "collection",
+      "id": "promotion_ashtray_collection",
+      "label": "Ashtray promotion collection",
+      "info": "Defaults to all-products-ashtray. Only exact Bundle: Ashtray Only variants qualify."
+    },
+    {
       "type": "checkbox",
       "id": "show_rewards_teaser",
       "label": "Show rewards teaser",

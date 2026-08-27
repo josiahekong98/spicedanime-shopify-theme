@@ -1,0 +1,123 @@
+{%- comment -%}
+  Renders one inert promotion candidate template.
+
+  Inputs:
+  - product
+  - group_key
+  - expected_type
+  - option_name (optional exact option name)
+  - option_value (optional exact option value)
+{%- endcomment -%}
+
+{%- liquid
+  assign qualifying_variant = blank
+  assign qualifying_variant_ids = '|'
+  assign qualifying_option_position = 0
+
+  if product != blank and product.type == expected_type
+    if option_name != blank
+      for product_option in product.options_with_values
+        if product_option.name == option_name
+          assign qualifying_option_position = forloop.index
+          break
+        endif
+      endfor
+    endif
+
+    if option_name == blank or qualifying_option_position > 0
+      for candidate_variant in product.variants
+        assign variant_qualifies = true
+
+        if option_name != blank
+          case qualifying_option_position
+            when 1
+              unless candidate_variant.option1 == option_value
+                assign variant_qualifies = false
+              endunless
+            when 2
+              unless candidate_variant.option2 == option_value
+                assign variant_qualifies = false
+              endunless
+            when 3
+              unless candidate_variant.option3 == option_value
+                assign variant_qualifies = false
+              endunless
+            else
+              assign variant_qualifies = false
+          endcase
+        endif
+
+        if variant_qualifies
+          assign qualifying_variant_ids = qualifying_variant_ids | append: candidate_variant.id | append: '|'
+          if qualifying_variant == blank and candidate_variant.available
+            assign qualifying_variant = candidate_variant
+          endif
+        endif
+      endfor
+    endif
+  endif
+
+  assign product_series = product.metafields.custom.series.value | default: product.metafields.custom.series | strip
+  assign candidate_image = qualifying_variant.featured_image | default: product.featured_image
+  assign candidate_image_alt = candidate_image.alt | default: product.title
+  assign candidate_url = product.url | append: '?variant=' | append: qualifying_variant.id
+  assign qualifying_label = option_value
+
+  if qualifying_label == blank and product.has_only_default_variant == false
+    unless qualifying_variant.title == 'Default Title'
+      assign qualifying_label = qualifying_variant.title
+    endunless
+  endif
+-%}
+
+{%- if qualifying_variant != blank -%}
+  <template
+    data-sa-promotion-candidate
+    data-group="{{ group_key | escape }}"
+    data-product-id="{{ product.id }}"
+    data-variant-id="{{ qualifying_variant.id }}"
+    data-qualifying-variant-ids="{{ qualifying_variant_ids }}"
+    data-series="{{ product_series | escape }}"
+  >
+    <li class="sa-cart-promotion__item" data-sa-promotion-item>
+      <article class="sa-cart-promotion__card">
+        <a class="sa-cart-promotion__media" href="{{ candidate_url }}" aria-label="View {{ product.title | escape }}">
+          {%- if candidate_image != blank -%}
+            {{-
+              candidate_image
+              | image_url: width: 520
+              | image_tag:
+                widths: '180,260,360,520',
+                sizes: '(max-width: 749px) 34vw, 180px',
+                loading: 'lazy',
+                alt: candidate_image_alt
+            -}}
+          {%- endif -%}
+        </a>
+
+        <div class="sa-cart-promotion__card-content">
+          {%- if product_series != blank -%}
+            <p class="sa-cart-promotion__series">{{ product_series | escape }}</p>
+          {%- endif -%}
+          <h3 class="sa-cart-promotion__product-title">
+            <a href="{{ candidate_url }}">{{ product.title | escape }}</a>
+          </h3>
+          {%- if qualifying_label != blank -%}
+            <p class="sa-cart-promotion__variant">{{ qualifying_label | escape }}</p>
+          {%- endif -%}
+          <p class="sa-cart-promotion__price">{{ qualifying_variant.price | money }}</p>
+          <button
+            class="button button--outlined sa-cart-promotion__add"
+            type="button"
+            data-sa-promotion-add
+            data-variant-id="{{ qualifying_variant.id }}"
+            aria-label="Add {{ product.title | escape }}, {{ qualifying_label | default: qualifying_variant.title | escape }} to cart"
+          >
+            <span data-sa-promotion-add-label>Add</span>
+            <span class="loading__spinner hidden" aria-hidden="true"></span>
+          </button>
+        </div>
+      </article>
+    </li>
+  </template>
+{%- endif -%}

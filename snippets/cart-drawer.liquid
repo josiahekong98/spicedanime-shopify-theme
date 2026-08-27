@@ -43,10 +43,6 @@
         aria-label="{{- 'cart.title' | t -}}"
         tabindex="-1"
       >
-        {%- if section.settings.promotion_upsell_enabled -%}
-          {%- render 'sa-cart-promotion-upsell' -%}
-        {%- endif -%}
-
         {%- if section.blocks.size > 0 -%}
         <cart-drawer-info-slider class="cart-drawer__information-bar">
           <div class="swiper cart-drawer__swiper">
@@ -281,3 +277,7 @@
     </div>
   </div>
 </cart-drawer>
+
+{%- if section.settings.promotion_upsell_enabled -%}
+  {%- render 'sa-cart-promotion-upsell' -%}
+{%- endif -%}

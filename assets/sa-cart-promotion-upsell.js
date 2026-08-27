@@ -10,6 +10,8 @@
   const GROUPS = {
     'flip-lighter-tin': {
       label: 'flip lighter tins',
+      itemSingular: 'tin case',
+      itemPlural: 'tin cases',
       finalThreshold: 4,
       firstThreshold: 2,
       viewMoreUrl: '/collections/all-products-lighters',
@@ -18,6 +20,8 @@
     },
     'stash-jar': {
       label: 'stash jars',
+      itemSingular: 'stash jar',
+      itemPlural: 'stash jars',
       finalThreshold: 4,
       firstThreshold: 2,
       viewMoreUrl: '/collections/all-products-stash-jars',
@@ -26,6 +30,8 @@
     },
     'grinder-only': {
       label: 'grinders',
+      itemSingular: 'grinder',
+      itemPlural: 'grinders',
       finalThreshold: 3,
       viewMoreUrl: '/collections/herb-grinders',
       viewMoreLabel: 'View more grinder sets',
@@ -33,6 +39,8 @@
     },
     'rolling-tray': {
       label: 'rolling trays',
+      itemSingular: 'rolling tray',
+      itemPlural: 'rolling trays',
       finalThreshold: 3,
       viewMoreUrl: '/collections/all-rolling-trays',
       viewMoreLabel: 'View more rolling trays',
@@ -40,6 +48,8 @@
     },
     'ashtray-only': {
       label: 'ashtrays',
+      itemSingular: 'ashtray',
+      itemPlural: 'ashtrays',
       finalThreshold: 3,
       viewMoreUrl: '/collections/all-products-ashtray',
       viewMoreLabel: 'View more ashtrays',
@@ -55,7 +65,7 @@
       this.status = root.querySelector('[data-sa-promotion-status]');
       this.emptyState = root.querySelector('[data-sa-promotion-empty]');
       this.recommendations = root.querySelector('[data-sa-promotion-recommendations]');
-      this.maxRecommendations = Math.max(1, Number(root.dataset.maxRecommendations) || 4);
+      this.maxRecommendations = Math.max(1, Number(root.dataset.maxRecommendations) || 6);
       this.preferSameSeries = root.dataset.preferSameSeries !== 'false';
       this.randomFallback = root.dataset.randomFallback !== 'false';
       this.lastTriggerSignature = '';
@@ -205,11 +215,9 @@
       if (quantity >= group.finalThreshold) {
         return {
           complete: true,
-          title: 'Collector offer quantity reached',
-          message: group.tierType === 'two-tier'
-            ? `Your cart now has ${group.finalThreshold} eligible ${group.label}: three purchased and one eligible item for the free-item offer.`
-            : `Your cart now has ${group.finalThreshold} eligible ${group.label}: two purchased and one eligible item for the free-item offer.`,
-          quantityLabel: `${quantity} of ${group.finalThreshold} eligible items`,
+          title: 'Congrats!',
+          message: `You reached the free ${group.itemSingular} offer.`,
+          quantityLabel: `${quantity} of ${group.finalThreshold} ${group.itemPlural}`,
           progress: 100,
         };
       }
@@ -218,9 +226,9 @@
         const remaining = group.firstThreshold - quantity;
         return {
           complete: false,
-          title: `Build your ${group.label} archive`,
-          message: `Add ${remaining} more eligible ${remaining === 1 ? 'item' : 'items'} to reach the quantity for $5 off.`,
-          quantityLabel: `${quantity} of ${group.firstThreshold} eligible items`,
+          title: 'Save $5',
+          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach the $5-off offer.`,
+          quantityLabel: `${quantity} of ${group.firstThreshold} ${group.itemPlural}`,
           progress: Math.min(100, (quantity / group.firstThreshold) * 100),
         };
       }
@@ -228,11 +236,11 @@
       const remaining = group.finalThreshold - quantity;
       return {
         complete: false,
-        title: group.tierType === 'two-tier' ? '$5-off quantity reached' : `Build your ${group.label} archive`,
+        title: `Unlock a free ${group.itemSingular}`,
         message: group.tierType === 'two-tier'
-          ? `Add ${remaining} more eligible ${remaining === 1 ? 'item' : 'items'} to reach four total and qualify for the free-item offer.`
-          : `Add ${remaining} more eligible ${remaining === 1 ? 'item' : 'items'} to reach three total: buy two and qualify for one free.`,
-        quantityLabel: `${quantity} of ${group.finalThreshold} eligible items`,
+          ? `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach four total.`
+          : `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} to reach three total.`,
+        quantityLabel: `${quantity} of ${group.finalThreshold} ${group.itemPlural}`,
         progress: Math.min(100, (quantity / group.finalThreshold) * 100),
       };
     }
@@ -289,9 +297,7 @@
       this.root.hidden = false;
       this.root.dataset.open = 'true';
       this.setBackgroundInert(true);
-      requestAnimationFrame(() => {
-        this.root.querySelector('.sa-cart-promotion__close')?.focus();
-      });
+      this.activateDialogFocusTrap();
     }
 
     close() {
@@ -300,13 +306,35 @@
       delete this.root.dataset.open;
       this.setBackgroundInert(false);
 
-      const drawer = this.root.closest('cart-drawer');
+      if (typeof removeTrapFocus === 'function') removeTrapFocus();
+      const drawer = document.querySelector('cart-drawer');
       const drawerClose = drawer?.querySelector('[data-drawer-close]');
       if (drawer?.classList.contains('is-visible') && drawerClose) {
-        drawerClose.focus();
+        if (typeof trapFocus === 'function') {
+          trapFocus(drawer.firstElementChild, drawerClose);
+        } else {
+          drawerClose.focus();
+        }
       } else if (this.previousFocus?.isConnected) {
         this.previousFocus.focus();
       }
+    }
+
+    activateDialogFocusTrap() {
+      const focusDialog = () => {
+        if (this.root.hidden) return;
+        const closeButton = this.root.querySelector('.sa-cart-promotion__close');
+        if (typeof trapFocus === 'function') {
+          trapFocus(this.dialog, closeButton || this.dialog);
+        } else {
+          closeButton?.focus();
+        }
+      };
+
+      const drawerInner = document.querySelector('cart-drawer .cart-drawer__inner');
+      drawerInner?.addEventListener('transitionend', focusDialog, { once: true });
+      requestAnimationFrame(focusDialog);
+      window.setTimeout(focusDialog, 400);
     }
 
     setBackgroundInert(shouldBeInert) {
@@ -322,6 +350,7 @@
     }
 
     handleClick(event) {
+      event.stopPropagation();
       const closeControl = event.target.closest('[data-sa-promotion-close]');
       if (closeControl) {
         event.preventDefault();
@@ -344,23 +373,6 @@
         return;
       }
 
-      if (event.key !== 'Tab') return;
-      const focusable = Array.from(this.dialog.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )).filter(element => !element.hidden && element.offsetParent !== null);
-      if (!focusable.length) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        event.stopPropagation();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        event.stopPropagation();
-        first.focus();
-      }
     }
 
     async addRecommendation(button) {
@@ -368,7 +380,7 @@
       const variantId = String(button.dataset.variantId || '');
       if (!variantId || !this.variantCandidates.has(variantId)) return;
 
-      const drawer = this.root.closest('cart-drawer');
+      const drawer = document.querySelector('cart-drawer');
       const sections = drawer?.getSectionsToRender?.() || [];
       this.pending = true;
       button.disabled = true;
@@ -396,6 +408,7 @@
         }
 
         drawer?.renderContents?.(responseData);
+        this.activateDialogFocusTrap();
         const cart = await this.fetchCart();
         if (typeof syncCartAfterMutation === 'function') syncCartAfterMutation(cart);
         if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {

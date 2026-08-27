@@ -95,17 +95,10 @@
           {%- endif -%}
         </a>
 
-        <div class="sa-cart-promotion__card-content">
+        <div class="sa-cart-promotion__card-actions">
           {%- if product_series != blank -%}
             <p class="sa-cart-promotion__series">{{ product_series | escape }}</p>
           {%- endif -%}
-          <h3 class="sa-cart-promotion__product-title">
-            <a href="{{ candidate_url }}">{{ product.title | escape }}</a>
-          </h3>
-          {%- if qualifying_label != blank -%}
-            <p class="sa-cart-promotion__variant">{{ qualifying_label | escape }}</p>
-          {%- endif -%}
-          <p class="sa-cart-promotion__price">{{ qualifying_variant.price | money }}</p>
           <button
             class="button button--outlined sa-cart-promotion__add"
             type="button"

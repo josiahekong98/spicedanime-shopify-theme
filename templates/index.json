@@ -279,8 +279,8 @@
         "intro": "Enter through your favorite fandom first.",
         "visible_count": "12",
         "mobile_layout": "scroll",
-        "view_all_label": "See All Series",
-        "view_all_link": "shopify://pages/all-anime-collections"
+        "view_all_label": "View All Series",
+        "view_all_link": ""
       }
     },
     "custom_liquid_KdJBQ4": {
@@ -362,7 +362,7 @@
             "image": "shopify://shop_images/F48DCB1F-806D-4CA2-A719-50DCE01E43E2.webp",
             "icon_label": "L",
             "link": "/pages/explore-by-lifestyle",
-            "link_label": "Shop Black Art Pieces",
+            "link_label": "Shop Lifestyle",
             "accessibility_label": "",
             "accent_color": "#2F5138"
           }

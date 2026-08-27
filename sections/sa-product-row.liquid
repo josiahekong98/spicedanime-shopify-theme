@@ -7,12 +7,6 @@
   assign row_label = section.settings.sort_label
   assign layout_style = section.settings.layout_style | default: 'row'
   assign show_badges = section.settings.show_badges
-  assign show_variant_indicators = section.settings.show_variant_indicators
-  assign show_quick_add = section.settings.show_quick_add
-  assign product_action_label = 'View Exhibit'
-  if show_quick_add
-    assign product_action_label = 'View Product'
-  endif
 %}
 
 <section class="sa-section sa-section--archive-black sa-product-row sa-product-row--{{ layout_style }}" aria-labelledby="sa-product-row-title-{{ section.id }}">
@@ -87,9 +81,17 @@
 
     #shopify-section-{{ section.id }} .sa-product-row__product {
       min-width: 0;
+      min-height: 190px;
       display: grid;
       grid-template-rows: auto 1fr;
+      align-content: stretch;
       text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product:hover,
+    #shopify-section-{{ section.id }} .sa-product-row__product:focus-visible {
+      border-color: var(--sa-relic-red);
+      box-shadow: var(--sa-shadow-card), 0 0 0 1px rgba(179, 54, 45, 0.34);
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__product:hover .sa-product-row__image {
@@ -147,89 +149,26 @@
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__content {
+      min-width: 0;
       display: grid;
       align-content: start;
-      grid-template-rows: minmax(16px, auto) auto auto auto;
-      gap: var(--sa-space-2);
       padding: 10px;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__meta {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      gap: var(--sa-space-2);
-      min-width: 0;
-      min-height: 16px;
-      overflow: hidden;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__type,
-    #shopify-section-{{ section.id }} .sa-product-row__variant-note {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__type {
-      color: var(--sa-bamboo-amber);
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__title {
       margin: 0;
       min-width: 0;
+      display: -webkit-box;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow-wrap: anywhere;
       color: var(--sa-museum-ivory);
       font-family: var(--sa-font-display);
-      font-size: clamp(15px, 1.2vw, 18px);
+      font-size: var(--sa-type-card-title);
       line-height: var(--sa-line-heading);
       letter-spacing: 0;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__title .sa-archive-link {
-      display: block;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__price {
-      margin: 0;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: var(--sa-space-2);
-      color: var(--sa-gallery-stone);
-      font-family: var(--sa-font-ui);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__price-sale {
-      color: var(--sa-museum-ivory);
-      font-weight: 700;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__price-compare {
-      color: rgba(216, 210, 199, 0.68);
-      text-decoration: line-through;
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__variant-note {
-      flex: 0 0 auto;
-      color: var(--sa-gallery-stone);
-    }
-
-    #shopify-section-{{ section.id }} .sa-product-row__action {
-      min-height: 38px;
-      margin-block-start: 4px;
-      padding-inline: 14px;
-      font-size: 12px;
-      justify-self: start;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__footer {
@@ -289,7 +228,6 @@
       }
 
       #shopify-section-{{ section.id }} .sa-product-row__content {
-        gap: 6px;
         padding: 9px;
       }
 
@@ -297,11 +235,6 @@
         font-size: 15px;
       }
 
-      #shopify-section-{{ section.id }} .sa-product-row__price {
-        font-size: 13px;
-      }
-
-      #shopify-section-{{ section.id }} .sa-product-row__action,
       #shopify-section-{{ section.id }} .sa-product-row__footer .sa-button {
         width: 100%;
       }
@@ -346,12 +279,10 @@
         {% for product in selected_collection.products limit: max_products %}
           {% liquid
             assign product_title = product.title | default: 'Product Exhibit'
-            assign product_type = product.type
             assign image_alt = product.featured_image.alt | default: product_title
             assign product_initials = product_title | remove: ' ' | slice: 0, 2 | upcase
             assign compare_price = product.compare_at_price_max
             assign current_price = product.price
-            assign variant_count = product.variants.size
             assign tag_badge = blank
             for tag in product.tags
               assign normalized_tag = tag | downcase
@@ -362,8 +293,8 @@
             endfor
           %}
 
-          <article class="sa-card sa-product-row__product" role="listitem">
-            <a class="sa-product-row__media" href="{{ product.url }}" aria-label="View {{ product_title | escape }}">
+          <a class="sa-card sa-product-row__product" href="{{ product.url }}" aria-label="View {{ product_title | escape }}" role="listitem">
+            <span class="sa-product-row__media" aria-hidden="true">
               {% if product.featured_image != blank %}
                 {{ product.featured_image | image_url: width: 900 | image_tag: class: 'sa-product-row__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 72vw', widths: '320, 480, 640, 760, 900', alt: image_alt | escape }}
               {% else %}
@@ -381,41 +312,12 @@
                   {% endif %}
                 </span>
               {% endif %}
-            </a>
+            </span>
 
-            <div class="sa-product-row__content">
-              <div class="sa-product-row__meta">
-                {% if product_type != blank %}
-                  <span class="sa-archive-label sa-product-row__type">{{ product_type | escape }}</span>
-                {% endif %}
-
-                {% if show_variant_indicators and product.has_only_default_variant == false %}
-                  <span class="sa-archive-label sa-product-row__variant-note">
-                    {{ variant_count }} {% if variant_count == 1 %}variant{% else %}variants{% endif %}
-                  </span>
-                {% endif %}
-              </div>
-
-              <h3 class="sa-product-row__title">
-                <a class="sa-archive-link" href="{{ product.url }}">{{ product_title | escape }}</a>
-              </h3>
-
-              <p class="sa-product-row__price">
-                {% if product.price_varies %}
-                  <span>{{ product.price_min | money }}+</span>
-                {% elsif compare_price > current_price %}
-                  <span class="sa-product-row__price-sale">{{ current_price | money }}</span>
-                  <span class="sa-product-row__price-compare">{{ compare_price | money }}</span>
-                {% else %}
-                  <span>{{ current_price | money }}</span>
-                {% endif %}
-              </p>
-
-              <a class="sa-button sa-button--secondary sa-product-row__action" href="{{ product.url }}" aria-label="{{ product_action_label }}: {{ product_title | escape }}">
-                {{ product_action_label }}
-              </a>
-            </div>
-          </article>
+            <span class="sa-product-row__content">
+              <span class="sa-product-row__title">{{ product_title | escape }}</span>
+            </span>
+          </a>
         {% endfor %}
       </div>
 

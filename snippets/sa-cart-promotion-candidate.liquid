@@ -81,34 +81,36 @@
   >
     <li class="sa-cart-promotion__item" data-sa-promotion-item>
       <article class="sa-cart-promotion__card">
-        <a class="sa-cart-promotion__media" href="{{ candidate_url }}" aria-label="View {{ product.title | escape }}">
-          {%- if candidate_image != blank -%}
-            {{-
-              candidate_image
-              | image_url: width: 520
-              | image_tag:
-                widths: '180,260,360,520',
-                sizes: '(max-width: 749px) 34vw, 180px',
-                loading: 'lazy',
-                alt: candidate_image_alt
-            -}}
-          {%- endif -%}
-        </a>
-
-        <div class="sa-cart-promotion__card-actions">
-          {%- if product_series != blank -%}
-            <p class="sa-cart-promotion__series">{{ product_series | escape }}</p>
-          {%- endif -%}
+        <div class="sa-cart-promotion__media-shell">
+          <a class="sa-cart-promotion__media" href="{{ candidate_url }}" aria-label="View {{ product.title | escape }}">
+            {%- if candidate_image != blank -%}
+              {{-
+                candidate_image
+                | image_url: width: 520
+                | image_tag:
+                  widths: '180,260,360,520',
+                  sizes: '(max-width: 749px) 34vw, 180px',
+                  loading: 'lazy',
+                  alt: candidate_image_alt
+              -}}
+            {%- endif -%}
+          </a>
           <button
-            class="button button--outlined sa-cart-promotion__add"
+            class="sa-cart-promotion__add"
             type="button"
             data-sa-promotion-add
             data-variant-id="{{ qualifying_variant.id }}"
             aria-label="Add {{ product.title | escape }}, {{ qualifying_label | default: qualifying_variant.title | escape }} to cart"
           >
-            <span data-sa-promotion-add-label>Add</span>
+            <span data-sa-promotion-add-label aria-hidden="true">+</span>
             <span class="loading__spinner hidden" aria-hidden="true"></span>
           </button>
+        </div>
+
+        <div class="sa-cart-promotion__card-actions">
+          {%- if product_series != blank -%}
+            <p class="sa-cart-promotion__series">{{ product_series | escape }}</p>
+          {%- endif -%}
         </div>
       </article>
     </li>

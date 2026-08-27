@@ -74,19 +74,23 @@
       this.activeTriggerCandidate = null;
       this.pending = false;
       this.inertSiblings = [];
+      this.hasSwipeChoices = false;
 
       this.candidates = this.readCandidates();
       this.variantCandidates = this.indexCandidateVariants();
 
       this.handleClick = this.handleClick.bind(this);
       this.handleKeydown = this.handleKeydown.bind(this);
+      this.handleRecommendationsScroll = this.handleRecommendationsScroll.bind(this);
       this.root.addEventListener('click', this.handleClick);
       this.root.addEventListener('keydown', this.handleKeydown);
+      this.items.addEventListener('scroll', this.handleRecommendationsScroll, { passive: true });
     }
 
     destroy() {
       this.root.removeEventListener('click', this.handleClick);
       this.root.removeEventListener('keydown', this.handleKeydown);
+      this.items.removeEventListener('scroll', this.handleRecommendationsScroll);
     }
 
     readCandidates() {
@@ -275,13 +279,25 @@
       }
 
       this.items.replaceChildren();
+      this.items.scrollLeft = 0;
       selected.forEach(candidate => {
         this.items.append(candidate.template.content.cloneNode(true));
       });
 
       this.emptyState.hidden = selected.length > 0;
+      this.hasSwipeChoices = selected.length > 2;
+      requestAnimationFrame(() => this.updateSwipeHint());
+    }
+
+    handleRecommendationsScroll() {
+      this.updateSwipeHint();
+    }
+
+    updateSwipeHint() {
       const swipeHint = this.root.querySelector('[data-sa-promotion-swipe-hint]');
-      if (swipeHint) swipeHint.hidden = selected.length <= 2;
+      if (!swipeHint) return;
+      const atEnd = this.items.scrollLeft + this.items.clientWidth >= this.items.scrollWidth - 4;
+      swipeHint.hidden = !this.hasSwipeChoices || atEnd;
     }
 
     shuffle(candidates) {
@@ -427,7 +443,7 @@
         }
 
         button.dataset.state = 'success';
-        button.querySelector('[data-sa-promotion-add-label]').textContent = 'Added';
+        button.querySelector('[data-sa-promotion-add-label]').textContent = '\u2713';
         this.announce('Item added to cart. Promotion progress updated.', 'success');
         this.renderState(cart, this.activeGroupKey, this.activeTriggerCandidate);
       } catch (error) {

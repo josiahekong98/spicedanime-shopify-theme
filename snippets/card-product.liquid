@@ -140,7 +140,7 @@
         {%- assign button_label = 'product.select_size' | t  -%}
       {%- endif -%}
       {%- if sa_collection_archive -%}
-        {% render 'icon', icon_name: 'theme-plus' %}
+        <span class="sa-collection-card__plus" aria-hidden="true"></span>
         <span class="visually-hidden">{{- button_label -}}</span>
       {%- else -%}
         {%- if settings.product_card_add_to_cart_btn_content contains 'icon' -%}

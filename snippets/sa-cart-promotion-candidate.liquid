@@ -7,12 +7,20 @@
   - expected_type
   - option_name (optional exact option name)
   - option_value (optional exact option value)
+  - recommendation_group (optional group that may display this candidate)
+  - recommendation_only (optional; prevents this candidate from triggering a popup)
 {%- endcomment -%}
 
 {%- liquid
   assign qualifying_variant = blank
   assign qualifying_variant_ids = '|'
   assign qualifying_option_position = 0
+  assign trigger_group = group_key
+  assign candidate_recommendation_group = recommendation_group | default: group_key
+
+  if recommendation_only
+    assign trigger_group = blank
+  endif
 
   if product != blank and product.type == expected_type
     if option_name != blank
@@ -73,7 +81,8 @@
 {%- if qualifying_variant != blank -%}
   <template
     data-sa-promotion-candidate
-    data-group="{{ group_key | escape }}"
+    data-trigger-group="{{ trigger_group | escape }}"
+    data-recommendation-group="{{ candidate_recommendation_group | escape }}"
     data-product-id="{{ product.id }}"
     data-variant-id="{{ qualifying_variant.id }}"
     data-qualifying-variant-ids="{{ qualifying_variant_ids }}"

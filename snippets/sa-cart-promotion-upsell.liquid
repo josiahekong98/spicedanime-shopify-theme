@@ -29,6 +29,31 @@
     assign ashtray_collection = collections['all-products-ashtray']
   endif
 
+  assign tapestry_collection = section.settings.promotion_tapestry_collection
+  if tapestry_collection == blank
+    assign tapestry_collection = collections['all-tapestries']
+  endif
+
+  assign stash_box_collection = section.settings.promotion_stash_box_collection
+  if stash_box_collection == blank
+    assign stash_box_collection = collections['all-products-stash-boxes']
+  endif
+
+  assign tote_bag_collection = section.settings.promotion_tote_bag_collection
+  if tote_bag_collection == blank
+    assign tote_bag_collection = collections['all-tote-bags']
+  endif
+
+  assign black_art_tote_collection = section.settings.promotion_black_art_tote_collection
+  if black_art_tote_collection == blank
+    assign black_art_tote_collection = tote_bag_collection
+  endif
+
+  assign sling_bag_collection = section.settings.promotion_sling_bag_collection
+  if sling_bag_collection == blank
+    assign sling_bag_collection = collections['sling-bags']
+  endif
+
   assign dialog_id = 'SaCartPromotion-' | append: section.id
 -%}
 
@@ -114,6 +139,26 @@
       -%}
     {%- endfor -%}
 
+    {%- for candidate_product in lighter_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'flip-lighter-only',
+        expected_type: 'Flip Lighter',
+        option_name: 'Bundle',
+        option_value: 'Lighter Only'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in lighter_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'flip-lighter-tin-set',
+        expected_type: 'Flip Lighter',
+        option_name: 'Bundle',
+        option_value: 'Lighter + Tin Case'
+      -%}
+    {%- endfor -%}
+
     {%- for candidate_product in stash_jar_collection.products limit: 50 -%}
       {%- render 'sa-cart-promotion-candidate',
         product: candidate_product,
@@ -132,6 +177,28 @@
       -%}
     {%- endfor -%}
 
+    {%- for candidate_product in grinder_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'grinder-set',
+        expected_type: 'Grinder Sets',
+        option_name: 'Bundle',
+        option_value: 'Grinder+Jar+Tray'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in grinder_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'grinder-set',
+        recommendation_group: 'stash-box-full',
+        recommendation_only: true,
+        expected_type: 'Grinder Sets',
+        option_name: 'Bundle',
+        option_value: 'Grinder+Jar+Tray'
+      -%}
+    {%- endfor -%}
+
     {%- for candidate_product in rolling_tray_collection.products limit: 50 -%}
       {%- render 'sa-cart-promotion-candidate',
         product: candidate_product,
@@ -147,6 +214,56 @@
         expected_type: 'Ashtray',
         option_name: 'Bundle',
         option_value: 'Ashtray Only'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in tapestry_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'tapestry',
+        expected_type: 'Tapestry'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in tapestry_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'tapestry',
+        expected_type: 'Black Art Tapestry'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in stash_box_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'stash-box-full',
+        expected_type: 'Stash Box',
+        option_name: 'Bundle',
+        option_value: 'Stashbox+Grinder+Jar+Lighter'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in tote_bag_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'bag',
+        expected_type: 'Tote Bags'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in black_art_tote_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'bag',
+        expected_type: 'Black Art Tapestry Tote Bag'
+      -%}
+    {%- endfor -%}
+
+    {%- for candidate_product in sling_bag_collection.products limit: 50 -%}
+      {%- render 'sa-cart-promotion-candidate',
+        product: candidate_product,
+        group_key: 'bag',
+        expected_type: 'Sling Bag'
       -%}
     {%- endfor -%}
   </div>

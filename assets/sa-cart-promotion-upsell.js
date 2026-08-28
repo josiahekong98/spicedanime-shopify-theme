@@ -14,9 +14,29 @@
       itemPlural: 'tin cases',
       finalThreshold: 4,
       firstThreshold: 2,
+      firstDiscount: '$5',
       viewMoreUrl: '/collections/all-products-lighters',
       viewMoreLabel: 'View more flip lighters',
-      tierType: 'two-tier',
+    },
+    'flip-lighter-only': {
+      label: 'flip lighters',
+      itemSingular: 'lighter',
+      itemPlural: 'lighters',
+      finalThreshold: 4,
+      firstThreshold: 2,
+      firstDiscount: '$5',
+      viewMoreUrl: '/collections/all-products-lighters',
+      viewMoreLabel: 'View more flip lighters',
+    },
+    'flip-lighter-tin-set': {
+      label: 'flip lighter and tin sets',
+      itemSingular: 'lighter and tin set',
+      itemPlural: 'lighter and tin sets',
+      finalThreshold: 4,
+      firstThreshold: 2,
+      firstDiscount: '$5',
+      viewMoreUrl: '/collections/all-products-lighters',
+      viewMoreLabel: 'View more flip lighters',
     },
     'stash-jar': {
       label: 'stash jars',
@@ -24,9 +44,9 @@
       itemPlural: 'stash jars',
       finalThreshold: 4,
       firstThreshold: 2,
+      firstDiscount: '$5',
       viewMoreUrl: '/collections/all-products-stash-jars',
       viewMoreLabel: 'View more stash jars',
-      tierType: 'two-tier',
     },
     'grinder-only': {
       label: 'grinders',
@@ -35,7 +55,6 @@
       finalThreshold: 3,
       viewMoreUrl: '/collections/herb-grinders',
       viewMoreLabel: 'View more grinder sets',
-      tierType: 'buy-two-get-one',
     },
     'rolling-tray': {
       label: 'rolling trays',
@@ -44,7 +63,6 @@
       finalThreshold: 3,
       viewMoreUrl: '/collections/all-rolling-trays',
       viewMoreLabel: 'View more rolling trays',
-      tierType: 'buy-two-get-one',
     },
     'ashtray-only': {
       label: 'ashtrays',
@@ -53,7 +71,48 @@
       finalThreshold: 3,
       viewMoreUrl: '/collections/all-products-ashtray',
       viewMoreLabel: 'View more ashtrays',
-      tierType: 'buy-two-get-one',
+    },
+    tapestry: {
+      label: 'tapestries',
+      itemSingular: 'tapestry',
+      itemPlural: 'tapestries',
+      finalThreshold: 4,
+      firstThreshold: 2,
+      firstDiscount: '$15',
+      viewMoreUrl: '/collections/all-tapestries',
+      viewMoreLabel: 'View more tapestries',
+    },
+    'grinder-set': {
+      label: 'full grinder sets',
+      itemSingular: 'full grinder set',
+      itemPlural: 'full grinder sets',
+      finalThreshold: 4,
+      firstThreshold: 2,
+      firstDiscount: '$10',
+      viewMoreUrl: '/collections/herb-grinders',
+      viewMoreLabel: 'View more grinder sets',
+    },
+    'stash-box-full': {
+      label: 'full stashbox sets',
+      itemSingular: 'full grinder set',
+      itemPlural: 'full grinder sets',
+      finalThreshold: 1,
+      viewMoreUrl: '/collections/herb-grinders',
+      viewMoreLabel: 'View more grinder sets',
+      tierType: 'companion-discount',
+      companionDiscount: '$10',
+    },
+    bag: {
+      label: 'tote and sling bags',
+      itemSingular: 'bag',
+      itemPlural: 'bags',
+      finalThreshold: 5,
+      firstThreshold: 2,
+      firstDiscount: '$10',
+      midThreshold: 3,
+      midDiscount: '$20',
+      viewMoreUrl: '/collections/all-tote-bags',
+      viewMoreLabel: 'View more tote and sling bags',
     },
   };
 
@@ -96,7 +155,8 @@
     readCandidates() {
       return Array.from(this.root.querySelectorAll(CANDIDATE_SELECTOR)).map(template => ({
         template,
-        group: template.dataset.group,
+        triggerGroup: template.dataset.triggerGroup || '',
+        recommendationGroup: template.dataset.recommendationGroup || '',
         productId: String(template.dataset.productId || ''),
         variantId: String(template.dataset.variantId || ''),
         qualifyingVariantIds: String(template.dataset.qualifyingVariantIds || '')
@@ -109,7 +169,12 @@
     indexCandidateVariants() {
       const index = new Map();
       this.candidates.forEach(candidate => {
-        candidate.qualifyingVariantIds.forEach(variantId => index.set(String(variantId), candidate));
+        candidate.qualifyingVariantIds.forEach(variantId => {
+          const key = String(variantId);
+          const candidates = index.get(key) || [];
+          candidates.push(candidate);
+          index.set(key, candidates);
+        });
       });
       return index;
     }
@@ -119,10 +184,11 @@
 
       const variantIds = this.getEventVariantIds(event);
       const triggerCandidate = variantIds
-        .map(variantId => this.variantCandidates.get(String(variantId)))
+        .flatMap(variantId => this.variantCandidates.get(String(variantId)) || [])
+        .filter(candidate => candidate.triggerGroup && GROUPS[candidate.triggerGroup])
         .find(Boolean);
 
-      if (!triggerCandidate || !GROUPS[triggerCandidate.group]) return;
+      if (!triggerCandidate || !GROUPS[triggerCandidate.triggerGroup]) return;
 
       try {
         const cart = await this.fetchCart();
@@ -133,19 +199,19 @@
         ));
         if (!triggerStillPresent) return;
 
-        const quantity = this.getGroupQuantity(cart, triggerCandidate.group);
-        const group = GROUPS[triggerCandidate.group];
-        const addedQuantity = this.getAddedGroupQuantity(event, triggerCandidate.group, variantIds);
+        const quantity = this.getGroupQuantity(cart, triggerCandidate.triggerGroup);
+        const group = GROUPS[triggerCandidate.triggerGroup];
+        const addedQuantity = this.getAddedGroupQuantity(event, triggerCandidate.triggerGroup, variantIds);
         const previousQuantity = Math.max(0, quantity - addedQuantity);
-        if (quantity <= 0 || (quantity > group.finalThreshold && previousQuantity >= group.finalThreshold)) return;
+        if (quantity <= 0 || (group.finalThreshold && quantity > group.finalThreshold && previousQuantity >= group.finalThreshold)) return;
 
-        const signature = this.buildTriggerSignature(triggerCandidate.group, variantIds, cart);
+        const signature = this.buildTriggerSignature(triggerCandidate.triggerGroup, variantIds, cart);
         if (signature === this.lastTriggerSignature) return;
         this.lastTriggerSignature = signature;
 
-        this.activeGroupKey = triggerCandidate.group;
+        this.activeGroupKey = triggerCandidate.triggerGroup;
         this.activeTriggerCandidate = triggerCandidate;
-        this.renderState(cart, triggerCandidate.group, triggerCandidate);
+        this.renderState(cart, triggerCandidate.triggerGroup, triggerCandidate);
         this.open();
       } catch (error) {
         // The cart drawer remains the source of truth if cart verification is unavailable.
@@ -169,8 +235,10 @@
 
     getGroupQuantity(cart, groupKey) {
       return cart.items.reduce((total, item) => {
-        const candidate = this.variantCandidates.get(String(item.variant_id ?? item.id));
-        return candidate?.group === groupKey ? total + Number(item.quantity || 0) : total;
+        const candidates = this.variantCandidates.get(String(item.variant_id ?? item.id)) || [];
+        return candidates.some(candidate => candidate.triggerGroup === groupKey)
+          ? total + Number(item.quantity || 0)
+          : total;
       }, 0);
     }
 
@@ -179,14 +247,16 @@
       const addedItems = Array.isArray(cartData.items) ? cartData.items : [cartData];
       const quantity = addedItems.reduce((total, item) => {
         const variantId = String(item.variant_id ?? item.id ?? '');
-        const candidate = this.variantCandidates.get(variantId);
-        return candidate?.group === groupKey ? total + Number(item.quantity || 0) : total;
+        const candidates = this.variantCandidates.get(variantId) || [];
+        return candidates.some(candidate => candidate.triggerGroup === groupKey)
+          ? total + Number(item.quantity || 0)
+          : total;
       }, 0);
 
       if (quantity > 0) return quantity;
       return fallbackVariantIds.reduce((total, variantId) => {
-        const candidate = this.variantCandidates.get(String(variantId));
-        return candidate?.group === groupKey ? total + 1 : total;
+        const candidates = this.variantCandidates.get(String(variantId)) || [];
+        return candidates.some(candidate => candidate.triggerGroup === groupKey) ? total + 1 : total;
       }, 0);
     }
 
@@ -206,6 +276,8 @@
       if (message) message.textContent = state.message;
       if (quantityLabel) quantityLabel.textContent = state.quantityLabel;
       if (progress) progress.style.width = `${state.progress}%`;
+      if (quantityLabel) quantityLabel.hidden = !state.quantityLabel;
+      if (progress) progress.parentElement.hidden = state.hideProgress === true;
       if (viewMore) {
         viewMore.href = group.viewMoreUrl;
         viewMore.textContent = group.viewMoreLabel;
@@ -216,6 +288,17 @@
     }
 
     getProgressState(group, quantity) {
+      if (group.tierType === 'companion-discount') {
+        return {
+          complete: false,
+          title: `Save ${group.companionDiscount}`,
+          message: `Add a ${group.itemSingular} for ${group.companionDiscount} off.`,
+          quantityLabel: '',
+          progress: 0,
+          hideProgress: true,
+        };
+      }
+
       if (quantity >= group.finalThreshold) {
         return {
           complete: true,
@@ -226,14 +309,25 @@
         };
       }
 
-      if (group.tierType === 'two-tier' && quantity < group.firstThreshold) {
+      if (group.firstThreshold && quantity < group.firstThreshold) {
         const remaining = group.firstThreshold - quantity;
         return {
           complete: false,
-          title: 'Save $5',
-          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} and save $5.`,
+          title: `Save ${group.firstDiscount}`,
+          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} and save ${group.firstDiscount}.`,
           quantityLabel: `${quantity} of ${group.firstThreshold} ${group.itemPlural}`,
           progress: Math.min(100, (quantity / group.firstThreshold) * 100),
+        };
+      }
+
+      if (group.midThreshold && quantity < group.midThreshold) {
+        const remaining = group.midThreshold - quantity;
+        return {
+          complete: false,
+          title: `Save ${group.midDiscount}`,
+          message: `Add ${remaining} more ${remaining === 1 ? group.itemSingular : group.itemPlural} and save ${group.midDiscount}.`,
+          quantityLabel: `${quantity} of ${group.midThreshold} ${group.itemPlural}`,
+          progress: Math.min(100, (quantity / group.midThreshold) * 100),
         };
       }
 
@@ -242,22 +336,34 @@
       return {
         complete: false,
         title: `Unlock a free ${group.itemSingular}`,
-        message: group.tierType === 'two-tier'
-          ? (isOneAway
-            ? `Add a ${group.itemSingular} for free.`
-            : `Buy 3 ${group.itemPlural}, add a 4th ${group.itemSingular} for free.`)
-          : (isOneAway
-            ? `Add a ${group.itemSingular} for free.`
-            : `Buy 2 ${group.itemPlural}, add a 3rd ${group.itemSingular} for free.`),
+        message: isOneAway
+          ? `Add a ${group.itemSingular} for free.`
+          : `Buy ${group.finalThreshold - 1} ${group.itemPlural}, add a ${this.ordinal(group.finalThreshold)} ${group.itemSingular} for free.`,
         quantityLabel: `${quantity} of ${group.finalThreshold} ${group.itemPlural}`,
         progress: Math.min(100, (quantity / group.finalThreshold) * 100),
       };
     }
 
+    ordinal(value) {
+      const remainder = value % 100;
+      if (remainder >= 11 && remainder <= 13) return `${value}th`;
+
+      switch (value % 10) {
+        case 1:
+          return `${value}st`;
+        case 2:
+          return `${value}nd`;
+        case 3:
+          return `${value}rd`;
+        default:
+          return `${value}th`;
+      }
+    }
+
     renderRecommendations(cart, groupKey, triggerCandidate) {
       const cartProductIds = new Set(cart.items.map(item => String(item.product_id || '')));
       const eligible = this.candidates.filter(candidate => (
-        candidate.group === groupKey
+        candidate.recommendationGroup === groupKey
         && candidate.productId !== triggerCandidate.productId
         && !cartProductIds.has(candidate.productId)
       ));
@@ -401,7 +507,8 @@
     async addRecommendation(button) {
       if (this.pending || !this.activeGroupKey) return;
       const variantId = String(button.dataset.variantId || '');
-      if (!variantId || !this.variantCandidates.has(variantId)) return;
+      const candidates = this.variantCandidates.get(variantId) || [];
+      if (!variantId || !candidates.some(candidate => candidate.recommendationGroup === this.activeGroupKey)) return;
 
       const drawer = document.querySelector('cart-drawer');
       const sections = drawer?.getSectionsToRender?.() || [];

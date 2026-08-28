@@ -7,7 +7,7 @@
 .sa-collection-archive__header {
   width: min(1180px, calc(100% - (2 * var(--sa-page-gutter))));
   margin-inline: auto;
-  padding-block: 4px 0;
+  padding-block: 0;
 }
 
 .sa-collection-archive__title {
@@ -436,8 +436,8 @@
 }
 
 .sa-collection-card__title {
-  min-width: 4rem;
-  flex: 1 1 auto;
+  min-width: 0;
+  flex: 1 1 0;
   margin: 0;
   overflow: hidden;
   color: var(--sa-museum-ivory, rgb(var(--color-foreground)));
@@ -467,8 +467,13 @@
 }
 
 .sa-collection-card__price {
-  max-width: 32%;
+  max-width: none;
+  min-width: max-content;
+  flex: 0 0 auto;
+  overflow: visible;
   color: var(--sa-museum-ivory, rgb(var(--color-foreground)));
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
 .sa-collection-card__status {
@@ -479,13 +484,84 @@
 .sa-collection-card__price .price__container,
 .sa-collection-card__price .price__regular,
 .sa-collection-card__price .price__sale {
-  max-width: 100%;
-  min-width: 0;
+  max-width: none;
+  min-width: max-content;
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
+  overflow: visible;
   font: inherit;
   white-space: nowrap;
+}
+
+@media screen and (max-width: 989px) {
+  .sa-collection-archive .collection-facets__inner {
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 8px;
+    padding-block-end: 6px;
+  }
+
+  .sa-collection-archive .collection-facets__inner .facets__product-count {
+    order: 1;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .sa-collection-archive .collection-facets__inner .facets__filters {
+    order: 2;
+    min-width: 0;
+    max-width: 50%;
+    flex: 0 1 auto;
+    margin-inline-start: auto;
+  }
+
+  .sa-collection-archive .collection-facets__status {
+    min-width: 0;
+    gap: 3px;
+    font-size: clamp(8px, 2.35vw, 10px);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .sa-collection-archive .facets__actions-list,
+  .sa-collection-archive .facets__actions-item,
+  .sa-collection-archive .facets__drawer,
+  .sa-collection-archive .facets__drawer > details {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .sa-collection-archive .facets__button-filters {
+    max-width: 100%;
+    gap: 5px !important;
+    margin: 0 !important;
+    padding: 7px 0 7px 5px !important;
+  }
+
+  .sa-collection-archive .facets__button-filters span {
+    display: inline-flex;
+    min-width: 0;
+    font-size: 0 !important;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .sa-collection-archive .facets__button-filters span::after {
+    content: "Filter by design type";
+    position: static;
+    color: var(--sa-gallery-stone, #b9b3aa) !important;
+    font-size: clamp(8px, 2.35vw, 10px);
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .sa-collection-archive .facets__button-filters svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px;
+  }
 }
 
 .sa-collection-card__price .price__regular > span:not(.visually-hidden) {
@@ -555,7 +631,7 @@
   }
 
   .sa-collection-card__price {
-    max-width: 29%;
+    max-width: none;
   }
 }
 

@@ -29,6 +29,8 @@
 
     #shopify-section-{{ section.id }} .sa-top-series__heading-group {
       display: grid;
+      min-width: 0;
+      flex: 1 1 auto;
       gap: var(--sa-space-2);
       max-width: 780px;
     }
@@ -47,7 +49,29 @@
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__cta {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
       flex: 0 0 auto;
+      color: var(--sa-gallery-stone);
+      font-family: var(--sa-font-archive, var(--font-body-family));
+      font-size: var(--sa-type-label);
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__cta:hover {
+      color: var(--sa-museum-ivory);
+    }
+
+    #shopify-section-{{ section.id }} .sa-top-series__cta:focus-visible {
+      outline: 2px solid var(--sa-relic-red);
+      outline-offset: 3px;
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__wall {
@@ -72,8 +96,8 @@
 
     @media screen and (max-width: 899px) {
       #shopify-section-{{ section.id }} .sa-top-series__header-row {
-        align-items: start;
-        flex-direction: column;
+        align-items: center;
+        gap: 12px;
       }
 
       #shopify-section-{{ section.id }} .sa-top-series__wall {
@@ -83,7 +107,9 @@
 
     @media screen and (max-width: 767px) {
       #shopify-section-{{ section.id }} .sa-top-series__cta {
-        width: 100%;
+        width: auto;
+        font-size: 10px;
+        letter-spacing: 0.06em;
       }
 
       #shopify-section-{{ section.id }} .sa-top-series--mobile-scroll .sa-top-series__wall,
@@ -148,7 +174,7 @@
         </div>
 
         {% if section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
-          <a class="sa-top-series__cta sa-button sa-button--secondary" href="{{ section.settings.view_all_link }}">
+          <a class="sa-top-series__cta" href="{{ section.settings.view_all_link }}">
             {{ section.settings.view_all_label | escape }}
           </a>
         {% endif %}
@@ -231,7 +257,7 @@
       "type": "text",
       "id": "view_all_label",
       "label": "View all label",
-      "default": "View All Series"
+      "default": "See all series"
     },
     {
       "type": "url",

@@ -32,6 +32,7 @@
       ]
     },
     "page_banner_tDVWmd": {
+      "disabled": true,
       "settings": {
         "video_external": "",
         "content_alignment": "start",

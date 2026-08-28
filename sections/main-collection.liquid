@@ -8,6 +8,11 @@
     assign sa_default_collection_template = true
   endif
 
+  assign sa_collection_display_title = collection.title
+  if sa_default_collection_template
+    assign sa_collection_display_title = sa_collection_display_title | replace: '(category)', '' | replace: '(Category)', '' | replace: '(series)', '' | replace: '(Series)', '' | strip
+  endif
+
   assign mobile_products_per_row = section.settings.products_per_row_mobile
 
   unless sa_default_collection_template
@@ -103,6 +108,12 @@
 {%- endif -%}
 
 <div class="collection js-animation-fade-in color-{{ section.settings.color_scheme }} filters--{{ section.settings.filters }} {{ settings.card_product_layout }}{{ sa_collection_class }}{% if sa_default_collection_template %} sa-collection-archive{% endif %}">
+
+  {%- if sa_default_collection_template -%}
+    <header class="sa-collection-archive__header">
+      <h1 class="sa-collection-archive__title">{{- sa_collection_display_title | escape -}}</h1>
+    </header>
+  {%- endif -%}
 
   {{ facets_html }}
 

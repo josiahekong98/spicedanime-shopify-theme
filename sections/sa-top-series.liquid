@@ -4,6 +4,9 @@
   assign section_intro = section.settings.intro | default: 'Start with the fandom, then discover the product families, matching sets, and archive finds inside each series.'
   assign visible_count = section.settings.visible_count | plus: 0
   assign mobile_layout = section.settings.mobile_layout | default: 'grid'
+  assign section_padding_top = section.settings.padding_top | default: 24
+  assign section_padding_bottom = section.settings.padding_bottom | default: 24
+  assign section_header_gap = section.settings.header_gap | default: 12
 %}
 
 {{- 'sa-series-archive-card.css' | asset_url | stylesheet_tag -}}
@@ -11,13 +14,13 @@
 <section class="sa-section sa-section--archive-black sa-top-series sa-top-series--mobile-{{ mobile_layout }}" aria-labelledby="sa-top-series-title-{{ section.id }}">
   <style>
     #shopify-section-{{ section.id }} .sa-top-series {
-      padding-block: clamp(24px, 4vw, 40px);
+      padding-block: {{ section_padding_top }}px {{ section_padding_bottom }}px;
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__header {
       display: grid;
       gap: var(--sa-space-2);
-      margin-block-end: 14px;
+      margin-block-end: {{ section_header_gap }}px;
     }
 
     #shopify-section-{{ section.id }} .sa-top-series__header-row {
@@ -263,6 +266,36 @@
       "type": "url",
       "id": "view_all_link",
       "label": "View all link"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Header-to-cards spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
     }
   ],
   "blocks": [

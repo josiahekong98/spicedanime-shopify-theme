@@ -7,12 +7,14 @@
   assign row_label = section.settings.sort_label
   assign layout_style = section.settings.layout_style | default: 'row'
   assign show_badges = section.settings.show_badges
+  assign section_padding_top = section.settings.padding_top | default: 24
+  assign section_padding_bottom = section.settings.padding_bottom | default: 24
 %}
 
 <section class="sa-section sa-section--archive-black sa-product-row sa-product-row--{{ layout_style }}" aria-labelledby="sa-product-row-title-{{ section.id }}">
   <style>
     #shopify-section-{{ section.id }} .sa-product-row {
-      padding-block: clamp(22px, 4vw, 38px);
+      padding-block: {{ section_padding_top }}px {{ section_padding_bottom }}px;
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__header {
@@ -419,6 +421,26 @@
         { "value": "grid", "label": "Grid" }
       ],
       "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
     }
   ],
   "presets": [

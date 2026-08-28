@@ -280,7 +280,10 @@
         "visible_count": "12",
         "mobile_layout": "scroll",
         "view_all_label": "See all series",
-        "view_all_link": "/pages/all-anime-collections"
+        "view_all_link": "/pages/all-anime-collections",
+        "padding_top": 12,
+        "padding_bottom": 8,
+        "header_gap": 6
       }
     },
     "custom_liquid_KdJBQ4": {
@@ -319,7 +322,9 @@
         "show_variant_indicators": false,
         "cta_label": "View Full Collection",
         "cta_link": "",
-        "layout_style": "row"
+        "layout_style": "row",
+        "padding_top": 12,
+        "padding_bottom": 8
       }
     },
     "sa_explore_paths_LCD4k8": {
@@ -362,7 +367,10 @@
       "settings": {
         "label": "START HERE",
         "heading": "",
-        "text": ""
+        "text": "",
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "header_gap": 8
       }
     },
     "sa_product_row_yxTULQ": {
@@ -380,7 +388,9 @@
         "show_variant_indicators": false,
         "cta_label": "View Full Collection",
         "cta_link": "",
-        "layout_style": "row"
+        "layout_style": "row",
+        "padding_top": 12,
+        "padding_bottom": 8
       }
     },
     "sa_product_row_NHap6p": {
@@ -398,7 +408,9 @@
         "show_variant_indicators": true,
         "cta_label": "View Full Collection",
         "cta_link": "",
-        "layout_style": "row"
+        "layout_style": "row",
+        "padding_top": 12,
+        "padding_bottom": 8
       }
     },
     "sa_curated_reviews_home": {

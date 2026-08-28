@@ -103,9 +103,13 @@
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out {
+      cursor: not-allowed;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out .sa-product-row__media > :not(.sa-stock-badge),
+    #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out .sa-product-row__content {
       filter: grayscale(1);
       opacity: 0.54;
-      cursor: not-allowed;
     }
 
     #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out:hover {

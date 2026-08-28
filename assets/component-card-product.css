@@ -141,13 +141,17 @@
 }
 
 .product-card.product-card__sold-out {
-  filter: grayscale(1);
-  opacity: 0.54;
   cursor: not-allowed;
 }
 
 .product-card.product-card__sold-out .product-card__link--disabled {
   cursor: not-allowed;
+}
+
+.product-card.product-card__sold-out .product-card__media > :not(.sa-stock-badge),
+.product-card.product-card__sold-out .product-card__content {
+  filter: grayscale(1);
+  opacity: 0.54;
 }
 
 .product-card.product-card__sold-out .product-card__media--hoverable img:first-child {

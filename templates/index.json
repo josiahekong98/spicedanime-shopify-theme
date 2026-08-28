@@ -333,7 +333,7 @@
             "text": "Add anime smoking accessories to your collection: includes  lighters, grinders, rolling trays, stash jars, ashtrays and more.",
             "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_01_36_15_AM.png",
             "icon_label": "P",
-            "link": "/pages/explore-by-product",
+            "link": "shopify://collections/smoking-accessories",
             "link_label": "Shop your shows",
             "accessibility_label": "",
             "accent_color": "#2F5138"
@@ -347,7 +347,7 @@
             "text": "Add accents to express your culture and self: includes everyday tote bags, room decor, blankets, or pillow covers and more.",
             "image": "shopify://shop_images/IMG_9100.jpg",
             "icon_label": "L",
-            "link": "/pages/explore-by-lifestyle",
+            "link": "shopify://collections/black-afro-centric-products",
             "link_label": "Shop for the culture",
             "accessibility_label": "",
             "accent_color": "#332A52"

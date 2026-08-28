@@ -393,6 +393,26 @@
         "padding_bottom": 8
       }
     },
+    "sa_product_row_pCMm6U": {
+      "type": "sa-product-row",
+      "name": "SA Row Trending",
+      "settings": {
+        "eyebrow": "SPICEDCULTURE COLLECTION",
+        "heading": "Currently Moving Fast",
+        "intro": "The pieces getting the most attention right now, gathered into one easy row.",
+        "collection": "black-afro-centric-products",
+        "max_products": 12,
+        "sort_label": "GET BEFORE AROPLUS FEST",
+        "show_quick_add": false,
+        "show_badges": true,
+        "show_variant_indicators": true,
+        "cta_label": "View Full Collection",
+        "cta_link": "",
+        "layout_style": "row",
+        "padding_top": 4,
+        "padding_bottom": 8
+      }
+    },
     "sa_product_row_NHap6p": {
       "type": "sa-product-row",
       "name": "SA Row Best Sellers",
@@ -409,8 +429,8 @@
         "cta_label": "View Full Collection",
         "cta_link": "",
         "layout_style": "row",
-        "padding_top": 12,
-        "padding_bottom": 8
+        "padding_top": 4,
+        "padding_bottom": 0
       }
     },
     "sa_curated_reviews_home": {
@@ -455,24 +475,6 @@
         "section_width": "full",
         "padding_top": 0,
         "padding_bottom": 0
-      }
-    },
-    "sa_product_row_pCMm6U": {
-      "type": "sa-product-row",
-      "name": "SA Row Trending",
-      "settings": {
-        "eyebrow": "SPICEDCULTURE COLLECTION",
-        "heading": "Currently Moving Fast",
-        "intro": "The pieces getting the most attention right now, gathered into one easy row.",
-        "collection": "black-afro-centric-products",
-        "max_products": 12,
-        "sort_label": "GET BEFORE AROPLUS FEST",
-        "show_quick_add": false,
-        "show_badges": true,
-        "show_variant_indicators": true,
-        "cta_label": "View Full Collection",
-        "cta_link": "",
-        "layout_style": "row"
       }
     },
     "custom_liquid_L7PtK9": {

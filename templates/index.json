@@ -334,9 +334,9 @@
             "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_01_36_15_AM.png",
             "icon_label": "P",
             "link": "/pages/explore-by-product",
-            "link_label": "Shop Product Types",
+            "link_label": "Shop your shows",
             "accessibility_label": "",
-            "accent_color": "#C45A2A"
+            "accent_color": "#2F5138"
           }
         },
         "path_card_P7qBch": {
@@ -348,7 +348,7 @@
             "image": "shopify://shop_images/IMG_9100.jpg",
             "icon_label": "L",
             "link": "/pages/explore-by-lifestyle",
-            "link_label": "Shop Lifestyle",
+            "link_label": "Shop for the culture",
             "accessibility_label": "",
             "accent_color": "#332A52"
           }

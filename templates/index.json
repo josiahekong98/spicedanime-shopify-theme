@@ -281,9 +281,9 @@
         "mobile_layout": "scroll",
         "view_all_label": "See all series",
         "view_all_link": "/pages/all-anime-collections",
-        "padding_top": 12,
-        "padding_bottom": 8,
-        "header_gap": 6
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "header_gap": 0
       }
     },
     "custom_liquid_KdJBQ4": {

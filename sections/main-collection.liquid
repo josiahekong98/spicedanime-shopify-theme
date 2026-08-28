@@ -3,6 +3,11 @@
 {{- 'component-card-text.css' | asset_url | stylesheet_tag -}}
 
 {%- liquid
+  assign sa_default_collection_template = false
+  if template.name == 'collection' and template.suffix == blank
+    assign sa_default_collection_template = true
+  endif
+
   assign mobile_products_per_row = section.settings.products_per_row_mobile
 
   assign collection_title_downcase = collection.title | downcase
@@ -60,6 +65,11 @@ endif
   endif
 -%}
 
+{%- if sa_default_collection_template -%}
+  {{- 'sa-collection-archive.css' | asset_url | stylesheet_tag -}}
+  <script src="{{ 'sa-collection-archive.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
 {%- style -%}
   #shopify-section-{{ section.id }} > div {
     padding-block-start: calc(var(--section-spacing-unit-size) * {{ section.settings.spacing_top }});
@@ -90,12 +100,16 @@ endif
   <script src="{{- 'dynamic-load-more.js' | asset_url -}}" defer="defer"></script>
 {%- endif -%}
 
-<div class="collection js-animation-fade-in color-{{ section.settings.color_scheme }} filters--{{ section.settings.filters }} {{ settings.card_product_layout }}{{ sa_collection_class }}">
+<div class="collection js-animation-fade-in color-{{ section.settings.color_scheme }} filters--{{ section.settings.filters }} {{ settings.card_product_layout }}{{ sa_collection_class }}{% if sa_default_collection_template %} sa-collection-archive{% endif %}">
 
   {{ facets_html }}
 
   <div class="container {{ section.settings.section_width }} collection__container{% if section.settings.pagination_style == 'load_more' and section.settings.enable_infinity_scroll %} infinity-scroll-active{% endif %}" id="ProductGridContainer">
     {%- paginate collection.products by products_per_page -%}
+
+        {%- if sa_default_collection_template -%}
+          {%- render 'sa-collection-archive-controls', collection: collection, section: section -%}
+        {%- endif -%}
 
         {%- if section.settings.filters == 'sidebar' -%}
           <facet-filters-form class="collection-facets collection__facets--sidebar" data-section-id="{{- section.id -}}">
@@ -151,7 +165,7 @@ endif
                         endif
                       endfor
                     endif
-                    render 'card-product', product_ref: product_ref, section_id: section.id, product_index: product_loop.index
+                    render 'card-product', product_ref: product_ref, section_id: section.id, product_index: product_loop.index, sa_collection_archive: sa_default_collection_template, sa_collection_show_product_type: section.settings.sa_show_product_type, sa_collection_show_price: section.settings.sa_show_price, sa_collection_enable_quick_add: section.settings.sa_enable_quick_add
                   endfor
                 -%}
               {% endcapture %}
@@ -250,6 +264,44 @@ endif
         }
       ],
       "default": "drawer"
+    },
+    {
+      "type": "header",
+      "content": "SpicedAnime archive collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "sa_enable_collection_search",
+      "label": "Enable current-page search",
+      "info": "Searches only products rendered on the current pagination page.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "sa_random_series_limit",
+      "label": "Smoking Accessories series shortcuts",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "sa_show_product_type",
+      "label": "Show product type on cards",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sa_show_price",
+      "label": "Show price on cards",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sa_enable_quick_add",
+      "label": "Enable Quick Add on cards",
+      "default": true
     },
     {
       "type": "header",

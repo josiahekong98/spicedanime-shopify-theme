@@ -377,10 +377,10 @@
       "type": "sa-product-row",
       "name": "SA Row New Drops",
       "settings": {
-        "eyebrow": "New Drops",
+        "eyebrow": "New sling bags Drop",
         "heading": "",
         "intro": "Fresh additions for collectors checking the latest product wall.",
-        "collection": "best-sellers-copy",
+        "collection": "sling-bags",
         "max_products": 10,
         "sort_label": "",
         "show_quick_add": false,

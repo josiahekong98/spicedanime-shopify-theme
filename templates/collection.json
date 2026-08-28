@@ -46,6 +46,7 @@
     },
     "category_best_sellers_tQTyDX": {
       "type": "category-best-sellers",
+      "disabled": true,
       "name": "Category Best Sellers",
       "settings": {
         "heading": "BEST SELLERS",

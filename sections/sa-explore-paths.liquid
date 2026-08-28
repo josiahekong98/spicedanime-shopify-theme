@@ -118,19 +118,20 @@
 
     #shopify-section-{{ section.id }} .sa-explore-paths__text {
       margin: 0;
-      color: var(--sa-gallery-stone);
+      color: rgba(184, 180, 172, 0.9);
       font-size: var(--sa-type-body);
       line-height: var(--sa-line-body);
-      animation: sa-explore-paths-copy-fade 3.2s ease-in-out infinite;
+      will-change: opacity;
+      animation: sa-explore-paths-copy-fade 5.2s ease-in-out infinite;
     }
 
     @keyframes sa-explore-paths-copy-fade {
       0%, 100% {
-        opacity: 0.58;
+        opacity: 0.42;
       }
 
       50% {
-        opacity: 1;
+        opacity: 0.94;
       }
     }
 

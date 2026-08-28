@@ -117,10 +117,6 @@
 }
 
 /* Media / Product card */
-.product-card.product-card__sold-out .product-card__media {
-  opacity: .5;
-}
-
 .product-card__media {
   --product-card-hover-transition: 0.7s ease;
   width: 100%;

@@ -47,11 +47,16 @@
     data-update-media="{% if product_ref.first_available_variant == product_ref.selected_variant %}true{% else %}false{% endif %}"
   >
     {% if product_ref.tags contains 'preorder' %}
-  <div class="sa-preorder-badge">
-    <span class="sa-preorder-text">Preorder</span>
-    <span class="sa-preorder-sub">Ships 3-4 weeks</span>
-  </div>
-{% endif %}
+      <div class="sa-stock-badge sa-stock-badge--preorder">
+        <span class="sa-stock-badge__text">Preorder</span>
+        <span class="sa-stock-badge__sub">Ships 3-4 weeks</span>
+      </div>
+    {% elsif product_ref.available == false %}
+      <div class="sa-stock-badge sa-stock-badge--sold-out">
+        <span class="sa-stock-badge__text">Sold out</span>
+        <span class="sa-stock-badge__sub">Contact for restock</span>
+      </div>
+    {% endif %}
 
 
     {%- liquid
@@ -433,9 +438,6 @@
             {%- render 'price', product: product_ref, compact: true -%}
           </span>
         {%- endif -%}
-        {%- unless product_ref.available -%}
-          <span class="sa-collection-card__status">Sold out</span>
-        {%- endunless -%}
       </div>
     </div>
   {%- else -%}

@@ -285,6 +285,12 @@
             assign product_initials = product_title | remove: ' ' | slice: 0, 2 | upcase
             assign compare_price = product.compare_at_price_max
             assign current_price = product.price
+            assign product_link_label = 'View ' | append: product_title
+            if product.tags contains 'preorder'
+              assign product_link_label = product_link_label | append: ', preorder, ships in 3 to 4 weeks'
+            elsif product.available == false
+              assign product_link_label = product_link_label | append: ', sold out, contact for restock'
+            endif
             assign tag_badge = blank
             for tag in product.tags
               assign normalized_tag = tag | downcase
@@ -295,7 +301,7 @@
             endfor
           %}
 
-          <a class="sa-card sa-product-row__product" href="{{ product.url }}" aria-label="View {{ product_title | escape }}" role="listitem">
+          <a class="sa-card sa-product-row__product" href="{{ product.url }}" aria-label="{{ product_link_label | escape }}" role="listitem">
             <span class="sa-product-row__media" aria-hidden="true">
               {% if product.featured_image != blank %}
                 {{ product.featured_image | image_url: width: 900 | image_tag: class: 'sa-product-row__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 72vw', widths: '320, 480, 640, 760, 900', alt: image_alt | escape }}
@@ -303,16 +309,28 @@
                 <span class="sa-product-row__image-fallback" aria-hidden="true">{{ product_initials | escape }}</span>
               {% endif %}
 
-              {% if show_badges %}
-                <span class="sa-product-row__badges" aria-label="Product badges">
-                  {% if product.available == false %}
-                    <span class="sa-badge sa-badge--sold-out">Sold Out</span>
-                  {% elsif compare_price > current_price %}
-                    <span class="sa-badge">On Sale</span>
-                  {% elsif tag_badge != blank %}
-                    <span class="sa-badge sa-badge--outline">{{ tag_badge | escape }}</span>
-                  {% endif %}
+              {% if product.tags contains 'preorder' %}
+                <span class="sa-stock-badge sa-stock-badge--preorder">
+                  <span class="sa-stock-badge__text">Preorder</span>
+                  <span class="sa-stock-badge__sub">Ships 3-4 weeks</span>
                 </span>
+              {% elsif product.available == false %}
+                <span class="sa-stock-badge sa-stock-badge--sold-out">
+                  <span class="sa-stock-badge__text">Sold out</span>
+                  <span class="sa-stock-badge__sub">Contact for restock</span>
+                </span>
+              {% endif %}
+
+              {% if show_badges and product.available %}
+                {% unless product.tags contains 'preorder' %}
+                  <span class="sa-product-row__badges" aria-label="Product badges">
+                    {% if compare_price > current_price %}
+                      <span class="sa-badge">On Sale</span>
+                    {% elsif tag_badge != blank %}
+                      <span class="sa-badge sa-badge--outline">{{ tag_badge | escape }}</span>
+                    {% endif %}
+                  </span>
+                {% endunless %}
               {% endif %}
             </span>
 

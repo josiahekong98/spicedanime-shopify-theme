@@ -27,12 +27,6 @@
     assign show_badges_discount = true
   endif
 
-  if not_on_card and block.settings.show_badges_sold
-    assign show_badges_sold = true
-  elsif not_on_card == false and settings.show_product_card_badges_sold
-    assign show_badges_sold = true
-  endif
-
   assign badges = ''
   if product and product != empty
 

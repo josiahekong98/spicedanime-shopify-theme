@@ -53,7 +53,7 @@
       "settings": {
         "enable_transparent_header": true,
         "slider_height_auto": false,
-        "slider_height": 70,
+        "slider_height": 50,
         "slideshow_autoplay_interval": 5,
         "show_slideshow_navigation": true,
         "slideshow_navigation_position": "hero__swiper-buttons--center",

@@ -83,10 +83,6 @@
       emptyMessage.hidden = true;
     }
 
-    const count = controls.querySelector('[data-sa-collection-count]');
-    if (count) {
-      count.textContent = `${visibleCount} ${visibleCount === 1 ? 'product' : 'products'} shown on this page`;
-    }
   };
 
   const prepareControls = (controls) => {

@@ -46,15 +46,15 @@
     class="media product-card__media{% if sa_recommendation %} sa-product-recommendation-card__media{% endif %}{% if settings.product_card_media_hover and product_ref.gift_card? == false %} product-card__media--hoverable{% endif %}"
     data-update-media="{% if product_ref.first_available_variant == product_ref.selected_variant %}true{% else %}false{% endif %}"
   >
-    {% if product_ref.tags contains 'preorder' %}
-      <div class="sa-stock-badge sa-stock-badge--preorder">
-        <span class="sa-stock-badge__text">Preorder</span>
-        <span class="sa-stock-badge__sub">Ships 3-4 weeks</span>
-      </div>
-    {% elsif product_ref.available == false %}
+    {% if product_ref.available == false %}
       <div class="sa-stock-badge sa-stock-badge--sold-out">
         <span class="sa-stock-badge__text">Sold out</span>
         <span class="sa-stock-badge__sub">Contact for restock</span>
+      </div>
+    {% elsif product_ref.tags contains 'preorder' %}
+      <div class="sa-stock-badge sa-stock-badge--preorder">
+        <span class="sa-stock-badge__text">Preorder</span>
+        <span class="sa-stock-badge__sub">Ships 4-8 weeks</span>
       </div>
     {% endif %}
 
@@ -405,15 +405,22 @@
 
 <product-card
   class="product-card{% if sa_recommendation %} sa-product-recommendation-card{% endif %}{% if sa_collection_archive %} sa-collection-card{% endif %}{% if is_small %} product-card--small{% endif %}{% unless product_ref.available %} product-card__sold-out{% endunless %}"
+  {% unless product_ref.available %}aria-disabled="true"{% endunless %}
   {% if sa_collection_archive %}
     data-sa-collection-card
     data-sa-search="{{ product_ref.title | append: ' ' | append: product_ref.type | append: ' ' | append: product_ref.vendor | append: ' ' | append: product_ref.metafields.custom.series.value | escape }}"
   {% endif %}
 >
   <div class="product-card__actions">
-    <a href="{{ product_link_with_variant }}" tabindex="-1" class="product-card__link" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
-      {{ media }}
-    </a>
+    {%- if product_ref.available -%}
+      <a href="{{ product_link_with_variant }}" tabindex="-1" class="product-card__link" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
+        {{ media }}
+      </a>
+    {%- else -%}
+      <div class="product-card__link product-card__link--disabled" aria-label="{{ product_ref.title | escape }}, sold out, contact for restock">
+        {{ media }}
+      </div>
+    {%- endif -%}
     {% if is_small == false %}
       {{ add_to_cart }}
     {% endif %}
@@ -422,13 +429,19 @@
     <div class="product-card__content sa-collection-card__content">
       <div class="sa-collection-card__row">
         <h3 class="sa-collection-card__title">
-          <a
-            href="{{ product_link_with_variant }}"
-            tabindex="{% if is_in_drawer == true %}-1{% else %}0{% endif %}"
-            title="{{ product_ref.title | escape }}"
-          >
-            {{- product_ref.title | default: product_title_placeholder -}}
-          </a>
+          {%- if product_ref.available -%}
+            <a
+              href="{{ product_link_with_variant }}"
+              tabindex="{% if is_in_drawer == true %}-1{% else %}0{% endif %}"
+              title="{{ product_ref.title | escape }}"
+            >
+              {{- product_ref.title | default: product_title_placeholder -}}
+            </a>
+          {%- else -%}
+            <span title="{{ product_ref.title | escape }}">
+              {{- product_ref.title | default: product_title_placeholder -}}
+            </span>
+          {%- endif -%}
         </h3>
         {%- if sa_collection_show_product_type and product_ref.type != blank -%}
           <span class="sa-collection-card__type" title="{{ product_ref.type | escape }}">{{ product_ref.type }}</span>
@@ -461,9 +474,13 @@
         <span class="sa-archive-label sa-product-recommendation-card__type">{{ product_ref.type | escape }}</span>
       {% endif %}
       <h3 class="product-card__title{% if sa_recommendation %} sa-product-recommendation-card__title{% endif %}">
-        <a href="{{ product_link_with_variant }}" class="product-card__link" tabindex="{% if is_in_drawer == true %}-1{% else %}0{% endif %}" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
-          <span>{{ product_ref.title | default: product_title_placeholder }}</span>
-        </a>
+        {%- if product_ref.available -%}
+          <a href="{{ product_link_with_variant }}" class="product-card__link" tabindex="{% if is_in_drawer == true %}-1{% else %}0{% endif %}" data-product-link title="{{ 'product.go_to_title' | t : title: product_ref.title }}">
+            <span>{{ product_ref.title | default: product_title_placeholder }}</span>
+          </a>
+        {%- else -%}
+          <span class="product-card__link product-card__link--disabled">{{ product_ref.title | default: product_title_placeholder }}</span>
+        {%- endif -%}
         {% render 'product-badges', product: product_ref %}
       </h3>
       <span class="product-card__price{% if sa_recommendation %} sa-product-recommendation-card__price{% endif %}">
@@ -474,7 +491,9 @@
       {% if settings.show_product_groups_on_product_card %}
         {% render 'product-groups', product: product_ref, on: 'card' %}
       {% endif %}
-      {{ product_variants }}
+      {%- if product_ref.available -%}
+        {{ product_variants }}
+      {%- endif -%}
     </div>
     {% if is_in_drawer %}
       {{ add_to_cart }}

@@ -102,6 +102,23 @@
       transform: scale(1.035);
     }
 
+    #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out {
+      filter: grayscale(1);
+      opacity: 0.54;
+      cursor: not-allowed;
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out:hover {
+      transform: none;
+      border-color: var(--sa-border-subtle);
+      box-shadow: var(--sa-shadow-card);
+    }
+
+    #shopify-section-{{ section.id }} .sa-product-row__product.is-sold-out:hover .sa-product-row__image {
+      opacity: 0.9;
+      transform: none;
+    }
+
     #shopify-section-{{ section.id }} .sa-product-row__media {
       position: relative;
       display: block;
@@ -287,10 +304,10 @@
             assign compare_price = product.compare_at_price_max
             assign current_price = product.price
             assign product_link_label = 'View ' | append: product_title
-            if product.tags contains 'preorder'
-              assign product_link_label = product_link_label | append: ', preorder, ships in 3 to 4 weeks'
-            elsif product.available == false
+            if product.available == false
               assign product_link_label = product_link_label | append: ', sold out, contact for restock'
+            elsif product.tags contains 'preorder'
+              assign product_link_label = product_link_label | append: ', preorder, ships in 4 to 8 weeks'
             endif
             assign tag_badge = blank
             for tag in product.tags
@@ -302,7 +319,11 @@
             endfor
           %}
 
-          <a class="sa-card sa-product-row__product" href="{{ product.url }}" aria-label="{{ product_link_label | escape }}" role="listitem">
+          {% if product.available %}
+            <a class="sa-card sa-product-row__product" href="{{ product.url }}" aria-label="{{ product_link_label | escape }}" role="listitem">
+          {% else %}
+            <div class="sa-card sa-product-row__product is-sold-out" aria-label="{{ product_link_label | escape }}" aria-disabled="true" role="listitem">
+          {% endif %}
             <span class="sa-product-row__media" aria-hidden="true">
               {% if product.featured_image != blank %}
                 {{ product.featured_image | image_url: width: 900 | image_tag: class: 'sa-product-row__image', loading: 'lazy', sizes: '(min-width: 1200px) 25vw, (min-width: 900px) 33vw, (min-width: 768px) 50vw, 72vw', widths: '320, 480, 640, 760, 900', alt: image_alt | escape }}
@@ -310,15 +331,15 @@
                 <span class="sa-product-row__image-fallback" aria-hidden="true">{{ product_initials | escape }}</span>
               {% endif %}
 
-              {% if product.tags contains 'preorder' %}
-                <span class="sa-stock-badge sa-stock-badge--preorder">
-                  <span class="sa-stock-badge__text">Preorder</span>
-                  <span class="sa-stock-badge__sub">Ships 3-4 weeks</span>
-                </span>
-              {% elsif product.available == false %}
+              {% if product.available == false %}
                 <span class="sa-stock-badge sa-stock-badge--sold-out">
                   <span class="sa-stock-badge__text">Sold out</span>
                   <span class="sa-stock-badge__sub">Contact for restock</span>
+                </span>
+              {% elsif product.tags contains 'preorder' %}
+                <span class="sa-stock-badge sa-stock-badge--preorder">
+                  <span class="sa-stock-badge__text">Preorder</span>
+                  <span class="sa-stock-badge__sub">Ships 4-8 weeks</span>
                 </span>
               {% endif %}
 
@@ -338,7 +359,11 @@
             <span class="sa-product-row__content">
               <span class="sa-product-row__title">{{ product_title | escape }}</span>
             </span>
-          </a>
+          {% if product.available %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 

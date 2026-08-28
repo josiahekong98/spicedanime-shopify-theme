@@ -330,7 +330,7 @@
           "settings": {
             "label": "PATH 01",
             "heading": "Shop Smoking Accessories",
-            "text": "Find anime-themed smoking accessories: includes anime artwork on lighters, grinders, rolling trays, stash jars and more.",
+            "text": "Add anime smoking accessories to your collection: includes  lighters, grinders, rolling trays, stash jars and more.",
             "image": "shopify://shop_images/ChatGPT_Image_Jul_15_2026_01_36_15_AM.png",
             "icon_label": "P",
             "link": "/pages/explore-by-product",
@@ -343,9 +343,9 @@
           "type": "path_card",
           "settings": {
             "label": "PATH 02",
-            "heading": "Shop Black Afro-Centric Art",
+            "heading": "Shop Black Afro-Centric Art Pieces",
             "text": "Add accents to express your culture and self: includes everyday tote bags, room decor, blankets, or pillow covers and more.",
-            "image": "shopify://shop_images/F48DCB1F-806D-4CA2-A719-50DCE01E43E2.webp",
+            "image": "shopify://shop_images/IMG_9100.jpg",
             "icon_label": "L",
             "link": "/pages/explore-by-lifestyle",
             "link_label": "Shop Lifestyle",

@@ -67,7 +67,6 @@
     },
     "header": {
       "type": "header",
-      "disabled": true,
       "custom_css": [],
       "settings": {
         "layout": "header--nav-centered",

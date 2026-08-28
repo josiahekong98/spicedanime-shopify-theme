@@ -10,6 +10,7 @@
   assign sa_show_series = false
   assign sa_show_product_types = false
   assign sa_randomize_series = false
+  assign sa_prioritize_product_types = false
 
   if collection.handle == 'black-afro-centric-products'
     assign sa_show_product_types = true
@@ -21,6 +22,7 @@
     assign sa_show_series = true
   elsif collection.title contains '(Series)' or collection.title contains '(series)'
     assign sa_show_product_types = true
+    assign sa_prioritize_product_types = true
   endif
 
   assign sa_series_filter = blank
@@ -44,6 +46,7 @@
   endif
 
   assign sa_popular_series = "One Piece|Rick and Morty|Pokemon|Neon Genesis Evangelion|Cowboy Bebop|Soul Eater|Bleach|JoJo's Bizzare Adventure|Berserk|Naruto|Frieren|Dragon Ball Z|Jujutsu Kaisen" | split: '|'
+  assign sa_product_type_priority = 'Flip Lighter|Tapestry|Grinder Sets|Wallet' | split: '|'
 -%}
 
 {%- capture sa_selected_filters -%}
@@ -163,22 +166,63 @@
         {%- endunless -%}
       </div>
       <div class="sa-collection-archive__shortcuts">
-        {%- for value in sa_product_type_filter.values -%}
-          {%- if value.count > 0 or value.active -%}
-            <a
-              class="sa-collection-archive__shortcut{% if value.active %} is-active{% endif %}"
-              href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
-              data-sa-filter-shortcut
-              data-filter-name="{{ sa_product_type_filter.param_name | escape }}"
-              data-filter-value="{{ value.value | escape }}"
-              data-active="{{ value.active }}"
-              {% if value.active %}aria-current="true"{% endif %}
-            >
-              {{- value.label -}}
-              <span class="visually-hidden"> ({{ value.count }} products)</span>
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if sa_prioritize_product_types -%}
+          {%- for priority_type in sa_product_type_priority -%}
+            {%- for value in sa_product_type_filter.values -%}
+              {%- if value.value == priority_type -%}
+                {%- if value.count > 0 or value.active -%}
+                  <a
+                    class="sa-collection-archive__shortcut{% if value.active %} is-active{% endif %}"
+                    href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                    data-sa-filter-shortcut
+                    data-filter-name="{{ sa_product_type_filter.param_name | escape }}"
+                    data-filter-value="{{ value.value | escape }}"
+                    data-active="{{ value.active }}"
+                    {% if value.active %}aria-current="true"{% endif %}
+                  >
+                    {{- value.label -}}
+                    <span class="visually-hidden"> ({{ value.count }} products)</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- for value in sa_product_type_filter.values -%}
+            {%- unless sa_product_type_priority contains value.value -%}
+              {%- if value.count > 0 or value.active -%}
+                <a
+                  class="sa-collection-archive__shortcut{% if value.active %} is-active{% endif %}"
+                  href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                  data-sa-filter-shortcut
+                  data-filter-name="{{ sa_product_type_filter.param_name | escape }}"
+                  data-filter-value="{{ value.value | escape }}"
+                  data-active="{{ value.active }}"
+                  {% if value.active %}aria-current="true"{% endif %}
+                >
+                  {{- value.label -}}
+                  <span class="visually-hidden"> ({{ value.count }} products)</span>
+                </a>
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for value in sa_product_type_filter.values -%}
+            {%- if value.count > 0 or value.active -%}
+              <a
+                class="sa-collection-archive__shortcut{% if value.active %} is-active{% endif %}"
+                href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                data-sa-filter-shortcut
+                data-filter-name="{{ sa_product_type_filter.param_name | escape }}"
+                data-filter-value="{{ value.value | escape }}"
+                data-active="{{ value.active }}"
+                {% if value.active %}aria-current="true"{% endif %}
+              >
+                {{- value.label -}}
+                <span class="visually-hidden"> ({{ value.count }} products)</span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
   {%- endif -%}

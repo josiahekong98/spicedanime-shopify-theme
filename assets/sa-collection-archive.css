@@ -7,7 +7,7 @@
 .sa-collection-archive__header {
   width: min(1180px, calc(100% - (2 * var(--sa-page-gutter))));
   margin-inline: auto;
-  padding-block: clamp(8px, 1.5vw, 16px) 0;
+  padding-block: 4px 0;
 }
 
 .sa-collection-archive__title {
@@ -61,6 +61,15 @@
 
 .sa-collection-archive .collection-facets__inner {
   padding-block-end: 8px;
+}
+
+.sa-collection-archive .collection-facets__inner .facets__filters {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+
+.sa-collection-archive .collection-facets__inner .facets__filters .facets__actions-list {
+  justify-content: flex-end;
 }
 
 .sa-collection-archive .facets__button-filters,
@@ -477,6 +486,13 @@
   gap: 4px;
   font: inherit;
   white-space: nowrap;
+}
+
+.sa-collection-card__price .price__regular > span:not(.visually-hidden) {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
 }
 
 .sa-collection-card[hidden] {

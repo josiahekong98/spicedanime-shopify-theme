@@ -4,6 +4,7 @@
     - product: {Object} Product Liquid object
     - use_variant: {Boolean} Renders selected or first variant price instead of overall product pricing (optional)
     - price_class: {String} Adds a price class to the price element (optional)
+    - compact: {Boolean} Omits legacy inline display styling so a compact parent component can own presentation (optional)
     Usage:
     {% render 'price', product: product %}
 {% endcomment %}
@@ -151,11 +152,12 @@
 
       {%- else -%}
 
-        <div class="price__regular" style="margin-top: 6px;">
+        <div class="price__regular"{% unless compact %} style="margin-top: 6px;"{% endunless %}>
   <span class="visually-hidden">{{- 'product.price_regular' | t -}}</span>
 
   <span
     {{ rtl_attr }}
+    {% unless compact %}
     style="
       font-size: 20px;
       font-weight: 600;
@@ -163,6 +165,7 @@
       letter-spacing: 0.02em;
       line-height: 1;
     "
+    {% endunless %}
   >
     {{ price | money_without_trailing_zeros }}
   </span>

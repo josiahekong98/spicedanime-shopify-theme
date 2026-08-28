@@ -430,7 +430,7 @@
         {%- endif -%}
         {%- if sa_collection_show_price -%}
           <span class="sa-collection-card__price">
-            {%- render 'price', product: product_ref -%}
+            {%- render 'price', product: product_ref, compact: true -%}
           </span>
         {%- endif -%}
         {%- unless product_ref.available -%}

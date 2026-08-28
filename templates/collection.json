@@ -121,7 +121,7 @@
         "enable_infinity_scroll": false,
         "section_width": "max-w-fluid",
         "filters": "sidebar",
-        "enable_sorting": true,
+        "enable_sorting": false,
         "sa_enable_collection_search": true,
         "sa_random_series_limit": 10,
         "sa_show_product_type": true,

@@ -110,17 +110,21 @@
   };
 
   document.addEventListener('click', (event) => {
-    const shortcut = event.target.closest('[data-sa-filter-shortcut]');
+    const shortcut = event.target.closest('[data-sa-filter-shortcut], [data-sa-instant-filter]');
     if (!shortcut) return;
 
-    const name = shortcut.dataset.filterName;
-    const value = shortcut.dataset.filterValue;
-    const nativeInputs = [...document.querySelectorAll('facet-filters-form input[type="checkbox"]')];
-    const nativeInput = nativeInputs.find((input) => input.name === name && input.value === value);
-    if (!nativeInput) return;
-
     event.preventDefault();
-    nativeInput.click();
+    const facetForm = document.querySelector('facet-filters-form');
+    if (!facetForm || typeof facetForm.onActiveFilterClick !== 'function') {
+      window.location.assign(shortcut.href);
+      return;
+    }
+
+    shortcut.setAttribute('aria-busy', 'true');
+    facetForm.onActiveFilterClick({
+      preventDefault() {},
+      currentTarget: shortcut,
+    });
   });
 
   const gridContainer = document.getElementById('ProductGridContainer');

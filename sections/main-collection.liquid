@@ -10,31 +10,33 @@
 
   assign mobile_products_per_row = section.settings.products_per_row_mobile
 
-  assign collection_title_downcase = collection.title | downcase
+  unless sa_default_collection_template
+    assign collection_title_downcase = collection.title | downcase
 
-if collection_title_downcase contains 'rolling trays'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'lighters'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'ashtrays'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'wallets'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'stash boxes'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'tote bags'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'stash jars'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'hoodies'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'pillow cases'
-  assign mobile_products_per_row = 3
-elsif collection_title_downcase contains 'grinder sets'
-  assign mobile_products_per_row = 2
-elsif collection_title_downcase contains 'graphic anime tapestries'
-  assign mobile_products_per_row = 2
-endif
+    if collection_title_downcase contains 'rolling trays'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'lighters'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'ashtrays'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'wallets'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'stash boxes'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'tote bags'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'stash jars'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'hoodies'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'pillow cases'
+      assign mobile_products_per_row = 3
+    elsif collection_title_downcase contains 'grinder sets'
+      assign mobile_products_per_row = 2
+    elsif collection_title_downcase contains 'graphic anime tapestries'
+      assign mobile_products_per_row = 2
+    endif
+  endunless
 
   assign product_cells_on_page = section.settings.products_per_page
   assign card_cells_on_page = 0

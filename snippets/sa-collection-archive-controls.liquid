@@ -36,6 +36,34 @@
   assign sa_popular_series = "One Piece|Rick and Morty|Pokemon|Neon Genesis Evangelion|Cowboy Bebop|Soul Eater|Bleach|JoJo's Bizzare Adventure|Berserk|Naruto|Frieren|Dragon Ball Z|Jujutsu Kaisen" | split: '|'
 -%}
 
+{%- capture sa_selected_filters -%}
+  {%- for filter in collection.filters -%}
+    {%- for value in filter.active_values -%}
+      <a
+        class="sa-collection-archive__selected-filter"
+        href="{{ value.url_to_remove }}"
+        data-sa-filter-shortcut
+        data-filter-name="{{ filter.param_name | escape }}"
+        data-filter-value="{{ value.value | escape }}"
+        data-active="true"
+      >
+        <span>{{ value.label }}</span>
+        <span aria-hidden="true">×</span>
+        <span class="visually-hidden">Remove {{ value.label }} filter</span>
+      </a>
+    {%- endfor -%}
+    {%- if filter.type == 'price_range' -%}
+      {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+        <a class="sa-collection-archive__selected-filter" href="{{ filter.url_to_remove }}" data-sa-instant-filter>
+          <span>{{ filter.label }}</span>
+          <span aria-hidden="true">×</span>
+          <span class="visually-hidden">Remove {{ filter.label }} filter</span>
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
 <div
   class="sa-collection-archive__controls"
   data-sa-collection-controls
@@ -140,6 +168,15 @@
             </a>
           {%- endif -%}
         {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if sa_selected_filters != blank -%}
+    <div class="sa-collection-archive__selected">
+      <p class="sa-collection-archive__shortcut-label">Selected filters</p>
+      <div class="sa-collection-archive__selected-list">
+        {{- sa_selected_filters -}}
       </div>
     </div>
   {%- endif -%}

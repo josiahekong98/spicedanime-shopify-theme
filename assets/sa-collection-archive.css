@@ -7,7 +7,7 @@
 .sa-collection-archive__header {
   width: min(1180px, calc(100% - (2 * var(--sa-page-gutter))));
   margin-inline: auto;
-  padding-block: clamp(16px, 2.5vw, 28px) clamp(8px, 1.5vw, 16px);
+  padding-block: clamp(8px, 1.5vw, 16px) 0;
 }
 
 .sa-collection-archive__title {
@@ -59,6 +59,10 @@
   border-color: var(--sa-border-subtle, rgba(var(--color-border), 0.45));
 }
 
+.sa-collection-archive .collection-facets__inner {
+  padding-block-end: 8px;
+}
+
 .sa-collection-archive .facets__button-filters,
 .sa-collection-archive .active-facets__button-text,
 .sa-collection-archive .facets__actions-button {
@@ -99,8 +103,12 @@
 }
 
 .sa-collection-archive__search::placeholder {
-  color: var(--sa-gallery-stone, rgba(var(--color-foreground), 0.72));
-  opacity: 0.48;
+  color: #70d68d;
+  opacity: 0.52;
+  font-family: var(--sa-font-archive, monospace);
+  letter-spacing: 0.16em;
+  text-shadow: 0 0 6px rgba(112, 214, 141, 0.24);
+  animation: sa-collection-search-flicker 3.6s steps(1, end) infinite;
 }
 
 .sa-collection-archive__search:focus-visible,
@@ -136,6 +144,19 @@
   min-height: 24px;
   align-items: flex-start;
   justify-content: flex-end;
+}
+
+.sa-collection-archive__shortcut-heading {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block-end: 4px;
+}
+
+.sa-collection-archive__shortcut-heading .sa-collection-archive__shortcut-label {
+  margin: 0;
 }
 
 .sa-collection-archive__reset {
@@ -482,6 +503,21 @@
   }
 }
 
+@keyframes sa-collection-search-flicker {
+  0%, 15%, 18%, 52%, 55%, 100% {
+    opacity: 0.52;
+    text-shadow: 0 0 6px rgba(112, 214, 141, 0.24);
+  }
+  16%, 53% {
+    opacity: 0.72;
+    text-shadow: 0 0 8px rgba(112, 214, 141, 0.4);
+  }
+  17%, 54% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
+
 @media screen and (max-width: 749px) {
   .template--collection .section-page-banner .container {
     padding-block: 10px 14px;
@@ -509,6 +545,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sa-collection-card .product-card__actions .product-card__add-to-cart--button {
+    animation: none;
+  }
+
+  .sa-collection-archive__search::placeholder {
     animation: none;
   }
 }

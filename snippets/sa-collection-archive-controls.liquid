@@ -33,6 +33,16 @@
     endif
   endfor
 
+  assign sa_has_series_shortcuts = false
+  if sa_show_series and sa_series_filter != blank
+    assign sa_has_series_shortcuts = true
+  endif
+
+  assign sa_has_product_type_shortcuts = false
+  if sa_show_product_types and sa_product_type_filter != blank
+    assign sa_has_product_type_shortcuts = true
+  endif
+
   assign sa_popular_series = "One Piece|Rick and Morty|Pokemon|Neon Genesis Evangelion|Cowboy Bebop|Soul Eater|Bleach|JoJo's Bizzare Adventure|Berserk|Naruto|Frieren|Dragon Ball Z|Jujutsu Kaisen" | split: '|'
 -%}
 
@@ -80,23 +90,22 @@
         type="search"
         inputmode="search"
         autocomplete="off"
-        placeholder="Search this collection page..."
+        placeholder="SEARCH"
         data-sa-collection-search
         aria-controls="product-grid"
       >
-      <p class="sa-collection-archive__search-note">Searches products shown on this page.</p>
+      <p class="sa-collection-archive__search-note">Search products on this collection page.</p>
     </div>
   {%- endif -%}
 
-  <div class="sa-collection-archive__reset-row">
-    <a class="sa-collection-archive__reset" href="{{ collection.url }}">Reset filters</a>
-  </div>
-
-  {%- if sa_show_series and sa_series_filter != blank -%}
+  {%- if sa_has_series_shortcuts -%}
     <div class="sa-collection-archive__shortcut-group">
-      <p class="sa-collection-archive__shortcut-label">
-        {%- if sa_randomize_series -%}Explore series{%- else -%}Popular series{%- endif -%}
-      </p>
+      <div class="sa-collection-archive__shortcut-heading">
+        <p class="sa-collection-archive__shortcut-label">
+          {%- if sa_randomize_series -%}Explore series{%- else -%}Popular series{%- endif -%}
+        </p>
+        <a class="sa-collection-archive__reset" href="{{ collection.url }}">Reset filters</a>
+      </div>
       <div
         class="sa-collection-archive__shortcuts"
         {% if sa_randomize_series %}data-sa-random-series data-limit="{{ section.settings.sa_random_series_limit }}"{% endif %}
@@ -145,9 +154,14 @@
     </div>
   {%- endif -%}
 
-  {%- if sa_show_product_types and sa_product_type_filter != blank -%}
+  {%- if sa_has_product_type_shortcuts -%}
     <div class="sa-collection-archive__shortcut-group">
-      <p class="sa-collection-archive__shortcut-label">Product types</p>
+      <div class="sa-collection-archive__shortcut-heading">
+        <p class="sa-collection-archive__shortcut-label">Product types</p>
+        {%- unless sa_has_series_shortcuts -%}
+          <a class="sa-collection-archive__reset" href="{{ collection.url }}">Reset filters</a>
+        {%- endunless -%}
+      </div>
       <div class="sa-collection-archive__shortcuts">
         {%- for value in sa_product_type_filter.values -%}
           {%- if value.count > 0 or value.active -%}
@@ -168,6 +182,12 @@
       </div>
     </div>
   {%- endif -%}
+
+  {%- unless sa_has_series_shortcuts or sa_has_product_type_shortcuts -%}
+    <div class="sa-collection-archive__reset-row">
+      <a class="sa-collection-archive__reset" href="{{ collection.url }}">Reset filters</a>
+    </div>
+  {%- endunless -%}
 
   {%- if sa_selected_filters != blank -%}
     <div class="sa-collection-archive__selected">

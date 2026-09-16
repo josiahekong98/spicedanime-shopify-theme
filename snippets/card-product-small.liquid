@@ -1,6 +1,6 @@
 <a href="{{- product_ref.url -}}" class="card-product-small">
   <div class="media card-product-small-media">
-    {%- render 'image', image: product_ref.featured_image, alt: product_ref.featured_image.alt | escape -%}
+    {%- render 'image', image: product_ref.featured_image, alt: product_ref.featured_image.alt -%}
   </div>
   {% liquid
     assign button_class = 'quick-cart-drawer__trigger quick-cart-drawer__trigger--recommendations button '
@@ -61,3 +61,15 @@
     {%- endif -%}
   </div>
 </a>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: product_ref.featured_image, alt: product_ref.featured_image.alt
+    | escape -%}"
+  to: "{%- render 'image', image: product_ref.featured_image, alt: product_ref.featured_image.alt
+    -%}"
+  position: 113..207
+{% endcomment %}

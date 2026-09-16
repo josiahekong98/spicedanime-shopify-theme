@@ -43,7 +43,7 @@
                 {%- elsif block.settings.video_desktop != blank -%}
                   {{- block.settings.video_desktop | video_tag: image_size: '2160x', loop: true, autoplay: true, muted: true -}}
                 {%- elsif block.settings.image_desktop != blank -%}
-                  {%- render 'image', image: block.settings.image_desktop, alt: block.settings.image_desktop.alt | default: block.settings.heading | append: '-desktop' | escape, sizes: 'auto' -%}
+                  {%- render 'image', image: block.settings.image_desktop, alt: block.settings.image_desktop.alt, default: block.settings.heading, append: '-desktop', sizes: 'auto' -%}
                 {%- else -%}
                   {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
                 {%- endif -%}
@@ -57,7 +57,7 @@
                   {%- elsif block.settings.video_mobile != blank -%}
                     {{- block.settings.video_mobile | video_tag: image_size: '720x', loop: true, autoplay: true, muted: true -}}
                   {%- elsif block.settings.image_mobile != blank -%}
-                    {%- render 'image', image: block.settings.image_mobile, image_for_mobile: true, alt: block.settings.image_mobile.alt | default: block.settings.heading | escape, sizes: 'auto' -%}
+                    {%- render 'image', image: block.settings.image_mobile, image_for_mobile: true, alt: block.settings.image_mobile.alt, default: block.settings.heading, sizes: 'auto' -%}
                   {%- else -%}
                     {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
                   {%- endif -%}
@@ -423,3 +423,23 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: block.settings.image_desktop, alt: block.settings.image_desktop.alt
+    | default: block.settings.heading | append: '-desktop' | escape, sizes: 'auto'
+    -%}"
+  to: "{%- render 'image', image: block.settings.image_desktop, alt: block.settings.image_desktop.alt,
+    default: block.settings.heading, append: '-desktop', sizes: 'auto' -%}"
+  position: 2575..2741
+- from: "{%- render 'image', image: block.settings.image_mobile, image_for_mobile:
+    true, alt: block.settings.image_mobile.alt | default: block.settings.heading |
+    escape, sizes: 'auto' -%}"
+  to: "{%- render 'image', image: block.settings.image_mobile, image_for_mobile: true,
+    alt: block.settings.image_mobile.alt, default: block.settings.heading, sizes:
+    'auto' -%}"
+  position: 3609..3777
+{% endcomment %}

@@ -15,7 +15,7 @@
     endif
   -%}
   <{{ media_tag }} class="deferred-media media" data-media-id="{{- media.id -}}">
-    {%- render 'image', image: media.preview_image, image_url_width: 550, alt: media.alt | escape -%}
+    {%- render 'image', image: media.preview_image, image_url_width: 550, alt: media.alt -%}
     <template>
       <div class="deferred-media__wrapper">
         {%- case media.media_type -%}
@@ -31,3 +31,15 @@
     </template>
   </{{ media_tag }}>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: media.preview_image, image_url_width: 550, alt:
+    media.alt | escape -%}"
+  to: "{%- render 'image', image: media.preview_image, image_url_width: 550, alt:
+    media.alt -%}"
+  position: 538..626
+{% endcomment %}

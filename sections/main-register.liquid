@@ -7,7 +7,7 @@
     {%- if section.settings.image_aside != blank -%}
       <div class="account__col small-hide medium-hide">
         <div class="account__image media">
-          {%- render 'image', image: section.settings.image_aside, alt: section.settings.image_aside.alt | escape, section_index: section.index -%}
+          {%- render 'image', image: section.settings.image_aside, alt: section.settings.image_aside.alt, section_index: section.index -%}
         </div>
       </div>
     {%- endif -%}
@@ -177,3 +177,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: section.settings.image_aside, alt: section.settings.image_aside.alt
+    | escape, section_index: section.index -%}"
+  to: "{%- render 'image', image: section.settings.image_aside, alt: section.settings.image_aside.alt,
+    section_index: section.index -%}"
+  position: 421..549
+{% endcomment %}

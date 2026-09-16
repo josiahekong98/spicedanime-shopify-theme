@@ -172,7 +172,7 @@
                 {%- elsif block_video != blank -%}
                   {{- block_video | video_tag: image_size: '1440x', loop: true, autoplay: true, muted: true, controls: block.settings.show_controls_on_video -}}
                 {%- elsif block_image -%}
-                  {%- render 'image', image: block_image, section_index: section.index, alt: block_image.alt | escape -%}
+                  {%- render 'image', image: block_image, section_index: section.index, alt: block_image.alt -%}
                 {%- endif -%}
               </div>
 
@@ -183,7 +183,7 @@
                   {%- elsif block_video_mobile != blank -%}
                     {{- block_video_mobile | video_tag: image_size: '720x', loop: true, autoplay: true, muted: true, controls: block.settings.show_controls_on_video_mobile -}}
                   {%- elsif block_image_mobile -%}
-                    {%- render 'image', image: block_image_mobile, section_index: section.index, image_for_mobile: true, alt: block_image_mobile.alt | escape -%}
+                    {%- render 'image', image: block_image_mobile, section_index: section.index, image_for_mobile: true, alt: block_image_mobile.alt -%}
                   {%- endif -%}
                 </div>
               {%- endif -%}
@@ -975,3 +975,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: block_image, section_index: section.index, alt:
+    block_image.alt | escape -%}"
+  to: "{%- render 'image', image: block_image, section_index: section.index, alt:
+    block_image.alt -%}"
+  position: 8853..8947
+- from: "{%- render 'image', image: block_image_mobile, section_index: section.index,
+    image_for_mobile: true, alt: block_image_mobile.alt | escape -%}"
+  to: "{%- render 'image', image: block_image_mobile, section_index: section.index,
+    image_for_mobile: true, alt: block_image_mobile.alt -%}"
+  position: 9660..9792
+{% endcomment %}

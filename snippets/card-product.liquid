@@ -95,12 +95,7 @@
     -%}
 
     {% if settings.product_card_media_hover and product_ref.media.size > 1 and hover_media %}
-      {% render 'image',
-        image: hover_media,
-        alt: hover_media.alt | default: product_ref.title,
-        class: 'hover-img',
-        image_per_view: image_per_view
-      %}
+      {% render 'image', image: hover_media, alt: hover_media.alt, default: product_ref.title, class: 'hover-img', image_per_view: image_per_view %}
     {% endif %}
   </div>
 {%- endcapture -%}
@@ -501,3 +496,20 @@
   </div>
   {%- endif -%}
 </product-card>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'image',
+            image: hover_media,
+            alt: hover_media.alt | default: product_ref.title,
+            class: 'hover-img',
+            image_per_view: image_per_view
+          %}
+  to: "{% render 'image', image: hover_media, alt: hover_media.alt, default: product_ref.title,
+    class: 'hover-img', image_per_view: image_per_view %}"
+  position: 3939..4081
+{% endcomment %}

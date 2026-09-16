@@ -182,7 +182,7 @@
         {%- if cart_item != true -%}
           {%- render 'image', image: line_item.image, width: 360, section_index: 2 -%}
         {%- else -%}
-          {%- render 'image', image: line_item.image, image_url_width: 550, alt: line_item.image.alt | escape -%}
+          {%- render 'image', image: line_item.image, image_url_width: 550, alt: line_item.image.alt -%}
         {%- endif -%}
       </div>
     </a>
@@ -305,3 +305,15 @@
     <div class="cart-item__total-price" {{ rtl_attr }}>{{ line_price_display }}</div>
   {%- endif -%}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: line_item.image, image_url_width: 550, alt: line_item.image.alt
+    | escape -%}"
+  to: "{%- render 'image', image: line_item.image, image_url_width: 550, alt: line_item.image.alt
+    -%}"
+  position: 6879..6973
+{% endcomment %}

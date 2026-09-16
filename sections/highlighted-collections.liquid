@@ -78,7 +78,7 @@
               <div class="media">
                 {%- liquid
                   if collection_image != blank
-                    render 'image', image: collection_image, alt: collection_image.alt | escape
+                    render 'image', image: collection_image, alt: collection_image.alt
                   else
                     echo 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg'
                   endif
@@ -90,7 +90,7 @@
           {% if section.settings.mobile_image != blank  %}
             <div class="highlighted_collections-mobile-img">
               <div class="media">
-                {%- render 'image', image: section.settings.mobile_image, alt: section.settings.mobile_image.alt | escape -%}
+                {%- render 'image', image: section.settings.mobile_image, alt: section.settings.mobile_image.alt -%}
               </div>
             </div>
           {% endif %}
@@ -309,3 +309,19 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "                    render 'image', image: collection_image, alt: collection_image.alt
+    | escape"
+  to: "                    render 'image', image: collection_image, alt: collection_image.alt"
+  position: 3934..4020
+- from: "{%- render 'image', image: section.settings.mobile_image, alt: section.settings.mobile_image.alt
+    | escape -%}"
+  to: "{%- render 'image', image: section.settings.mobile_image, alt: section.settings.mobile_image.alt
+    -%}"
+  position: 4402..4502
+{% endcomment %}

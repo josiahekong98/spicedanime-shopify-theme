@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -13,7 +22,7 @@
         "rolling_tray_price": "$10",
         "stash_jar_price": "$10",
         "stash_box_price": "$30",
-        "ashtray_price": "",
+        "ashtray_price": "$20",
         "wallet_price": "$30",
         "tin_case_price": "$10",
         "tapestry_price": "$80",
@@ -24,14 +33,14 @@
         "pillow_collection": "lighters-category-copy",
         "tote_collection": "all-tote-bags",
         "hoodie_collection": "hoodies-category",
+        "initial_batch_size": 24,
+        "sticky_type_navigation": true,
         "popular_series_1": "One Piece",
         "popular_series_2": "Naruto",
         "popular_series_3": "Dragon Ball Z",
         "popular_series_4": "Bleach",
         "popular_series_5": "Jujutsu Kaisen",
         "popular_series_6": "Berserk",
-        "initial_batch_size": 24,
-        "sticky_type_navigation": true,
         "lighter_url": "/collections/all-products-lighters",
         "grinder_url": "/collections/herb-grinders",
         "rolling_tray_url": "/collections/all-rolling-trays",

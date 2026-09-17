@@ -33,28 +33,14 @@
       {%- endif -%}
     </header>
 
-    <section class="sa-convention__prices" aria-labelledby="SaConventionPrices-{{ section.id }}">
-      <div class="sa-convention__section-heading">
-        <p class="sa-convention__eyebrow sa-archive-label">Booth reference</p>
-        <h2 id="SaConventionPrices-{{ section.id }}">Booth Price Guide</h2>
-      </div>
-      <dl class="sa-convention__price-grid">
-        {%- for price_row in price_rows -%}
-          {%- liquid
-            assign price_parts = price_row | split: '|'
-            assign price_label = price_parts.first
-            assign setting_id = price_parts.last
-            assign price_value = section.settings[setting_id]
-          -%}
-          {%- if price_value != blank -%}
-            <div class="sa-convention__price-item">
-              <dt>{{- price_label | escape -}}</dt>
-              <dd>{{- price_value | escape -}}</dd>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </dl>
-    </section>
+    <button class="sa-convention__price-trigger" type="button" data-sa-price-trigger aria-haspopup="dialog">
+      <span class="sa-convention__price-trigger-icon" aria-hidden="true">$</span>
+      <span>
+        <strong>View Booth Prices</strong>
+        <small>Tap for the full event price list</small>
+      </span>
+      <span class="sa-convention__price-trigger-arrow" aria-hidden="true">→</span>
+    </button>
 
     <div class="sa-convention__catalog-shell">
       <nav class="sa-convention__type-nav" aria-label="Convention catalog product types">
@@ -124,6 +110,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Wall archive</p>
             <h2 id="SaConvention-tapestries-title-{{ section.id }}">Tapestries <span>— {{ section.settings.tapestry_price | escape }}</span></h2>
           </div>
+          <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in tapestry_collection.products limit: 50 -%}
@@ -147,6 +134,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Room archive</p>
             <h2 id="SaConvention-pillows-title-{{ section.id }}">Pillow Cases <span>— {{ section.settings.pillow_case_price | escape }}</span></h2>
           </div>
+          <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in pillow_collection.products limit: 50 -%}
@@ -162,8 +150,9 @@
         <section id="SaConvention-totes-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="totes" aria-labelledby="SaConvention-totes-title-{{ section.id }}">
           <div class="sa-convention__catalog-heading">
             <p class="sa-convention__eyebrow sa-archive-label">Carry archive</p>
-            <h2 id="SaConvention-totes-title-{{ section.id }}">Tote Bags <span>— {{ section.settings.tote_bag_price | escape }}</span></h2>
+            <h2 id="SaConvention-totes-title-{{ section.id }}">Tote Bags</h2>
           </div>
+          <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in tote_collection.products limit: 50 -%}
@@ -181,6 +170,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Wearable archive</p>
             <h2 id="SaConvention-hoodies-title-{{ section.id }}">Hoodies <span>— {{ section.settings.hoodie_price | escape }}</span></h2>
           </div>
+          <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in hoodie_collection.products limit: 50 -%}
@@ -221,18 +211,49 @@
     </section>
   </div>
 
+  <dialog class="sa-convention-dialog sa-convention-price-dialog" data-sa-price-dialog aria-labelledby="SaConventionPrices-{{ section.id }}">
+    <div class="sa-convention-dialog__inner">
+      <form method="dialog" class="sa-convention-dialog__close-form">
+        <button class="sa-convention-dialog__close" type="submit" aria-label="Close booth prices">×</button>
+      </form>
+      <div class="sa-convention__section-heading">
+        <p class="sa-convention__eyebrow sa-archive-label">Booth reference</p>
+        <h2 id="SaConventionPrices-{{ section.id }}">Booth Price Guide</h2>
+      </div>
+      <dl class="sa-convention__price-grid">
+        {%- for price_row in price_rows -%}
+          {%- liquid
+            assign price_parts = price_row | split: '|'
+            assign price_label = price_parts.first
+            assign setting_id = price_parts.last
+            assign price_value = section.settings[setting_id]
+          -%}
+          {%- if price_value != blank -%}
+            <div class="sa-convention__price-item">
+              <dt>{{- price_label | escape -}}</dt>
+              <dd>{{- price_value | escape -}}</dd>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    </div>
+  </dialog>
+
   <dialog class="sa-convention-dialog" data-sa-design-dialog aria-labelledby="SaConventionDialogTitle-{{ section.id }}">
     <div class="sa-convention-dialog__inner">
       <form method="dialog" class="sa-convention-dialog__close-form">
         <button class="sa-convention-dialog__close" type="submit" aria-label="Close design preview">×</button>
       </form>
       <figure>
-        <div class="sa-convention-dialog__media">
-          <img data-sa-dialog-image alt="" width="1200" height="1200">
+        <div class="sa-convention-dialog__gallery">
+          <button class="sa-convention-dialog__gallery-button sa-convention-dialog__gallery-button--previous" type="button" data-sa-dialog-previous aria-label="Previous design image">‹</button>
+          <div class="sa-convention-dialog__media" data-sa-dialog-track></div>
+          <button class="sa-convention-dialog__gallery-button sa-convention-dialog__gallery-button--next" type="button" data-sa-dialog-next aria-label="Next design image">›</button>
         </div>
         <figcaption>
           <h2 id="SaConventionDialogTitle-{{ section.id }}" data-sa-dialog-title></h2>
           <p data-sa-dialog-series hidden></p>
+          <p class="sa-convention-dialog__counter" data-sa-dialog-counter hidden></p>
         </figcaption>
       </figure>
     </div>

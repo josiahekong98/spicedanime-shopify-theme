@@ -73,6 +73,19 @@
     </span>
   </button>
 
+  {%- if product_ref.images.size > 0 -%}
+    <template data-sa-preview-media>
+      {%- for preview_image in product_ref.images -%}
+        {%- assign preview_alt = preview_image.alt | default: product_ref.title -%}
+        <span
+          data-preview-src="{{ preview_image | image_url: width: 1200 }}"
+          data-preview-srcset="{{ preview_image | image_url: width: 480 }} 480w, {{ preview_image | image_url: width: 720 }} 720w, {{ preview_image | image_url: width: 1200 }} 1200w"
+          data-preview-alt="{{ preview_alt | escape }}"
+        ></span>
+      {%- endfor -%}
+    </template>
+  {%- endif -%}
+
   <div class="sa-convention-card__content">
     <h3 class="sa-convention-card__title">{{- product_ref.title | escape -}}</h3>
     {%- if product_series != blank -%}

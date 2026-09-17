@@ -62,12 +62,60 @@
   font-size: 13px;
 }
 
-.sa-convention__prices,
 .sa-convention__accessories {
   padding: 16px;
   border: var(--sa-border-hairline, 1px solid rgba(216, 210, 199, 0.18));
   border-radius: var(--sa-radius-md, 12px);
   background: rgba(11, 11, 11, 0.24);
+}
+
+.sa-convention__price-trigger {
+  display: grid;
+  width: min(100%, 440px);
+  min-height: 58px;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border: 1px solid var(--sa-border-strong, rgba(244, 240, 232, 0.34));
+  border-radius: var(--sa-radius-md, 12px);
+  background: var(--sa-surface-panel, #24221f);
+  color: var(--sa-text-primary, #f4f0e8);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sa-convention__price-trigger-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sa-relic-red, #b3362d);
+  color: #fff;
+  font-family: var(--sa-font-archive, monospace);
+  font-weight: 700;
+}
+
+.sa-convention__price-trigger strong,
+.sa-convention__price-trigger small {
+  display: block;
+}
+
+.sa-convention__price-trigger strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.sa-convention__price-trigger small {
+  margin-block-start: 2px;
+  color: var(--sa-text-muted, #b8b2a8);
+  font-size: 11px;
+}
+
+.sa-convention__price-trigger-arrow {
+  color: var(--sa-relic-red, #b3362d);
+  font-size: 20px;
 }
 
 .sa-convention__section-heading {
@@ -128,7 +176,8 @@
   width: 100%;
   gap: 8px;
   overflow-x: auto;
-  padding: 8px 0;
+  margin-block-start: 8px;
+  padding: 6px 0;
   scrollbar-width: none;
   background: var(--sa-surface-page, #1c1b19);
 }
@@ -232,11 +281,15 @@
   gap: 8px;
 }
 
+.sa-convention__segmented {
+  justify-content: flex-start;
+}
+
 .sa-convention__filter-button {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 40px;
-  padding: 0 6px;
+  flex: 0 0 auto;
+  min-width: 58px;
+  min-height: 32px;
+  padding: 0 12px;
   overflow: hidden;
   font-size: 11px;
   text-overflow: ellipsis;
@@ -490,16 +543,62 @@
 }
 
 .sa-convention-dialog__media {
+  display: flex;
   overflow: hidden;
   aspect-ratio: 1 / 1;
   border-radius: var(--sa-radius-md, 12px);
   background: var(--sa-archive-black, #101010);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.sa-convention-dialog__media::-webkit-scrollbar {
+  display: none;
 }
 
 .sa-convention-dialog__media img {
+  flex: 0 0 100%;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  scroll-snap-align: start;
+}
+
+.sa-convention-dialog__gallery {
+  position: relative;
+}
+
+.sa-convention-dialog__gallery-button {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(11, 11, 11, 0.84);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.sa-convention-dialog__gallery-button--previous {
+  left: 10px;
+}
+
+.sa-convention-dialog__gallery-button--next {
+  right: 10px;
+}
+
+.sa-convention-dialog__gallery-button:disabled {
+  opacity: 0.32;
+  cursor: default;
 }
 
 .sa-convention-dialog figcaption {
@@ -510,6 +609,28 @@
 .sa-convention-dialog p {
   margin: 0;
   color: inherit;
+}
+
+.sa-convention-dialog .sa-convention-dialog__counter {
+  margin-block-start: 8px;
+  font-family: var(--sa-font-archive, monospace);
+  font-size: 11px;
+}
+
+.sa-convention-price-dialog {
+  width: min(calc(100% - 24px), 680px);
+}
+
+.sa-convention-price-dialog .sa-convention-dialog__inner {
+  padding: 20px;
+}
+
+.sa-convention-price-dialog .sa-convention__section-heading {
+  padding-inline-end: 50px;
+}
+
+.sa-convention-price-dialog .sa-convention__price-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .sa-convention-dialog h2 {
@@ -524,6 +645,10 @@
 
 @media screen and (min-width: 750px) {
   .sa-convention__price-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sa-convention-price-dialog .sa-convention__price-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 

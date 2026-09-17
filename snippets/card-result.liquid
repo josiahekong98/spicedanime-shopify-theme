@@ -12,7 +12,7 @@
     <a href="{{- result.url -}}">
       {%- if result.image -%}
         <div class="media media--overlay card-result__media">
-          {%- render 'image', image: result.image, image_url_width: 550, alt: result.image.alt | escape -%}
+          {%- render 'image', image: result.image, image_url_width: 550, alt: result.image.alt -%}
         </div>
       {%- endif -%}
       <div class="card-result__content{% if result.image %} color-text-inverse{% endif %}">
@@ -42,3 +42,15 @@
     </a>
   </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: result.image, image_url_width: 550, alt: result.image.alt
+    | escape -%}"
+  to: "{%- render 'image', image: result.image, image_url_width: 550, alt: result.image.alt
+    -%}"
+  position: 470..558
+{% endcomment %}

@@ -186,7 +186,7 @@
             {%- when 'localization' -%}
               <div class="announcement-bar__localization {{ show_on_class }}" {{ block.shopify_attributes }}>
                 <menu-drawer>
-                  {%- render 'country-drawer', append_id: 'announcement-' | append: block.id -%}
+                  {%- render 'country-drawer', append_id: 'announcement-', append: block.id -%}
                 </menu-drawer>
               </div>
           {%- endcase -%}
@@ -561,3 +561,14 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'country-drawer', append_id: 'announcement-' | append: block.id
+    -%}"
+  to: "{%- render 'country-drawer', append_id: 'announcement-', append: block.id -%}"
+  position: 7676..7753
+{% endcomment %}

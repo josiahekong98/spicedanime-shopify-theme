@@ -31,7 +31,7 @@
           {%- if article.image -%}
             <div class="article__hero container js-article-hero-media max-w-narrow" {{ block.shopify_attributes }}>
               <div class="article__media media" itemprop="image">
-                {%- render 'image', image: article.image, alt: article.image.alt | escape -%}
+                {%- render 'image', image: article.image, alt: article.image.alt -%}
               </div>
             </div>
           {%- endif -%}
@@ -539,3 +539,14 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: article.image, alt: article.image.alt | escape
+    -%}"
+  to: "{%- render 'image', image: article.image, alt: article.image.alt -%}"
+  position: 1415..1483
+{% endcomment %}

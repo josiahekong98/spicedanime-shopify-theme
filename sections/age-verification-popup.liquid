@@ -15,7 +15,7 @@
   <div class="age-verification-popup__wrapper" aria-modal="true" role="dialog" tabindex="-1">
     {%- if section.settings.image != blank -%}
       <div class="age-verification-popup__media media">
-        {%- render 'image', image: section.settings.image, image_url_width: 300, alt: section.settings.image.alt | escape, section_index: section.index -%}
+        {%- render 'image', image: section.settings.image, image_url_width: 300, alt: section.settings.image.alt, section_index: section.index -%}
       </div>
     {%- endif -%}
     <div class="age-verification-popup__content">
@@ -198,3 +198,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: section.settings.image, image_url_width: 300,
+    alt: section.settings.image.alt | escape, section_index: section.index -%}"
+  to: "{%- render 'image', image: section.settings.image, image_url_width: 300, alt:
+    section.settings.image.alt, section_index: section.index -%}"
+  position: 878..1016
+{% endcomment %}

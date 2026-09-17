@@ -145,7 +145,7 @@
               {%- else -%}
                 <div class="section__media media">
                   {% if section.settings.featured_image != blank %}
-                    {%- render 'image', image: section.settings.featured_image, image_per_view: 2, alt: section.settings.featured_image.alt | default: section.settings.heading | escape -%}
+                    {%- render 'image', image: section.settings.featured_image, image_per_view: 2, alt: section.settings.featured_image.alt, default: section.settings.heading -%}
                   {% else %}
                     {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
@@ -548,3 +548,17 @@
   }
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: section.settings.featured_image, image_per_view:
+    2, alt: section.settings.featured_image.alt | default: section.settings.heading
+    | escape -%}"
+  to: "{%- render 'image', image: section.settings.featured_image, image_per_view:
+    2, alt: section.settings.featured_image.alt, default: section.settings.heading
+    -%}"
+  position: 8231..8389
+{% endcomment %}

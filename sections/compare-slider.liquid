@@ -60,7 +60,7 @@
                 <div class="compare-slider__image {{ image_class }}" style>
                   {% liquid
                     if block.settings.image
-                      render 'image', image: block.settings.image, alt: block.settings.image.alt | default: block_title | escape
+                      render 'image', image: block.settings.image, alt: block.settings.image.alt, default: block_title
                     else
                       echo 'lifestyle-1' | placeholder_svg_tag: 'ims-placeholder-svg'
                     endif
@@ -395,3 +395,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "                      render 'image', image: block.settings.image, alt: block.settings.image.alt
+    | default: block_title | escape"
+  to: "                      render 'image', image: block.settings.image, alt: block.settings.image.alt,
+    default: block_title"
+  position: 2864..2982
+{% endcomment %}

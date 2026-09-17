@@ -27,7 +27,7 @@
     <div class="media card-article__media">
       {%- liquid
         if article.image != blank
-          render 'image', image: article.image, alt: article.image.alt | escape, image_per_view: image_per_view
+          render 'image', image: article.image, alt: article.image.alt, image_per_view: image_per_view
         else
           echo 'image' | placeholder_svg_tag: 'placeholder-svg'
         endif
@@ -79,3 +79,15 @@
     </div>
   </a>
 </article>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "          render 'image', image: article.image, alt: article.image.alt |
+    escape, image_per_view: image_per_view"
+  to: "          render 'image', image: article.image, alt: article.image.alt, image_per_view:
+    image_per_view"
+  position: 1088..1190
+{% endcomment %}

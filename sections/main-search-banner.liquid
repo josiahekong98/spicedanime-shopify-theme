@@ -23,7 +23,7 @@
         {%- endif -%}
       </h1>
       <div class="search-hero__input">
-        {%- render 'search', with input_id: 'desktop', input_class: ' js-drawer-focus-element', value: search.terms, clear_button_visible: true -%}
+        {%- render 'search', input_id: 'desktop', input_class: ' js-drawer-focus-element', value: search.terms, clear_button_visible: true -%}
       </div>
     </div>
   </div>
@@ -120,3 +120,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'search', with input_id: 'desktop', input_class: ' js-drawer-focus-element',
+    value: search.terms, clear_button_visible: true -%}"
+  to: "{%- render 'search', input_id: 'desktop', input_class: ' js-drawer-focus-element',
+    value: search.terms, clear_button_visible: true -%}"
+  position: 954..1088
+{% endcomment %}

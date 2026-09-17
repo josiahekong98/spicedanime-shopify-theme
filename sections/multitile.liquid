@@ -190,7 +190,7 @@
                   {%- elsif item_video != blank -%}
                     {{- item_video | video_tag: image_size: '1440x', loop: true, autoplay: true, muted: true, controls: item_video_controls -}}
                   {%- elsif item_image -%}
-                    {%- render 'image', image: item_image, section_index: section.index, image_per_view: 2, alt: item_image.alt | escape -%}
+                    {%- render 'image', image: item_image, section_index: section.index, image_per_view: 2, alt: item_image.alt -%}
                   {%- endif -%}
                 </div>
 
@@ -201,7 +201,7 @@
                     {%- elsif item_video_mobile != blank -%}
                       {{- item_video_mobile | video_tag: image_size: '720x', loop: true, autoplay: true, muted: true, controls: item_video_controls_mobile -}}
                     {%- elsif item_image_mobile -%}
-                      {%- render 'image', image: item_image_mobile, section_index: section.index, image_for_mobile: true, alt: item_image_mobile.alt | escape -%}
+                      {%- render 'image', image: item_image_mobile, section_index: section.index, image_for_mobile: true, alt: item_image_mobile.alt -%}
                     {%- endif -%}
                   </div>
                 {%- endif -%}
@@ -1685,3 +1685,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: item_image, section_index: section.index, image_per_view:
+    2, alt: item_image.alt | escape -%}"
+  to: "{%- render 'image', image: item_image, section_index: section.index, image_per_view:
+    2, alt: item_image.alt -%}"
+  position: 8136..8247
+- from: "{%- render 'image', image: item_image_mobile, section_index: section.index,
+    image_for_mobile: true, alt: item_image_mobile.alt | escape -%}"
+  to: "{%- render 'image', image: item_image_mobile, section_index: section.index,
+    image_for_mobile: true, alt: item_image_mobile.alt -%}"
+  position: 9001..9131
+{% endcomment %}

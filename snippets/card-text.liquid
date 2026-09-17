@@ -47,7 +47,7 @@
     <div class="card-text {{ class }}">
       {%- if card_image -%}
         <div class="media">
-          {%- render 'image', image: card_image, alt: text | escape -%}
+          {%- render 'image', image: card_image, alt: text -%}
         </div>
       {%- endif -%}
       <div class="card-text__content justify-{{ content_position }} align-{{ content_alignment }} text-{{ content_alignment }} justify-{{ content_position_mobile }}--mobile align-{{ content_alignment_mobile }}--mobile text-{{ content_alignment_mobile }}--mobile">
@@ -68,3 +68,13 @@
     </div>
   </div>
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'image', image: card_image, alt: text | escape -%}"
+  to: "{%- render 'image', image: card_image, alt: text -%}"
+  position: 1470..1522
+{% endcomment %}

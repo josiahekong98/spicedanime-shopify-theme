@@ -13,8 +13,6 @@
     const searchInput = root.querySelector('[data-sa-catalog-search]');
     const artFilter = root.querySelector('[data-sa-art-filter]');
     const artTriggers = [...root.querySelectorAll('[data-sa-art-trigger]')];
-    const popularGroup = root.querySelector('[data-sa-popular-series]');
-    const popularTriggers = [...root.querySelectorAll('[data-sa-popular-series-trigger]')];
     const seriesWrap = root.querySelector('[data-sa-series-wrap]');
     const seriesSelect = root.querySelector('[data-sa-series-select]');
     const resultText = root.querySelector('[data-sa-results]');
@@ -62,17 +60,8 @@
       seriesValues.forEach((series) => seriesSelect.add(new Option(series, series)));
       seriesSelect.value = activeSeries;
 
-      popularTriggers.forEach((trigger) => {
-        const exists = normalizedValues.has(normalize(trigger.dataset.seriesValue));
-        trigger.hidden = !exists;
-        const selected = exists && normalize(activeSeries) === normalize(trigger.dataset.seriesValue);
-        trigger.classList.toggle('is-active', selected);
-        trigger.setAttribute('aria-pressed', String(selected));
-      });
-
       const hasSeries = seriesValues.length > 0;
       seriesWrap.hidden = !hasSeries;
-      popularGroup.hidden = activeType === 'totes' || !popularTriggers.some((trigger) => !trigger.hidden);
     };
 
     const cardMatches = (card) => {
@@ -122,7 +111,6 @@
       updateSeriesControls();
       if (value === 'black-art') {
         seriesWrap.hidden = true;
-        popularGroup.hidden = true;
       }
       visibleLimits.set(activeType, batchSize);
       applyFilters();
@@ -167,17 +155,6 @@
 
     artTriggers.forEach((trigger) => {
       trigger.addEventListener('click', () => setArt(trigger.dataset.saArtTrigger));
-    });
-
-    popularTriggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        const value = trigger.dataset.seriesValue;
-        activeSeries = normalize(activeSeries) === normalize(value) ? '' : value;
-        seriesSelect.value = activeSeries;
-        updateSeriesControls();
-        visibleLimits.set(activeType, batchSize);
-        applyFilters();
-      });
     });
 
     seriesSelect.addEventListener('change', () => {

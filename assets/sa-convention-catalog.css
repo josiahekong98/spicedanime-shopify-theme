@@ -97,20 +97,11 @@
   font-weight: 700;
 }
 
-.sa-convention__price-trigger strong,
-.sa-convention__price-trigger small {
-  display: block;
-}
-
 .sa-convention__price-trigger strong {
-  font-size: 14px;
+  display: block;
+  font-size: clamp(18px, 4.8vw, 22px);
+  font-weight: 800;
   line-height: 1.2;
-}
-
-.sa-convention__price-trigger small {
-  margin-block-start: 2px;
-  color: var(--sa-text-muted, #b8b2a8);
-  font-size: 11px;
 }
 
 .sa-convention__price-trigger-arrow {
@@ -657,7 +648,6 @@
     align-items: end;
   }
 
-  .sa-convention__popular,
   .sa-convention__series-select-wrap,
   .sa-convention__results {
     grid-column: 1 / -1;

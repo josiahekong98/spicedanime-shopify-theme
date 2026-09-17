@@ -8,7 +8,6 @@
   assign hoodie_collection = section.settings.hoodie_collection
 
   assign price_rows = 'Regular Lighters|regular_lighter_price,Torch Lighters|torch_lighter_price,Grinders|grinder_price,Rolling Trays|rolling_tray_price,Stash Jars|stash_jar_price,Stash Boxes|stash_box_price,Ashtrays|ashtray_price,Wallets|wallet_price,Tin Cases|tin_case_price,Tapestries|tapestry_price,Tote Bags|tote_bag_price,Pillow Cases|pillow_case_price,Hoodies|hoodie_price' | split: ','
-  assign popular_series_settings = 'popular_series_1,popular_series_2,popular_series_3,popular_series_4,popular_series_5,popular_series_6' | split: ','
 -%}
 
 <section
@@ -25,9 +24,6 @@
         <p class="sa-convention__eyebrow sa-archive-label">{{- section.settings.eyebrow | escape -}}</p>
       {%- endif -%}
       <h1 class="sa-convention__title">{{- section.settings.heading | escape -}}</h1>
-      {%- if section.settings.intro != blank -%}
-        <p class="sa-convention__lede">{{- section.settings.intro | escape -}}</p>
-      {%- endif -%}
       {%- if section.settings.availability_note != blank -%}
         <p class="sa-convention__availability">{{- section.settings.availability_note | escape -}}</p>
       {%- endif -%}
@@ -35,10 +31,7 @@
 
     <button class="sa-convention__price-trigger" type="button" data-sa-price-trigger aria-haspopup="dialog">
       <span class="sa-convention__price-trigger-icon" aria-hidden="true">$</span>
-      <span>
-        <strong>View Booth Prices</strong>
-        <small>Tap for the full event price list</small>
-      </span>
+      <strong>View Booth Prices</strong>
       <span class="sa-convention__price-trigger-arrow" aria-hidden="true">→</span>
     </button>
 
@@ -73,27 +66,6 @@
           </div>
         </div>
 
-        <div class="sa-convention__popular" data-sa-popular-series>
-          <p class="sa-convention__filter-label">Popular series</p>
-          <div class="sa-convention__chip-row">
-            {%- for popular_setting in popular_series_settings -%}
-              {%- assign popular_series = section.settings[popular_setting] | strip -%}
-              {%- if popular_series != blank -%}
-                <button
-                  class="sa-convention__series-chip"
-                  type="button"
-                  data-sa-popular-series-trigger
-                  data-series-value="{{ popular_series | escape }}"
-                  aria-pressed="false"
-                  hidden
-                >
-                  {{- popular_series | escape -}}
-                </button>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
-
         <div class="sa-convention__series-select-wrap" data-sa-series-wrap>
           <label class="visually-hidden" for="SaConventionSeries-{{ section.id }}">All available series</label>
           <select id="SaConventionSeries-{{ section.id }}" class="sa-convention__series-select" data-sa-series-select>
@@ -105,10 +77,9 @@
       </div>
 
       <div class="sa-convention__panels">
-        <section id="SaConvention-tapestries-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="tapestries" aria-labelledby="SaConvention-tapestries-title-{{ section.id }}">
+        <section id="SaConvention-tapestries-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="tapestries" aria-label="Tapestry designs">
           <div class="sa-convention__catalog-heading">
-            <p class="sa-convention__eyebrow sa-archive-label">Wall archive</p>
-            <h2 id="SaConvention-tapestries-title-{{ section.id }}">Tapestries <span>— {{ section.settings.tapestry_price | escape }}</span></h2>
+            <p class="sa-convention__eyebrow sa-archive-label">View Catalog Designs</p>
           </div>
           <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
@@ -129,10 +100,9 @@
           <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Tapestry designs match these filters.</p>
         </section>
 
-        <section id="SaConvention-pillows-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="pillows" aria-labelledby="SaConvention-pillows-title-{{ section.id }}">
+        <section id="SaConvention-pillows-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="pillows" aria-label="Pillow Case designs">
           <div class="sa-convention__catalog-heading">
-            <p class="sa-convention__eyebrow sa-archive-label">Room archive</p>
-            <h2 id="SaConvention-pillows-title-{{ section.id }}">Pillow Cases <span>— {{ section.settings.pillow_case_price | escape }}</span></h2>
+            <p class="sa-convention__eyebrow sa-archive-label">View Catalog Designs</p>
           </div>
           <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
@@ -147,10 +117,9 @@
           <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Pillow Case designs match these filters.</p>
         </section>
 
-        <section id="SaConvention-totes-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="totes" aria-labelledby="SaConvention-totes-title-{{ section.id }}">
+        <section id="SaConvention-totes-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="totes" aria-label="Tote Bag designs">
           <div class="sa-convention__catalog-heading">
-            <p class="sa-convention__eyebrow sa-archive-label">Carry archive</p>
-            <h2 id="SaConvention-totes-title-{{ section.id }}">Tote Bags</h2>
+            <p class="sa-convention__eyebrow sa-archive-label">View Catalog Designs</p>
           </div>
           <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
@@ -165,10 +134,9 @@
           <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Tote Bag designs match these filters.</p>
         </section>
 
-        <section id="SaConvention-hoodies-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="hoodies" aria-labelledby="SaConvention-hoodies-title-{{ section.id }}">
+        <section id="SaConvention-hoodies-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="hoodies" aria-label="Hoodie designs">
           <div class="sa-convention__catalog-heading">
-            <p class="sa-convention__eyebrow sa-archive-label">Wearable archive</p>
-            <h2 id="SaConvention-hoodies-title-{{ section.id }}">Hoodies <span>— {{ section.settings.hoodie_price | escape }}</span></h2>
+            <p class="sa-convention__eyebrow sa-archive-label">View Catalog Designs</p>
           </div>
           <div data-sa-type-nav-mount></div>
           <div data-sa-filter-mount></div>
@@ -268,7 +236,6 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Intro label", "default": "EVENT ARCHIVE" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "CONVENTION CATALOG" },
-    { "type": "textarea", "id": "intro", "label": "Intro text", "default": "Browse designs, check booth prices, and find your favorites." },
     { "type": "text", "id": "availability_note", "label": "Availability note", "default": "Availability may vary during the event." },
     { "type": "header", "content": "Booth prices" },
     { "type": "text", "id": "regular_lighter_price", "label": "Regular Lighters", "default": "$25" },
@@ -291,13 +258,6 @@
     { "type": "collection", "id": "hoodie_collection", "label": "Hoodies" },
     { "type": "range", "id": "initial_batch_size", "label": "Designs shown initially", "min": 8, "max": 48, "step": 4, "default": 24 },
     { "type": "checkbox", "id": "sticky_type_navigation", "label": "Keep product-type navigation visible", "default": true },
-    { "type": "header", "content": "Popular series shortcuts" },
-    { "type": "text", "id": "popular_series_1", "label": "Series 1", "default": "One Piece" },
-    { "type": "text", "id": "popular_series_2", "label": "Series 2", "default": "Naruto" },
-    { "type": "text", "id": "popular_series_3", "label": "Series 3", "default": "Dragon Ball Z" },
-    { "type": "text", "id": "popular_series_4", "label": "Series 4", "default": "Bleach" },
-    { "type": "text", "id": "popular_series_5", "label": "Series 5", "default": "Jujutsu Kaisen" },
-    { "type": "text", "id": "popular_series_6", "label": "Series 6", "default": "Berserk" },
     { "type": "header", "content": "Accessory collection links" },
     { "type": "url", "id": "lighter_url", "label": "Lighters" },
     { "type": "url", "id": "grinder_url", "label": "Grinders" },

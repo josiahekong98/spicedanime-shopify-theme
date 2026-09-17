@@ -1,0 +1,84 @@
+{%- comment -%}
+  Convention-only design card.
+
+  Inputs:
+  - product_ref
+  - category_key
+  - category_label
+  - black_art_type
+  - loading
+  - card_index
+  - prioritize_image
+{%- endcomment -%}
+
+{%- liquid
+  assign product_series = product_ref.metafields.custom.series.value | default: product_ref.metafields.custom.series | strip
+  assign art_category = 'other'
+  if black_art_type != blank and product_ref.type == black_art_type
+    assign art_category = 'black-art'
+  elsif product_series != blank
+    assign art_category = 'anime'
+  endif
+
+  assign card_image = product_ref.featured_image
+  assign card_alt = card_image.alt | default: product_ref.title
+  assign image_loading = loading | default: 'lazy'
+  assign image_attributes = 'decoding="async"'
+  assign image_media_index = 100
+  if prioritize_image
+    assign image_media_index = card_index | default: 100
+  endif
+-%}
+
+<article
+  class="sa-convention-card"
+  data-sa-catalog-card
+  data-product-type="{{ category_key | escape }}"
+  data-art-category="{{ art_category }}"
+  data-series="{{ product_series | escape }}"
+  data-product-title="{{ product_ref.title | escape }}"
+  data-shopify-product-type="{{ product_ref.type | escape }}"
+  data-category-label="{{ category_label | escape }}"
+>
+  <button
+    class="sa-convention-card__preview"
+    type="button"
+    data-sa-preview-trigger
+    aria-haspopup="dialog"
+    aria-label="Show {{ product_ref.title | escape }} design"
+    {% if card_image == blank %}disabled{% endif %}
+    {% if card_image != blank %}
+      data-preview-src="{{ card_image | image_url: width: 1200 }}"
+      data-preview-srcset="{{ card_image | image_url: width: 480 }} 480w, {{ card_image | image_url: width: 720 }} 720w, {{ card_image | image_url: width: 1200 }} 1200w"
+      data-preview-alt="{{ card_alt | escape }}"
+    {% endif %}
+  >
+    <span class="sa-convention-card__media media">
+      {%- if card_image != blank -%}
+        {%- render 'image',
+          image: card_image,
+          alt: card_alt,
+          width: 720,
+          sizes: '(max-width: 749px) calc(50vw - 24px), (max-width: 1199px) 33vw, 25vw',
+          loading: image_loading,
+          media_index: image_media_index,
+          image_per_view: 2,
+          attr: image_attributes,
+          animation: 'false'
+        -%}
+      {%- else -%}
+        {{- 'product-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+      {%- endif -%}
+      <span class="sa-convention-card__show">Show design</span>
+    </span>
+  </button>
+
+  <div class="sa-convention-card__content">
+    <h3 class="sa-convention-card__title">{{- product_ref.title | escape -}}</h3>
+    {%- if product_series != blank -%}
+      <p class="sa-convention-card__series">{{- product_series | escape -}}</p>
+    {%- elsif art_category == 'black-art' -%}
+      <p class="sa-convention-card__series">Black Art</p>
+    {%- endif -%}
+  </div>
+</article>

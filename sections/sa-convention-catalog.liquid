@@ -1,0 +1,290 @@
+{{- 'sa-convention-catalog.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'sa-convention-catalog.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign tapestry_collection = section.settings.tapestry_collection
+  assign pillow_collection = section.settings.pillow_collection
+  assign tote_collection = section.settings.tote_collection
+  assign hoodie_collection = section.settings.hoodie_collection
+
+  assign price_rows = 'Regular Lighters|regular_lighter_price,Torch Lighters|torch_lighter_price,Grinders|grinder_price,Rolling Trays|rolling_tray_price,Stash Jars|stash_jar_price,Stash Boxes|stash_box_price,Ashtrays|ashtray_price,Wallets|wallet_price,Tin Cases|tin_case_price,Tapestries|tapestry_price,Tote Bags|tote_bag_price,Pillow Cases|pillow_case_price,Hoodies|hoodie_price' | split: ','
+  assign popular_series_settings = 'popular_series_1,popular_series_2,popular_series_3,popular_series_4,popular_series_5,popular_series_6' | split: ','
+-%}
+
+<section
+  id="SaConventionCatalog-{{ section.id }}"
+  class="sa-convention color-{{ section.settings.color_scheme }}{% if section.settings.sticky_type_navigation %} sa-convention--sticky-nav{% endif %}"
+  data-sa-convention-catalog
+  data-initial-batch="{{ section.settings.initial_batch_size }}"
+>
+  <div class="sa-convention__texture" aria-hidden="true"></div>
+
+  <div class="sa-convention__container">
+    <header class="sa-convention__intro">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="sa-convention__eyebrow sa-archive-label">{{- section.settings.eyebrow | escape -}}</p>
+      {%- endif -%}
+      <h1 class="sa-convention__title">{{- section.settings.heading | escape -}}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p class="sa-convention__lede">{{- section.settings.intro | escape -}}</p>
+      {%- endif -%}
+      {%- if section.settings.availability_note != blank -%}
+        <p class="sa-convention__availability">{{- section.settings.availability_note | escape -}}</p>
+      {%- endif -%}
+    </header>
+
+    <section class="sa-convention__prices" aria-labelledby="SaConventionPrices-{{ section.id }}">
+      <div class="sa-convention__section-heading">
+        <p class="sa-convention__eyebrow sa-archive-label">Booth reference</p>
+        <h2 id="SaConventionPrices-{{ section.id }}">Booth Price Guide</h2>
+      </div>
+      <dl class="sa-convention__price-grid">
+        {%- for price_row in price_rows -%}
+          {%- liquid
+            assign price_parts = price_row | split: '|'
+            assign price_label = price_parts.first
+            assign setting_id = price_parts.last
+            assign price_value = section.settings[setting_id]
+          -%}
+          {%- if price_value != blank -%}
+            <div class="sa-convention__price-item">
+              <dt>{{- price_label | escape -}}</dt>
+              <dd>{{- price_value | escape -}}</dd>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    </section>
+
+    <div class="sa-convention__catalog-shell">
+      <nav class="sa-convention__type-nav" aria-label="Convention catalog product types">
+        <a class="sa-convention__type-link is-active" href="#SaConvention-tapestries-{{ section.id }}" data-sa-type-trigger="tapestries">Tapestries</a>
+        <a class="sa-convention__type-link" href="#SaConvention-pillows-{{ section.id }}" data-sa-type-trigger="pillows">Pillow Cases</a>
+        <a class="sa-convention__type-link" href="#SaConvention-totes-{{ section.id }}" data-sa-type-trigger="totes">Tote Bags</a>
+        <a class="sa-convention__type-link" href="#SaConvention-hoodies-{{ section.id }}" data-sa-type-trigger="hoodies">Hoodies</a>
+      </nav>
+
+      <div class="sa-convention__filters" data-sa-filter-controls hidden>
+        <div class="sa-convention__search-wrap">
+          <label for="SaConventionSearch-{{ section.id }}">Search designs or series</label>
+          <input
+            id="SaConventionSearch-{{ section.id }}"
+            class="sa-convention__search"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="Search designs or series"
+            data-sa-catalog-search
+          >
+        </div>
+
+        <div class="sa-convention__art-filter" data-sa-art-filter>
+          <p id="SaConventionArtLabel-{{ section.id }}" class="sa-convention__filter-label">Design category</p>
+          <div class="sa-convention__segmented" role="group" aria-labelledby="SaConventionArtLabel-{{ section.id }}">
+            <button class="sa-convention__filter-button is-active" type="button" data-sa-art-trigger="all" aria-pressed="true">All</button>
+            <button class="sa-convention__filter-button" type="button" data-sa-art-trigger="anime" aria-pressed="false">Anime</button>
+            <button class="sa-convention__filter-button" type="button" data-sa-art-trigger="black-art" aria-pressed="false">Black Art</button>
+          </div>
+        </div>
+
+        <div class="sa-convention__popular" data-sa-popular-series>
+          <p class="sa-convention__filter-label">Popular series</p>
+          <div class="sa-convention__chip-row">
+            {%- for popular_setting in popular_series_settings -%}
+              {%- assign popular_series = section.settings[popular_setting] | strip -%}
+              {%- if popular_series != blank -%}
+                <button
+                  class="sa-convention__series-chip"
+                  type="button"
+                  data-sa-popular-series-trigger
+                  data-series-value="{{ popular_series | escape }}"
+                  aria-pressed="false"
+                  hidden
+                >
+                  {{- popular_series | escape -}}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="sa-convention__series-select-wrap" data-sa-series-wrap>
+          <label for="SaConventionSeries-{{ section.id }}">All available series</label>
+          <select id="SaConventionSeries-{{ section.id }}" class="sa-convention__series-select" data-sa-series-select>
+            <option value="">All series</option>
+          </select>
+        </div>
+
+        <p class="sa-convention__results" data-sa-results aria-live="polite"></p>
+      </div>
+
+      <div class="sa-convention__panels">
+        <section id="SaConvention-tapestries-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="tapestries" aria-labelledby="SaConvention-tapestries-title-{{ section.id }}">
+          <div class="sa-convention__catalog-heading">
+            <p class="sa-convention__eyebrow sa-archive-label">Wall archive</p>
+            <h2 id="SaConvention-tapestries-title-{{ section.id }}">Tapestries <span>— {{ section.settings.tapestry_price | escape }}</span></h2>
+          </div>
+          <div class="sa-convention__grid" data-sa-catalog-grid>
+            {%- for product_ref in tapestry_collection.products limit: 50 -%}
+              {%- liquid
+                assign card_loading = 'lazy'
+                if forloop.index <= 2
+                  assign card_loading = 'eager'
+                endif
+              -%}
+              {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'tapestries', category_label: 'Tapestries', black_art_type: 'Black Art Tapestry', loading: card_loading, card_index: forloop.index, prioritize_image: true -%}
+            {%- else -%}
+              <p class="sa-convention__empty-source">No Tapestry designs are currently assigned.</p>
+            {%- endfor -%}
+          </div>
+          <button class="sa-button sa-button--secondary sa-convention__show-more" type="button" data-sa-show-more hidden>Show More Designs</button>
+          <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Tapestry designs match these filters.</p>
+        </section>
+
+        <section id="SaConvention-pillows-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="pillows" aria-labelledby="SaConvention-pillows-title-{{ section.id }}">
+          <div class="sa-convention__catalog-heading">
+            <p class="sa-convention__eyebrow sa-archive-label">Room archive</p>
+            <h2 id="SaConvention-pillows-title-{{ section.id }}">Pillow Cases <span>— {{ section.settings.pillow_case_price | escape }}</span></h2>
+          </div>
+          <div class="sa-convention__grid" data-sa-catalog-grid>
+            {%- for product_ref in pillow_collection.products limit: 50 -%}
+              {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'pillows', category_label: 'Pillow Cases', black_art_type: 'Black Art Pillows', loading: 'lazy', card_index: forloop.index -%}
+            {%- else -%}
+              <p class="sa-convention__empty-source">No Pillow Case designs are currently assigned.</p>
+            {%- endfor -%}
+          </div>
+          <button class="sa-button sa-button--secondary sa-convention__show-more" type="button" data-sa-show-more hidden>Show More Designs</button>
+          <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Pillow Case designs match these filters.</p>
+        </section>
+
+        <section id="SaConvention-totes-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="totes" aria-labelledby="SaConvention-totes-title-{{ section.id }}">
+          <div class="sa-convention__catalog-heading">
+            <p class="sa-convention__eyebrow sa-archive-label">Carry archive</p>
+            <h2 id="SaConvention-totes-title-{{ section.id }}">Tote Bags <span>— {{ section.settings.tote_bag_price | escape }}</span></h2>
+          </div>
+          <div class="sa-convention__grid" data-sa-catalog-grid>
+            {%- for product_ref in tote_collection.products limit: 50 -%}
+              {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'totes', category_label: 'Tote Bags', black_art_type: 'Black Art Totes', loading: 'lazy', card_index: forloop.index -%}
+            {%- else -%}
+              <p class="sa-convention__empty-source">No Tote Bag designs are currently assigned.</p>
+            {%- endfor -%}
+          </div>
+          <button class="sa-button sa-button--secondary sa-convention__show-more" type="button" data-sa-show-more hidden>Show More Designs</button>
+          <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Tote Bag designs match these filters.</p>
+        </section>
+
+        <section id="SaConvention-hoodies-{{ section.id }}" class="sa-convention__panel" data-sa-catalog-panel="hoodies" aria-labelledby="SaConvention-hoodies-title-{{ section.id }}">
+          <div class="sa-convention__catalog-heading">
+            <p class="sa-convention__eyebrow sa-archive-label">Wearable archive</p>
+            <h2 id="SaConvention-hoodies-title-{{ section.id }}">Hoodies <span>— {{ section.settings.hoodie_price | escape }}</span></h2>
+          </div>
+          <div class="sa-convention__grid" data-sa-catalog-grid>
+            {%- for product_ref in hoodie_collection.products limit: 50 -%}
+              {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'hoodies', category_label: 'Hoodies', black_art_type: '', loading: 'lazy', card_index: forloop.index -%}
+            {%- else -%}
+              <p class="sa-convention__empty-source">No Hoodie designs are currently assigned.</p>
+            {%- endfor -%}
+          </div>
+          <button class="sa-button sa-button--secondary sa-convention__show-more" type="button" data-sa-show-more hidden>Show More Designs</button>
+          <p class="sa-convention__empty-filter" data-sa-empty-filter hidden>No Hoodie designs match this search.</p>
+        </section>
+      </div>
+    </div>
+
+    <section class="sa-convention__accessories" aria-labelledby="SaConventionAccessories-{{ section.id }}">
+      <div class="sa-convention__section-heading">
+        <p class="sa-convention__eyebrow sa-archive-label">Continue browsing</p>
+        <h2 id="SaConventionAccessories-{{ section.id }}">Shop More Accessories</h2>
+      </div>
+      <div class="sa-convention__accessory-grid">
+        {%- liquid
+          assign accessory_labels = 'Lighter Designs,Grinders,Rolling Trays,Stash Jars,Stash Boxes,Ashtrays,Wallets' | split: ','
+          assign accessory_setting_ids = 'lighter_url,grinder_url,rolling_tray_url,stash_jar_url,stash_box_url,ashtray_url,wallet_url' | split: ','
+        -%}
+        {%- for accessory_label in accessory_labels -%}
+          {%- assign accessory_setting_id = accessory_setting_ids[forloop.index0] -%}
+          {%- assign accessory_url = section.settings[accessory_setting_id] -%}
+          {%- if accessory_url != blank -%}
+            <a class="sa-convention__accessory-link" href="{{ accessory_url }}">
+              <span>View</span>
+              <strong>{{- accessory_label | escape -}}</strong>
+              <span aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <p class="sa-convention__tin-note"><strong>Tin Cases — {{ section.settings.tin_case_price | escape }}</strong><br>Available at the booth; no separate online collection.</p>
+    </section>
+  </div>
+
+  <dialog class="sa-convention-dialog" data-sa-design-dialog aria-labelledby="SaConventionDialogTitle-{{ section.id }}">
+    <div class="sa-convention-dialog__inner">
+      <form method="dialog" class="sa-convention-dialog__close-form">
+        <button class="sa-convention-dialog__close" type="submit" aria-label="Close design preview">×</button>
+      </form>
+      <figure>
+        <div class="sa-convention-dialog__media">
+          <img data-sa-dialog-image alt="" width="1200" height="1200">
+        </div>
+        <figcaption>
+          <h2 id="SaConventionDialogTitle-{{ section.id }}" data-sa-dialog-title></h2>
+          <p data-sa-dialog-series hidden></p>
+        </figcaption>
+      </figure>
+    </div>
+  </dialog>
+</section>
+
+{% schema %}
+{
+  "name": "SA convention catalog",
+  "tag": "section",
+  "class": "section-sa-convention-catalog",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Intro label", "default": "EVENT ARCHIVE" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "SPICEDANIME CONVENTION CATALOG" },
+    { "type": "textarea", "id": "intro", "label": "Intro text", "default": "Browse designs, check booth prices, and find your favorites." },
+    { "type": "text", "id": "availability_note", "label": "Availability note", "default": "Availability may vary during the event." },
+    { "type": "header", "content": "Booth prices" },
+    { "type": "text", "id": "regular_lighter_price", "label": "Regular Lighters", "default": "$25" },
+    { "type": "text", "id": "torch_lighter_price", "label": "Torch Lighters", "default": "$30" },
+    { "type": "text", "id": "grinder_price", "label": "Grinders", "default": "$30" },
+    { "type": "text", "id": "rolling_tray_price", "label": "Rolling Trays", "default": "$10" },
+    { "type": "text", "id": "stash_jar_price", "label": "Stash Jars", "default": "$10" },
+    { "type": "text", "id": "stash_box_price", "label": "Stash Boxes", "default": "$30" },
+    { "type": "text", "id": "ashtray_price", "label": "Ashtrays", "info": "Leave blank until the booth price is confirmed." },
+    { "type": "text", "id": "wallet_price", "label": "Wallets", "default": "$30" },
+    { "type": "text", "id": "tin_case_price", "label": "Tin Cases", "default": "$10" },
+    { "type": "text", "id": "tapestry_price", "label": "Tapestries", "default": "$80" },
+    { "type": "text", "id": "tote_bag_price", "label": "Tote Bags", "default": "$40–$50" },
+    { "type": "text", "id": "pillow_case_price", "label": "Pillow Cases", "default": "$20" },
+    { "type": "text", "id": "hoodie_price", "label": "Hoodies", "default": "$100" },
+    { "type": "header", "content": "Catalog collections" },
+    { "type": "collection", "id": "tapestry_collection", "label": "Tapestries" },
+    { "type": "collection", "id": "pillow_collection", "label": "Pillow Cases" },
+    { "type": "collection", "id": "tote_collection", "label": "Tote Bags" },
+    { "type": "collection", "id": "hoodie_collection", "label": "Hoodies" },
+    { "type": "range", "id": "initial_batch_size", "label": "Designs shown initially", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "sticky_type_navigation", "label": "Keep product-type navigation visible", "default": true },
+    { "type": "header", "content": "Popular series shortcuts" },
+    { "type": "text", "id": "popular_series_1", "label": "Series 1", "default": "One Piece" },
+    { "type": "text", "id": "popular_series_2", "label": "Series 2", "default": "Naruto" },
+    { "type": "text", "id": "popular_series_3", "label": "Series 3", "default": "Dragon Ball Z" },
+    { "type": "text", "id": "popular_series_4", "label": "Series 4", "default": "Bleach" },
+    { "type": "text", "id": "popular_series_5", "label": "Series 5", "default": "Jujutsu Kaisen" },
+    { "type": "text", "id": "popular_series_6", "label": "Series 6", "default": "Berserk" },
+    { "type": "header", "content": "Accessory collection links" },
+    { "type": "url", "id": "lighter_url", "label": "Lighters" },
+    { "type": "url", "id": "grinder_url", "label": "Grinders" },
+    { "type": "url", "id": "rolling_tray_url", "label": "Rolling Trays" },
+    { "type": "url", "id": "stash_jar_url", "label": "Stash Jars" },
+    { "type": "url", "id": "stash_box_url", "label": "Stash Boxes" },
+    { "type": "url", "id": "ashtray_url", "label": "Ashtrays" },
+    { "type": "url", "id": "wallet_url", "label": "Wallets" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-6" }
+  ],
+  "presets": [
+    { "name": "SA convention catalog" }
+  ]
+}
+{% endschema %}

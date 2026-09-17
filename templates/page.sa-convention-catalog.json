@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "main": {
+      "type": "sa-convention-catalog",
+      "settings": {
+        "eyebrow": "EVENT ARCHIVE",
+        "heading": "SPICEDANIME CONVENTION CATALOG",
+        "intro": "Browse designs, check booth prices, and find your favorites.",
+        "availability_note": "Availability may vary during the event.",
+        "regular_lighter_price": "$25",
+        "torch_lighter_price": "$30",
+        "grinder_price": "$30",
+        "rolling_tray_price": "$10",
+        "stash_jar_price": "$10",
+        "stash_box_price": "$30",
+        "ashtray_price": "",
+        "wallet_price": "$30",
+        "tin_case_price": "$10",
+        "tapestry_price": "$80",
+        "tote_bag_price": "$40–$50",
+        "pillow_case_price": "$20",
+        "hoodie_price": "$100",
+        "tapestry_collection": "all-tapestries",
+        "pillow_collection": "lighters-category-copy",
+        "tote_collection": "all-tote-bags",
+        "hoodie_collection": "hoodies-category",
+        "popular_series_1": "One Piece",
+        "popular_series_2": "Naruto",
+        "popular_series_3": "Dragon Ball Z",
+        "popular_series_4": "Bleach",
+        "popular_series_5": "Jujutsu Kaisen",
+        "popular_series_6": "Berserk",
+        "initial_batch_size": 24,
+        "sticky_type_navigation": true,
+        "lighter_url": "/collections/all-products-lighters",
+        "grinder_url": "/collections/herb-grinders",
+        "rolling_tray_url": "/collections/all-rolling-trays",
+        "stash_jar_url": "/collections/stash-jars",
+        "stash_box_url": "/collections/all-products-stash-boxes",
+        "ashtray_url": "/collections/all-products-ashtray",
+        "wallet_url": "/collections/wallets-category",
+        "color_scheme": "scheme-d43c2a5b-06bd-41b5-ad85-d96a6c9ebb1c"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

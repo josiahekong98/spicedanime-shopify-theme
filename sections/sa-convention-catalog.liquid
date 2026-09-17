@@ -66,7 +66,7 @@
 
       <div class="sa-convention__filters" data-sa-filter-controls hidden>
         <div class="sa-convention__search-wrap">
-          <label for="SaConventionSearch-{{ section.id }}">Search designs or series</label>
+          <label class="visually-hidden" for="SaConventionSearch-{{ section.id }}">Search designs or series</label>
           <input
             id="SaConventionSearch-{{ section.id }}"
             class="sa-convention__search"
@@ -79,7 +79,7 @@
         </div>
 
         <div class="sa-convention__art-filter" data-sa-art-filter>
-          <p id="SaConventionArtLabel-{{ section.id }}" class="sa-convention__filter-label">Design category</p>
+          <p id="SaConventionArtLabel-{{ section.id }}" class="sa-convention__filter-label visually-hidden">Design category</p>
           <div class="sa-convention__segmented" role="group" aria-labelledby="SaConventionArtLabel-{{ section.id }}">
             <button class="sa-convention__filter-button is-active" type="button" data-sa-art-trigger="all" aria-pressed="true">All</button>
             <button class="sa-convention__filter-button" type="button" data-sa-art-trigger="anime" aria-pressed="false">Anime</button>
@@ -109,7 +109,7 @@
         </div>
 
         <div class="sa-convention__series-select-wrap" data-sa-series-wrap>
-          <label for="SaConventionSeries-{{ section.id }}">All available series</label>
+          <label class="visually-hidden" for="SaConventionSeries-{{ section.id }}">All available series</label>
           <select id="SaConventionSeries-{{ section.id }}" class="sa-convention__series-select" data-sa-series-select>
             <option value="">All series</option>
           </select>
@@ -124,6 +124,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Wall archive</p>
             <h2 id="SaConvention-tapestries-title-{{ section.id }}">Tapestries <span>— {{ section.settings.tapestry_price | escape }}</span></h2>
           </div>
+          <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in tapestry_collection.products limit: 50 -%}
               {%- liquid
@@ -146,6 +147,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Room archive</p>
             <h2 id="SaConvention-pillows-title-{{ section.id }}">Pillow Cases <span>— {{ section.settings.pillow_case_price | escape }}</span></h2>
           </div>
+          <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in pillow_collection.products limit: 50 -%}
               {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'pillows', category_label: 'Pillow Cases', black_art_type: 'Black Art Pillows', loading: 'lazy', card_index: forloop.index -%}
@@ -162,6 +164,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Carry archive</p>
             <h2 id="SaConvention-totes-title-{{ section.id }}">Tote Bags <span>— {{ section.settings.tote_bag_price | escape }}</span></h2>
           </div>
+          <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in tote_collection.products limit: 50 -%}
               {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'totes', category_label: 'Tote Bags', black_art_type: 'Black Art Totes', loading: 'lazy', card_index: forloop.index -%}
@@ -178,6 +181,7 @@
             <p class="sa-convention__eyebrow sa-archive-label">Wearable archive</p>
             <h2 id="SaConvention-hoodies-title-{{ section.id }}">Hoodies <span>— {{ section.settings.hoodie_price | escape }}</span></h2>
           </div>
+          <div data-sa-filter-mount></div>
           <div class="sa-convention__grid" data-sa-catalog-grid>
             {%- for product_ref in hoodie_collection.products limit: 50 -%}
               {%- render 'sa-convention-catalog-card', product_ref: product_ref, category_key: 'hoodies', category_label: 'Hoodies', black_art_type: '', loading: 'lazy', card_index: forloop.index -%}
@@ -242,7 +246,7 @@
   "class": "section-sa-convention-catalog",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Intro label", "default": "EVENT ARCHIVE" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "SPICEDANIME CONVENTION CATALOG" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "CONVENTION CATALOG" },
     { "type": "textarea", "id": "intro", "label": "Intro text", "default": "Browse designs, check booth prices, and find your favorites." },
     { "type": "text", "id": "availability_note", "label": "Availability note", "default": "Availability may vary during the event." },
     { "type": "header", "content": "Booth prices" },

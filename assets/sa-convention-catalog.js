@@ -136,6 +136,9 @@
         panel.hidden = panel.dataset.saCatalogPanel !== value;
       });
 
+      const filterMount = activePanel()?.querySelector('[data-sa-filter-mount]');
+      if (filterMount) filterMount.append(filterControls);
+
       const isHoodies = value === 'hoodies';
       artFilter.hidden = isHoodies;
       updateSeriesControls();

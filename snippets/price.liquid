@@ -28,6 +28,39 @@
   assign price = target.price | default: 1999
   assign price_min = product.price_min
   assign price_max = product.price_max
+
+  assign product_type_handle = product.type | handleize
+  if target == product and product_type_handle == 'flip-lighter'
+    assign lighter_price_min = blank
+    assign lighter_price_max = blank
+
+    for product_variant in product.variants
+      assign case_only_variant = false
+      for variant_option in product_variant.options
+        assign variant_option_handle = variant_option | handleize
+        if variant_option_handle == 'tin-case-only'
+          assign case_only_variant = true
+          break
+        endif
+      endfor
+
+      if product_variant.available and case_only_variant == false
+        if lighter_price_min == blank or product_variant.price < lighter_price_min
+          assign lighter_price_min = product_variant.price
+        endif
+        if lighter_price_max == blank or product_variant.price > lighter_price_max
+          assign lighter_price_max = product_variant.price
+        endif
+      endif
+    endfor
+
+    if lighter_price_min != blank
+      assign price_min = lighter_price_min
+      assign price_max = lighter_price_max
+      assign price = lighter_price_min
+    endif
+  endif
+
   assign available = target.available | default: false
   assign money_price = price | money
   assign money_price_min = price_min | money

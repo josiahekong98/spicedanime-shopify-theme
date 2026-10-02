@@ -152,7 +152,9 @@
       }
 
       .sa-bundle-option-label {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         border: 1px solid var(--sa-border-subtle, rgba(216, 210, 199, 0.2));
         border-radius: 14px;
         background: rgba(16, 16, 16, 0.56);
@@ -199,7 +201,26 @@
         z-index: 2;
       }
 
+      .sa-bundle-option-case-badge {
+        position: absolute;
+        inset: 0 0 auto;
+        z-index: 2;
+        padding: 7px 6px;
+        background: rgba(16, 16, 16, 0.9);
+        border-bottom: 1px solid var(--sa-relic-red, #b3362d);
+        color: var(--sa-museum-ivory, #f4f0e8);
+        font-family: var(--sa-font-archive, "Courier New", monospace);
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
       .sa-bundle-option-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
         padding: 10px 8px 12px;
         text-align: center;
       }
@@ -213,9 +234,43 @@
       }
 
       .sa-bundle-option-price {
+        margin-top: auto;
         font-size: 13px;
         color: var(--sa-gallery-stone, #d8d2c7);
         line-height: 1;
+      }
+
+      .sa-bundle-option-note {
+        margin: -1px 0 6px;
+        color: #f0a39d;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+
+      .sa-case-only-notice {
+        display: none;
+        margin-top: 10px;
+        padding: 12px 14px;
+        border: 1px solid rgba(179, 54, 45, 0.7);
+        border-radius: 12px;
+        background: rgba(179, 54, 45, 0.12);
+        color: var(--sa-museum-ivory, #f4f0e8);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .sa-bundle-fieldset:has(.sa-bundle-option-input[data-sa-case-only="true"]:checked) .sa-case-only-notice {
+        display: block;
+      }
+
+      .sa-case-only-notice strong {
+        display: block;
+        margin-bottom: 2px;
+        color: #f0a39d;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
 .sa-dropdown-field {
@@ -452,6 +507,10 @@
         <fieldset class="js product__variant-options product-form__input product-form__input--button sa-bundle-fieldset">
           <legend class="form__label sa-variant-label">Select bundle</legend>
           {%- render 'main-product__variant-options', product: product, option: option, block: block, picker_type: picker_type -%}
+          <div class="sa-case-only-notice" data-sa-case-only-notice role="status" aria-live="polite">
+            <strong>Protective case only</strong>
+            This $10 option includes the printed tin case only. A lighter is not included.
+          </div>
         </fieldset>
 
       {%- else -%}

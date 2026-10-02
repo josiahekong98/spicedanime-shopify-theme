@@ -300,8 +300,6 @@
               assign product_title = recommendation.title | default: 'Product Exhibit'
               assign image_alt = recommendation.featured_image.alt | default: product_title
               assign initials = product_title | remove: ' ' | slice: 0, 2 | upcase
-              assign compare_price = recommendation.compare_at_price_max
-              assign current_price = recommendation.price
             %}
 
             <a
@@ -326,13 +324,7 @@
                 {% endif %}
                 <span class="sa-more-series-card__title sa-product-recommendation-card__title">{{ product_title | escape }}</span>
                 <span class="sa-more-series-card__price sa-product-recommendation-card__price">
-                  {% if recommendation.price_varies %}
-                    {{ recommendation.price_min | money }}+
-                  {% elsif compare_price > current_price %}
-                    {{ current_price | money }}
-                  {% else %}
-                    {{ current_price | money }}
-                  {% endif %}
+                  {% render 'sa-merchandising-price', product: recommendation %}
                 </span>
               </span>
             </a>

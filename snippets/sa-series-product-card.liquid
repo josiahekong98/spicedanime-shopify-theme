@@ -1,8 +1,6 @@
 {% liquid
   assign product_title = product.title | default: 'Product Exhibit'
   assign image_alt = product.featured_image.alt | default: product_title
-  assign compare_price = product.compare_at_price_max
-  assign current_price = product.price
   assign quick_add_enabled = show_quick_add | default: false
 %}
 
@@ -29,15 +27,7 @@
     <span class="sa-series-product__title">{{ product_title | escape }}</span>
 
     <span class="sa-series-product__price">
-      {% if product.available == false %}
-        Sold out
-      {% elsif product.price_varies %}
-        {{ product.price_min | money }}+
-      {% elsif compare_price > current_price %}
-        {{ current_price | money }}
-      {% else %}
-        {{ current_price | money }}
-      {% endif %}
+      {% render 'sa-merchandising-price', product: product %}
     </span>
   </span>
 {% endcapture %}

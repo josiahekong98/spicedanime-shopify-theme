@@ -24,6 +24,11 @@
     endif
 
     assign current_variant = product.selected_or_first_available_variant
+    assign current_product_type_handle = product.type | handleize
+    assign current_variant_case_only = false
+    if current_product_type_handle == 'flip-lighter' and current_variant.options contains 'Tin Case Only'
+      assign current_variant_case_only = true
+    endif
     assign current_selling_plan_allocation = current_variant.selected_selling_plan_allocation
     if current_selling_plan_allocation == null and current_variant.requires_selling_plan
       assign current_selling_plan_allocation = current_variant.selling_plan_allocations | first
@@ -115,6 +120,37 @@
 
     #ProductSubmitButton-{{ section_id }} .loading__spinner {
       margin-left: 8px;
+    }
+
+    .sa-case-only-confirmation {
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(179, 54, 45, 0.7);
+      border-radius: 12px;
+      background: rgba(179, 54, 45, 0.12);
+      color: var(--sa-museum-ivory, #f4f0e8);
+    }
+
+    .sa-case-only-confirmation[hidden] {
+      display: none;
+    }
+
+    .sa-case-only-confirmation__label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+
+    .sa-case-only-confirmation__checkbox {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      margin: 0;
+      accent-color: var(--sa-relic-red, #b3362d);
     }
   </style>
 
@@ -239,16 +275,33 @@
           endif
         -%}
 
+        <div
+          class="sa-case-only-confirmation"
+          data-sa-case-only-confirmation
+          {% unless current_variant_case_only %}hidden{% endunless %}
+        >
+          <label class="sa-case-only-confirmation__label">
+            <input
+              class="sa-case-only-confirmation__checkbox"
+              type="checkbox"
+              data-sa-case-only-checkbox
+            >
+            <span>I understand this is the protective tin case only and no lighter is included.</span>
+          </label>
+        </div>
+
         <button
           id="ProductSubmitButton-{{ section_id }}"
           type="submit"
           name="add"
           class="product-form__submit button button--filled uppercase button--full sa-atc-btn"
           data-atc-available-label="{% if product_preorder %}{{ 'product.preorder' | t | escape }}{% else %}Add to Cart{% endif %}"
-          aria-label="{% if product.selected_or_first_available_variant == nil %}{{ 'product.unavailable' | t | escape }}{% elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}{{ 'product.sold_out' | t | escape }}{% elsif product_preorder %}{{ 'product.preorder' | t | escape }} - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% else %}Add to Cart - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% endif %}"
+          data-atc-case-only-label="Add Case Only to Cart"
+          aria-label="{% if product.selected_or_first_available_variant == nil %}{{ 'product.unavailable' | t | escape }}{% elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}{{ 'product.sold_out' | t | escape }}{% elsif current_variant_case_only %}Confirm case only before adding to cart{% elsif product_preorder %}{{ 'product.preorder' | t | escape }} - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% else %}Add to Cart - {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros | strip_html | escape }}{% endif %}"
           {% if product.selected_or_first_available_variant.available == false
             or quantity_rule_soldout
             or product.selected_or_first_available_variant == nil
+            or current_variant_case_only
           %}
             disabled
           {% endif %}
@@ -259,6 +312,8 @@
             <span class="sa-atc-text" data-atc-text>{{ 'product.unavailable' | t }}</span>
           {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
             <span class="sa-atc-text" data-atc-text>{{ 'product.sold_out' | t }}</span>
+          {%- elsif current_variant_case_only -%}
+            <span class="sa-atc-text" data-atc-text>Add Case Only to Cart</span>
           {%- else -%}
             <span class="sa-atc-text" data-atc-text>Add to Cart</span>
           {%- endif -%}
@@ -317,7 +372,8 @@
       "purchasable": {% if variant.available and variant_quantity_rule_soldout == false %}true{% else %}false{% endif %},
       "price": {{ variant.price | money_without_trailing_zeros | strip_html | json }},
       "compareAtPrice": {{ variant.compare_at_price | money_without_trailing_zeros | strip_html | json }},
-      "onSale": {% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %}
+      "onSale": {% if variant.compare_at_price > variant.price %}true{% else %}false{% endif %},
+      "caseOnly": {% if current_product_type_handle == 'flip-lighter' and variant.options contains 'Tin Case Only' %}true{% else %}false{% endif %}
     }{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}
 ]
@@ -338,6 +394,8 @@
       return;
     }
 
+    let lastVariantId = '';
+
     function updateAtcButton() {
       const variantInput = formRoot.querySelector('.product-variant-id');
       const textEl = formRoot.querySelector('[data-atc-text]');
@@ -346,6 +404,9 @@
       const priceWrap = formRoot.querySelector('[data-atc-price-wrap]');
       const currentPrice = formRoot.querySelector('[data-atc-current-price]');
       const comparePrice = formRoot.querySelector('[data-atc-compare-price]');
+      const caseConfirmation = formRoot.querySelector('[data-sa-case-only-confirmation]');
+      const caseCheckbox = formRoot.querySelector('[data-sa-case-only-checkbox]');
+      const dynamicCheckout = formRoot.querySelector('.shopify-payment-button');
       if (!variantInput || !textEl || !iconEl || !button) return;
 
       const currentId = String(variantInput.value || '');
@@ -362,8 +423,20 @@
         return;
       }
 
+      if (lastVariantId !== currentId) {
+        lastVariantId = currentId;
+        if (caseCheckbox) caseCheckbox.checked = false;
+      }
+
+      const isCaseOnly = Boolean(match.caseOnly);
+      if (caseConfirmation) caseConfirmation.hidden = !isCaseOnly;
+      if (dynamicCheckout) dynamicCheckout.hidden = isCaseOnly;
+
       if (match.purchasable) {
-        const availableLabel = button.dataset.atcAvailableLabel || 'Add to Cart';
+        const availableLabel = isCaseOnly
+          ? (button.dataset.atcCaseOnlyLabel || 'Add Case Only to Cart')
+          : (button.dataset.atcAvailableLabel || 'Add to Cart');
+        const needsCaseConfirmation = isCaseOnly && caseCheckbox && !caseCheckbox.checked;
         textEl.textContent = availableLabel;
         if (currentPrice) currentPrice.textContent = match.price;
         if (comparePrice) {
@@ -373,17 +446,47 @@
         if (priceWrap) priceWrap.hidden = false;
         iconEl.hidden = false;
         iconEl.style.display = 'inline-flex';
-        button.setAttribute('aria-label', availableLabel + ' - ' + match.price);
+        button.disabled = Boolean(needsCaseConfirmation);
+        button.setAttribute(
+          'aria-label',
+          needsCaseConfirmation
+            ? 'Confirm case only before adding to cart'
+            : availableLabel + ' - ' + match.price
+        );
       } else {
         textEl.textContent = 'SOLD OUT';
         if (priceWrap) priceWrap.hidden = true;
         iconEl.hidden = true;
         iconEl.style.display = 'none';
+        button.disabled = true;
         button.setAttribute('aria-label', 'Sold out');
       }
     }
 
     updateAtcButton();
+
+    const caseCheckbox = formRoot.querySelector('[data-sa-case-only-checkbox]');
+    if (caseCheckbox) {
+      caseCheckbox.addEventListener('change', updateAtcButton);
+    }
+
+    const productFormElement = formRoot.querySelector('form[data-type="add-to-cart-form"]');
+    if (productFormElement) {
+      productFormElement.addEventListener('submit', function (event) {
+        const variantInput = formRoot.querySelector('.product-variant-id');
+        const selectedVariant = variants.find(function (variant) {
+          return String(variant.id) === String(variantInput ? variantInput.value : '');
+        });
+        const checkbox = formRoot.querySelector('[data-sa-case-only-checkbox]');
+
+        if (selectedVariant && selectedVariant.caseOnly && checkbox && !checkbox.checked) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          updateAtcButton();
+          checkbox.focus();
+        }
+      }, true);
+    }
 
     document.addEventListener('change', function (event) {
       const target = event.target;

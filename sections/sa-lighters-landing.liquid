@@ -522,7 +522,7 @@
               <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.title | escape }}">
             {% endif %}
             <h3>{{ product.title }}</h3>
-            <p>From {{ product.price_min | money }}</p>
+            <p>{% render 'sa-merchandising-price', product: product %}</p>
             <span class="sa-small-btn">Choose Options</span>
           </a>
         {% endfor %}

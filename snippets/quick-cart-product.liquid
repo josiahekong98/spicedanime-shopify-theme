@@ -1,3 +1,23 @@
+<style>
+  .sa-quick-cart-product__case-note {
+    margin: 8px 0 0;
+    color: #f0a39d;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .sa-quick-cart-product__case-option-note {
+    display: block;
+    margin-top: 4px;
+    color: #f0a39d;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+</style>
+
 <div class="quick-cart-product product sa-quick-cart-product">
   <div class="quick-cart-drawer__slider-wrapper sa-quick-cart-product__media">
     <div class="swiper quick-cart-drawer__media-swiper">
@@ -36,6 +56,7 @@
       <product-card class="product-card product-card__quick-cart product-card--quick-cart sa-quick-cart-product__selector">
         {% comment %} Product Variants || Options || Swatches {% endcomment %}
         {%- assign variants = product.variants -%}
+        {%- assign product_type_handle = product.type | handleize -%}
 
         {%- assign swatch_options = settings.swatches_option | split: ',' -%}
         {%- assign current_swatch_options = '' -%}
@@ -69,13 +90,15 @@
                 {%- assign options = product.options_with_values[2].values -%}
               {%- endif -%}
               {%- if options != blank -%}
+                {%- assign current_option = product.options_with_values[forloop.index0] -%}
+                {%- assign current_option_handle = current_option.name | handleize -%}
                 {% assign option_handle = options | json %}
                   {% unless option_handle contains 'Default' %}
                     <li>
                       {%- if options.size > 0 -%}
                         <fieldset class="product__variant-options js-product-card-options">
                           <legend>
-                            {{ product.options_with_values[forloop.index0].name -}}
+                            {{ current_option.name -}}
                             <span data-selected-variant>
                               {{- product.options_with_values[forloop.index0].selected_value -}}
                             </span>
@@ -121,13 +144,26 @@
 
                               assign input_name = product.id | append: '-option[' | append: opts | append: ']'
                               assign input_id = product.id | append: '-variant-option-' | append: opts | append: '-' | append: forloop.index
+                              assign option_value_handle = opt | handleize
+                              assign is_case_only_quick_option = false
+                              if product_type_handle == 'flip-lighter' and current_option_handle == 'bundle' and option_value_handle == 'tin-case-only'
+                                assign is_case_only_quick_option = true
+                              endif
                             -%}
 
-                            <div class="button--variant{% if opt_swatch %} button--swatch{% if settings.swatches_shape == 'circle' %} button--swatch-rounded{% endif %}{% endif %}" tabindex="0">
-                              {%- render 'product-option', id: input_id, name: input_name, value: opt, swatch_value: opt.swatch, class: 'hidden variant-option-radio-input', visually_hidden: true, product: product, option: options, where: 'quick-cart-product' -%}
+                            <div class="button--variant{% if opt_swatch %} button--swatch{% if settings.swatches_shape == 'circle' %} button--swatch-rounded{% endif %}{% endif %}{% if is_case_only_quick_option %} disabled{% endif %}" tabindex="0">
+                              {%- render 'product-option', id: input_id, name: input_name, value: opt, swatch_value: opt.swatch, class: 'hidden variant-option-radio-input', visually_hidden: true, product: product, option: options, where: 'quick-cart-product', disabled: is_case_only_quick_option -%}
+                              {% if is_case_only_quick_option %}
+                                <span class="sa-quick-cart-product__case-option-note">No lighter</span>
+                              {% endif %}
                             </div>
                           {%- endfor -%}
                         </fieldset>
+                        {% if product_type_handle == 'flip-lighter' and current_option_handle == 'bundle' %}
+                          <p class="sa-quick-cart-product__case-note">
+                            Tin Case Only does not include a lighter. Open the product page to purchase the case-only option with confirmation.
+                          </p>
+                        {% endif %}
                       {%- endif -%}
                     </li>
                 {% endunless %}

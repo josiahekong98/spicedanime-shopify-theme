@@ -96,8 +96,11 @@
 
       assign bundle_handle = value | handleize
       assign is_popular = false
+      assign is_case_only = false
       if bundle_handle contains 'lighter' and bundle_handle contains 'tin'
         assign is_popular = true
+      elsif bundle_handle == 'tin-case-only'
+        assign is_case_only = true
       endif
     -%}
 
@@ -105,7 +108,7 @@
       <div class="sa-bundle-cards">
     {% endif %}
 
-    <div class="sa-bundle-option">
+    <div class="sa-bundle-option{% if is_case_only %} sa-bundle-option--case-only{% endif %}">
       <input
         type="radio"
         id="{{ input_id }}"
@@ -113,6 +116,7 @@
         value="{{ value | escape }}"
         form="{{ product_form_id }}"
         class="sa-bundle-option-input"
+        {% if is_case_only %}data-sa-case-only="true"{% endif %}
         {% if value.selected %}checked{% endif %}
         {% if option_disabled %}disabled{% endif %}
         {{ input_dataset }}
@@ -122,6 +126,8 @@
         <div class="sa-bundle-option-image-wrap">
           {% if is_popular %}
             <div class="sa-bundle-option-popular">Most popular</div>
+          {% elsif is_case_only %}
+            <div class="sa-bundle-option-case-badge">Case only · No lighter</div>
           {% endif %}
 
           {% if bundle_variant.featured_image %}
@@ -132,7 +138,16 @@
         </div>
 
         <div class="sa-bundle-option-body">
-          <div class="sa-bundle-option-title">{{ value }}</div>
+          <div class="sa-bundle-option-title">
+            {%- if is_case_only -%}
+              Protective Tin Case
+            {%- else -%}
+              {{ value }}
+            {%- endif -%}
+          </div>
+          {% if is_case_only %}
+            <div class="sa-bundle-option-note">No lighter included</div>
+          {% endif %}
           {% if bundle_variant %}
             <div class="sa-bundle-option-price">{{ bundle_variant.price | money_without_trailing_zeros }}</div>
           {% endif %}

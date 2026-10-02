@@ -95,8 +95,18 @@
       endfor
 
       assign bundle_handle = value | handleize
+      assign bundle_image_asset = blank
       assign is_popular = false
       assign is_case_only = false
+
+      if bundle_handle == 'lighter-only'
+        assign bundle_image_asset = 'sa-bundle-lighter-only.png'
+      elsif bundle_handle == 'tin-case-only'
+        assign bundle_image_asset = 'sa-bundle-protective-tin-case.png'
+      elsif bundle_handle contains 'lighter' and bundle_handle contains 'tin'
+        assign bundle_image_asset = 'sa-bundle-lighter-tin-case.png'
+      endif
+
       if bundle_handle contains 'lighter' and bundle_handle contains 'tin'
         assign is_popular = true
       elsif bundle_handle == 'tin-case-only'
@@ -130,7 +140,18 @@
             <div class="sa-bundle-option-case-badge">Case only · No lighter</div>
           {% endif %}
 
-          {% if bundle_variant.featured_image %}
+          {% if bundle_image_asset != blank %}
+            <img
+              src="{{ bundle_image_asset | asset_img_url: '600x' }}"
+              srcset="{{ bundle_image_asset | asset_img_url: '360x' }} 360w, {{ bundle_image_asset | asset_img_url: '600x' }} 600w, {{ bundle_image_asset | asset_img_url: '900x' }} 900w"
+              sizes="(max-width: 749px) calc((100vw - 56px) / 3), 180px"
+              width="900"
+              height="900"
+              loading="eager"
+              decoding="async"
+              alt="{{ value | escape }}"
+            >
+          {% elsif bundle_variant.featured_image %}
             {{ bundle_variant.featured_image | image_url: width: 500 | image_tag: loading: 'eager', alt: value }}
           {% elsif product.featured_image %}
             {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'eager', alt: value }}

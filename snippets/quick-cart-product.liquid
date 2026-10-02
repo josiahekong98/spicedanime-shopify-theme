@@ -1,11 +1,4 @@
 <style>
-  .sa-quick-cart-product__case-note {
-    margin: 8px 0 0;
-    color: #f0a39d;
-    font-size: 11px;
-    line-height: 1.4;
-  }
-
   .sa-quick-cart-product__case-option-note {
     display: block;
     margin-top: 4px;
@@ -159,11 +152,6 @@
                             </div>
                           {%- endfor -%}
                         </fieldset>
-                        {% if product_type_handle == 'flip-lighter' and current_option_handle == 'bundle' %}
-                          <p class="sa-quick-cart-product__case-note">
-                            Tin Case Only does not include a lighter. Open the product page to purchase the case-only option with confirmation.
-                          </p>
-                        {% endif %}
                       {%- endif -%}
                     </li>
                 {% endunless %}

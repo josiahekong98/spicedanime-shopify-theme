@@ -489,13 +489,9 @@
 
             {%- if shop.customer_accounts_enabled -%}
               <li class="header__utils-item header__utils-item--account header__utils-item--mobile">
-                <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__utils-link text-link" title="{%- if customer -%}{{ 'customer.account.label' | t }}{%- else -%}{{ 'theme.actions.log_in' | t }}{%- endif -%}">
+                <a href="https://spicedanime.shop/apps/track" class="header__utils-link text-link" title="Track your order">
                   {%- liquid
-                    if customer
-                      assign icon_text = 'customer.account.label' | t
-                    else
-                      assign icon_text = 'theme.actions.log_in' | t
-                    endif
+                    assign icon_text = 'Track your order'
                     render 'icon', icon_name: 'theme-user', text: icon_text, class: 'header__utils-link--icon text-link--on-hover'
                   -%}
                 </a>

@@ -152,7 +152,7 @@
   color: var(--sa-museum-ivory);
   font-family: var(--sa-font-ui);
   font-size: clamp(9px, 2vw, 16px);
-  font-weight: 400;
+  font-weight: 200;
   line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;

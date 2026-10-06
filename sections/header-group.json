@@ -57,6 +57,7 @@
         "5e0cad2e-d931-416e-ac29-51a4a683ade2",
         "timer_UXXqcR"
       ],
+      "disabled": true,
       "settings": {
         "text_block_behaviour": "marquee",
         "slider_autoplay_interval": 3,

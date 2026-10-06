@@ -1147,13 +1147,6 @@
 }
 
 @media screen and (max-width: 749px) {
-  body.template--product shopify-chat:not([open]) {
-    inset: auto 0 0 auto;
-    width: min(220px, 60vw);
-    height: 120px;
-    contain: none;
-  }
-
   .sa-product-recommendation-row {
     --sa-product-recommendation-card-width: min(46vw, 178px);
   }

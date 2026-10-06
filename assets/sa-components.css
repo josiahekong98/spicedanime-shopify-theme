@@ -246,6 +246,15 @@
   box-shadow: inset 0 -2px 0 var(--sa-relic-red);
 }
 
+@media screen and (max-width: 749px) {
+  shopify-chat:not([open]) {
+    inset: auto 0 0 auto;
+    width: min(220px, 60vw);
+    height: 120px;
+    contain: none;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .sa-button {
     width: 100%;

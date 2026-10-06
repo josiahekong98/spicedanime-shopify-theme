@@ -1187,7 +1187,7 @@
   .sa-product-title {
     display: -webkit-box;
     overflow: hidden;
-    font-size: clamp(1px, .7vw, 2px);
+    font-size: clamp(12px, 1.7vw, 12px);
     line-height: 1.5;
     letter-spacing: 0.15em;
     white-space: normal;

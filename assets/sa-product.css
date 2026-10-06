@@ -151,7 +151,7 @@
   overflow: hidden;
   color: var(--sa-museum-ivory);
   font-family: var(--sa-font-ui);
-  font-size: clamp(9px, 2vw, 16px);
+  font-size: clamp(9px,1vw, 9px);
   font-weight: 200;
   line-height: 1.4;
   letter-spacing: 0.14em;

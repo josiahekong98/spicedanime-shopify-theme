@@ -59,6 +59,17 @@
       padding-block-start: 0;
     }
 
+    @media screen and (max-width: 749px) {
+      body.template--product #shopify-section-{{- section.id }} {
+        position: relative;
+        inset-block-start: auto;
+      }
+
+      body.template--product #shopify-section-{{- section.id }} > .header {
+        padding-block-start: env(safe-area-inset-top);
+      }
+    }
+
     .section-page-banner:before {
       content: '';
       position: absolute;

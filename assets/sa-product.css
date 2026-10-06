@@ -1184,16 +1184,16 @@
     box-shadow: none;
   }
 
-  .sa-product-title {
-    display: -webkit-box;
-    overflow: hidden;
-    font-size: clamp(32px, 1.7vw, 32px);
-    line-height: 1.5;
-    letter-spacing: 0.15em;
-    white-space: normal;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+  .sa-product-main .product__title.sa-product-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.15em;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 
   .sa-product-meta {
     font-size: 11px;

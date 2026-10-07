@@ -2,7 +2,6 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign sa_inventory_block = section.blocks | where: 'type', 'inventory_notice' | first -%}
 {%- assign sa_inventory_threshold = sa_inventory_block.settings.inventory_threshold | default: 15 -%}
-{%- assign sa_trust_blocks = section.blocks | where: 'type', 'text' -%}
 {%- assign sa_shipping_threshold = settings.shipping_notification_threshold -%}
 {%- assign sa_shipping_threshold_cents = sa_shipping_threshold | times: 100 -%}
 {%- assign sa_shipping_threshold_money = sa_shipping_threshold_cents | money_without_trailing_zeros -%}
@@ -325,21 +324,14 @@
                 assign sa_has_structured_notes = true
               endif
             -%}
-            <accordion-default class="accordion product__accordion sa-archive-accordion" data-hide-multiple>
-              <details class="accordion__section sa-archive-accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
+            <accordion-default class="accordion product__accordion sa-product-info-accordion" data-hide-multiple>
+              <details class="accordion__section sa-product-info-accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
                 <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
-                  <span class="sa-archive-accordion__heading">
-                    <span class="sa-archive-accordion__number" aria-hidden="true">01</span>
-                    <span class="sa-archive-accordion__copy">
-                      <span class="sa-archive-accordion__title">
-                        {%- if block.settings.heading != blank -%}
-                          {{- block.settings.heading -}}
-                        {%- else -%}
-                          {{- 'product.description' | t -}}
-                        {%- endif -%}
-                      </span>
-                      <span class="sa-archive-accordion__support">Story, specifications, and what is included.</span>
+                  <span class="sa-product-info-accordion__heading">
+                    <span class="sa-product-info-accordion__leading-icon" aria-hidden="true">
+                      {%- render 'icon', icon_name: 'theme-smile' -%}
                     </span>
+                    <span class="sa-product-info-accordion__title">Description</span>
                   </span>
                   <div class="accordion__icon">
                     {%- render 'icon', icon_name: 'theme-minus' -%}
@@ -350,35 +342,33 @@
                 <div class="accordion__body" id="Details-Content-{{- block.id -}}">
                   <div class="accordion__body-inner">
                     {%- if product_description != blank or sa_has_structured_notes -%}
-                      <div class="rte sa-archive-accordion__content">
+                      <div class="rte sa-product-info-accordion__content">
                         {%- if sa_has_structured_notes -%}
                           {%- if sa_curators_take != blank -%}
-                            <section class="sa-archive-accordion__subsection">
-                              <h3>Curator's Take</h3>
+                            <section class="sa-product-info-accordion__subsection">
                               {{- sa_curators_take | metafield_tag -}}
                             </section>
                           {%- endif -%}
                           {%- if sa_artifact_details != blank -%}
-                            <section class="sa-archive-accordion__subsection">
+                            <section class="sa-product-info-accordion__subsection">
                               <h3>Artifact Details</h3>
                               {{- sa_artifact_details | metafield_tag -}}
                             </section>
                           {%- endif -%}
                           {%- if sa_configuration != blank -%}
-                            <section class="sa-archive-accordion__subsection">
+                            <section class="sa-product-info-accordion__subsection">
                               <h3>Configuration</h3>
                               {{- sa_configuration | metafield_tag -}}
                             </section>
                           {%- endif -%}
                           {%- if sa_whats_included != blank -%}
-                            <section class="sa-archive-accordion__subsection">
+                            <section class="sa-product-info-accordion__subsection">
                               <h3>What's Included</h3>
                               {{- sa_whats_included | metafield_tag -}}
                             </section>
                           {%- endif -%}
                         {%- else -%}
-                          <section class="sa-archive-accordion__subsection">
-                            <h3>Curator's Take</h3>
+                          <section class="sa-product-info-accordion__subsection">
                             {{- product_description -}}
                           </section>
                         {%- endif -%}
@@ -448,44 +438,7 @@
         {%- if is_gift_card -%}
           {%- continue -%}
         {%- endif -%}
-        {%- assign current_variant = product.selected_or_first_available_variant -%}
         {%- assign product_block_class = 'product__inventory-notice' | append: ' ' | append: product_block_class -%}
-        <div class="sa-order-details" role="group" aria-label="Order details">
-          <p class="sa-order-details__label">Order details</p>
-
-          {%- for trust_block in sa_trust_blocks -%}
-            {%- assign sa_trust_heading = trust_block.settings.heading | downcase -%}
-            {%- assign sa_is_returns = false -%}
-            {%- assign sa_is_secure = false -%}
-            {%- assign sa_is_shipping = false -%}
-            {%- if sa_trust_heading contains 'free and easy returns' -%}
-              {%- assign sa_is_returns = true -%}
-            {%- elsif sa_trust_heading contains 'secure payments' -%}
-              {%- assign sa_is_secure = true -%}
-            {%- elsif sa_trust_heading contains 'free delivery' or sa_trust_heading contains 'free shipping' -%}
-              {%- if sa_show_free_shipping -%}
-                {%- assign sa_is_shipping = true -%}
-              {%- endif -%}
-            {%- endif -%}
-
-            {%- if sa_is_returns or sa_is_secure or sa_is_shipping -%}
-              <div class="sa-order-details__item" {{ trust_block.shopify_attributes }}>
-                {%- if trust_block.settings.icon != blank -%}
-                  {%- render 'icon', icon_name: trust_block.settings.icon -%}
-                {%- endif -%}
-                <span>
-                  {%- if sa_is_shipping -%}
-                    Free US shipping on orders over {{ sa_shipping_threshold_money }}
-                  {%- elsif sa_is_returns and shop.refund_policy.body != blank -%}
-                    <a href="{{ shop.refund_policy.url }}">{{ trust_block.settings.heading }}</a>
-                  {%- else -%}
-                    {{ trust_block.settings.heading }}
-                  {%- endif -%}
-                </span>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
         {%- if product.metafields.theme.preorder.value -%}
           <div class="{{ product_block_class }} product__preorder-warning">
             {{ 'product.preorder_warning_html' | t }}
@@ -537,26 +490,159 @@
         {{- 'section-accordions.css' | asset_url | stylesheet_tag -}}
         {%- assign product_block_class = 'product__accordion' | append: ' ' | append: product_block_class -%}
         {%- assign sa_content_heading = block.settings.heading | downcase -%}
-        {%- assign sa_is_delivery = false -%}
-        {%- if sa_content_heading == 'delivery & returns' -%}
-          {%- assign sa_is_delivery = true -%}
+        {%- assign sa_is_shipping = false -%}
+        {%- if sa_content_heading == 'delivery & returns' or sa_content_heading == 'shipping' -%}
+          {%- assign sa_is_shipping = true -%}
         {%- endif -%}
-        <accordion-default class="accordion {{ product_block_class }}{% if sa_is_delivery %} sa-archive-accordion{% endif %}" data-hide-multiple>
-          <details
-            class="accordion__section{% if sa_is_delivery %} sa-archive-accordion__section{% endif %}"
-            id="Details-{{- block.id -}}"
-            {{- block.shopify_attributes -}}
-          >
-            <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
-              {%- if sa_is_delivery -%}
-                <span class="sa-archive-accordion__heading">
-                  <span class="sa-archive-accordion__number" aria-hidden="true">02</span>
-                  <span class="sa-archive-accordion__copy">
-                    <span class="sa-archive-accordion__title">{{- block.settings.heading | escape -}}</span>
-                    <span class="sa-archive-accordion__support">Processing, shipping, and return details.</span>
+
+        {% capture metafield_for_product_variant %}
+          {% if block.settings.metafield_for_product_variant != blank %}
+            {%- liquid
+              assign metafield_for_product_variant_namespace = block.settings.metafield_for_product_variant | split: '.' | first
+              assign metafield_for_product_variant_key = block.settings.metafield_for_product_variant | split: '.' | last
+              assign metafield_object = current_variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key]
+            -%}
+            {% if metafield_object.value != blank %}
+              <div class="product__metafield_for_variant-block" data-block-id="{{ block.id }}">
+                {{ current_variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key].value | newline_to_br }}
+              </div>
+              <script id="product__metafield_for_variant-block--{{ block.id }}" type="application/json">
+                {
+                {% for variant in product.variants %}
+                  "{{ variant.id }}": "{{ variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key] | newline_to_br | replace: '<br />', '\n' | strip_newlines }}" {% unless forloop.last %},{% endunless %}
+                {% endfor %}
+                }
+              </script>
+            {% endif %}
+          {% endif %}
+        {% endcapture %}
+        {%- liquid
+          assign show_block_content = false
+          if block.settings.show_block_content and metafield_for_product_variant != blank
+            assign show_block_content = true
+          elsif metafield_for_product_variant == blank
+            assign show_block_content = true
+          endif
+        -%}
+
+        {%- if sa_is_shipping -%}
+          {%- liquid
+            assign sa_bundle_copy = blank
+            assign sa_bundle_label = blank
+            assign sa_bundle_url = blank
+            case product.type
+              when 'Flip Lighter'
+                assign sa_bundle_copy = 'Pick 2 for $45 · 3 for $60 · 4 for $75.'
+                assign sa_bundle_label = 'Lighters'
+                assign sa_bundle_url = '/collections/all-products-lighters'
+              when 'Rolling Tray'
+                assign sa_bundle_copy = 'Pick 2 for $25 · 3 for $30 · 4 for $35.'
+                assign sa_bundle_label = 'Rolling Trays'
+                assign sa_bundle_url = '/collections/all-rolling-trays'
+              when 'Grinder Sets'
+                assign sa_bundle_copy = 'Pick 2: save $15 · 3: save $25 · 4: save $40.'
+                assign sa_bundle_label = 'Grinder Sets'
+                assign sa_bundle_url = '/collections/herb-grinders'
+              when 'Tapestry'
+                assign sa_bundle_copy = 'Pick 2: save $20 · 3: save $35 · 4: save $50.'
+                assign sa_bundle_label = 'Tapestries'
+                assign sa_bundle_url = '/collections/all-tapestries'
+              when 'Wallet'
+                assign sa_bundle_copy = 'Pick 2 for $60 · 3 for $85 · 4 for $110.'
+                assign sa_bundle_label = 'Wallets'
+                assign sa_bundle_url = '/collections/wallets-category'
+              when 'Pillow Covers'
+                assign sa_bundle_copy = 'Pick 2 for $30 · 3 for $40 · 4 for $50.'
+                assign sa_bundle_label = 'Pillow Cases'
+                assign sa_bundle_url = '/collections/lighters-category-copy'
+              when 'Stash Jar'
+                assign sa_bundle_copy = 'Pick 2 for $15 · 3 for $20 · 4 for $25.'
+                assign sa_bundle_label = 'Stash Jars'
+                assign sa_bundle_url = '/collections/all-products-stash-jars'
+              when 'Ashtray'
+                assign sa_bundle_copy = 'Pick 2 for $30 · 3 for $40 · 4 for $50.'
+                assign sa_bundle_label = 'Ashtrays'
+                assign sa_bundle_url = '/collections/all-products-ashtray'
+              when 'Hoodies'
+                assign sa_bundle_copy = 'Pick 2: save $20 · 3: save $35 · 4: save $50.'
+                assign sa_bundle_label = 'Hoodies'
+                assign sa_bundle_url = '/collections/hoodies-category'
+              when 'Stash Box'
+                assign sa_bundle_copy = 'Pick 2: save $10 · 3: save $20 · 4: save $30.'
+                assign sa_bundle_label = 'Stash Boxes'
+                assign sa_bundle_url = '/collections/all-products-stash-boxes'
+              when 'Tote Bags'
+                assign sa_bundle_copy = 'Pick 2: save $10 · 3: save $20 · 4: save $30.'
+                assign sa_bundle_label = 'Tote Bags'
+                assign sa_bundle_url = '/collections/all-tote-bags'
+            endcase
+          -%}
+
+          <accordion-default class="accordion {{ product_block_class }} sa-product-info-accordion" data-hide-multiple>
+            <details class="accordion__section sa-product-info-accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
+              <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
+                <span class="sa-product-info-accordion__heading">
+                  <span class="sa-product-info-accordion__leading-icon" aria-hidden="true">
+                    {%- render 'icon', icon_name: 'theme-paper-plane' -%}
                   </span>
+                  <span class="sa-product-info-accordion__title">Shipping</span>
                 </span>
-              {%- else -%}
+                <div class="accordion__icon">
+                  {%- render 'icon', icon_name: 'theme-minus' -%}
+                  {%- render 'icon', icon_name: 'theme-minus' -%}
+                </div>
+              </summary>
+
+              <div class="accordion__body" id="Details-Content-{{- block.id -}}">
+                <div class="accordion__body-inner">
+                  <div class="rte sa-product-info-accordion__content">
+                    <p>Ships in 3–7 business days. Tracking is emailed when your order ships.</p>
+                    {%- if sa_show_free_shipping -%}
+                      <p>Free US shipping on orders over {{ sa_shipping_threshold_money }}.</p>
+                    {%- endif -%}
+                    {%- if metafield_for_product_variant != blank -%}
+                      {{- metafield_for_product_variant -}}
+                    {%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%}
+                      <p><a href="{{ shop.shipping_policy.url }}">View shipping policy</a></p>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </details>
+          </accordion-default>
+
+          {%- if sa_bundle_copy != blank -%}
+            <accordion-default class="accordion {{ product_block_class }} sa-product-info-accordion sa-product-info-accordion--bundle" data-hide-multiple>
+              <details class="accordion__section sa-product-info-accordion__section" id="Bundle-Details-{{- block.id -}}">
+                <summary class="accordion__button h5 js-btn" id="Bundle-Details-Summary-{{- block.id -}}">
+                  <span class="sa-product-info-accordion__heading">
+                    <span class="sa-product-info-accordion__leading-icon" aria-hidden="true">
+                      {%- render 'icon', icon_name: 'theme-gift' -%}
+                    </span>
+                    <span class="sa-product-info-accordion__title">Bundle &amp; Save</span>
+                  </span>
+                  <div class="accordion__icon">
+                    {%- render 'icon', icon_name: 'theme-minus' -%}
+                    {%- render 'icon', icon_name: 'theme-minus' -%}
+                  </div>
+                </summary>
+
+                <div class="accordion__body" id="Bundle-Details-Content-{{- block.id -}}">
+                  <div class="accordion__body-inner">
+                    <div class="rte sa-product-info-accordion__content">
+                      <p>{{- sa_bundle_copy -}}</p>
+                      <p><a href="{{ sa_bundle_url }}">Shop {{ sa_bundle_label }}</a></p>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </accordion-default>
+          {%- endif -%}
+        {%- else -%}
+          <accordion-default class="accordion {{ product_block_class }}" data-hide-multiple>
+            <details class="accordion__section" id="Details-{{- block.id -}}" {{- block.shopify_attributes -}}>
+              <summary class="accordion__button h5 js-btn" id="Details-Summary-{{- block.id -}}">
                 <span>
                   {% if block.settings.custom_icon != blank %}
                     {{ block.settings.custom_icon | image_url: width: 24 | image_tag: alt: block.settings.custom_icon.alt }}
@@ -565,92 +651,14 @@
                   {% endif %}
                   {{- block.settings.heading | escape -}}
                 </span>
-              {%- endif -%}
-              <div class="accordion__icon">
-                {%- render 'icon', icon_name: 'theme-minus' -%}
-                {%- render 'icon', icon_name: 'theme-minus' -%}
-              </div>
-            </summary>
+                <div class="accordion__icon">
+                  {%- render 'icon', icon_name: 'theme-minus' -%}
+                  {%- render 'icon', icon_name: 'theme-minus' -%}
+                </div>
+              </summary>
 
-            <div class="accordion__body" id="Details-Content-{{- block.id -}}">
-              <div class="accordion__body-inner">
-                {% capture metafield_for_product_variant %}
-                  {% if block.settings.metafield_for_product_variant != blank %}
-                    {%- liquid
-                      assign metafield_for_product_variant_namespace = block.settings.metafield_for_product_variant | split: '.' | first
-                      assign metafield_for_product_variant_key = block.settings.metafield_for_product_variant | split: '.' | last
-                      assign metafield_object = current_variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key]
-                    -%}
-                    {% if metafield_object.value != blank %}
-                      <div class="product__metafield_for_variant-block" data-block-id="{{ block.id }}">
-                        {{ current_variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key].value | newline_to_br }}
-                      </div>
-                      <script id="product__metafield_for_variant-block--{{ block.id }}" type="application/json">
-                        {
-                        {% for variant in product.variants %}
-                          "{{ variant.id }}": "{{ variant.metafields[metafield_for_product_variant_namespace][metafield_for_product_variant_key] | newline_to_br | replace: '<br />', '\n' | strip_newlines }}" {% unless forloop.last %},{% endunless %}
-                        {% endfor %}
-                        }
-                      </script>
-                    {% endif %}
-                  {% endif %}
-                {% endcapture %}
-                {%- liquid
-                  assign show_block_content = false
-                  if block.settings.show_block_content and metafield_for_product_variant != blank
-                    assign show_block_content = true
-                  elsif metafield_for_product_variant == blank
-                    assign show_block_content = true
-                  endif
-                -%}
-
-                {%- if sa_is_delivery -%}
-                  {%- capture sa_returns_copy -%}
-                    {%- for trust_block in sa_trust_blocks -%}
-                      {%- assign sa_trust_heading = trust_block.settings.heading | downcase -%}
-                      {%- if sa_trust_heading contains 'free and easy returns' -%}
-                        {{- trust_block.settings.heading -}}
-                      {%- endif -%}
-                    {%- endfor -%}
-                  {%- endcapture -%}
-                  <div class="rte sa-archive-accordion__content sa-policy-sections">
-                    <section class="sa-archive-accordion__subsection">
-                      <h3>Processing</h3>
-                      <p>Ships in 3 - 7 business days.</p>
-                    </section>
-
-                    <section class="sa-archive-accordion__subsection">
-                      <h3>Delivery</h3>
-                      {%- if sa_show_free_shipping -%}
-                        <p>Free US shipping on orders over {{ sa_shipping_threshold_money }}.</p>
-                      {%- endif -%}
-                      {%- if metafield_for_product_variant != blank -%}
-                        {{- metafield_for_product_variant -}}
-                      {%- endif -%}
-                      {%- if show_block_content -%}
-                        {%- if block.settings.page != blank -%}
-                          {{- block.settings.page.content -}}
-                        {%- elsif block.settings.row_content != blank -%}
-                          {{- block.settings.row_content -}}
-                        {%- endif -%}
-                      {%- endif -%}
-                      {%- if shop.shipping_policy.body != blank -%}
-                        <p><a href="{{ shop.shipping_policy.url }}">Review the store shipping policy.</a></p>
-                      {%- endif -%}
-                    </section>
-
-                    {%- if shop.refund_policy.body != blank or sa_returns_copy != blank -%}
-                      <section class="sa-archive-accordion__subsection">
-                        <h3>Returns</h3>
-                        {%- if shop.refund_policy.body != blank -%}
-                          <p><a href="{{ shop.refund_policy.url }}">Review the store returns policy.</a></p>
-                        {%- else -%}
-                          <p>{{- sa_returns_copy | strip -}}</p>
-                        {%- endif -%}
-                      </section>
-                    {%- endif -%}
-                  </div>
-                {%- else -%}
+              <div class="accordion__body" id="Details-Content-{{- block.id -}}">
+                <div class="accordion__body-inner">
                   {%- liquid
                     if metafield_for_product_variant != blank
                       echo metafield_for_product_variant
@@ -663,11 +671,11 @@
                       endif
                     endif
                   -%}
-                {%- endif -%}
+                </div>
               </div>
-            </div>
-          </details>
-        </accordion-default>
+            </details>
+          </accordion-default>
+        {%- endif -%}
 
       {%- when 'content_tabs' -%}
 

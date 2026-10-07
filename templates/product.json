@@ -126,7 +126,7 @@
           "settings": {
             "spacing_bottom": "1",
             "behaviour": "row",
-            "heading": "Curator Notes",
+            "heading": "Description",
             "text_truncate": 3,
             "icon": "",
             "metafield_for_product_variant": "",
@@ -137,8 +137,8 @@
           "type": "content_block",
           "settings": {
             "spacing_bottom": "1",
-            "heading": "Delivery & Returns",
-            "row_content": "<ul><li>US Flat Rate Shipping $5</li><li>International shipping & duties charges calculated at checkout</li><li>Carbon-Neutral Shipping</li><li>All packaging is plastic-free and recyclable.</li><li>Tracking is sent automatically once your order ships.</li></ul>",
+            "heading": "Shipping",
+            "row_content": "<p>Ships in 3–7 business days. Tracking is sent when your order ships.</p>",
             "icon": "",
             "page": "",
             "metafield_for_product_variant": "",
